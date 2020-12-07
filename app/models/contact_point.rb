@@ -1,0 +1,2 @@
+class ContactPoint < ApplicationRecord
+end
