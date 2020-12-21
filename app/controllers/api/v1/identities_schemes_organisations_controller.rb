@@ -10,7 +10,8 @@ module Api
           error: 'No such scheme registered',
           status: :not_found
         }
-
+        scheme = SchemeRegister.find_by scheme_register_code: @scheme_id.to_s
+        puts scheme.scheme_register_code
         case @scheme_id
         when 'GB-COH'
           @result = get_companies_house(@reg_number)

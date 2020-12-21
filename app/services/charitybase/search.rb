@@ -51,7 +51,46 @@ module Charitybase
         req.headers['Content-Type'] = 'application/json'
         req.body = { query: graphql_query }.to_json
       end
-      resp.body
+      @result = ActiveSupport::JSON.decode(resp.body)
+      puts @result['data']['CHC'].inspect
+      if resp.status != 200
+        false
+      else
+        build_response
+      end
+    end
+
+    private
+
+    def build_response
+      {
+        name: name,
+        Identifier: indentifier,
+        address: address
+      }
+    end
+
+    def indentifier
+      {
+        'scheme': 'GB-CHC',
+        'id': @result['data']['CHC']['getCharities']['list']['id'],
+        'legalName': @result['data']['CHC']['getCharities']['list']['name'].select { |list| list['primary'] == true },
+        'uri': ''
+      }
+    end
+
+    def name
+      @result['data']['CHC']['getCharities']['list']['name'].select { |list| list['primary'] == true }
+    end
+
+    def address
+      {
+        'streetAddress': @result['data']['CHC']['getCharities']['list']['contact']['adress'][0],
+        'locality': '',
+        'region': '',
+        'postalCode': @result['data']['CHC']['getCharities']['list']['contact']['adress']['postcode'],
+        'countryName': ''
+      }
     end
   end
 end
