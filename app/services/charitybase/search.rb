@@ -52,7 +52,6 @@ module Charitybase
         req.body = { query: graphql_query }.to_json
       end
       @result = ActiveSupport::JSON.decode(resp.body)
-      puts @result['data']['CHC'].inspect
       if resp.status != 200
         false
       else

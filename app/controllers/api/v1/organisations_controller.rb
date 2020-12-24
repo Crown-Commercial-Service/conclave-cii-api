@@ -4,7 +4,7 @@ module Api
       before_action :validate_params
 
       def search_org
-        # puts params[:orginasation_id]
+
         search_api = SearchApi.new(params[:orginasation_id], params[:scheme_id])
         search_api.call
         if search_api.blank?

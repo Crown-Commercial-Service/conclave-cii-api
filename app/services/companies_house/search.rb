@@ -35,8 +35,8 @@ module CompaniesHouse
     def indentifier
       {
         "scheme": 'GB-COH',
-        "id": @result['company_number'].present? ? @result['company_number']: @company_reg_number,
-        "legalName": @result['company_name'].present? ? @result['company_name']: '',
+        "id": @result['company_number'].present? ? @result['company_number'] : @company_reg_number,
+        "legalName": @result['company_name'].present? ? @result['company_name'] : '',
         "uri": ''
       }
     end
@@ -47,11 +47,11 @@ module CompaniesHouse
 
     def address
       {
-        "streetAddress": @result['registered_office_address']['address_line_1'].present? ? @result['registered_office_address']['address_line_1']: '',
-        "locality": @result['registered_office_address']['locality'].present? ? @result['registered_office_address']['locality']: '',
+        "streetAddress": @result['registered_office_address']['address_line_1'].present? ? @result['registered_office_address']['address_line_1'] : '',
+        "locality": @result['registered_office_address']['locality'].present? ? @result['registered_office_address']['locality'] : '',
         "region": '',
-        "postalCode": @result['registered_office_address']['postal_code'].present? ? @result['registered_office_address']['postal_code']: '',
-        "countryName": @result['registered_office_address']['country'].present? ? @result['registered_office_address']['country']: ''
+        "postalCode": @result['registered_office_address']['postal_code'].present? ? @result['registered_office_address']['postal_code'] : '',
+        "countryName": @result['registered_office_address']['country'].present? ? @result['registered_office_address']['country'] : ''
       }
     end
 
