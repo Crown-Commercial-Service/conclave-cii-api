@@ -1,3 +1,4 @@
+version: "2" # required to adjust maintainability checks
 plugins:
   rubocop:
     enabled: true
