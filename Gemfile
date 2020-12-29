@@ -30,6 +30,8 @@ gem 'faraday_middleware'
 gem 'graphlient'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
+# For converting between cases for API request & response
+gem "olive_branch"
 
 group :development, :test do
   gem 'listen', '~> 3.2'
