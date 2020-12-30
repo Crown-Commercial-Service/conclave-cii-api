@@ -14,31 +14,31 @@ RSpec.describe Api::V1::SchemesController, type: :controller do
     it 'Has scheme_register_code' do
       get :schemes
       result = JSON.parse(response.body)
-      expect(result[0]['scheme_register_code']).to eq('GB-CCC')
+      expect(result[0]).to include('scheme_register_code')
     end
 
     it 'Has scheme_name' do
       get :schemes
       result = JSON.parse(response.body)
-      expect(result[0]['scheme_name']).to eq('Example charity orginsation')
+      expect(result[0]).to include('scheme_name')
     end
 
     it 'Has scheme_uri' do
       get :schemes
       result = JSON.parse(response.body)
-      expect(result[0]['scheme_uri']).to eq('http://www.example.org.uk')
+      expect(result[0]).to include('scheme_uri')
     end
 
     it 'Has scheme_identifier' do
       get :schemes
       result = JSON.parse(response.body)
-      expect(result[0]['scheme_identifier']).to eq('Registered Charity Number')
+      expect(result[0]).to include('scheme_identifier')
     end
 
     it 'Has scheme_country_code' do
       get :schemes
       result = JSON.parse(response.body)
-      expect(result[0]['scheme_country_code']).to eq('GB')
+      expect(result[0]).to include('scheme_country_code')
     end
   end
 end
