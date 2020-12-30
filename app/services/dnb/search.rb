@@ -33,50 +33,17 @@ module Dnb
     def build_response
       {
         name: name,
-        Identifier: indentifier,
-        additionalIdentifiers: {
-          # schemes: additional_identifiers,
-          companies_house: compnaies_house
-        },
-        address: address
-      }
-    end
-
-    def indentifier
-      {
-        "scheme": 'US-DUN',
-        "id": @result['organization']['duns'],
-        "legalName": @result['organization']['registeredName'],
-        "uri": ''
+        Identifier: Dnb::Indentifier.new(@result).build_response,
+        additionalIdentifiers: [
+          CompaniesHouse::AdditionalIndentifier.new(@result['organization']['registrationNumbers'][0]['registrationNumber']).build_response
+        ],
+        address: Dnb::Address.new(@result).build_response,
+        contactPoint: Dnb::Contact.new(@result).build_response
       }
     end
 
     def name
       @result['organization']['primaryName']
-    end
-
-    def address
-      {
-        "streetAddress": "#{@result['organization']['primaryAddress']['streetAddress']['line1']} #{@result['organization']['primaryAddress']['streetAddress']['line2']}",
-        "locality": @result['organization']['primaryAddress']['addressLocality']['name'],
-        "region": '',
-        "postalCode": @result['organization']['primaryAddress']['postalCode'],
-        "countryName": @result['organization']['primaryAddress']['addressCountry']['name']
-      }
-    end
-
-    def additional_identifiers
-      {
-        "scheme": 'GB-COH',
-        "id": @result['organization']['registrationNumbers'][0]['registrationNumber'],
-        "legalName": @result['organization']['registeredName'],
-        "uri": ''
-      }
-    end
-
-    def compnaies_house
-      company_api = CompaniesHouse::Search.new(@result['organization']['registrationNumbers'][0]['registrationNumber'])
-      company_api.fetch_results
     end
   end
 end

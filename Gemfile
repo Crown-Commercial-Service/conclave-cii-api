@@ -31,7 +31,10 @@ gem 'graphlient'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
 # For converting between cases for API request & response
-gem "olive_branch"
+gem 'olive_branch'
+# test code complexity
+gem 'flog'
+gem 'vault'
 
 group :development, :test do
   gem 'listen', '~> 3.2'
@@ -49,6 +52,7 @@ group :development, :test do
   gem 'brakeman'
   gem 'pry-rails'
   gem 'factory_bot_rails'
+  gem 'simplecov', require: false
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

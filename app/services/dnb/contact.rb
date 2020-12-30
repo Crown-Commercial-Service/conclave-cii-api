@@ -1,8 +1,7 @@
-module CompaniesHouse
+module Dnb
   class Contact
     def initialize(result)
       super()
-      @error = nil
       @result = result
     end
 

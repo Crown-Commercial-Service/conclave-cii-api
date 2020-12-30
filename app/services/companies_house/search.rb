@@ -25,44 +25,15 @@ module CompaniesHouse
     def build_response
       {
         name: name,
-        Identifier: indentifier,
+        Identifier: CompaniesHouse::Indentifier.new(@result).build_response,
         additionalIdentifiers: [],
-        address: address,
-        contactPoint: contact_point
-      }
-    end
-
-    def indentifier
-      {
-        "scheme": 'GB-COH',
-        "id": @result['company_number'].present? ? @result['company_number'] : @company_reg_number,
-        "legalName": @result['company_name'].present? ? @result['company_name'] : '',
-        "uri": ''
+        address: CompaniesHouse::Address.new(@result).build_response,
+        contactPoint: CompaniesHouse::Contact.new(@result).build_response
       }
     end
 
     def name
       @result['company_name']
-    end
-
-    def address
-      {
-        "streetAddress": @result['registered_office_address']['address_line_1'].present? ? @result['registered_office_address']['address_line_1'] : '',
-        "locality": @result['registered_office_address']['locality'].present? ? @result['registered_office_address']['locality'] : '',
-        "region": '',
-        "postalCode": @result['registered_office_address']['postal_code'].present? ? @result['registered_office_address']['postal_code'] : '',
-        "countryName": @result['registered_office_address']['country'].present? ? @result['registered_office_address']['country'] : ''
-      }
-    end
-
-    def contact_point
-      {
-        'name': '',
-        'email': '',
-        'telephone': '',
-        'faxNumber': '',
-        'url': ''
-      }
     end
   end
 end
