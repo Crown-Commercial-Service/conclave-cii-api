@@ -1,0 +1,2 @@
+class ContactMethod < ApplicationRecord
+end

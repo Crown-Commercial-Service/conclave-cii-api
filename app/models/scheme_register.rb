@@ -1,0 +1,2 @@
+class SchemeRegister < ApplicationRecord
+end

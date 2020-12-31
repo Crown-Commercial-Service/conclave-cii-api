@@ -1,0 +1,2 @@
+class OrganisationIdentifierContactPointReason < ApplicationRecord
+end
