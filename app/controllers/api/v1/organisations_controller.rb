@@ -1,6 +1,8 @@
 module Api
   module V1
     class OrganisationsController < ActionController::API
+      include Authorize::Token
+      before_action :validate_api_key
       before_action :validate_params
 
       def search_org
@@ -15,7 +17,7 @@ module Api
 
       def validate_params
         validate = ApiValidation.new(params)
-        render json: validate.errors unless validate.valid?
+        render json: validate.errors, status: :bad_request unless validate.valid?
       end
     end
   end

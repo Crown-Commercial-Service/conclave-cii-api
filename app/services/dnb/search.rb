@@ -23,10 +23,10 @@ module Dnb
       resp = conn.get("/v1/data/duns/#{@duns_number}", params)
       @result = ActiveSupport::JSON.decode(resp.body)
 
-      if resp.status != 200
-        false
-      else
+      if resp.status == 200
         build_response
+      else
+        false
       end
     end
 
