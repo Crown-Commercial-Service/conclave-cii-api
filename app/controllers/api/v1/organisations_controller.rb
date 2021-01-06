@@ -15,17 +15,6 @@ module Api
         end
       end
 
-
-      def add_organisation
-        search_api = SearchApi.new(params[:organisation_id], params[:scheme_id])
-        search_api.call
-        if search_api.blank?
-          render json: [], status: :not_found
-        else
-          render json: search_api.result
-        end
-      end
-
       def validate_params
         validate = ApiValidation.new(params)
         render json: validate.errors, status: :bad_request unless validate.valid?
