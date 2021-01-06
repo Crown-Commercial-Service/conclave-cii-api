@@ -5,7 +5,7 @@ module Api
       before_action :validate_api_key
       before_action :validate_params
 
-      def search_org
+      def search_organisation
         search_api = SearchApi.new(params[:organisation_id], params[:scheme_id])
         search_api.call
         if search_api.blank?

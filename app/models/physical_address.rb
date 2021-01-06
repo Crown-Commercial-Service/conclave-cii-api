@@ -1,2 +1,0 @@
-class PhysicalAddress < ApplicationRecord
-end

@@ -1,2 +1,0 @@
-class ContactPoint < ApplicationRecord
-end

@@ -1,2 +1,0 @@
-class ContactMethod < ApplicationRecord
-end
