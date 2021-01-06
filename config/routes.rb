@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       get '/identities/schemes/organisation', to: 'organisations#search_organisation'
-      post '/identities/schemes/organisation', to: 'organisations#add_organisation'
+      # post '/identities/schemes/organisation', to: 'organisations#add_organisation'
       get '/identities/schemes', to: 'schemes#schemes'
     end
   end
