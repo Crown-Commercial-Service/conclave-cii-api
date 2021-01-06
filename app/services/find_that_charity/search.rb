@@ -27,7 +27,7 @@ module FindThatCharity
         name: name,
         Identifier: FindThatCharity::Identifier.new(@scheme_id, @result).build_response,
         additionalIdentifiers: [
-          CompaniesHouse::AdditionalIndentifier.new(@result['companyNumber']).build_response
+          CompaniesHouse::AdditionalIdentifier.new(@result['companyNumber']).build_response
         ],
         address: FindThatCharity::Address.new(@result).build_response,
         contactPoint: FindThatCharity::Contact.new(@result).build_response

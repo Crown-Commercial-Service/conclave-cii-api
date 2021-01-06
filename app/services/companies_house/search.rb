@@ -11,7 +11,7 @@ module CompaniesHouse
       conn = Faraday.new(url: ENV['COMPANIES_HOUSE_API_ENDPOINT'])
       conn.basic_auth("#{ENV['COMPANIES_HOUSE_API_TOKEN']}:", '')
       resp = conn.get("/company/#{@company_reg_number}")
-      
+
       if resp.status == 200
         @result = ActiveSupport::JSON.decode(resp.body)
         build_response

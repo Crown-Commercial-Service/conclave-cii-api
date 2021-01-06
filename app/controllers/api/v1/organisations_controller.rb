@@ -6,7 +6,7 @@ module Api
       before_action :validate_params
 
       def search_org
-        search_api = SearchApi.new(params[:orginasation_id], params[:scheme_id])
+        search_api = SearchApi.new(params[:organisation_id], params[:scheme_id])
         search_api.call
         if search_api.blank?
           render json: [], status: :not_found

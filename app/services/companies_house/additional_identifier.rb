@@ -1,5 +1,5 @@
 module CompaniesHouse
-  class AdditionalIndentifier
+  class AdditionalIdentifier
     def initialize(company_number)
       super()
       @company_number = company_number
@@ -7,9 +7,11 @@ module CompaniesHouse
     end
 
     def build_response
-      @search_result = @company_number.present? ? compnaies_house_api : ''
-      return if @search_result.include?('name')
+      @search_result = @company_number.present? ? companies_house_api : false
+      response_payload if @search_result
+    end
 
+    def response_payload
       {
         'scheme': 'GB-COH',
         'id': company_number,
@@ -36,7 +38,7 @@ module CompaniesHouse
       api_param.present? ? api_param : ''
     end
 
-    def compnaies_house_api
+    def companies_house_api
       company_api = CompaniesHouse::Search.new(@company_number)
       company_api.fetch_results
     end

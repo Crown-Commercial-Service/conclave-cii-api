@@ -32,7 +32,6 @@
 /config/master.key
 tmp/pids/.keep
 .env.local
-.env.test
 .vscode/settings.json
 config/credentials.yml.enc
 # Ignore test coverage files

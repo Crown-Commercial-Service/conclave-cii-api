@@ -2,7 +2,7 @@ module Api
   module V1
     class IdentitiesSchemesOrganisationsController < ActionController::API
       def organisations
-        @reg_number =  params[:orginasation_id]
+        @reg_number =  params[:organisation_id]
         @scheme_id  =  params[:scheme_id]
         @result = []
 

@@ -7,7 +7,7 @@ module Authorize
     end
 
     def client_keys
-      ENV['CLIENT_TOKEN'].split(' ')
+      ENV['CLIENT_TOKEN'].split
     end
 
     def api_key_to_string

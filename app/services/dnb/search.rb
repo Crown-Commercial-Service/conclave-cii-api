@@ -34,12 +34,14 @@ module Dnb
       {
         name: name,
         Identifier: Dnb::Indentifier.new(@result).build_response,
-        additionalIdentifiers: [
-          CompaniesHouse::AdditionalIndentifier.new(@result['organization']['registrationNumbers'][0]['registrationNumber']).build_response
-        ],
+        additionalIdentifiers: Dnb::AdditionalIdentifier.new(company_number).build_response,
         address: Dnb::Address.new(@result).build_response,
         contactPoint: Dnb::Contact.new(@result).build_response
       }
+    end
+
+    def company_number
+      @result['organization']['registrationNumbers'][0]['registrationNumber']
     end
 
     def name
