@@ -12,11 +12,11 @@ module CompaniesHouse
       conn.basic_auth("#{ENV['COMPANIES_HOUSE_API_TOKEN']}:", '')
       resp = conn.get("/company/#{@company_reg_number}")
 
-      if resp.status != 200
-        false
-      else
+      if resp.status == 200
         @result = ActiveSupport::JSON.decode(resp.body)
         build_response
+      else
+        false
       end
     end
 

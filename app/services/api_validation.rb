@@ -3,7 +3,7 @@ class ApiValidation
 
   attr_reader :data
 
-  validates_presence_of :scheme_id, :orginasation_id, presence: true
+  validates_presence_of :scheme_id, :organisation_id, presence: true
   validate :scheme_id_exists
 
   def initialize(data)
