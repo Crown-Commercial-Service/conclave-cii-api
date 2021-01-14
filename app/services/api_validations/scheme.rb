@@ -2,8 +2,6 @@ module ApiValidations
   class Scheme
     include ActiveModel::Validations
 
-    attr_reader :data
-
     validates_presence_of :scheme, :id, presence: true
     validates :id, numericality: true
     validate :scheme_id_exists
@@ -14,21 +12,21 @@ module ApiValidations
     end
 
     def read_attribute_for_validation(key)
-      data[key]
+      @data[key]
     end
 
     def scheme_id_exists
-      return unless data[:scheme]
+      return unless @data[:scheme]
 
-      scheme = SchemeRegister.find_by(scheme_register_code: data[:scheme].to_s)
+      scheme = SchemeRegister.find_by(scheme_register_code: @data[:scheme].to_s)
       errors.add(:scheme, 'No such scheme registered') if scheme.blank?
     end
 
     def organisation_exists
-      return unless data[:id]
+      return unless @data[:id]
 
-      scheme = OrganisationSchemeIdentifier.find_by(scheme_org_reg_number: data[:id].to_s)
-      errors.add(:id, "Id already exists #{data[:id]}") if scheme.present?
+      scheme = OrganisationSchemeIdentifier.find_by(scheme_org_reg_number: @data[:id].to_s)
+      errors.add(:id, "Id already exists #{@data[:id]}") if scheme.present?
     end
   end
 end
