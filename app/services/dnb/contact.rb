@@ -11,7 +11,7 @@ module Dnb
         'email': '',
         'telephone': '',
         'faxNumber': '',
-        'url': ''
+        'uri': ''
       }
     end
   end

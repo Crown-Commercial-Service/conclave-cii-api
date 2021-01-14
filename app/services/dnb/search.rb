@@ -41,11 +41,19 @@ module Dnb
     end
 
     def company_number
-      @result['organization']['registrationNumbers'][0]['registrationNumber']
+      exists_or_null(@result['organization']['registrationNumbers'][0]['registrationNumber'])
     end
 
     def name
       @result['organization']['primaryName']
+    end
+
+    private
+
+    def exists_or_null(api_param)
+      api_param.present? ? api_param : ''
+    rescue StandardError => e
+      ApiLogging::Logger.warning(e)
     end
   end
 end

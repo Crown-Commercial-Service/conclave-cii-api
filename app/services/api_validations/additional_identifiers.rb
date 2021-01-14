@@ -1,5 +1,5 @@
 module ApiValidations
-  class Scheme
+  class AdditionalIdentifiers
     include ActiveModel::Validations
 
     attr_reader :data
@@ -19,7 +19,6 @@ module ApiValidations
 
     def scheme_id_exists
       return unless data[:scheme]
-
       scheme = SchemeRegister.find_by(scheme_register_code: "#{data[:scheme].to_s}")
       errors.add(:scheme, 'No such scheme registered') if scheme.blank?
     end
