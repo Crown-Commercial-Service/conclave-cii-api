@@ -5,4 +5,3 @@ module Common
     end
   end
 end
-

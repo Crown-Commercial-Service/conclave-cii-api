@@ -7,12 +7,12 @@ RSpec.describe Api::V1::OrganisationsController, type: :controller do
 
   describe 'GET API calls search_organisation' do
     it 'return companies house api response' do
-      get :search_organisation, params: { scheme_id: 'GB-COH', organisation_id: '125656234' }
+      get :search_organisation, params: { scheme: 'GB-COH', id: '125656234' }
       expect(response.status).to eq(200)
     end
 
     it 'return D and B api response' do
-      get :search_organisation, params: { scheme_id: 'US-DUN', organisation_id: '500dsdasdsad' }
+      get :search_organisation, params: { scheme: 'US-DUN', id: '500191747' }
       expect(response.status).to eq(200)
     end
   end

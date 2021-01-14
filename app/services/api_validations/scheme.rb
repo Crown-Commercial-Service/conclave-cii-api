@@ -20,14 +20,15 @@ module ApiValidations
     def scheme_id_exists
       return unless data[:scheme]
 
-      scheme = SchemeRegister.find_by(scheme_register_code: "#{data[:scheme].to_s}")
+      scheme = SchemeRegister.find_by(scheme_register_code: data[:scheme].to_s)
       errors.add(:scheme, 'No such scheme registered') if scheme.blank?
     end
 
     def organisation_exists
       return unless data[:id]
-      scheme = OrganisationSchemeIdentifier.find_by(scheme_org_reg_number: "#{data[:id]}")
-      errors.add(:id, "Id already exists #{data[:id]}") unless scheme.blank?
+
+      scheme = OrganisationSchemeIdentifier.find_by(scheme_org_reg_number: data[:id].to_s)
+      errors.add(:id, "Id already exists #{data[:id]}") if scheme.present?
     end
   end
 end

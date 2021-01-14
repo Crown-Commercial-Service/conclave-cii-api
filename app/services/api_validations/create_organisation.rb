@@ -17,7 +17,7 @@ module ApiValidations
     end
 
     def additional_identifiers_exists
-      validate_additional_identifiers unless data[:additional_identifiers].blank?
+      validate_additional_identifiers if data[:additional_identifiers].present?
     end
 
     def validate_additional_identifiers

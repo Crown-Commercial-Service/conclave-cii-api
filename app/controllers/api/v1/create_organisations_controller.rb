@@ -4,16 +4,16 @@ module Api
       include Authorize::Token
       before_action :validate_api_key
       before_action :validate_params
-      
+
       attr_accessor :ccs_org_id
 
       def index
         scheme_result = primary_organisation
-        additional_identifier = additional_organisation
+        additional_organisation
         if scheme_result.blank?
           render json: [], status: :not_found
         else
-          render json: [{"ccs_org_id": scheme_result }], status: :created
+          render json: [{ "ccs_org_id": scheme_result }], status: :created
         end
       end
 
@@ -40,7 +40,7 @@ module Api
       end
 
       def additional_organisation
-        params['additional_identifiers'].each do | user_params |
+        params['additional_identifiers'].each do |user_params|
           add_additional_organisation(user_params)
         end
       end
