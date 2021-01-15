@@ -36,8 +36,6 @@ gem 'olive_branch'
 gem 'flog'
 gem 'vault'
 gem 'rack-cors'
-gem 'apipie-rails'
-gem 'dry-validation', '~> 1.6'
 
 group :development, :test do
   gem 'listen', '~> 3.2'
