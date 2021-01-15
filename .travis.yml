@@ -9,10 +9,10 @@ deploy:
   username: $deploy_username
   password: $deploy_password
   organization: $deploy_org_name
-  space: $deploy_development_space_type
+  space: $deploy_testing_space_type
   on:
     repo: Crown-Commercial-Service/conclave-cii-api
-    branch: develop
+    branch: staging
 env:
   global:
     - RAILS_ENV=test

@@ -1,6 +1,6 @@
 ---
 applications:
-- name: conclave-cii-dev
+- name: conclave-cii-testing
   memory: 1000M
   buildpacks:
   - ruby_buildpack
@@ -8,5 +8,6 @@ applications:
   random-route: true
   services:
     - conclave-cii-pg-service
+    - vault-service-broker
   env:
-    SERVER_ENV_NAME: development
+    SERVER_ENV_NAME: testing
