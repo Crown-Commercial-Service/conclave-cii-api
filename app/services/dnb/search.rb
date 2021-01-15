@@ -33,7 +33,7 @@ module Dnb
     def build_response
       {
         name: name,
-        Identifier: Dnb::Indentifier.new(@result).build_response,
+        identifier: Dnb::Indentifier.new(@result).build_response,
         additionalIdentifiers: Dnb::AdditionalIdentifier.new(company_number).build_response,
         address: Dnb::Address.new(@result).build_response,
         contactPoint: Dnb::Contact.new(@result).build_response

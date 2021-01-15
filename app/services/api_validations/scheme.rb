@@ -3,7 +3,6 @@ module ApiValidations
     include ActiveModel::Validations
 
     validates_presence_of :scheme, :id, presence: true
-    validates :id, numericality: true
     validate :scheme_id_exists
     validate :organisation_exists
 

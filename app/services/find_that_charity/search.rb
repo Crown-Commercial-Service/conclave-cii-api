@@ -25,7 +25,7 @@ module FindThatCharity
     def build_response
       {
         name: name,
-        Identifier: FindThatCharity::Identifier.new(@scheme_id, @result).build_response,
+        identifier: FindThatCharity::Identifier.new(@scheme_id, @result).build_response,
         additionalIdentifiers: [
           CompaniesHouse::AdditionalIdentifier.new(@result['companyNumber']).build_response
         ],
