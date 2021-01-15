@@ -1,0 +1,2 @@
+class OrganisationSchemeIdentifier < ApplicationRecord
+end
