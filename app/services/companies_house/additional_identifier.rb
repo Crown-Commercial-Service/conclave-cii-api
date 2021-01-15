@@ -29,7 +29,7 @@ module CompaniesHouse
     end
 
     def uri
-      exists_or_null(@search_result[:Identifier][:uri])
+      exists_or_null(@search_result[:identifier][:uri])
     end
 
     private

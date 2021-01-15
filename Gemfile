@@ -35,6 +35,9 @@ gem 'olive_branch'
 # test code complexity
 gem 'flog'
 gem 'vault'
+gem 'rack-cors'
+gem 'apipie-rails'
+gem 'dry-validation', '~> 1.6'
 
 group :development, :test do
   gem 'listen', '~> 3.2'

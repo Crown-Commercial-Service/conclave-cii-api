@@ -12,7 +12,7 @@ module CompaniesHouse
         'email': '',
         'telephone': '',
         'faxNumber': '',
-        'url': ''
+        'uri': ''
       }
     end
   end

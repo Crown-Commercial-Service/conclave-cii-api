@@ -11,7 +11,7 @@ module FindThatCharity
         'email': email,
         'telephone': telephone,
         'faxNumber': '',
-        'url': url
+        'uri': ''
       }
     end
 
@@ -21,10 +21,6 @@ module FindThatCharity
 
     def telephone
       exists_or_null(@result['telephone'])
-    end
-
-    def url
-      exists_or_null(@result['url'])
     end
 
     private

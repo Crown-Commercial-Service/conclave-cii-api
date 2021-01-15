@@ -132,7 +132,7 @@ RSpec.configure do |config|
       )
       .to_return(status: 200, body: dnb_token_response, headers: {})
 
-    stub_request(:get, 'https://plus.dnb.com/v1/data/duns/500dsdasdsad?productId=cmptcs&versionId=v1')
+    stub_request(:get, 'https://plus.dnb.com/v1/data/duns/500191747?productId=cmptcs&versionId=v1')
       .with(
         headers: {
           'Accept' => '*/*',
