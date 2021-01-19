@@ -16,7 +16,7 @@ module FindThatCharity
     end
 
     def id
-      exists_or_null(@result['id'])
+      exists_or_null(@result['charityNumber'])
     end
 
     def legal_name

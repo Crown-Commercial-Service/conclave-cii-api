@@ -9,8 +9,9 @@ module Api
 
       def index
         result = search_scheme_api
+
         primary_organisation if result.present?
-        additional_identifiers if result.present?
+        additional_identifiers if result[:additionalIdentifiers].any?
         if result.blank?
           render json: [], status: :not_found
         else
