@@ -10,19 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_14_173626) do
+ActiveRecord::Schema.define(version: 2021_01_06_094639) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
 
   create_table "organisation_scheme_identifiers", id: :serial, force: :cascade do |t|
-    t.integer "ccs_org_id"
+    t.bigint "ccs_org_id"
     t.string "scheme_code", limit: 20
     t.string "scheme_org_reg_number"
     t.boolean "primary_scheme"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["scheme_org_reg_number"], name: "index_organisation_scheme_identifiers_on_scheme_org_reg_number", unique: true
   end
 
   create_table "scheme_registers", id: :serial, force: :cascade do |t|

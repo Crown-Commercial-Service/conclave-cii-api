@@ -1,7 +1,7 @@
 module Common
   class GenerateId
     def self.ccs_org_id
-      (Time.now.to_f * 1000).to_i.to_s.slice(0..8)
+      "#{rand(100000)}#{(Time.now.to_f.round(3) * 1000).to_i}"
     end
   end
 end

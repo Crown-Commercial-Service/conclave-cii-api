@@ -11,10 +11,10 @@ RSpec.describe Api::V1::SchemesController, type: :controller do
       expect(response.status).to eq(200)
     end
 
-    it 'Has scheme_register_code' do
+    it 'Has scheme' do
       get :schemes
       result = JSON.parse(response.body)
-      expect(result[0]).to include('scheme_register_code')
+      expect(result[0]).to include('scheme')
     end
 
     it 'Has scheme_name' do
