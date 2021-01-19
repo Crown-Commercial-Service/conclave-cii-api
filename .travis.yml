@@ -12,7 +12,7 @@ deploy:
   space: $deploy_testing_space_type
   on:
     repo: Crown-Commercial-Service/conclave-cii-api
-    branch: develop
+    branch: staging
 env:
   global:
     - RAILS_ENV=test
