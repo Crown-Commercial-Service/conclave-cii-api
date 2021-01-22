@@ -15,12 +15,20 @@ module Api
         end
 
         def search_org
-          scheme = OrganisationSchemeIdentifier.select(:scheme_org_reg_number, :ccs_org_id).where(scheme_org_reg_number: params[:id].to_s).as_json(except: :id)
+          return if find_org_ccs_id.blank?
+
+          scheme = OrganisationSchemeIdentifier.select(:scheme_org_reg_number, :ccs_org_id, :primary_scheme, 'scheme_code AS scheme').where(ccs_org_id: find_org_ccs_id.ccs_org_id).as_json(except: :id)
           if scheme.present?
             render json: scheme, status: :ok
           else
             render json: '', status: :not_found
           end
+        end
+
+        private
+
+        def find_org_ccs_id
+          OrganisationSchemeIdentifier.find_by(scheme_org_reg_number: params[:id].to_s)
         end
       end
     end
