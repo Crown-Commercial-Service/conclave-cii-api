@@ -36,3 +36,5 @@ tmp/pids/.keep
 config/credentials.yml.enc
 # Ignore test coverage files
 coverage/*
+
+/vendor/bundle/

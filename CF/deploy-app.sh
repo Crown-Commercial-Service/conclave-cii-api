@@ -117,8 +117,9 @@ cd "$SCRIPT_PATH" || exit
 cf login -u "$CF_USER" -p "$CF_PASS" -o "$CF_ORG" -a "$CF_API_ENDPOINT" -s "$CF_SPACE"
 cf target -o "$CF_ORG" -s "$CF_SPACE"
 
-# generate manifest
+# generate manifest and add
 sed "s/CF_SPACE/$CF_SPACE/g" manifest-template.yml | sed "s/SERVER_ENV/$SERVER_ENV/g" > "$CF_SPACE.manifest.yml"
+git add $CF_SPACE.manifest.yml
 
 # push API
 cd .. || exit
