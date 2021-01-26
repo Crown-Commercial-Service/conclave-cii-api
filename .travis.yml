@@ -25,14 +25,15 @@ install: # script:
   - bundle exec rake
   - bundle exec rubocop
 deploy:
-  edge: true
   - provider: script
     script: bash CF/deploy-app.sh -u $CF_USER -o $CF_ORG -p $CF_PASS -s dev
     on:
-      repo: Crown-Commercial-Service/conclave-cii-api
       branch: develop
   - provider: script
     script: bash CF/deploy-app.sh -u $CF_USER -o $CF_ORG -p $CF_PASS -s testing
     on:
-      repo: Crown-Commercial-Service/conclave-cii-api
       branch: staging
+  - provider: script
+    script: bash CF/deploy-app.sh -u $CF_USER -o $CF_ORG -p $CF_PASS -s sandbox
+    on:
+      branch: sandbox

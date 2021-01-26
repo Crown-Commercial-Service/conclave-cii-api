@@ -22,7 +22,7 @@ then
  usage
 fi
 
-if [[ "$CF_SPACE" == "dev" ]]
+if [[ "$CF_SPACE" == "dev" || "$CF_SPACE" == "sandbox" ]]
 then
   SERVER_ENV="development"
 fi
@@ -99,6 +99,16 @@ then
       exit 1
     fi
   fi
+
+  if [[ "$CF_SPACE" == "sandbox" ]]
+  then
+    if [[ ! "$BRANCH" == "sandbox" ]]
+    then
+      echo "We only deploy the 'sandbox' branch to $CF_SPACE"
+      echo "if you want to deploy $BRANCH to $CF_SPACE use -f"
+      exit 1
+    fi
+  fi
 fi
 
 cd "$SCRIPT_PATH" || exit
@@ -114,4 +124,5 @@ sed "s/CF_SPACE/$CF_SPACE/g" manifest-template.yml | sed "s/SERVER_ENV/$SERVER_E
 cd .. || exit
 
 # CF Push
+cf create-app conclave-cii-"$CF_SPACE"
 cf push conclave-cii-"$CF_SPACE" -f CF/"$CF_SPACE".manifest.yml
