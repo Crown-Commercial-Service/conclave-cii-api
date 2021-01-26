@@ -20,13 +20,14 @@ addons:
 
 sudo: true
 
-before_install:
-  - gem install bundler
+before_script:
+  - sudo apt-get -qq update
+  - sudo apt-get install -y postgresql-11-postgis-2.5
+  - psql -U postgres -c 'create database cii_test'
+  - psql -U postgres -d cii_test -c 'create extension postgis'
+
 
 install:
-  - bundle install
-
-before_script:
   - bundle exec rake db:setup
   - bundle exec rake
   - bundle exec rubocop
@@ -36,9 +37,6 @@ before_deploy:
   - wget -q -O - https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key | sudo apt-key add -
   - echo "deb https://packages.cloudfoundry.org/debian stable main" | sudo tee /etc/apt/sources.list.d/cloudfoundry-cli.list
   - sudo apt-get -qq update
-  - sudo apt-get install -y postgresql-11-postgis-2.5
-  - psql -U postgres -c 'create database cii_test'
-  - psql -U postgres -d cii_test -c 'create extension postgis'
   - sudo apt-get install cf-cli
 
 deploy:
