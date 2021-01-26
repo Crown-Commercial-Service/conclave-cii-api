@@ -10,6 +10,7 @@ deploy:
   password: $deploy_password
   organization: $deploy_org_name
   space: $deploy_development_space_type
+  deployment_strategy: rolling
   on:
     repo: Crown-Commercial-Service/conclave-cii-api
     branch: develop
