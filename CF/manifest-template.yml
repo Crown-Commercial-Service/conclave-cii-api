@@ -12,4 +12,4 @@ applications:
   env:
     SERVER_ENV_NAME: SERVER_ENV # (development/testing)
 
-##testing
+##test
