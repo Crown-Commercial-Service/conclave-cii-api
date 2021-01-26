@@ -27,7 +27,7 @@ before_script:
   - psql -U postgres -d cii_test -c 'create extension postgis'
 
 
-install:
+script:
   - bundle exec rake db:setup
   - bundle exec rake
   - bundle exec rubocop
