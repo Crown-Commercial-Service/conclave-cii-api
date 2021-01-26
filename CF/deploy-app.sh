@@ -119,7 +119,6 @@ cf target -o "$CF_ORG" -s "$CF_SPACE"
 
 # generate manifest and add
 sed "s/CF_SPACE/$CF_SPACE/g" manifest-template.yml | sed "s/SERVER_ENV/$SERVER_ENV/g" > "$CF_SPACE.manifest.yml"
-git add $CF_SPACE.manifest.yml
 
 # push API
 cd .. || exit

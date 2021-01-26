@@ -37,4 +37,5 @@ config/credentials.yml.enc
 # Ignore test coverage files
 coverage/*
 
-/vendor/bundle/
+vendor/bundle/
+CF/*.manifest.yml
