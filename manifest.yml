@@ -1,6 +1,6 @@
 ---
 applications:
-- name: conclave-cii-dev
+- name: conclave-cii-dev-two
   memory: 1000M
   buildpacks:
     - ruby_buildpack
