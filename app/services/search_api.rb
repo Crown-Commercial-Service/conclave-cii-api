@@ -9,11 +9,11 @@ class SearchApi
 
   def call
     case @scheme_id
-    when 'GB-COH'
+    when Common::AdditionalIdentifier::SCHEME_COMPANIES_HOUSE
       @result = get_companies_house(@organisation_id)
-    when 'GB-CHC', 'GB-NIC', 'GB-SC'
+    when Common::AdditionalIdentifier::SCHEME_ENG_WALES_CHARITY, Common::AdditionalIdentifier::SCHEME_NORTHEN_IRELAND_CHARITY, Common::AdditionalIdentifier::SCHEME_SCOTISH_CHARITY
       @result =  get_charity(@organisation_id, @scheme_id)
-    when 'US-DUN'
+    when Common::AdditionalIdentifier::SCHEME_DANDB
       @result =  get_duns(@organisation_id)
     end
 

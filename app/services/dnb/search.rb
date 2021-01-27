@@ -3,6 +3,7 @@ module Dnb
     def initialize(duns_number)
       super()
       @duns_number = duns_number
+      @company_number = nil
       @error = nil
       @result = []
     end
@@ -34,18 +35,19 @@ module Dnb
       {
         name: name,
         identifier: Dnb::Indentifier.new(@result).build_response,
-        additionalIdentifiers: Dnb::AdditionalIdentifier.new(company_number).build_response,
+        additionalIdentifiers: registration_numbers,
         address: Dnb::Address.new(@result).build_response,
         contactPoint: Dnb::Contact.new(@result).build_response
       }
     end
 
-    def company_number
-      exists_or_null(@result['organization']['registrationNumbers'][0]['registrationNumber'])
+    def registration_numbers
+      [] if exists_or_null(@result['organization']['registrationNumbers']).blank?
+      Dnb::AdditionalIdentifier.new(@result['organization']['registrationNumbers']).build_response
     end
 
     def name
-      @result['organization']['primaryName']
+      exists_or_null(@result['organization']['primaryName'])
     end
 
     private

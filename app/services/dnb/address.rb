@@ -16,7 +16,11 @@ module Dnb
     end
 
     def street_address
-      "#{@result['organization']['primaryAddress']['streetAddress']['line1']} #{@result['organization']['primaryAddress']['streetAddress']['line2']}"
+      "#{exists_or_null(@result['organization']['primaryAddress']['streetAddress']['line1'])}#{street_address_two}"
+    end
+
+    def street_address_two
+      ", #{exists_or_null(@result['organization']['primaryAddress']['streetAddress']['line2'])}" if exists_or_null(@result['organization']['primaryAddress']['streetAddress']['line2']).present?
     end
 
     def locality
