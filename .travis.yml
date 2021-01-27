@@ -12,7 +12,7 @@ deploy:
   space: $deploy_development_space_type
   on:
     repo: Crown-Commercial-Service/conclave-cii-api
-    branch: develop
+    branch: fix-build-packto-ruby2-7-2
 env:
   global:
     - RAILS_ENV=test

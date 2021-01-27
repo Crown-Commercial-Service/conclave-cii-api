@@ -3,7 +3,7 @@ applications:
 - name: conclave-cii-dev-two
   memory: 1000M
   buildpacks:
-    - ruby_buildpack
+    - https://github.com/cloudfoundry/ruby-buildpack.git
   instances: 1
   random-route: true
   services:
