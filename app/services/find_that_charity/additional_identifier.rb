@@ -1,7 +1,5 @@
 module FindThatCharity
   class AdditionalIdentifier
-    before_action :validate_params
-
     def initialize(charity_number, scheme)
       super()
       @charity_number = charity_number
@@ -48,12 +46,6 @@ module FindThatCharity
     def find_that_charity
       charity_api = FindThatCharity::Search.new(@charity_number, @scheme)
       charity_api.fetch_results
-    end
-
-    def validate_params
-      validate_params = [@charity_number, @scheme]
-      validate = ApiValidations::Scheme.new(validate_params)
-      render json: validate.errors, status: :bad_request unless validate.valid?
     end
   end
 end
