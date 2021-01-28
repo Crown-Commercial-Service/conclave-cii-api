@@ -24,31 +24,31 @@ fi
 
 if [[ "$CF_SPACE" == "development" ]]
 then
-  SERVER_ENV="development"
+  VAULT_ENV="development"
   SET_MEMORY="1000M"
 fi
 
 if [[ "$CF_SPACE" == "testing" ]]
 then
-  SERVER_ENV="testing"
+  VAULT_ENV="testing"
   SET_MEMORY="1000M"
 fi
 
 if [[ "$CF_SPACE" == "integration" ]]
 then
-  SERVER_ENV="Integration"
+  VAULT_ENV="Integration"
   SET_MEMORY="1000M"
 fi
 
 if [[ "$CF_SPACE" == "preproduction" || "$CF_SPACE" == "production" ]]
 then
-    SERVER_ENV="testing"
+    VAULT_ENV="testing"
     SET_MEMORY="1000M"
 fi
 
 if [[ "$CF_SPACE" == "sandbox" ]]
 then
-    SERVER_ENV="testingABC"
+    VAULT_ENV="testingABC"
     SET_MEMORY="1000M"
 fi
 
@@ -160,10 +160,8 @@ cf target -o "$CF_ORG" -s "$CF_SPACE"
 
 cd .. || exit
 
-ls
-
 # generate manifest and add
-sed "s/CF_SPACE/$CF_SPACE/g" CF/manifest-template.yml | sed "s/SERVER_ENV/$SERVER_ENV/g" | sed "s/SET_MEMORY/$SET_MEMORY/g" > "manifest.yml"
+sed "s/CF_SPACE/$CF_SPACE/g" CF/manifest-template.yml | sed "s/VAULT_ENV/$VAULT_ENV/g" | sed "s/SET_MEMORY/$SET_MEMORY/g" > "manifest.yml"
 
 cat manifest.yml
 

@@ -7,4 +7,4 @@ applications:
   instances: 1
   random-route: true
   env:
-    SERVER_ENV_NAME: SERVER_ENV 
+    SERVER_ENV_NAME: VAULT_ENV 
