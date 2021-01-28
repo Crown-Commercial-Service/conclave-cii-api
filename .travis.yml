@@ -15,6 +15,7 @@ services:
 addons:
   postgresql: '11'
 sudo: true
+install: bundle install --jobs=3 --retry=3
 before_script:
   - sudo apt-get -qq update
   - sudo apt-get install -y postgresql-11-postgis-2.5
