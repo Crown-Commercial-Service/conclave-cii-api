@@ -11,7 +11,7 @@ module Dnb
     def fetch_token
       conn = Faraday.new(url: ENV['DNB_API_ENDPOINT'])
       conn.basic_auth(ENV['DNB_USERNAME'], ENV['DNB_PASSWORD'])
-      params = { 'grant_type': 'client_credentials' }.to_json
+      params = { grant_type: 'client_credentials' }.to_json
       resp = conn.post('/v2/token', params, { 'Content-Type' => 'application/json' })
       resp.body
     end
@@ -19,7 +19,7 @@ module Dnb
     def fetch_results
       token = JSON.parse(fetch_token)
       conn = Faraday.new(url: ENV['DNB_API_ENDPOINT'])
-      params = { 'productId': 'cmptcs', 'versionId': 'v1' }
+      params = { productId: 'cmptcs', versionId: 'v1' }
       conn.authorization :Bearer, token['access_token']
       resp = conn.get("/v1/data/duns/#{@duns_number}", params)
       @result = ActiveSupport::JSON.decode(resp.body)

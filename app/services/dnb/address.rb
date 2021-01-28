@@ -7,11 +7,11 @@ module Dnb
 
     def build_response
       {
-        "streetAddress": street_address,
-        "locality": locality,
-        "region": '',
-        "postalCode": postal_code,
-        "countryName": country_name
+        streetAddress: street_address,
+        locality: locality,
+        region: '',
+        postalCode: postal_code,
+        countryName: country_name
       }
     end
 

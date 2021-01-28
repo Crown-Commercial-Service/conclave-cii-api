@@ -7,11 +7,11 @@ module FindThatCharity
 
     def build_response
       {
-        'name': '',
-        'email': email,
-        'telephone': telephone,
-        'faxNumber': '',
-        'uri': ''
+        name: '',
+        email: email,
+        telephone: telephone,
+        faxNumber: '',
+        uri: ''
       }
     end
 

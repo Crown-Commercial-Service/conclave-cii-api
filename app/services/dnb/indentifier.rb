@@ -7,10 +7,10 @@ module Dnb
 
     def build_response
       {
-        'scheme': 'US-DUN',
-        'id': duns_number,
-        'legalName': legal_name,
-        'uri': ''
+        scheme: 'US-DUN',
+        id: duns_number,
+        legalName: legal_name,
+        uri: ''
       }
     end
 

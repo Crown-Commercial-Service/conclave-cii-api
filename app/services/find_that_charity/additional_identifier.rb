@@ -14,10 +14,10 @@ module FindThatCharity
 
     def response_payload
       {
-        'scheme': scheme_code,
-        'id': charity_number,
-        'legalName': legal_name,
-        'uri': uri,
+        scheme: scheme_code,
+        id: charity_number,
+        legalName: legal_name,
+        uri: uri,
       }
     end
 

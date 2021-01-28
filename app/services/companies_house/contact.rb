@@ -8,11 +8,11 @@ module CompaniesHouse
 
     def build_response
       {
-        'name': '',
-        'email': '',
-        'telephone': '',
-        'faxNumber': '',
-        'uri': ''
+        name: '',
+        email: '',
+        telephone: '',
+        faxNumber: '',
+        uri: ''
       }
     end
   end
