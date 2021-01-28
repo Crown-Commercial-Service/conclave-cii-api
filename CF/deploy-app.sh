@@ -22,6 +22,9 @@ then
  usage
 fi
 
+VAULT_ENV="testingABC"
+SET_MEMORY="1000M"
+
 if [[ "$CF_SPACE" == "development" ]]
 then
   VAULT_ENV="development"
