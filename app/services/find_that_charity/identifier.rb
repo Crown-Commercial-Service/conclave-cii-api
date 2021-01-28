@@ -8,10 +8,10 @@ module FindThatCharity
 
     def build_response
       {
-        'scheme': @scheme_id,
-        'id': id,
-        'legalName': legal_name,
-        'uri': uri
+        scheme: @scheme_id,
+        id: id,
+        legalName: legal_name,
+        uri: uri
       }
     end
 

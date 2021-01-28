@@ -7,10 +7,10 @@ module CompaniesHouse
 
     def build_response
       {
-        "scheme": 'GB-COH',
-        "id": id,
-        "legalName": legal_name,
-        "uri": ''
+        scheme: 'GB-COH',
+        id: id,
+        legalName: legal_name,
+        uri: ''
       }
     end
 
