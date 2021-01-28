@@ -13,10 +13,10 @@ module CompaniesHouse
 
     def response_payload
       {
-        'scheme': 'GB-COH',
-        'id': company_number,
-        'legalName': legal_name,
-        'uri': uri,
+        scheme: 'GB-COH',
+        id: company_number,
+        legalName: legal_name,
+        uri: uri,
       }
     end
 
