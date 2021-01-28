@@ -22,8 +22,7 @@ then
  usage
 fi
 
-VAULT_ENV="testingABC"
-SET_MEMORY="1000M"
+echo $CF_SPACE
 
 if [[ "$CF_SPACE" == "development" ]]
 then
@@ -54,6 +53,9 @@ then
     VAULT_ENV="testingABC"
     SET_MEMORY="1000M"
 fi
+
+echo $VAULT_ENV
+echo $SET_MEMORY
 
 SCRIPT_PATH="$( cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 
