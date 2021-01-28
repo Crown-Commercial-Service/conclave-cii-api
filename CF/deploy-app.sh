@@ -22,21 +22,33 @@ then
  usage
 fi
 
-if [[ "$CF_SPACE" == "development" || "$CF_SPACE" == "sandbox" ]]
+if [[ "$CF_SPACE" == "development" ]]
 then
   SERVER_ENV="development"
   SET_MEMORY="1000M"
 fi
 
-if [[ "$CF_SPACE" == "testing" || "$CF_SPACE" == "integration" ]]
+if [[ "$CF_SPACE" == "testing" ]]
 then
   SERVER_ENV="testing"
+  SET_MEMORY="1000M"
+fi
+
+if [[ "$CF_SPACE" == "integration" ]]
+then
+  SERVER_ENV="Integration"
   SET_MEMORY="1000M"
 fi
 
 if [[ "$CF_SPACE" == "preproduction" || "$CF_SPACE" == "production" ]]
 then
     SERVER_ENV="testing"
+    SET_MEMORY="1000M"
+fi
+
+if [[ "$CF_SPACE" == "sandbox" ]]
+then
+    SERVER_ENV="testingABC"
     SET_MEMORY="1000M"
 fi
 
@@ -146,11 +158,10 @@ cd "$SCRIPT_PATH" || exit
 cf login -u "$CF_USER" -p "$CF_PASS" -o "$CF_ORG" -a "$CF_API_ENDPOINT" -s "$CF_SPACE"
 cf target -o "$CF_ORG" -s "$CF_SPACE"
 
-# generate manifest and add
-sed "s/CF_SPACE/$CF_SPACE/g" manifest-template.yml | sed "s/SERVER_ENV/$SERVER_ENV/g" | sed "s/SET_MEMORY/$SET_MEMORY/g" > "$CF_SPACE.manifest.yml"
-
-# push API
 cd .. || exit
 
+# generate manifest and add
+sed "s/CF_SPACE/$CF_SPACE/g" CF/manifest-template.yml | sed "s/SERVER_ENV/$SERVER_ENV/g" | sed "s/SET_MEMORY/$SET_MEMORY/g" > "manifest.yml"
+
 # CF Push
-cf push conclave-cii-"$CF_SPACE" -f CF/"$CF_SPACE".manifest.yml
+cf push conclave-cii-"$CF_SPACE"
