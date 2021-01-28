@@ -6,8 +6,5 @@ applications:
     - https://github.com/cloudfoundry/ruby-buildpack.git
   instances: 1
   random-route: true
-  services:
-    - conclave-cii-pg-service
-    - vault-service-broker
   env:
     SERVER_ENV_NAME: SERVER_ENV 
