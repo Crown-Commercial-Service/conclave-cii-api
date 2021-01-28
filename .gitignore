@@ -40,3 +40,4 @@ coverage/*
 # Ignore travis generated files, or files that are updated during the pipeline but dont need to be pushed to github/CF.
 vendor/bundle/
 CF/*.manifest.yml
+
