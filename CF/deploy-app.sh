@@ -90,7 +90,7 @@ then
 
   if [[ "$CF_SPACE" == "development" ]]
   then
-    if [[ ! "$BRANCH" == "develop" || ! "$BRANCH" == "fix-build-packto-ruby2-7-2" ]]
+    if [[ ! "$BRANCH" == "develop" ]]
     then
       echo "We only deploy the 'develop' branch to the $CF_SPACE cf space"
       echo "if you want to deploy $BRANCH to $CF_SPACE use -f"
