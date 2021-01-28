@@ -2,7 +2,12 @@ dist: bionic
 language: ruby
 rvm:
  — 2.7.2
-
+deploy:
+  edge: true
+  - provider: script
+    script: bash CF/deploy-app.sh -u $CF_USER -o $CF_ORG -p $CF_PASS -s development
+    on:
+      branch: develop
 env:
   matrix:
     - API_ROOT=$deploy_api_uri
@@ -40,27 +45,3 @@ before_deploy:
   - echo "deb https://packages.cloudfoundry.org/debian stable main" | sudo tee /etc/apt/sources.list.d/cloudfoundry-cli.list
   - sudo apt-get -qq update
   - sudo apt-get install cf-cli
-
-deploy:
-  edge: true
-  - provider: script
-    script: bash CF/deploy-app.sh -u $CF_USER -o $CF_ORG -p $CF_PASS -s development
-    on:
-      branch: develop
-  - provider: script
-    script: bash CF/deploy-app.sh -u $CF_USER -o $CF_ORG -p $CF_PASS -s testing
-    on:
-      branch: staging
-  - provider: script
-    script: bash CF/deploy-app.sh -u $CF_USER -o $CF_ORG -p $CF_PASS -s integration
-    on:
-      branch: integration
-  - provider: script
-    script: bash CF/deploy-app.sh -u $CF_USER -o $CF_ORG -p $CF_PASS -s preproduction
-    on:
-      branch: main
-  - provider: script
-    script: bash CF/deploy-app.sh -u $CF_USER -o $CF_ORG -p $CF_PASS -s production
-    on:
-      branch: main
-      
