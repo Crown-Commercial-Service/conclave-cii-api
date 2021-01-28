@@ -22,39 +22,6 @@ then
  usage
 fi
 
-XVAL="HEEEEEREEE CFSPACE - $CF_SPACE"
-echo $XVAL
-
-if [[ "$CF_SPACE" == "development" ]]
-then
-  VAULT_ENV="development"
-  SET_MEMORY="1000M"
-fi
-
-if [[ "$CF_SPACE" == "testing" ]]
-then
-  VAULT_ENV="testing"
-  SET_MEMORY="1000M"
-fi
-
-if [[ "$CF_SPACE" == "integration" ]]
-then
-  VAULT_ENV="Integration"
-  SET_MEMORY="1000M"
-fi
-
-if [[ "$CF_SPACE" == "preproduction" || "$CF_SPACE" == "production" ]]
-then
-    VAULT_ENV="testing"
-    SET_MEMORY="1000M"
-fi
-
-if [[ "$CF_SPACE" == "sandbox" ]]
-then
-    VAULT_ENV="testingABC"
-    SET_MEMORY="1000M"
-fi
-
 SCRIPT_PATH="$( cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 
 CF_API_ENDPOINT="https://api.london.cloud.service.gov.uk"
@@ -153,6 +120,39 @@ then
     fi
   fi
 
+fi
+
+XVAL="HEEEEEREEE CFSPACE - $CF_SPACE"
+echo $XVAL
+
+if [[ "$CF_SPACE" == "development" ]]
+then
+  VAULT_ENV="development"
+  SET_MEMORY="1000M"
+fi
+
+if [[ "$CF_SPACE" == "testing" ]]
+then
+  VAULT_ENV="testing"
+  SET_MEMORY="1000M"
+fi
+
+if [[ "$CF_SPACE" == "integration" ]]
+then
+  VAULT_ENV="Integration"
+  SET_MEMORY="1000M"
+fi
+
+if [[ "$CF_SPACE" == "preproduction" || "$CF_SPACE" == "production" ]]
+then
+    VAULT_ENV="testing"
+    SET_MEMORY="1000M"
+fi
+
+if [[ "$CF_SPACE" == "sandbox" ]]
+then
+    VAULT_ENV="testingABC"
+    SET_MEMORY="1000M"
 fi
 
 cd "$SCRIPT_PATH" || exit
