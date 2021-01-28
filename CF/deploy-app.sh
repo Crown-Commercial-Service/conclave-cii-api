@@ -160,8 +160,12 @@ cf target -o "$CF_ORG" -s "$CF_SPACE"
 
 cd .. || exit
 
+ls
+
 # generate manifest and add
 sed "s/CF_SPACE/$CF_SPACE/g" CF/manifest-template.yml | sed "s/SERVER_ENV/$SERVER_ENV/g" | sed "s/SET_MEMORY/$SET_MEMORY/g" > "manifest.yml"
+
+cat manifest.yml
 
 # CF Push
 cf push conclave-cii-"$CF_SPACE"
