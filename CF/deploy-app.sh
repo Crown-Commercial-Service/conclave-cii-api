@@ -123,7 +123,7 @@ then
 fi
 
 # Set environment variables to be fed into manifest.yml file, that is generated.
-SERVER_ENV="$CF_SPACE"
+VAULT_ENV="$CF_SPACE"
 SET_MEMORY="1000M"
 
 cd "$SCRIPT_PATH" || exit
@@ -133,7 +133,7 @@ cf login -u "$CF_USER" -p "$CF_PASS" -o "$CF_ORG" -a "$CF_API_ENDPOINT" -s "$CF_
 cf target -o "$CF_ORG" -s "$CF_SPACE"
 
 # generate manifest and add
-sed "s/CF_SPACE/$CF_SPACE/g" manifest-template.yml | sed "s/SERVER_ENV/$SERVER_ENV/g" | sed "s/SET_MEMORY/$SET_MEMORY/g" > "$CF_SPACE.manifest.yml"
+sed "s/CF_SPACE/$CF_SPACE/g" manifest-template.yml | sed "s/VAULT_ENV/$VAULT_ENV/g" | sed "s/SET_MEMORY/$SET_MEMORY/g" > "$CF_SPACE.manifest.yml"
 
 # push API
 cd .. || exit
