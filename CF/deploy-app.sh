@@ -123,29 +123,8 @@ then
 fi
 
 # Set environment variables to be fed into manifest.yml file, that is generated.
-if [[ "$CF_SPACE" == "development" || "$CF_SPACE" == "sandbox" ]]
-then
-  VAULT_ENV="development"
-  SET_MEMORY="1000M"
-fi
-
-if [[ "$CF_SPACE" == "testing" ]]
-then
-  VAULT_ENV="testing"
-  SET_MEMORY="1000M"
-fi
-
-if [[ "$CF_SPACE" == "integration" ]]
-then
-  SERVER_ENV="Integration"
-  SET_MEMORY="1000M"
-fi
-
-if [[ "$CF_SPACE" == "preproduction" || "$CF_SPACE" == "production" ]]
-then
-    SERVER_ENV="production"
-    SET_MEMORY="1000M"
-fi
+SERVER_ENV="$CF_SPACE"
+SET_MEMORY="1000M"
 
 cd "$SCRIPT_PATH" || exit
 
