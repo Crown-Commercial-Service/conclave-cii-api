@@ -22,24 +22,6 @@ then
  usage
 fi
 
-if [[ "$CF_SPACE" == "development" || "$CF_SPACE" == "sandbox" ]]
-then
-  SERVER_ENV="development"
-  SET_MEMORY="1000M"
-fi
-
-if [[ "$CF_SPACE" == "testing" || "$CF_SPACE" == "integration" ]]
-then
-  SERVER_ENV="testing"
-  SET_MEMORY="1000M"
-fi
-
-if [[ "$CF_SPACE" == "preproduction" || "$CF_SPACE" == "production" ]]
-then
-    SERVER_ENV="testing"
-    SET_MEMORY="1000M"
-fi
-
 SCRIPT_PATH="$( cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 
 CF_API_ENDPOINT="https://api.london.cloud.service.gov.uk"
@@ -139,6 +121,10 @@ then
   fi
 
 fi
+
+# Set environment variables to be fed into manifest.yml file, that is generated.
+SERVER_ENV="$CF_SPACE"
+SET_MEMORY="1000M"
 
 cd "$SCRIPT_PATH" || exit
 
