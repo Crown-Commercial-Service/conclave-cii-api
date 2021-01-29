@@ -11,3 +11,4 @@ applications:
     - vault-service-broker
   env:
     SERVER_ENV_NAME: VAULT_ENV
+    
