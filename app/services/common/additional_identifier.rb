@@ -1,0 +1,11 @@
+module Common
+  class AdditionalIdentifier
+    DANDB_COMPANY_NUMBER_CODE = 2541
+    DANDB_ENG_WALES_CHARITY_NUMBER_CODE = 33463
+    SCHEME_ENG_WALES_CHARITY = 'GB-CHC'.freeze
+    SCHEME_NORTHEN_IRELAND_CHARITY = 'GB-NIC'.freeze
+    SCHEME_SCOTISH_CHARITY = 'GB-SC'.freeze
+    SCHEME_COMPANIES_HOUSE = 'GB-COH'.freeze
+    SCHEME_DANDB = 'US-DUN'.freeze
+  end
+end

@@ -7,11 +7,11 @@ module FindThatCharity
 
     def build_response
       {
-        'streetAddress': street_address,
-        'locality': locality,
-        'region': region,
-        'postalCode': postal_code,
-        'countryName': 'UK' # Need to be verified and agreed but charity is not correct
+        streetAddress: street_address,
+        locality: locality,
+        region: region,
+        postalCode: postal_code,
+        countryName: country_name # Need to be verified and agreed but charity is not correct
       }
     end
 
@@ -29,6 +29,11 @@ module FindThatCharity
 
     def postal_code
       exists_or_null(@result['address']['postalCode'])
+    end
+
+    def country_name
+      country = exists_or_null(@result['address']['addressCountry'])
+      country.present? ? country : 'GB'
     end
 
     private

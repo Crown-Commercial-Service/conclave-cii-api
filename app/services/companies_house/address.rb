@@ -7,16 +7,20 @@ module CompaniesHouse
 
     def build_response
       {
-        "streetAddress": street_address,
-        "locality": locality,
-        "region": '',
-        "postalCode": postal_code,
-        "countryName": country_name
+        streetAddress: street_address,
+        locality: locality,
+        region: region,
+        postalCode: postal_code,
+        countryName: country_name
       }
     end
 
     def street_address
-      exists_or_null(@result['registered_office_address']['address_line_1'])
+      "#{exists_or_null(@result['registered_office_address']['address_line_1'])}#{street_address_two}"
+    end
+
+    def street_address_two
+      ", #{exists_or_null(@result['registered_office_address']['address_line_2'])}" if exists_or_null(@result['registered_office_address']['address_line_2']).present?
     end
 
     def locality
@@ -27,8 +31,13 @@ module CompaniesHouse
       exists_or_null(@result['registered_office_address']['postal_code'])
     end
 
+    def region
+      exists_or_null(@result['registered_office_address']['region'])
+    end
+
     def country_name
-      exists_or_null(@result['registered_office_address']['country'])
+      country = exists_or_null(@result['registered_office_address']['country'])
+      country.present? ? country : 'GB'
     end
 
     private

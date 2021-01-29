@@ -71,10 +71,10 @@ module Charitybase
 
     def indentifier
       {
-        'scheme': 'GB-CHC',
-        'id': @result['data']['CHC']['getCharities']['list']['id'],
-        'legalName': @result['data']['CHC']['getCharities']['list']['name'].select { |list| list['primary'] == true },
-        'uri': ''
+        scheme: 'GB-CHC',
+        id: @result['data']['CHC']['getCharities']['list']['id'],
+        legalName: @result['data']['CHC']['getCharities']['list']['name'].select { |list| list['primary'] == true },
+        uri: ''
       }
     end
 
@@ -84,11 +84,11 @@ module Charitybase
 
     def address
       {
-        'streetAddress': @result['data']['CHC']['getCharities']['list']['contact']['adress'][0],
-        'locality': '',
-        'region': '',
-        'postalCode': @result['data']['CHC']['getCharities']['list']['contact']['adress']['postcode'],
-        'countryName': ''
+        streetAddress: @result['data']['CHC']['getCharities']['list']['contact']['adress'][0],
+        locality: '',
+        region: '',
+        postalCode: @result['data']['CHC']['getCharities']['list']['contact']['adress']['postcode'],
+        countryName: ''
       }
     end
   end

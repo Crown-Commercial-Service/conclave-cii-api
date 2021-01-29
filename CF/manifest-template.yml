@@ -1,13 +1,14 @@
 ---
 applications:
-- name: conclave-cii-testing
-  memory: 1000M
+- name: conclave-cii-CF_SPACE
+  memory: SET_MEMORY
   buildpacks:
-    - ruby_buildpack
+    - https://github.com/cloudfoundry/ruby-buildpack.git
   instances: 1
   random-route: true
   services:
     - conclave-cii-pg-service
     - vault-service-broker
   env:
-    SERVER_ENV_NAME: testing
+    SERVER_ENV_NAME: VAULT_ENV
+    
