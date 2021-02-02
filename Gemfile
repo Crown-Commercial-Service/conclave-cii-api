@@ -35,6 +35,8 @@ gem 'olive_branch'
 # test code complexity
 gem 'flog'
 gem 'vault'
+# error logging
+gem 'rollbar'
 
 group :development, :test do
   gem 'listen', '~> 3.2'

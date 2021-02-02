@@ -22,24 +22,6 @@ then
  usage
 fi
 
-if [[ "$CF_SPACE" == "development" || "$CF_SPACE" == "sandbox" ]]
-then
-  SERVER_ENV="development"
-  SET_MEMORY="1000M"
-fi
-
-if [[ "$CF_SPACE" == "testing" || "$CF_SPACE" == "integration" ]]
-then
-  SERVER_ENV="testing"
-  SET_MEMORY="1000M"
-fi
-
-if [[ "$CF_SPACE" == "preproduction" || "$CF_SPACE" == "production" ]]
-then
-    SERVER_ENV="testing"
-    SET_MEMORY="1000M"
-fi
-
 SCRIPT_PATH="$( cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 
 CF_API_ENDPOINT="https://api.london.cloud.service.gov.uk"
@@ -140,6 +122,10 @@ then
 
 fi
 
+# Set environment variables to be fed into manifest.yml file, that is generated.
+VAULT_ENV="$CF_SPACE"
+SET_MEMORY="1000M"
+
 cd "$SCRIPT_PATH" || exit
 
 # login and target space
@@ -147,7 +133,7 @@ cf login -u "$CF_USER" -p "$CF_PASS" -o "$CF_ORG" -a "$CF_API_ENDPOINT" -s "$CF_
 cf target -o "$CF_ORG" -s "$CF_SPACE"
 
 # generate manifest and add
-sed "s/CF_SPACE/$CF_SPACE/g" manifest-template.yml | sed "s/SERVER_ENV/$SERVER_ENV/g" | sed "s/SET_MEMORY/$SET_MEMORY/g" > "$CF_SPACE.manifest.yml"
+sed "s/CF_SPACE/$CF_SPACE/g" manifest-template.yml | sed "s/VAULT_ENV/$VAULT_ENV/g" | sed "s/SET_MEMORY/$SET_MEMORY/g" > "$CF_SPACE.manifest.yml"
 
 # push API
 cd .. || exit
