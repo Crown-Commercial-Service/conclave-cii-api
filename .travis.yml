@@ -15,6 +15,7 @@ services:
 addons:
   postgresql: '11'
 sudo: true
+install: bundle install
 edge: true
 before_script:
   - sudo apt-get -qq update
