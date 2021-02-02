@@ -15,7 +15,6 @@ services:
 addons:
   postgresql: '11'
 sudo: true
-install: bundle install --jobs=3 --retry=3
 edge: true
 before_script:
   - sudo apt-get -qq update
