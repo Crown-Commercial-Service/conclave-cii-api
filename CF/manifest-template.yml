@@ -12,4 +12,3 @@ applications:
     - rollbar
   env:
     SERVER_ENV_NAME: VAULT_ENV
-    
