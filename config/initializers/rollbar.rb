@@ -7,8 +7,8 @@ Rollbar.configure do |config|
         if key['name'].to_s == 'rollbar'
         config.access_token = key['credentials']['ROLLBAR_ACCESS_TOKEN']
         config.environment = key['credentials']['ROLLBAR_ENVIRONMENT']
+        end
     end
-
 end
 
 Rollbar.error('Hello world') # Testing the rollbar integration works - remove after.
