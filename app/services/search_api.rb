@@ -29,11 +29,24 @@ class SearchApi
 
   def get_charity(chartity_number, scheme_id)
     find_that_charity = FindThatCharity::Search.new(chartity_number, scheme_id)
-    find_that_charity.fetch_results
+    results = find_that_charity.fetch_results
+    results[:additionalIdentifiers] = get_addtional_identfiers(results[:additionalIdentifiers])
+    results
   end
 
   def get_duns(dnd_number)
     dnb = Dnb::Search.new(dnd_number)
-    dnb.fetch_results
+    results = dnb.fetch_results
+    results[:additionalIdentifiers] = get_addtional_identfiers(results[:additionalIdentifiers])
+    results
+  end
+
+  def get_addtional_identfiers(identfiers)
+    addtional_identfiers = []
+    identfiers.each do |identfier|
+      result = SearchApiAdditionalIdentifiers.new(identfier[:id], identfier[:scheme]).call
+      addtional_identfiers.push(result) unless result.nil?
+    end
+    addtional_identfiers
   end
 end

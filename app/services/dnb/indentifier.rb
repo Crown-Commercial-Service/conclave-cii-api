@@ -19,7 +19,7 @@ module Dnb
     end
 
     def legal_name
-      exists_or_null(@result['organization']['registeredName'])
+      exists_or_null(@result['organization']['primaryName'])
     end
 
     private
