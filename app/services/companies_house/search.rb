@@ -5,6 +5,7 @@ module CompaniesHouse
       @company_reg_number = company_reg_number
       @error = nil
       @result = []
+      @additional_indentifers_list = []
     end
 
     def fetch_results

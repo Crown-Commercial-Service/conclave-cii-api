@@ -6,6 +6,7 @@ module Dnb
       @company_number = nil
       @error = nil
       @result = []
+      @additional_indentifers_list = []
     end
 
     def fetch_token
@@ -35,15 +36,23 @@ module Dnb
       {
         name: name,
         identifier: Dnb::Indentifier.new(@result).build_response,
-        additionalIdentifiers: registration_numbers,
+        additionalIdentifiers: filter_additional_indentifers,
         address: Dnb::Address.new(@result).build_response,
         contactPoint: Dnb::Contact.new(@result).build_response
       }
     end
 
-    def registration_numbers
-      [] if exists_or_null(@result['organization']['registrationNumbers']).blank?
-      Dnb::AdditionalIdentifier.new(@result['organization']['registrationNumbers']).build_response
+    def additional_identifiers
+      additional_identifiers_links if Common::ApiHelper.exists_or_null(@result['organization']['registrationNumbers']).present?
+    end
+
+    def additional_identifiers_links
+      @additional_indentifers_list.concat(Common::AdditionalIdentifier.new.filter_dandb_ids(@result['organization']['registrationNumbers'], @duns_number))
+    end
+
+    def filter_additional_indentifers
+      additional_identifiers
+      @additional_indentifers_list.uniq { |identifier| identifier[:id] }
     end
 
     def name

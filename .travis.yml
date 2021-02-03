@@ -10,6 +10,7 @@ env:
     - CF_USER=$deploy_username
     - CF_ORG=$deploy_org_name
     - CF_PASS=$deploy_password
+    - CC_TEST_REPORTER_ID=$CC_TEST_REPORTER_ID
 services:
   - postgresql
 addons:
@@ -22,6 +23,9 @@ before_script:
   - sudo apt-get install -y postgresql-11-postgis-2.5
   - psql -U postgres -c 'create database cii_test'
   - psql -U postgres -d cii_test -c 'create extension postgis'
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
 script:
   - bundle exec rake db:setup
   - bundle exec rake
@@ -57,4 +61,5 @@ deploy:
     script: bash CF/deploy-app.sh -u $CF_USER -o $CF_ORG -p $CF_PASS -s sandbox
     on:
       branch: sandbox
-      
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
