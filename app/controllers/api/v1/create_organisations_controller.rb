@@ -12,7 +12,7 @@ module Api
         result = search_scheme_api
 
         primary_organisation if result.present?
-        additional_identifiers if result[:additionalIdentifiers].any?
+        additional_identifiers if defined?(result[:additionalIdentifiers])
         if result.blank?
           render json: '', status: :not_found
         else
