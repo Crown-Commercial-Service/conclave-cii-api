@@ -23,7 +23,7 @@ module Authorize
     end
 
     def validate_api_key
-      render json: payload, status: :unauthorized if authenticate_api_key
+      render json: '', status: :unauthorized if authenticate_api_key
     end
   end
 end
