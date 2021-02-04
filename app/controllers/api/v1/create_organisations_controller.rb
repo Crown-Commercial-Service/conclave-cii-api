@@ -2,6 +2,7 @@ module Api
   module V1
     class CreateOrganisationsController < ActionController::API
       include Authorize::Token
+      rescue_from ApiValidations::ApiError, with: :return_error_code
       before_action :validate_api_key
       before_action :validate_params
 
@@ -13,7 +14,7 @@ module Api
         primary_organisation if result.present?
         additional_identifiers if result[:additionalIdentifiers].any?
         if result.blank?
-          render json: [], status: :not_found
+          render json: '', status: :not_found
         else
           render json: [{ ccs_org_id: @ccs_org_id }], status: :created
         end
@@ -51,6 +52,10 @@ module Api
       def validate_params
         validate = ApiValidations::CreateOrganisation.new(params)
         render json: validate.errors, status: :bad_request unless validate.valid?
+      end
+
+      def return_error_code(code)
+        render json: '', status: code.to_s
       end
 
       def search_addional_identifiers
