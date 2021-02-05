@@ -4,11 +4,13 @@ Rails.application.routes.draw do
   get '/identities/schemes/organisation', to: 'api/v1/organisations#search_organisation'
   post '/identities/schemes/organisation', to: 'api/v1/create_organisations#index'
   get '/identities/schemes', to: 'api/v1/schemes#schemes'
+  put '/identities/schemes/organisation', to: 'api/v1/update_organisations#index'
   namespace :api do
     namespace :v1 do
       get '/identities/schemes/organisation', to: 'organisations#search_organisation'
       post '/identities/schemes/organisation', to: 'organisations#add_organisation'
       get '/identities/schemes', to: 'schemes#schemes'
+      put '/identities/schemes/organisation', to: 'update_organisations#index'
     end
   end
   namespace :api do
