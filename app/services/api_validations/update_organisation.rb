@@ -5,7 +5,7 @@ module ApiValidations
 
     attr_reader :data
 
-    validates_presence_of :identifier, :ccs_org_id, presence: true 
+    validates_presence_of :identifier, :ccs_org_id, presence: true
     validate :validate_identifiers
 
     # used to send response relevant http status code to user
@@ -32,6 +32,7 @@ module ApiValidations
 
     def organisation_exists
       return unless @data[:ccs_ord_id]
+
       scheme = OrganisationSchemeIdentifier.find_by(ccs_ord_id: data[:ccs_ord_id].to_s)
       errors.add(:duplicate_id) if scheme.present?
     end
