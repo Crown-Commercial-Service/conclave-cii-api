@@ -37,7 +37,7 @@ module CompaniesHouse
 
     def country_name
       country = exists_or_null(@result['registered_office_address']['country'])
-      country.present? ? country : 'GB'
+      country.present? ? country : ''
     end
 
     private
