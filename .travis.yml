@@ -35,33 +35,27 @@ before_deploy:
   - sudo apt-get -qq update
   - sudo apt-get install cf-cli
 deploy:
-  - edge: true
-    provider: script
+  - provider: script
     script: bash CF/deploy-app.sh -u $CF_USER -o $CF_ORG -p $CF_PASS -s development
     on:
       branch: develop
-  - edge: true
-    provider: script
+  - provider: script
     script: bash CF/deploy-app.sh -u $CF_USER -o $CF_ORG -p $CF_PASS -s testing
     on:
       branch: staging
-  - edge: true
-    provider: script
+  - provider: script
     script: bash CF/deploy-app.sh -u $CF_USER -o $CF_ORG -p $CF_PASS -s integration
     on:
       branch: integration
-  - edge: true
-    provider: script
+  - provider: script
     script: bash CF/deploy-app.sh -u $CF_USER -o $CF_ORG -p $CF_PASS -s preproduction
     on:
       branch: main
-  - edge: true
-    provider: script
+  - provider: script
     script: bash CF/deploy-app.sh -u $CF_USER -o $CF_ORG -p $CF_PASS -s production
     on:
       branch: main
-  - edge: true
-    provider: script
+  - provider: script
     script: bash CF/deploy-app.sh -u $CF_USER -o $CF_ORG -p $CF_PASS -s sandbox
     on:
       branch: sandbox
