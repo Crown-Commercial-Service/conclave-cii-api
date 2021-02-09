@@ -2,8 +2,7 @@ module ApiValidations
   class RemoveScheme
     include ActiveModel::Validations
     include ActiveModel::Validations::Callbacks
-
-    validates_presence_of :id, :scheme, presence: true
+    validate :validate_scheme_params
     validate :scheme_id_exists
     validate :organisation_exists
 
@@ -22,6 +21,10 @@ module ApiValidations
 
     def read_attribute_for_validation(key)
       @data[key]
+    end
+
+    def validate_scheme_params
+        validate = ApiValidations::Scheme.new(@data)
     end
 
     def scheme_id_exists
