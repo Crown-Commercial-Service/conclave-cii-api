@@ -24,7 +24,7 @@ module ApiValidations
     end
 
     def validate_scheme_params
-        validate = ApiValidations::Scheme.new(@data)
+      ApiValidations::Scheme.new(@data)
     end
 
     def scheme_id_exists
