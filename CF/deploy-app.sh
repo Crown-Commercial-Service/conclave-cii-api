@@ -139,4 +139,4 @@ sed "s/CF_SPACE/$CF_SPACE/g" manifest-template.yml | sed "s/VAULT_ENV/$VAULT_ENV
 cd .. || exit
 
 # CF Push
-cf push conclave-cii-"$CF_SPACE" -f CF/"$CF_SPACE".manifest.yml --strategy rolling
+cf push conclave-cii-"$CF_SPACE" --strategy rolling -f CF/"$CF_SPACE".manifest.yml
