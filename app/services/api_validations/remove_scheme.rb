@@ -3,7 +3,7 @@ module ApiValidations
     include ActiveModel::Validations
     include ActiveModel::Validations::Callbacks
 
-    validates_presence_of :scheme, :id, presence: true
+    validates_presence_of :id, :scheme, presence: true
     validate :scheme_id_exists
     validate :organisation_exists
 
