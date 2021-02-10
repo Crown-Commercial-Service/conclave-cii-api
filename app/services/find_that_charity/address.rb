@@ -33,7 +33,7 @@ module FindThatCharity
 
     def country_name
       country = exists_or_null(@result['address']['addressCountry'])
-      country.present? ? country : 'GB'
+      country.present? ? country : ''
     end
 
     private
