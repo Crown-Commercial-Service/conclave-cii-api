@@ -44,9 +44,15 @@ class SearchApi
   def get_addtional_identfiers(identfiers)
     addtional_identfiers = []
     identfiers.each do |identfier|
+      validate_additional_identifiers(identfier)
       result = SearchApiAdditionalIdentifiers.new(identfier[:id], identfier[:scheme]).call
       addtional_identfiers.push(result) unless result.nil?
     end
     addtional_identfiers
+  end
+
+  def validate_additional_identifiers(identifier)
+    validate = ApiValidations::Scheme.new(identifier)
+    errors.add(:identifier, validate.errors) unless validate.valid?
   end
 end
