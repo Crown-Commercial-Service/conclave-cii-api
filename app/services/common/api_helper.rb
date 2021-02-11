@@ -12,5 +12,13 @@ module Common
     def self.remove_nic(charity_number)
       charity_number.sub(/(NIC|NI)/, '')
     end
+
+    # Add SC if Scottish Charity
+    # api client require all scottish charities
+    # to proceeding with SC before number.
+    def self.add_sc(charity_number)
+      charity_number = "SC#{charity_number}" unless charity_number.include? 'SC'
+      charity_number
+    end
   end
 end

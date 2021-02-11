@@ -2,7 +2,7 @@ module FindThatCharity
   class Search
     def initialize(charity_number, scheme_id)
       super()
-      @charity_number = Common::ApiHelper.remove_nic(charity_number)
+      @charity_number = filter_charity_number(charity_number, scheme_id)
       @scheme_id = scheme_id
       @error = nil
       @result = []
@@ -64,6 +64,12 @@ module FindThatCharity
 
     def name
       @result['name'] = @result['name'].present? ? @result['name'] : ''
+    end
+
+    def filter_charity_number(charity_number, scheme_id)
+      charity_number = Common::ApiHelper.remove_nic(charity_number) if Common::AdditionalIdentifier::SCHEME_NORTHEN_IRELAND_CHARITY == scheme_id
+      charity_number = Common::ApiHelper.add_sc(charity_number) if Common::AdditionalIdentifier::SCHEME_SCOTISH_CHARITY == scheme_id
+      charity_number
     end
   end
 end
