@@ -7,6 +7,7 @@ module ApiValidations
 
     validates_presence_of :identifier, :ccs_org_id, presence: true
     validate :validate_identifiers
+    validate :validate_ccs_org_id
 
     # used to send response relevant http status code to user
     # if validation fails.
@@ -30,11 +31,9 @@ module ApiValidations
       errors.add(:identifier, validate.errors) unless validate.valid?
     end
 
-    def organisation_exists
-      return unless @data[:ccs_ord_id]
-
-      scheme = OrganisationSchemeIdentifier.find_by(ccs_ord_id: data[:ccs_ord_id].to_s)
-      errors.add(:duplicate_id) if scheme.present?
+    def validate_ccs_org_id
+      validate = OrganisationSchemeIdentifier.find_by(ccs_org_id: @data[:ccs_org_id].to_s)
+      errors.add(:ccs_org_id_not_found, '') if validate.blank?
     end
   end
 end
