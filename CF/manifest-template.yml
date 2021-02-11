@@ -8,7 +8,6 @@ applications:
   random-route: true
   services:
     - conclave-cii-pg-service
-    - vault-service-broker
     - rollbar
   env:
     SERVER_ENV_NAME: VAULT_ENV
