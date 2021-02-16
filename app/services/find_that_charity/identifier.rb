@@ -29,7 +29,6 @@ module FindThatCharity
       @result['links'].each do |link|
         @matched_link = link['url'] if link['site'].to_s == @scheme_register['scheme_name'].to_s
       end
-      
       exists_or_null(@matched_link)
     end
 
