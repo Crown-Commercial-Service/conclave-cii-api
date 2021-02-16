@@ -24,15 +24,10 @@ module FindThatCharity
     end
 
     def uri
-      
-      @scheme_register = SchemeRegister.find_by(scheme_register_code: (@scheme_id).to_s).as_json() #SchemeRegister.select(:scheme_name)
-      puts "\n123-- #{@scheme_register}\n"
-
+      @scheme_register = SchemeRegister.find_by(scheme_register_code: (@scheme_id).to_s).as_json()
       @result['links'].each do |link|
-        puts "\n[Loop]-- #{link['site'].to_s} == #{@scheme_register['scheme_name'].to_s}\n"
         @matchedLink = link['url'] if link['site'].to_s == @scheme_register['scheme_name'].to_s
       end
-      puts "\n456-- #{@matchedLink}\n"
       exists_or_null(@matchedLink)
     end
 
