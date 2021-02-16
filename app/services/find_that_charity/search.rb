@@ -23,6 +23,7 @@ module FindThatCharity
     private
 
     def build_response
+      #puts "666123-- #{@result}"
       {
         name: name,
         identifier: FindThatCharity::Identifier.new(@scheme_id, @result).build_response,
