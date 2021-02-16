@@ -23,50 +23,16 @@ module FindThatCharity
       exists_or_null(@result['name'])
     end
 
-    #def uri
-
-      #exists_or_null(@result['links'][2]['url'])
-
-      #@result['links'].each do |link|
-        #@matchedLink = exists_or_null(link['url']) if link['url'].include? "https://register-of-charities.charitycommission.gov.uk/"
-        #@matchedLink = exists_or_null(link['url']) if link['url'].include? "https://www.oscr.org.uk/"
-        #@matchedLink = exists_or_null(link['url']) if link['url'].include? "https://www.charitycommissionni.org.uk/"
-
-        #if @result['id'].include? 'CHC'
-          #puts "a"
-          #@matchedLink = exists_or_null(link['url']) if link['url'].include? "https://register-of-charities.charitycommission.gov.uk/"
-        #elsif @result['id'].include? 'SC'
-          #puts "b"
-          #@matchedLink = exists_or_null(link['url']) if link['url'].include? "https://www.oscr.org.uk/"
-        #elsif @result['id'].include? 'NIC'
-          #puts "c"
-          #@matchedLink = exists_or_null(link['url']) if link['url'].include? "https://www.charitycommissionni.org.uk/"
-        #end
-        
-        #case @result['id']
-        #when @result['id'].include? "CHC"
-        #  puts "a"
-        #when @result['id'].include? "SC"
-        #  puts "b"
-        #when @result['id'].include? "NIC"
-        #  puts "c"
-        #else
-        #  "I have no idea what to do with that."
-        #end
-        
-      #end
-      #exists_or_null(@matchedLink)
-    #end
-
     def uri
-      #puts "[hereee]-- #{exists_or_null(@result['links'][2]['url'])}"
-      #exists_or_null(@result['links'][2]['url'])
+      
+      @scheme_register = SchemeRegister.find_by(scheme_register_code: (@scheme_id).to_s).as_json() #SchemeRegister.select(:scheme_name)
+      puts "\n123-- #{@scheme_register}\n"
+
       @result['links'].each do |link|
-        @matchedLink = link['url'] if link['url'].include? "https://register-of-charities.charitycommission.gov.uk"
-        @matchedLink = link['url'] if link['url'].include? "https://www.oscr.org.uk"
-        @matchedLink = link['url'] if link['url'].include? "https://www.charitycommissionni.org.uk"
+        puts "\n[Loop]-- #{link['site'].to_s} == #{@scheme_register['scheme_name'].to_s}\n"
+        @matchedLink = link['url'] if link['site'].to_s == @scheme_register['scheme_name'].to_s
       end
-      puts "66667-- #{@matchedLink}"
+      puts "\n456-- #{@matchedLink}\n"
       exists_or_null(@matchedLink)
     end
 
