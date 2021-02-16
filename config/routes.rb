@@ -4,13 +4,9 @@ Rails.application.routes.draw do
   get '/identities/schemes/organisation', to: 'api/v1/organisations#search_organisation'
   post '/identities/schemes/organisation', to: 'api/v1/create_organisations#index'
   get '/identities/schemes', to: 'api/v1/schemes#schemes'
-  namespace :api do
-    namespace :v1 do
-      get '/identities/schemes/organisation', to: 'organisations#search_organisation'
-      post '/identities/schemes/organisation', to: 'organisations#add_organisation'
-      get '/identities/schemes', to: 'schemes#schemes'
-    end
-  end
+  delete '/identities/schemes/organisation', to: 'api/v1/remove_organisations_aditional_identifier#delete_addtional_identifier'
+  delete '/identities/organisation', to: 'api/v1/remove_organisations#delete_orginisation'
+  put '/identities/schemes/organisation', to: 'api/v1/update_organisations#index'
   namespace :api do
     namespace :v1 do
       namespace :testing do

@@ -10,18 +10,20 @@ env:
     - CF_USER=$deploy_username
     - CF_ORG=$deploy_org_name
     - CF_PASS=$deploy_password
+    - CC_TEST_REPORTER_ID=$CC_TEST_REPORTER_ID
 services:
   - postgresql
 addons:
   postgresql: '11'
-sudo: true
 install: bundle install --jobs=3 --retry=3
-edge: true
 before_script:
   - sudo apt-get -qq update
   - sudo apt-get install -y postgresql-11-postgis-2.5
   - psql -U postgres -c 'create database cii_test'
   - psql -U postgres -d cii_test -c 'create extension postgis'
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
 script:
   - bundle exec rake db:setup
   - bundle exec rake
@@ -31,7 +33,7 @@ before_deploy:
   - wget -q -O - https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key | sudo apt-key add -
   - echo "deb https://packages.cloudfoundry.org/debian stable main" | sudo tee /etc/apt/sources.list.d/cloudfoundry-cli.list
   - sudo apt-get -qq update
-  - sudo apt-get install cf-cli
+  - sudo apt-get install cf7-cli
 deploy:
   - provider: script
     script: bash CF/deploy-app.sh -u $CF_USER -o $CF_ORG -p $CF_PASS -s development
@@ -57,3 +59,5 @@ deploy:
     script: bash CF/deploy-app.sh -u $CF_USER -o $CF_ORG -p $CF_PASS -s sandbox
     on:
       branch: sandbox
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT

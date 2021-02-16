@@ -2,6 +2,7 @@ module Api
   module V1
     class MultipleOrganisationsController < ActionController::API
       include Authorize::Token
+      rescue_from ApiValidations::ApiError, with: :return_error_code
       before_action :validate_api_key
       before_action :validate_params
       attr_accessor :scheme_result
@@ -32,6 +33,10 @@ module Api
       def validate_params
         validate = ApiValidations::Organisation.new(params)
         render json: validate.errors, status: :bad_request unless validate.valid?
+      end
+
+      def return_error_code(code)
+        render json: '', status: code.to_s
       end
     end
   end

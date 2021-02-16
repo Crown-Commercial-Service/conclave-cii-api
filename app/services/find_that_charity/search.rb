@@ -2,10 +2,11 @@ module FindThatCharity
   class Search
     def initialize(charity_number, scheme_id)
       super()
-      @charity_number = Common::ApiHelper.remove_nic(charity_number)
+      @charity_number = filter_charity_number(charity_number, scheme_id)
       @scheme_id = scheme_id
       @error = nil
       @result = []
+      @additional_indentifers_list = []
     end
 
     def fetch_results
@@ -25,10 +26,28 @@ module FindThatCharity
       {
         name: name,
         identifier: FindThatCharity::Identifier.new(@scheme_id, @result).build_response,
-        additionalIdentifiers: registration_numbers,
+        additionalIdentifiers: filter_additional_indentifers,
         address: FindThatCharity::Address.new(@result).build_response,
         contactPoint: FindThatCharity::Contact.new(@result).build_response
       }
+    end
+
+    def additional_identifiers
+      additional_identifiers_links if Common::ApiHelper.exists_or_null(@result['links']).present?
+      additional_identifiers_linked_records if Common::ApiHelper.exists_or_null(@result['linked_records'],).present?
+    end
+
+    def filter_additional_indentifers
+      additional_identifiers
+      @additional_indentifers_list.uniq { |identifier| identifier[:id] }
+    end
+
+    def additional_identifiers_links
+      @additional_indentifers_list.concat(Common::AdditionalIdentifier.new.filter_find_that_charity_ids(@result['links'], @charity_number))
+    end
+
+    def additional_identifiers_linked_records
+      @additional_indentifers_list.concat(Common::AdditionalIdentifier.new.filter_find_that_charity_ids(@result['linked_records'], @charity_number))
     end
 
     def registration_numbers
@@ -45,6 +64,12 @@ module FindThatCharity
 
     def name
       @result['name'] = @result['name'].present? ? @result['name'] : ''
+    end
+
+    def filter_charity_number(charity_number, scheme_id)
+      charity_number = Common::ApiHelper.remove_nic(charity_number) if Common::AdditionalIdentifier::SCHEME_NORTHEN_IRELAND_CHARITY == scheme_id
+      charity_number = Common::ApiHelper.add_sc(charity_number) if Common::AdditionalIdentifier::SCHEME_SCOTISH_CHARITY == scheme_id
+      charity_number
     end
   end
 end

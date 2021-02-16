@@ -7,10 +7,10 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 [
   {scheme_name: 'Companies House', scheme_register_code: 'GB-COH', scheme_uri: 'https://api.company-information.service.gov.uk', scheme_country_code: 'GB', scheme_identifier: 'Company Registration Number'},
-  {scheme_name: 'Dun and Bradstreet', scheme_register_code: 'US-DUN', scheme_uri: 'https://plus.dnb.com', scheme_country_code: 'US', scheme_identifier: 'DUNS Number'},
-  {scheme_name: 'Charities Commission for England and Wales', scheme_register_code: 'GB-CHC', scheme_uri: 'https://findthatcharity.uk', scheme_country_code: 'GB', scheme_identifier: 'Registered Charity Number'},
-  {scheme_name: 'Scottish Charities Commission', scheme_register_code: 'GB-SC', scheme_uri: 'https://findthatcharity.uk', scheme_country_code: 'GB', scheme_identifier: 'Registered Charity Number'},
-  {scheme_name: 'Northern Ireland Charities Commission', scheme_register_code: 'GB-NIC', scheme_uri: 'https://findthatcharity.uk', scheme_country_code: 'GB', scheme_identifier: 'Registered Charity Number'}
+  {scheme_name: 'Dun & Bradstreet', scheme_register_code: 'US-DUN', scheme_uri: 'https://plus.dnb.com', scheme_country_code: 'US', scheme_identifier: 'DUNS Number'},
+  {scheme_name: 'Charity Commission for England and Wales', scheme_register_code: 'GB-CHC', scheme_uri: 'https://findthatcharity.uk', scheme_country_code: 'GB', scheme_identifier: 'Registered Charity Number'},
+  {scheme_name: 'Office of The Scottish Charity Regulator (OSCR)', scheme_register_code: 'GB-SC', scheme_uri: 'https://findthatcharity.uk', scheme_country_code: 'GB', scheme_identifier: 'Registered Charity Number'},
+  {scheme_name: 'The Charity Commission for Northern Ireland', scheme_register_code: 'GB-NIC', scheme_uri: 'https://findthatcharity.uk', scheme_country_code: 'GB', scheme_identifier: 'Registered Charity Number'}
 
 ].each do |rec|
   SchemeRegister.find_or_create_by(scheme_name: rec[:scheme_name], scheme_register_code: rec[:scheme_register_code], scheme_uri: rec[:scheme_uri], scheme_country_code: rec[:scheme_country_code], scheme_identifier: rec[:scheme_identifier])
