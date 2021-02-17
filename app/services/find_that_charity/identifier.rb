@@ -25,7 +25,6 @@ module FindThatCharity
 
     def uri
       @link_scheme_name = Common::AdditionalIdentifier.new.return_uri(@scheme_id.to_s)
-      
       @result['links'].each do |link|
         @matched_link = link['url'] if link['site'].to_s == @link_scheme_name
       end
