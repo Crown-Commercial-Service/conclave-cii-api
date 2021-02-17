@@ -68,13 +68,13 @@ module Common
     def return_uri(searched_scheme)
       case searched_scheme.to_s
       when 'GB-CHC'
-        return GB_CHC_SCHEME_URI_SITE
+        GB_CHC_SCHEME_URI_SITE
       when 'GB-SC'
-        return GB_SC_SCHEME_URI_SITE
+        GB_SC_SCHEME_URI_SITE
       when 'GB-NIC'
-        return GB_NIC_SCHEME_URI_SITE
+        GB_NIC_SCHEME_URI_SITE
       else
-        return ''
+        ''
       end
     end
   end
