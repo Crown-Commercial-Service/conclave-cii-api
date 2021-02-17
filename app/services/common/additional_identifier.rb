@@ -10,6 +10,12 @@ module Common
     SCHEME_COMPANIES_HOUSE = 'GB-COH'.freeze
     SCHEME_DANDB = 'US-DUN'.freeze
 
+    # The below three constants are required to match the correct uri provided in the identifiers uri property.
+    # If you change any of these variable names, it must also be updated in identifier.rb, in the module 'FindThatCharity'.
+    GB_CHC_SCHEME_URI_SITE = 'Charity Commission England and Wales'.freeze
+    GB_NIC_SCHEME_URI_SITE = 'Charity Commission Northern Ireland'.freeze
+    GB_SC_SCHEME_URI_SITE = 'Office of Scottish Charity Regulator'.freeze
+
     def schemes
       [SCHEME_ENG_WALES_CHARITY, SCHEME_NORTHEN_IRELAND_CHARITY, SCHEME_SCOTISH_CHARITY, SCHEME_COMPANIES_HOUSE, SCHEME_DANDB]
     end
@@ -57,6 +63,19 @@ module Common
         result.push(identifier)
       end
       result
+    end
+
+    def return_uri(searched_scheme)
+      case searched_scheme.to_s
+      when 'GB-CHC'
+        return GB_CHC_SCHEME_URI_SITE
+      when 'GB-SC'
+        return GB_SC_SCHEME_URI_SITE
+      when 'GB-NIC'
+        return GB_NIC_SCHEME_URI_SITE
+      else
+        return ''
+      end
     end
   end
 end
