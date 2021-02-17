@@ -6,6 +6,7 @@ class SearchApi
     @scheme_id = scheme_id
     @ccs_org_id = ccs_org_id
     @result = []
+    @addtional_identfiers = []
   end
 
   def call
@@ -43,14 +44,17 @@ class SearchApi
   end
 
   def get_addtional_identfiers(identfiers)
-    addtional_identfiers = []
     identfiers.each do |identfier|
       identfier[:ccs_org_id] = @ccs_org_id unless @ccs_org_id.nil?
       validate_additional_identifiers(identfier)
-      result = SearchApiAdditionalIdentifiers.new(identfier[:id], identfier[:scheme]).call
-      addtional_identfiers.push(result) unless result.nil?
+      verify_addtional_identfiers(identfier)
     end
-    addtional_identfiers
+    @addtional_identfiers
+  end
+
+  def verify_addtional_identfiers(identfier)
+    result = SearchApiAdditionalIdentifiers.new(identfier[:id], identfier[:scheme]).call
+    @addtional_identfiers.push(result) unless result.nil?
   end
 
   def validate_additional_identifiers(identifier)
