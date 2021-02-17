@@ -1,9 +1,10 @@
 class SearchApi
   attr_reader :result
 
-  def initialize(organisation_id, scheme_id)
+  def initialize(organisation_id, scheme_id, ccs_org_id = nil)
     @organisation_id = organisation_id
     @scheme_id = scheme_id
+    @ccs_org_id = ccs_org_id
     @result = []
   end
 
@@ -44,6 +45,7 @@ class SearchApi
   def get_addtional_identfiers(identfiers)
     addtional_identfiers = []
     identfiers.each do |identfier|
+      identfier[:ccs_org_id] = @ccs_org_id unless @ccs_org_id.nil?
       validate_additional_identifiers(identfier)
       result = SearchApiAdditionalIdentifiers.new(identfier[:id], identfier[:scheme]).call
       addtional_identfiers.push(result) unless result.nil?
