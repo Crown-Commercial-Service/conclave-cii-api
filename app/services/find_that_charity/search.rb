@@ -33,17 +33,12 @@ module FindThatCharity
     end
 
     def additional_identifiers
-      additional_identifiers_links if Common::ApiHelper.exists_or_null(@result['links']).present?
       additional_identifiers_linked_records if Common::ApiHelper.exists_or_null(@result['linked_records'],).present?
     end
 
     def filter_additional_indentifers
       additional_identifiers
       @additional_indentifers_list.uniq { |identifier| identifier[:id] }
-    end
-
-    def additional_identifiers_links
-      @additional_indentifers_list.concat(Common::AdditionalIdentifier.new.filter_find_that_charity_ids(@result['links'], @charity_number))
     end
 
     def additional_identifiers_linked_records
