@@ -37,7 +37,7 @@ module ApiValidations
     def organisation_exists
       return unless @data[:id]
 
-      scheme = OrganisationSchemeIdentifier.find_by(scheme_org_reg_number: (@data[:id]).to_s)
+      scheme = OrganisationSchemeIdentifier.find_by(scheme_org_reg_number: (@data[:id]).to_s, scheme_code: (@data[:scheme]).to_s)
       errors.add(:no_scheme_id_found) if scheme.blank?
     end
   end
