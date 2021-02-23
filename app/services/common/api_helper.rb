@@ -20,5 +20,17 @@ module Common
       charity_number = "SC#{charity_number}" unless charity_number.include? 'SC'
       charity_number
     end
+
+    # Add NIC if Northern ireland Charity
+    def self.add_nic(charity_number)
+      charity_number = "NIC#{charity_number}" unless charity_number.include? 'NIC'
+      charity_number
+    end
+
+    def self.filter_charity_number(charity_number, scheme_id)
+      charity_number = Common::ApiHelper.add_nic(charity_number) if Common::AdditionalIdentifier::SCHEME_NORTHEN_IRELAND_CHARITY == scheme_id
+      charity_number = Common::ApiHelper.add_sc(charity_number) if Common::AdditionalIdentifier::SCHEME_SCOTISH_CHARITY == scheme_id
+      charity_number
+    end
   end
 end
