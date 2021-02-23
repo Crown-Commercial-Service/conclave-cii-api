@@ -9,6 +9,7 @@ applications:
   services:
     - conclave-cii-pg-service
     - rollbar
+    - cii-api-splunk-CF_SPACE
   env:
     SERVER_ENV_NAME: VAULT_ENV
     
