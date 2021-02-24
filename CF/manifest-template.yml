@@ -1,13 +1,13 @@
 ---
 applications:
 - name: conclave-cii-CF_SPACE
-routes:
-  - route: conclave-cii-CF_SPACE.apps.internal
   memory: SET_MEMORY
   buildpacks:
     - https://github.com/cloudfoundry/ruby-buildpack.git
   instances: 1
   random-route: true
+  routes:
+    - route: conclave-cii-CF_SPACE.apps.internal
   services:
     - conclave-cii-pg-service
     - rollbar
