@@ -20,7 +20,7 @@ module Api
       end
 
       def validate_params
-        validate = ApiValidations::RemoveOrganisation.new(params)
+        validate = ApiValidations::ManageRegisteredOrganisation.new(params)
         render json: validate.errors, status: :bad_request unless validate.valid?
       end
 
