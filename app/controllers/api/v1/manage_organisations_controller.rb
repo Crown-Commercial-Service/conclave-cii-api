@@ -18,7 +18,7 @@ module Api
       private
 
       def api_result
-        search_api_with_params = SearchApi.new(params[:identifier][:id], params[:identifier][:scheme], params[:ccs_org_id])
+        search_api_with_params = SearchApi.new(params[:id], params[:scheme], params[:ccs_org_id])
         search_api_with_params.call
       end
 
