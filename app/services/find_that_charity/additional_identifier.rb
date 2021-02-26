@@ -34,7 +34,7 @@ module FindThatCharity
     end
 
     def uri
-      exists_or_null(@search_result[:url])
+      exists_or_null(@search_result[:identifier][:uri])
     end
 
     private
