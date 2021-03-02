@@ -8,7 +8,7 @@ module ApiValidations
 
     def call
       case @errors_key
-      when :id, :scheme, :identifier, :organisation, :additional_identifiers
+      when :id, :scheme, :identifier, :organisation, :additional_identifiers, :ccs_org_id
         raise_exception(Common::StatusCodes::BAD_REQUEST)
       when :no_scheme_found, :no_scheme_id_found, :ccs_org_id_not_found
         raise_exception(Common::StatusCodes::NOT_FOUND)
