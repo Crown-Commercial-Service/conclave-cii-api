@@ -2,12 +2,6 @@ require 'simplecov'
 require 'webmock/rspec'
 require 'json'
 
-# Webmock settings and mock data
-compnay_house_response = File.read('spec/stub_response/companies_house_api.json')
-dnb_token_response = File.read('spec/stub_response/dnb_token.json')
-dnb_response = File.read('spec/stub_response/dandb_api.json')
-WebMock.disable_net_connect!(allow_localhost: true)
-
 # test coverage gem
 SimpleCov.start 'rails' do
   add_filter '/bin/'
@@ -108,38 +102,4 @@ RSpec.configure do |config|
   #   # test failures related to randomization by passing the same `--seed` value
   #   # as the one that triggered the failure.
   #   Kernel.srand config.seed
-
-  config.before do
-    stub_request(:get, "#{ENV['COMPANIES_HOUSE_API_ENDPOINT']}/company/125656234")
-      .with(
-        headers: {
-          'Accept' => '*/*',
-          'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-          'User-Agent' => 'Faraday v1.3.0'
-        }
-      )
-      .to_return(status: 200, body: compnay_house_response, headers: {})
-
-    stub_request(:post, 'https://plus.dnb.com/v2/token')
-      .with(
-        body: '{"grant_type":"client_credentials"}',
-        headers: {
-          'Accept' => '*/*',
-          'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-          'Content-Type' => 'application/json',
-          'User-Agent' => 'Faraday v1.3.0'
-        }
-      )
-      .to_return(status: 200, body: dnb_token_response, headers: {})
-
-    stub_request(:get, 'https://plus.dnb.com/v1/data/duns/500191747?productId=cmptcs&versionId=v1')
-      .with(
-        headers: {
-          'Accept' => '*/*',
-          'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-          'User-Agent' => 'Faraday v1.3.0'
-        }
-      )
-      .to_return(status: 200, body: dnb_response, headers: {})
-  end
 end

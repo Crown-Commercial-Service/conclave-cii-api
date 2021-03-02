@@ -37,6 +37,7 @@ gem 'flog'
 gem 'vault'
 # error logging
 gem 'rollbar'
+gem 'webmock'
 
 group :development, :test do
   gem 'listen', '~> 3.2'
@@ -54,7 +55,7 @@ group :development, :test do
   gem 'brakeman'
   gem 'pry-rails'
   gem 'factory_bot_rails'
-  gem 'webmock'
+  # gem 'webmock'
   gem 'simplecov', require: false
 end
 

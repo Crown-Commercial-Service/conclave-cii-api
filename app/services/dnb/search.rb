@@ -23,9 +23,9 @@ module Dnb
       params = { productId: 'cmptcs', versionId: 'v1' }
       conn.authorization :Bearer, token['access_token']
       resp = conn.get("/v1/data/duns/#{@duns_number}", params)
-      @result = ActiveSupport::JSON.decode(resp.body)
 
       if resp.status == 200
+        @result = ActiveSupport::JSON.decode(resp.body)
         build_response
       else
         false
