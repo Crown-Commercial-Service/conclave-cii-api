@@ -12,7 +12,7 @@ module Api
         result = search_scheme_api
 
         primary_organisation if result.present?
-        additional_identifiers if defined?(result[:additionalIdentifiers]) && params[:additional_identifiers].present?
+        additional_identifiers if defined?(result[:additionalIdentifiers])
         if result.blank?
           render json: '', status: :not_found
         else
@@ -28,16 +28,18 @@ module Api
         organisation.scheme_org_reg_number = @api_result[:identifier][:id]
         organisation.ccs_org_id = Common::GenerateId.ccs_org_id
         organisation.primary_scheme = true
+        organisation.active = true
         organisation.save
         @ccs_org_id = organisation.ccs_org_id
       end
 
-      def add_additional_identifier(additional_identifier)
+      def add_additional_identifier(additional_identifier, status)
         organisation = OrganisationSchemeIdentifier.new
         organisation.scheme_code = additional_identifier[:scheme]
         organisation.scheme_org_reg_number = additional_identifier[:id]
         organisation.ccs_org_id = @ccs_org_id
         organisation.primary_scheme = false
+        organisation.active = status
         organisation.save
         organisation.ccs_org_id
       end
@@ -45,7 +47,11 @@ module Api
       def additional_identifiers
         identifier_ids = search_addional_identifiers
         @api_result[:additionalIdentifiers].each do |user_params|
-          add_additional_identifier(user_params) if identifier_ids.include? user_params[:id]
+          if identifier_ids.include? user_params[:id]
+            add_additional_identifier(user_params, true)
+          else
+            add_additional_identifier(user_params, false)
+          end
         end
       end
 
