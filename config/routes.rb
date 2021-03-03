@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   put '/identities/schemes/organisation', to: 'api/v1/update_organisations#index'
   get '/identities/schemes/manageidentifiers', to: 'api/v1/manage_organisations#search_organisation'
   get '/identities/schemes/organisations', to: 'api/v1/registered_organisations_schemes#search_organisation'
+  get '/identities/schemes/organisations/all', to: 'api/v1/all_registered_organisations_schemes#search_organisation'
   
   # these are testing endpoint will be removed on live
   namespace :api do
