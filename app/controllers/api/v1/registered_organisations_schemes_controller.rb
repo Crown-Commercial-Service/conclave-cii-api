@@ -1,23 +1,21 @@
 module Api
   module V1
-    class RemoveOrganisationsController < ActionController::API
+    class RegisteredOrganisationsSchemesController < ActionController::API
       include Authorize::Token
       rescue_from ApiValidations::ApiError, with: :return_error_code
       before_action :validate_api_key
       before_action :validate_params
 
-      def delete_orginisation
-        delete_all_orginsation_ids
-        render json: '', status: :ok
-      rescue StandardError
-        render json: '', status: :bad_request
+      def search_organisation
+        result = Common::RegisteredOrganisationResponse.new(params[:ccs_org_id]).response_payload
+        if result.present?
+          render json: result, status: :ok
+        else
+          render json: '', status: :not_found
+        end
       end
 
       private
-
-      def delete_all_orginsation_ids
-        OrganisationSchemeIdentifier.destroy_by(ccs_org_id: params[:ccs_org_id].to_s)
-      end
 
       def validate_params
         validate = ApiValidations::ManageRegisteredOrganisation.new(params)
