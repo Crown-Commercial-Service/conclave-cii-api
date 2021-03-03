@@ -1,14 +1,18 @@
 module Common
   class RegisteredOrganisationResponse
-    def initialize(ccs_org_id)
+    def initialize(ccs_org_id, active: false)
       super()
       @ccs_org_id = ccs_org_id
-      @results = search_organisation
+      @results = active.blank? ? search_organisation : search_organisation_all
       @primary_identifier = []
       @additional_identifier = []
     end
 
     def search_organisation
+      OrganisationSchemeIdentifier.select(:scheme_org_reg_number, :scheme_code, :primary_scheme).where(ccs_org_id: @ccs_org_id).where(active: true)
+    end
+
+    def search_organisation_all
       OrganisationSchemeIdentifier.select(:scheme_org_reg_number, :scheme_code, :primary_scheme).where(ccs_org_id: @ccs_org_id)
     end
 
