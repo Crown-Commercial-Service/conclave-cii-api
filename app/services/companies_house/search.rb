@@ -16,7 +16,7 @@ module CompaniesHouse
       if resp.status == 200
         @result = ActiveSupport::JSON.decode(resp.body)
         return 'Not_Active' if @result.key?('primaryTopic') && @result['primaryTopic']['CompanyStatus'] == false
-        
+
         build_response
       else
         false
