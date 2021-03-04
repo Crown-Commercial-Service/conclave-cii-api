@@ -24,8 +24,10 @@ module Dnb
       conn.authorization :Bearer, token['access_token']
       resp = conn.get("/v1/data/duns/#{@duns_number}", params)
       @result = ActiveSupport::JSON.decode(resp.body)
-
-      if resp.status == 200
+      
+      if @result.key?('organization') && @result['organization']['dunsControlStatus']['operatingStatus']['dnbCode'] != 9074
+        'Not_Active'
+      elsif resp.status == 200 
         build_response
       else
         false
