@@ -5,7 +5,7 @@ def config_vault
   Vault.configure do |config|
     vcap_services['hashicorp-vault'].each do |key, value|
       key_store_path = "#{vault_engine}/#{ENV['SERVER_ENV_NAME']}"
-      config.address = key['credentials']['address']
+      config.address = 'https://dev.vault.ai-cloud.uk:8443/'
       config.token = key['credentials']['auth']['token']
     end
 
