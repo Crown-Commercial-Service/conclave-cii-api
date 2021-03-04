@@ -23,10 +23,11 @@ module Dnb
       params = { productId: 'cmptcs', versionId: 'v1' }
       conn.authorization :Bearer, token['access_token']
       resp = conn.get("/v1/data/duns/#{@duns_number}", params)
-      @result = ActiveSupport::JSON.decode(resp.body)
-      if @result.key?('organization') && @result['organization']['dunsControlStatus']['operatingStatus']['dnbCode'] != 9074
-        'Not_Active'
-      elsif resp.status == 200
+
+      if resp.status == 200
+        @result = ActiveSupport::JSON.decode(resp.body)
+        return 'Not_Active' if @result.key?('organization') && @result['organization']['dunsControlStatus']['operatingStatus']['dnbCode'] != 9074
+
         build_response
       else
         false
