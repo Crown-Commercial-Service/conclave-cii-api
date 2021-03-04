@@ -10,6 +10,8 @@ module Api
         scheme_result = api_result
         if scheme_result.blank?
           render json: '', status: :not_found
+        elsif scheme_result == 'Not_Active'
+          render json: '', status: :forbidden
         else
           render json: scheme_result
         end
