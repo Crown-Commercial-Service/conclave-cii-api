@@ -16,6 +16,7 @@ module FindThatCharity
       if resp.status == 200
         @result = ActiveSupport::JSON.decode(resp.body)
         return 'Not_Active' if @result.key?('active') && @result['active'] == false
+        
         build_response
       else
         false
