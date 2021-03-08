@@ -29,9 +29,13 @@ module Common
     def build_response
       @results.each do |result|
         @primary_name = primary_scheme_name(result) if result.primary_scheme
-        @primary_identifier.push(indetifier_primary_scheme(result)) if result.primary_scheme
-        @additional_identifier.push(indetifier_scheme(result)) unless result.primary_scheme
+        build_response_structure(result)
       end
+    end
+
+    def build_response_structure(result)
+      @primary_identifier.push(indetifier_primary_scheme(result)) if result.primary_scheme
+      @additional_identifier.push(indetifier_scheme(result)) unless result.primary_scheme
     end
 
     def primary_scheme_name(indetifier)
@@ -42,8 +46,8 @@ module Common
       {
         scheme: indetifier.scheme_code,
         id: indetifier.scheme_org_reg_number,
-        legalName: indetifier.legal_name.present? ? indetifier.legal_name : '',
-        uri: indetifier.uri.present? ? indetifier.uri : '',
+        legalName: legal_name(indetifier),
+        uri: uri(indetifier)
       }
     end
 
@@ -51,10 +55,22 @@ module Common
       {
         scheme: indetifier.scheme_code,
         id: indetifier.scheme_org_reg_number,
-        hidden: indetifier.active ? false : true,
-        legalName: indetifier.legal_name.present? ? indetifier.legal_name : '',
-        uri: indetifier.uri.present? ? indetifier.uri : '',
+        hidden: hidden_status(indetifier),
+        legalName: legal_name(indetifier),
+        uri: uri(indetifier)
       }
+    end
+
+    def hidden_status(indetifier)
+      indetifier.active ? false : true
+    end
+
+    def legal_name(indetifier)
+      indetifier.legal_name.present? ? indetifier.legal_name : ''
+    end
+
+    def uri(indetifier)
+      indetifier.uri.present? ? indetifier.uri : ''
     end
   end
 end
