@@ -13,7 +13,7 @@ module CompaniesHouse
       conn.basic_auth("#{ENV['COMPANIES_HOUSE_API_TOKEN']}:", '')
       resp = conn.get("/company/#{@company_reg_number}")
       @result = ActiveSupport::JSON.decode(resp.body) if resp.status == 200
-
+      "puts heree-->3"
       if resp.status == 200 && @result.key?('primaryTopic') && @result['primaryTopic']['CompanyStatus'] != false
         build_response
       else
