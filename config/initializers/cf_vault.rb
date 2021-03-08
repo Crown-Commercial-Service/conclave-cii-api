@@ -16,8 +16,17 @@ def config_vault
 
 def set_env(storage_path)
   env_vars = Vault.logical.read(storage_path)
-  env_vars.data.each do |env_key, env_value|
-    ENV[env_key.to_s] = env_value.to_s
+  Rails.logger.warn 'Start Vault response debug'
+  Rails.logger.warn env_vars.inspect
+  Rails.logger.warn 'End Vault response debug'
+  if env_vars.present?
+    env_vars.data.each do |env_key, env_value|
+      ENV[env_key.to_s] = env_value.to_s
+    end
+  else
+    Rails.logger.warn 'Start Vault response ERROR'
+    Rails.logger.warn env_vars.inspect
+    Rails.logger.warn 'End Vault response ERROR'
   end
 end
 
