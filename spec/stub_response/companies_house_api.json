@@ -8,7 +8,5 @@
         "address_line_1": "1001 Gresham Street",
         "region": "Greater London"
     },
-    "primaryTopic": {
-        "CompanyStatus": "Active"
-    }
+    "company_status": "active"
 }
