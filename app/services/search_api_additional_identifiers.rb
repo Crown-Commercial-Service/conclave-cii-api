@@ -2,7 +2,7 @@ class SearchApiAdditionalIdentifiers
   attr_reader :result
 
   def initialize(organisation_id, scheme_id)
-    @organisation_id = organisation_id
+    @organisation_id = Common::ApiHelper.remove_white_space_from_id(organisation_id)
     @scheme_id = scheme_id
     @result = []
   end
