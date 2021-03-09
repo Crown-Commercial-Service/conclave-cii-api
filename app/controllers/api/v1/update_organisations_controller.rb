@@ -11,7 +11,7 @@ module Api
       def index
         result = search_scheme_api
 
-        update_organisation if result.present?
+        save_or_update_organisation_scheme if result.present?
 
         if result.blank?
           render json: '', status: :not_found
@@ -22,14 +22,35 @@ module Api
 
       private
 
-      def update_organisation
-        organisation = OrganisationSchemeIdentifier.new
-        organisation.scheme_code = @api_result[:identifier][:scheme]
-        organisation.scheme_org_reg_number = @api_result[:identifier][:id]
-        organisation.ccs_org_id = params[:ccs_org_id]
-        organisation.primary_scheme = false
+      def save_or_update_organisation_scheme
+        organisation = OrganisationSchemeIdentifier.find_by(scheme_org_reg_number: @api_result[:identifier][:id], scheme_code: @api_result[:identifier][:scheme])
+        update_organisation(organisation) if organisation.present?
+        create_organisation if organisation.blank?
+      end
+
+      def update_organisation(organisation)
+        organisation[:scheme_code] = @api_result[:identifier][:scheme]
+        organisation[:scheme_org_reg_number] = @api_result[:identifier][:id]
+        organisation[:ccs_org_id] = params[:ccs_org_id]
+        organisation[:uri] = @api_result[:identifier][:uri]
+        organisation[:legal_name] = @api_result[:identifier][:legalName]
+        organisation[:primary_scheme] = false
+        organisation[:active] = true
         organisation.save
-        @ccs_org_id = organisation.ccs_org_id
+        @ccs_org_id = organisation.present? ? params[:ccs_org_id] : nil
+      end
+
+      def create_organisation
+        organisation = OrganisationSchemeIdentifier.new
+        organisation[:scheme_code] = @api_result[:identifier][:scheme]
+        organisation[:scheme_org_reg_number] = @api_result[:identifier][:id]
+        organisation[:ccs_org_id] = params[:ccs_org_id]
+        organisation[:uri] = @api_result[:identifier][:uri]
+        organisation[:legal_name] = @api_result[:identifier][:legalName]
+        organisation[:primary_scheme] = false
+        organisation[:active] = true
+        organisation.save
+        @ccs_org_id = organisation.present? ? params[:ccs_org_id] : nil
       end
 
       def validate_params
