@@ -27,7 +27,11 @@ module ApiValidations
     end
 
     def validate_identifiers
-      validate = ApiValidations::Scheme.new(data['identifier'])
+      identifier = {}
+      identifier[:ccs_org_id] = @data[:ccs_org_id]
+      identifier[:scheme] = @data[:identifier][:scheme]
+      identifier[:id] = @data[:identifier][:id]
+      validate = ApiValidations::Scheme.new(identifier)
       errors.add(:identifier, validate.errors) unless validate.valid?
     end
 

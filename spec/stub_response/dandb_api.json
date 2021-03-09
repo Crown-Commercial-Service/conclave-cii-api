@@ -55,6 +55,11 @@
                 "typeDescription": "COMPANIES REGISTRY OFFICE Number (GB)",
                 "typeDnBCode": 2541
             }
-        ]
+        ],
+        "dunsControlStatus": {
+            "operatingStatus":{
+                "dnbCode": 9074
+            }
+        }
     }
 }
