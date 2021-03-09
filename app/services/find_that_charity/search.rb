@@ -14,7 +14,7 @@ module FindThatCharity
       resp = conn.get("/orgid/#{@scheme_id}-#{@charity_number}.json")
       @result = ActiveSupport::JSON.decode(resp.body) if resp.status == 200
 
-      if resp.status == 200 && @result.key?('active') && @result['active'] != false
+      if resp.status == 200 && @result.key?('active') && @result['active'] == true
         build_response
       else
         false
