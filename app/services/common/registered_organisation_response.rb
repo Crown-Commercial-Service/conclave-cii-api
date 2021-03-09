@@ -5,12 +5,12 @@ module Common
       @ccs_org_id = ccs_org_id
       @results = active.blank? ? search_organisation : search_organisation_all
       @primary_name = ''
-      @primary_identifier = []
+      @primary_identifier = {}
       @additional_identifier = []
     end
 
     def search_organisation
-      OrganisationSchemeIdentifier.select(:scheme_org_reg_number, :scheme_code, :primary_scheme, :active, :uri, :legal_name).where(ccs_org_id: @ccs_org_id).where(active: true)
+      OrganisationSchemeIdentifier.select(:scheme_org_reg_number, :scheme_code, :primary_scheme, :uri, :legal_name).where(ccs_org_id: @ccs_org_id).where(active: true)
     end
 
     def search_organisation_all
@@ -20,7 +20,6 @@ module Common
     def response_payload
       build_response
       [
-        name: @primary_name,
         identifier: @primary_identifier,
         additionalIdentifiers: @additional_identifier
       ]
@@ -28,13 +27,12 @@ module Common
 
     def build_response
       @results.each do |result|
-        @primary_name = primary_scheme_name(result) if result.primary_scheme
         build_response_structure(result)
       end
     end
 
     def build_response_structure(result)
-      @primary_identifier.push(indetifier_primary_scheme(result)) if result.primary_scheme
+      @primary_identifier = indetifier_primary_scheme(result) if result.primary_scheme
       @additional_identifier.push(indetifier_scheme(result)) unless result.primary_scheme
     end
 
@@ -52,13 +50,16 @@ module Common
     end
 
     def indetifier_scheme(indetifier)
-      {
+      scheme_indetifier = {
         scheme: indetifier.scheme_code,
         id: indetifier.scheme_org_reg_number,
-        hidden: hidden_status(indetifier),
         legalName: legal_name(indetifier),
         uri: uri(indetifier)
       }
+
+      scheme_indetifier[:hidden] = hidden_status(indetifier) if indetifier.attributes.key?('active')
+
+      scheme_indetifier
     end
 
     def hidden_status(indetifier)
