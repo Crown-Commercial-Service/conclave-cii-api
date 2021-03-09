@@ -289,17 +289,17 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activerecord-postgis-adapter
+  activerecord-postgis-adapter (>= 6.0.1)
   bootsnap (>= 1.4.2)
   brakeman
   byebug
-  dotenv-rails (>= 2.7.5)
-  factory_bot_rails
+  dotenv-rails (>= 2.7.6)
+  factory_bot_rails (>= 6.1.0)
   faraday
   faraday_middleware
   flog
   graphlient
-  i18n-tasks (>= 0.9.31)
+  i18n-tasks (>= 0.9.33)
   jwt
   listen (~> 3.2)
   olive_branch (>= 3.0.0)
@@ -309,7 +309,7 @@ DEPENDENCIES
   rack-cors
   rails (~> 6.0.3, >= 6.0.3.5)
   rollbar
-  rspec-rails (>= 3.9.0)
+  rspec-rails (>= 4.0.2)
   rubocop
   rubocop-performance
   rubocop-rails
