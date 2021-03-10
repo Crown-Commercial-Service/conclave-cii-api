@@ -3,13 +3,13 @@ This is the Conclave Central Identity Index (CII) API service.
 
 ## Nomenclature
 
-- **OrganisationSchemeIdentifier**: identifier used for an organisation with a scheme
-- **Scheme**: 
-- **SchemeRegister**: 
+- **OrganisationSchemeIdentifier**: An organisation is an entity which may include multiple identifiers. A identifier is data related for an organisation for a scheme e.g. Companies House
+- **Scheme**: A scheme is an external register or reference agency
+- **SchemeRegister**: Scheme Registers represent an Operator/Legal entity which used to provide unique identifiers for organisations sourced existing public available register lists exposed by existing API’s, e.g. Companies House.
 
 ## Technical documentation
 
-This is a Ruby on Rails application that .... It's only presented as an internal API and doesn't face public users.
+This is a Ruby on Rails application to provide a central register to identify organisations; suppliers using external identifiers It's only presented as an internal API and doesn't face public users.
 
 ### Setup instructions
 #### For OSX/macOS version 10.9 or higher
