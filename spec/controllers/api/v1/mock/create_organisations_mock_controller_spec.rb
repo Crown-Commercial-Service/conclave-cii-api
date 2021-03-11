@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Api::V1::CreateOrganisationsController, type: :controller do
+RSpec.describe Api::V1::Mock::CreateOrganisationsMockController, type: :controller do
   before do
     params = [
       { scheme: 'US-DUN', id: '500191747' },

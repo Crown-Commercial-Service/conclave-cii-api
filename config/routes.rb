@@ -21,4 +21,13 @@ Rails.application.routes.draw do
       end
     end
   end
+  # these are Mock testing endpoint will be removed on live
+  namespace :api do
+    namespace :v1 do
+      namespace :mock do
+        get '/identities/schemes/organisation', to: 'organisations_mock#search_organisation'
+        post '/identities/schemes/organisation', to: 'create_organisations_mock#index'
+      end
+    end
+  end
 end
