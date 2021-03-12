@@ -32,5 +32,9 @@ module Common
       charity_number = Common::ApiHelper.add_sc(charity_number) if Common::AdditionalIdentifier::SCHEME_SCOTISH_CHARITY == scheme_id
       charity_number
     end
+
+    def self.remove_white_space_from_id(id)
+      id.delete(' ')
+    end
   end
 end

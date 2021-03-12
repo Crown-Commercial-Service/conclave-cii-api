@@ -4,7 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '2.7.2'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.0.3', '>= 6.0.3.3'
+gem 'rails', '~> 6.0.3', '>= 6.0.3.5'
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3', '~> 1.4'
 # Use Puma as the app server
@@ -22,7 +22,7 @@ gem 'puma', '~> 4.1'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
 # for postgresql
-gem 'activerecord-postgis-adapter'
+gem 'activerecord-postgis-adapter', '>= 6.0.1'
 gem 'pg', '~> 0.18.4'
 gem 'jwt'
 gem 'faraday'
@@ -31,7 +31,7 @@ gem 'graphlient'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem 'rack-cors'
 # For converting between cases for API request & response
-gem 'olive_branch'
+gem 'olive_branch', '>= 3.0.0'
 # test code complexity
 gem 'flog'
 gem 'vault'
@@ -44,16 +44,16 @@ group :development, :test do
   # gem 'spring'
   # gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
-  gem 'dotenv-rails', '>= 2.7.5'
-  gem 'i18n-tasks', '>= 0.9.31'
-  gem 'rspec-rails', '>= 3.9.0'
+  gem 'dotenv-rails', '>= 2.7.6'
+  gem 'i18n-tasks', '>= 0.9.33'
+  gem 'rspec-rails', '>= 4.0.2'
   gem 'rubocop'
   gem 'rubocop-performance'
   gem 'rubocop-rails'
   gem 'rubocop-rspec' # or gem 'rubocop-minitest'
   gem 'brakeman'
   gem 'pry-rails'
-  gem 'factory_bot_rails'
+  gem 'factory_bot_rails', '>= 6.1.0'
   gem 'webmock'
   gem 'simplecov', require: false
 end
