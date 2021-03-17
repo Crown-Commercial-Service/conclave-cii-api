@@ -43,7 +43,7 @@ module Api
         organisation.legal_name = additional_identifier[:legalName]
         organisation.ccs_org_id = @ccs_org_id
         organisation.primary_scheme = false
-        organisation.active = status
+        organisation.active = Common::ApiHelper.hide_all_ccs_schemes(additional_identifier[:scheme], status)
         organisation.save
         organisation.ccs_org_id
       end
