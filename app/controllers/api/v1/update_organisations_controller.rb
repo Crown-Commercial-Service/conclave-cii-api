@@ -34,7 +34,7 @@ module Api
         organisation[:ccs_org_id] = params[:ccs_org_id]
         organisation[:uri] = @api_result[:identifier][:uri]
         organisation[:legal_name] = @api_result[:identifier][:legalName]
-        organisation[:primary_scheme] = false
+        organisation[:primary_scheme] = organisation[:primary_scheme]
         organisation[:active] = true
         organisation.save
         @ccs_org_id = organisation.present? ? params[:ccs_org_id] : nil
