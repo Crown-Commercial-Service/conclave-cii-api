@@ -36,5 +36,9 @@ module Common
     def self.remove_white_space_from_id(id)
       id.delete(' ')
     end
+
+    def self.hide_all_ccs_schemes(scheme_id, status)
+      scheme_id == Common::AdditionalIdentifier::SCHEME_CCS ? false : status
+    end
   end
 end

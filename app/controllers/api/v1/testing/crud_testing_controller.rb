@@ -17,7 +17,7 @@ module Api
         def search_org
           return if find_org_ccs_id.blank?
 
-          scheme = OrganisationSchemeIdentifier.select(:scheme_org_reg_number, :ccs_org_id, :primary_scheme, :active, 'scheme_code AS scheme').where(ccs_org_id: find_org_ccs_id.ccs_org_id).as_json(except: :id)
+          scheme = OrganisationSchemeIdentifier.select(:scheme_org_reg_number, :ccs_org_id, :primary_scheme, :active, 'scheme_code AS scheme', :uri, :legal_name).where(ccs_org_id: find_org_ccs_id.ccs_org_id).as_json(except: :id)
           if scheme.present?
             render json: scheme, status: :ok
           else

@@ -34,7 +34,7 @@ module FindThatCharity
     end
 
     def additional_identifiers
-      additional_identifiers_linked_records if Common::ApiHelper.exists_or_null(@result['linked_records'],).present?
+      additional_identifiers_linked_records if Common::ApiHelper.exists_or_null(@result['linked_records']).present?
     end
 
     def filter_additional_indentifers

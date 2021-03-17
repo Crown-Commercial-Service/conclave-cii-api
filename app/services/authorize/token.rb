@@ -11,11 +11,11 @@ module Authorize
     end
 
     def api_key_to_string
-      request.headers['Apikey'].to_s
+      request.headers['x-api-key'].to_s
     end
 
     def blank_key
-      request.headers['Apikey'].blank?
+      request.headers['x-api-key'].blank?
     end
 
     def authenticate_api_key
