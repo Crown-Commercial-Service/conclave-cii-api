@@ -9,6 +9,7 @@ module Common
     SCHEME_SCOTISH_CHARITY = 'GB-SC'.freeze
     SCHEME_COMPANIES_HOUSE = 'GB-COH'.freeze
     SCHEME_DANDB = 'US-DUN'.freeze
+    SCHEME_CCS = 'GB-CCS'.freeze
 
     # The below three constants are required to match the correct uri provided in the identifiers uri property.
     # If you change any of these variable names, it must also be updated in identifier.rb, in the module 'FindThatCharity'.

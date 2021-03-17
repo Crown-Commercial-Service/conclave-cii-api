@@ -5,6 +5,9 @@ require 'json'
 # Webmock settings and mock data
 compnay_house_response = File.read('spec/stub_response/companies_house_api.json')
 dnb_token_response = File.read('spec/stub_response/dnb_token.json')
+salesforce_token_response = File.read('spec/stub_response/salesforce_token.json')
+salesforce_api_response = File.read('spec/stub_response/salesforce_api.json')
+
 dnb_response = File.read('spec/stub_response/dandb_api.json')
 WebMock.disable_net_connect!(allow_localhost: true)
 
@@ -141,5 +144,39 @@ RSpec.configure do |config|
         }
       )
       .to_return(status: 200, body: dnb_response, headers: {})
+
+    stub_request(:post, 'https://biwbdqwbdiwebiu.com/services/oauth2/token')
+      .with(
+        body: { 'client_id' => 'jdoifiowehfwibewiufwer3hiu349y4o83gh8o4g8ob34o4gg39o23g48o23o8go88g34o8', 'client_secret' => 'bsiuf98328hro3h8or3go8rg8p238o23hiu3r8o23ho832griuiuhdoweh98ho2hh32', 'grant_type' => 'password', 'password' => '6238g3b28323gg3gnsdn34982328or34go83goy23g723v', 'username' => 'test@testcommercial.gov.uk' },
+        headers: {
+          'Accept' => '*/*',
+          'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'Content-Type' => 'application/x-www-form-urlencoded',
+          'User-Agent' => 'Faraday v1.3.0'
+        }
+      )
+      .to_return(status: 200, body: salesforce_token_response, headers: {})
+
+    stub_request(:get, "https://biwbdqwbdiwebiu.com/services/data/v45.0/query?q=SELECT%20ID,name,Status__c,Supplier_DUNS_Number__c,Company_Registration_Number__c,Account_URN__c%20FROM%20account%20WHERE%20Supplier_DUNS_Number__c='500191747'")
+      .with(
+        headers: {
+          'Accept' => '*/*',
+          'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'Authorization' => 'Bearer t07891Fbasibd60NM9rW9basidj49w7ig7R2S9',
+          'User-Agent' => 'Faraday v1.3.0'
+        }
+      )
+      .to_return(status: 200, body: salesforce_api_response, headers: {})
+
+    stub_request(:get, "https://biwbdqwbdiwebiu.com/services/data/v45.0/query?q=SELECT%20ID,name,Status__c,Supplier_DUNS_Number__c,Company_Registration_Number__c,Account_URN__c%20FROM%20account%20WHERE%20Company_Registration_Number__c='125656234'")
+      .with(
+        headers: {
+          'Accept' => '*/*',
+          'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'Authorization' => 'Bearer t07891Fbasibd60NM9rW9basidj49w7ig7R2S9',
+          'User-Agent' => 'Faraday v1.3.0'
+        }
+      )
+      .to_return(status: 200, body: salesforce_api_response, headers: {})
   end
 end
