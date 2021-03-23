@@ -1,8 +1,7 @@
 {
     "jurisdiction":"scotland",
     "type":"scottish-charitable-incorporated-organisation",
-    "company_name":"Company Example CS012345",
-    "company_number":"CS012345",
-    "external_registration_number":"SC000000",
+    "company_name":"Company Example CS112345",
+    "company_number":"CS112345",
     "registered_office_address":{ }
 }

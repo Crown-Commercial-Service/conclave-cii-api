@@ -8,5 +8,6 @@
         "address_line_1": "123 Example Street",
         "region": "Region"
     },
+    "external_registration_number":"CS012345",
     "company_status": "active"
 }

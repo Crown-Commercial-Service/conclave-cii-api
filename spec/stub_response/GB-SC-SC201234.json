@@ -58,11 +58,11 @@
         },
         {
          "orgid":"GB-CHC-707123",
-         "url":"https://findthatcharity.uk/orgid/GB-CHC-707123.json"
+         "url":"http://www.example.org.uk/GB-CHC-707123.json"
       },
       {
          "orgid":"GB-COH-02012345",
-         "url":"https://findthatcharity.uk/orgid/GB-COH-02012345.json"
+         "url":"http://www.example.org.uk/GB-COH-02012345.json"
       }
 
    ]
