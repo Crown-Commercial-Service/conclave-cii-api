@@ -1,0 +1,12 @@
+{
+    "company_name": "Company Example 06012345",
+    "company_number": "06012345",
+    "registered_office_address": {
+        "locality": "Locality",
+        "postal_code": "A1 2BC",
+        "country": "Country",
+        "address_line_1": "123 Example Street",
+        "region": "Region"
+    },
+    "company_status": "active"
+}

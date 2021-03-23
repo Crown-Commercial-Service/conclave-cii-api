@@ -26,7 +26,15 @@ Rails.application.routes.draw do
     namespace :v1 do
       namespace :mock do
         get '/identities/schemes/organisation', to: 'organisations_mock#search_organisation'
+        get '/identities/schemes/identifiers', to: 'organisations_mock#search_organisation'
         post '/identities/schemes/organisation', to: 'create_organisations_mock#index'
+        get '/identities/schemes', to: 'schemes_mock#schemes'
+        delete '/identities/schemes/organisation', to: 'remove_organisations_aditional_identifier_mock#delete_addtional_identifier'
+        delete '/identities/organisation', to: 'remove_organisations_mock#delete_orginisation'
+        put '/identities/schemes/organisation', to: 'update_organisations_mock#index'
+        get '/identities/schemes/manageidentifiers', to: 'manage_organisations_mock#search_organisation'
+        get '/identities/schemes/organisations', to: 'registered_organisations_schemes_mock#search_organisation'
+        get '/identities/schemes/organisations/all', to: 'all_registered_organisations_schemes_mock#search_organisation'
       end
     end
   end

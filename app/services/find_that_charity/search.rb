@@ -13,7 +13,7 @@ module FindThatCharity
       conn = Faraday.new(url: ENV['FINDTHATCHARITY_API_ENDPOINT'])
       resp = conn.get("/orgid/#{@scheme_id}-#{@charity_number}.json")
       @result = ActiveSupport::JSON.decode(resp.body) if resp.status == 200
-
+      puts "heree-->3 #{@result}"
       if resp.status == 200 && @result.key?('active') && @result['active'] == true
         build_response
       else

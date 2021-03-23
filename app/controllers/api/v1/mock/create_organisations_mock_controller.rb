@@ -3,12 +3,13 @@ module Api
     module Mock
       class CreateOrganisationsMockController < ActionController::API
         include Authorize::Token
+        include WebMock::API
         rescue_from WebMock::NetConnectNotAllowedError, with: :return_error_code_http
         rescue_from ApiValidations::ApiError, with: :return_error_code
         before_action :validate_api_key
 
         def index
-          MockingService::MockApis.new
+          mock = MockingService::MockApis.new
           organisations = Api::V1::CreateOrganisationsController.new
           organisations.request = request
           organisations.response = response
@@ -17,6 +18,7 @@ module Api
           if scheme_result.blank?
             render json: '', status: :not_found
           else
+            mock.disable_mock_service
             render json: scheme_result
           end
         end

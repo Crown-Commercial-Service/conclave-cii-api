@@ -1,5 +1,6 @@
 module MockingService
   class MockApis
+    include WebMock::API
     def initialize
       setup_stubs
     end
@@ -28,6 +29,10 @@ module MockingService
       end
     rescue StandardError
       {}
+    end
+
+    def disable_mock_service
+      WebMock.disable!
     end
   end
 end
