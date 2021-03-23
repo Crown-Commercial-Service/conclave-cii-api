@@ -11,6 +11,8 @@ module Api
       def index
         result = search_scheme_api
 
+        result = Salesforce::AdditionalIdentifier.new(result).build_response if result.present?
+
         primary_organisation if result.present?
         additional_identifiers if defined?(result[:additionalIdentifiers])
         if result.blank?
