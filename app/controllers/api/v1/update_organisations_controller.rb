@@ -11,6 +11,8 @@ module Api
       def index
         result = search_scheme_api
 
+        Common::SalesforceHelper.new(result, params[:ccs_org_id]).insert_salesforce_record if result.present?
+
         save_or_update_organisation_scheme if result.present?
 
         if result.blank?
@@ -34,7 +36,7 @@ module Api
         organisation[:ccs_org_id] = params[:ccs_org_id]
         organisation[:uri] = @api_result[:identifier][:uri]
         organisation[:legal_name] = @api_result[:identifier][:legalName]
-        organisation[:primary_scheme] = false
+        organisation[:primary_scheme] = organisation[:primary_scheme]
         organisation[:active] = true
         organisation.save
         @ccs_org_id = organisation.present? ? params[:ccs_org_id] : nil

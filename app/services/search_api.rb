@@ -29,8 +29,8 @@ class SearchApi
     company_api.fetch_results
   end
 
-  def get_charity(chartity_number, scheme_id)
-    find_that_charity = FindThatCharity::Search.new(chartity_number, scheme_id)
+  def get_charity(charity_number, scheme_id)
+    find_that_charity = FindThatCharity::Search.new(charity_number, scheme_id)
     results = find_that_charity.fetch_results
     results[:additionalIdentifiers] = get_addtional_identfiers(results[:additionalIdentifiers]) if results.present?
     results
