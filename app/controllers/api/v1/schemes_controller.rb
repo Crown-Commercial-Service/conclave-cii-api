@@ -7,7 +7,8 @@ module Api
       # rubocop:disable Style/HashSyntax
       # change scheme_register_code to just scheme.
       def schemes
-        scheme_register = SchemeRegister.select('scheme_register_code AS scheme, scheme_name, scheme_country_code').as_json(:except => :id)
+        ccs_scheme = Common::AdditionalIdentifier::SCHEME_CCS
+        scheme_register = SchemeRegister.select('scheme_register_code AS scheme, scheme_name, scheme_country_code').where.not(scheme_register_code: ccs_scheme).as_json(:except => :id)
         render json: scheme_register
       end
       # rubocop:enable Style/HashSyntax
