@@ -10,7 +10,7 @@ RSpec.describe Api::V1::OrganisationsController, type: :controller do
     params.each do |param|
       MockingService::ApiStub.new(param)
     end
-    request.headers['Apikey'] = '1B4B9BBC9ADA4EA65E98A9A32F8D4' #request.headers['x-api-key']
+    request.headers['Apikey'] = '1B4B9BBC9ADA4EA65E98A9A32F8D4' # request.headers['x-api-key']
   end
 
   describe 'GET API calls search_organisation' do
@@ -30,4 +30,3 @@ RSpec.describe Api::V1::OrganisationsController, type: :controller do
     end
   end
 end
-
