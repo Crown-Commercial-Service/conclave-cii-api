@@ -37,7 +37,7 @@ gem 'flog'
 gem 'vault'
 # error logging
 gem 'rollbar'
-
+gem 'mimemagic', '~> 0.3.6' # TODO: Remove when Rails dependency on yanked 0.3.5 version gets fixed.
 group :development, :test do
   gem 'listen', '~> 3.2'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
