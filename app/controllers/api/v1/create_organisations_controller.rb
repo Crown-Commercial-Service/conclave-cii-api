@@ -11,6 +11,8 @@ module Api
       def index
         result = search_scheme_api
 
+        result = Salesforce::AdditionalIdentifier.new(result).build_response if result.present?
+
         primary_organisation if result.present?
         additional_identifiers if defined?(result[:additionalIdentifiers])
         if result.blank?
@@ -43,7 +45,7 @@ module Api
         organisation.legal_name = additional_identifier[:legalName]
         organisation.ccs_org_id = @ccs_org_id
         organisation.primary_scheme = false
-        organisation.active = status
+        organisation.active = Common::ApiHelper.hide_all_ccs_schemes(additional_identifier[:scheme], status)
         organisation.save
         organisation.ccs_org_id
       end
