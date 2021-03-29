@@ -1,7 +1,7 @@
 module Api
   module V1
     module Mock
-      class AllRegisteredOrganisationsSchemesMockController < AllRegisteredOrganisationsSchemesController
+      class AllRegisteredOrganisationsSchemesMockController < ActionController::API
         include Authorize::Token
         include WebMock::API
         rescue_from WebMock::NetConnectNotAllowedError, with: :return_error_code_http
