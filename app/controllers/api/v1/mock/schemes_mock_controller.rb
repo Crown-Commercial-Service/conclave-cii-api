@@ -1,9 +1,7 @@
 module Api
   module V1
     module Mock
-      class SchemesMockController < SchemesController
-        include Authorize::Token
-        include WebMock::API
+      class SchemesMockController < ApplicationMockController
         rescue_from WebMock::NetConnectNotAllowedError, with: :return_error_code_http
         rescue_from ApiValidations::ApiError, with: :return_error_code
         before_action :validate_api_key

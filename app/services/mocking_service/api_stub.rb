@@ -4,7 +4,7 @@ module MockingService
 
     def initialize(params)
       @params = params
-      @params[:id] = Common::ApiHelper.filter_charity_number(@params[:id], @params[:scheme])
+      @params[:id] = clean_charity_number(@params[:id], @params[:scheme])
       @result = nil
       @api_url = nil
       stub
@@ -36,6 +36,12 @@ module MockingService
         'Content-Type' => 'application/json',
         'User-Agent' => 'Faraday v1.3.0'
       }
+    end
+
+    def clean_charity_number(id_number, scheme_id)
+      id_number = Common::ApiHelper.remove_nic(id_number) if Common::AdditionalIdentifier::SCHEME_NORTHEN_IRELAND_CHARITY == scheme_id
+      id_number = Common::ApiHelper.add_sc(id_number) if Common::AdditionalIdentifier::SCHEME_SCOTISH_CHARITY == scheme_id
+      id_number
     end
 
     def http_status
