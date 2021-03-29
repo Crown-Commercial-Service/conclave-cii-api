@@ -1,0 +1,65 @@
+{
+    "id": "GB-SC-SC401234",
+    "name": "Charity Example SC401234",
+    "charityNumber": "SC401234",
+    "companyNumber": null,
+    "description": "Charity Example Description",
+    "url": "http://www.example.org.uk",
+    "dateRemoved": null,
+    "active": true,
+    "parent": null,
+    "organisationType": [
+       "Registered Charity",
+        "Registered Charity (Scotland)",
+        "Unincorporated association"
+    ],
+    "organisationTypePrimary": "Registered Charity",
+    "alternateName": [],
+    "telephone": "07123456789",
+    "email": "example@email.com",
+    "address": {
+        "streetAddress": "123 Example Street",
+        "addressLocality": "Locality",
+        "postalCode": "A1 2BC"
+    },
+    "sources":[
+       "oscr"
+    ],
+    "links": [
+ 
+        {
+            "site": "Charity Commission England and Wales",
+            "url": "http://www.example.org.uk",
+            "orgid": "GB-SC-SC401234"
+        },
+        {
+            "site": "Charity1",
+            "url": "http://www.example.org.uk",
+            "orgid": "GB-SC-SC401234"
+        },
+        {
+            "site": "Charity2",
+            "url": "http://www.example.org.uk",
+            "orgid": "GB-SC-SC401234"
+        },
+        {
+            "site": "Charity3",
+            "url": "http://www.example.org.uk",
+            "orgid": "GB-SC-SC401234"
+        }
+    ],
+    "orgIDs":[
+       "GB-SC-SC401234",
+       "US-DUN-101123456"
+    ],
+    "linked_records":[
+        {
+            "orgid":"GB-SC-SC401234",
+            "url":"http://www.example.org.uk/GB-SC-SC401234.json"
+         },
+         {
+          "orgid":"US-DUN-101123456",
+          "url":"http://www.example.org.uk/orgid/US-DUN-101123456.json"
+       }
+    ]
+ }

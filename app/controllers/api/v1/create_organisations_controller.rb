@@ -12,7 +12,6 @@ module Api
         result = search_scheme_api
 
         result = Salesforce::AdditionalIdentifier.new(result).build_response if result.present?
-        puts "heree--> #{result}"
 
         primary_organisation if result.present?
         additional_identifiers if defined?(result[:additionalIdentifiers])

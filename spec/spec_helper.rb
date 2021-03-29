@@ -2,18 +2,6 @@ require 'simplecov'
 require 'webmock/rspec'
 require 'json'
 
-<<<<<<< HEAD
-=======
-# Webmock settings and mock data
-compnay_house_response = File.read('spec/stub_response/companies_house_api.json')
-dnb_token_response = File.read('spec/stub_response/dnb_token.json')
-salesforce_token_response = File.read('spec/stub_response/salesforce_token.json')
-salesforce_api_response = File.read('spec/stub_response/salesforce_api.json')
-
-dnb_response = File.read('spec/stub_response/dandb_api.json')
-WebMock.disable_net_connect!(allow_localhost: true)
-
->>>>>>> develop
 # test coverage gem
 SimpleCov.start 'rails' do
   add_filter '/bin/'
