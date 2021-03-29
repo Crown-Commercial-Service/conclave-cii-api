@@ -2,7 +2,13 @@ module MockingService
   class MockApis
     include WebMock::API
     def initialize
+      enable_mock_service
       setup_stubs
+    end
+
+    def enable_mock_service
+      WebMock.enable!
+      WebMock.disable_net_connect!(allow_localhost: false)
     end
 
     def get_params(filename)
@@ -24,8 +30,25 @@ module MockingService
     end
 
     def setup_stubs
-      Dir.each_child('spec/stub_response') do |filename|
+      setup_api_stubs
+      setup_salesforce_stubs
+    end
+
+    def setup_api_stubs
+      Dir.each_child('spec/stub_response/api_stubs') do |filename|
         MockingService::ApiStub.new(get_params(filename))
+      rescue StandardError
+        {}
+      end
+    rescue StandardError
+      {}
+    end
+
+    def setup_salesforce_stubs
+      Dir.each_child('spec/stub_response/salesforce') do |filename|
+        MockingService::ApiSalesforceStub.new(get_params(filename))
+      rescue StandardError
+        {}
       end
     rescue StandardError
       {}

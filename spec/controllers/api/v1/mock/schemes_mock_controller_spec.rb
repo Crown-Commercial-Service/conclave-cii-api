@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-RSpec.describe Api::V1::Mock::SchemesController, type: :controller do
+RSpec.describe Api::V1::Mock::SchemesMockController, type: :controller do
   before do
-    request.headers['Apikey'] = 'F3CAE7C17E276974E88351712957D'
+    request.headers['x-api-key'] = 'F3CAE7C17E276974E88351712957D'
   end
 
   describe 'GET schemes' do

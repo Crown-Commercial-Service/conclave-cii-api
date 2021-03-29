@@ -14,11 +14,11 @@ module Api
           organisations.request = request
           organisations.response = response
           scheme_result = organisations.index
+          mock.disable_mock_service
 
           if scheme_result.blank?
             render json: '', status: :not_found
           else
-            mock.disable_mock_service
             render json: scheme_result
           end
         end

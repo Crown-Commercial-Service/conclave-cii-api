@@ -11,8 +11,6 @@ module MockingService
     end
 
     def stub
-      WebMock.enable!
-      WebMock.disable_net_connect!(allow_localhost: true)
       load_stub
       stub_request
     end
@@ -64,7 +62,7 @@ module MockingService
     end
 
     def duns_token
-      token_response = File.read('spec/stub_response/dnb_token.json')
+      token_response = File.read('spec/stub_response/tokens/dnb_token.json')
       WebMock.stub_request(:post, "#{ENV['DNB_API_ENDPOINT']}/v2/token")
              .with(
                body: '{"grant_type":"client_credentials"}',
@@ -74,7 +72,7 @@ module MockingService
     end
 
     def load_stub
-      @result = File.read("spec/stub_response/#{@params[:scheme]}-#{@params[:id]}.json")
+      @result = File.read("spec/stub_response/api_stubs/#{@params[:scheme]}-#{@params[:id]}.json")
     rescue StandardError
       {}
     end
