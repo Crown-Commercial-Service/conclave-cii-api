@@ -6,7 +6,7 @@ module Api
 
         def search_organisation
           run_mock
-          result = @mock_controller.index
+          result = @mock_controller.search_organisation
           response_result(result)
         end
 
