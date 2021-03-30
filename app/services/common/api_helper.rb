@@ -40,8 +40,7 @@ module Common
 
     def self.clean_charity_number(charity_number, scheme_id)
       charity_number = Common::ApiHelper.remove_nic(charity_number) if Common::AdditionalIdentifier::SCHEME_NORTHEN_IRELAND_CHARITY == scheme_id
-      charity_number = Common::ApiHelper.filter_sc(charity_number, scheme_id)
-      charity_number
+      Common::ApiHelper.filter_sc(charity_number, scheme_id)
     end
 
     def self.remove_white_space_from_id(id)

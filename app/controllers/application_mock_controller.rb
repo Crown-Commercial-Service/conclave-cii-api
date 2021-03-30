@@ -7,12 +7,12 @@ class ApplicationMockController < ActionController::API
   before_action :enable_mock_service
   after_action :disable_mock_service
   attr_accessor :mock_service, :mock_controller
-  
+
   def run_mock
     @mock_controller.request = request
     @mock_controller.response = response
   end
- 
+
   def return_error_code_http
     render json: '', status: :not_found
   end
