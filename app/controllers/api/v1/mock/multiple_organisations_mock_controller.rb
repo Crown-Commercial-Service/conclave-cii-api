@@ -2,20 +2,16 @@ module Api
   module V1
     module Mock
       class MultipleOrganisationsMockController < ApplicationMockController
+        before_action :multiple_organisations
 
         def search_organisation
-          mock = MockingService::MockApis.new
-          organisations = Api::V1::MultipleOrganisationsController.new
-          organisations.request = request
-          organisations.response = response
-          scheme_result = organisations.search_organisation
-          mock.disable_mock_service
+          run_mock
+          result = @mock_controller.search_organisation
+          response_result(result)
+        end
 
-          if scheme_result.blank?
-            render json: '', status: :not_found
-          else
-            render json: scheme_result
-          end
+        def multiple_organisations
+          @mock_controller = Api::V1::MultipleOrganisationsController.new
         end
       end
     end

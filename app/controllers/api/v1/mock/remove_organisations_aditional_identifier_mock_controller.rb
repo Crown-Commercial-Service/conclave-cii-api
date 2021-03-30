@@ -2,20 +2,16 @@ module Api
   module V1
     module Mock
       class RemoveOrganisationsAditionalIdentifierMockController < ApplicationMockController
+        before_action :remove_organisations_aditional_identifier
 
         def delete_addtional_identifier
-          mock = MockingService::MockApis.new
-          organisations = Api::V1::RemoveOrganisationsAditionalIdentifierController.new
-          organisations.request = request
-          organisations.response = response
-          scheme_result = organisations.delete_addtional_identifier
-          mock.disable_mock_service
+          run_mock
+          result = @mock_controller.delete_addtional_identifier
+          response_result(result)
+        end
 
-          if scheme_result.blank?
-            render json: '', status: :not_found
-          else
-            render json: scheme_result
-          end
+        def remove_organisations_aditional_identifier
+          @mock_controller = Api::V1::RemoveOrganisationsAditionalIdentifierController.new
         end
       end
     end
