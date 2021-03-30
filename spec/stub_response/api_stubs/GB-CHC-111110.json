@@ -1,0 +1,54 @@
+{
+    "id": "GB-CHC-111110",
+    "name": "Charity Example 111110",
+    "charityNumber": "111110",
+    "companyNumber": null,
+    "description": "Charity Example Description",
+    "url": "http://www.example.org.uk",
+    "dateRemoved": null,
+    "active": false,
+    "parent": null,
+    "organisationType": [
+        "Registered Charity",
+        "Registered Charity (England and Wales)"
+    ],
+    "organisationTypePrimary": "Registered Charity",
+    "alternateName": [],
+    "telephone": "07123456789",
+    "email": "example@email.com",
+    "address": {
+        "streetAddress": "123 Example Street",
+        "addressLocality": "Locality",
+        "postalCode": "A1 2BC"
+    },
+    "links": [
+
+        {
+            "site": "Charity Commission England and Wales",
+            "url": "http://www.example.org.uk",
+            "orgid": "GB-CHC-111110"
+        },
+        {
+            "site": "Charity1",
+            "url": "http://www.example.org.uk",
+            "orgid": "GB-CHC-111110"
+        },
+        {
+            "site": "Charity2",
+            "url": "http://www.example.org.uk",
+            "orgid": "GB-CHC-111110"
+        },
+        {
+            "site": "Charity3",
+            "url": "http://www.example.org.uk",
+            "orgid": "GB-CHC-111110"
+        }
+    ],
+    "orgIDs":[ "GB-CHC-111110" ],
+    "linked_records": [
+        {
+            "orgid": "GB-CHC-111110",
+            "url": "http://www.example.org.uk/GB-CHC-111110.json"
+        }
+    ]
+}
