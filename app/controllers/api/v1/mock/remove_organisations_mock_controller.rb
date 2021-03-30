@@ -6,8 +6,13 @@ module Api
 
         def delete_orginisation
           run_mock
-          result = @mock_controller.delete_addtional_identifier
-          response_result(result)
+          result = @mock_controller.delete_orginisation
+
+          if result.blank?
+            render json: '', status: :ok
+          else
+            render json: '', status: :not_found
+          end
         end
 
         def remove_organisations

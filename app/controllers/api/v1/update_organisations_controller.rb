@@ -22,6 +22,11 @@ module Api
         end
       end
 
+      def validate_params
+        validate = ApiValidations::UpdateOrganisation.new(params)
+        render json: validate.errors, status: :bad_request unless validate.valid?
+      end
+
       private
 
       def save_or_update_organisation_scheme
@@ -53,11 +58,6 @@ module Api
         organisation[:active] = true
         organisation.save
         @ccs_org_id = organisation.present? ? params[:ccs_org_id] : nil
-      end
-
-      def validate_params
-        validate = ApiValidations::UpdateOrganisation.new(params)
-        render json: validate.errors, status: :bad_request unless validate.valid?
       end
 
       def return_error_code(code)

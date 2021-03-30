@@ -16,6 +16,11 @@ module Api
         end
       end
 
+      def validate_params
+        validate = ApiValidations::Organisation.new(params)
+        render json: validate.errors, status: :bad_request unless validate.valid?
+      end
+
       private
 
       def search_api
@@ -28,11 +33,6 @@ module Api
       def api_result(scheme_param)
         search_api_with_params = SearchApi.new(scheme_param[:id], scheme_param[:scheme])
         @scheme_result.push(search_api_with_params.call)
-      end
-
-      def validate_params
-        validate = ApiValidations::Organisation.new(params)
-        render json: validate.errors, status: :bad_request unless validate.valid?
       end
 
       def return_error_code(code)
