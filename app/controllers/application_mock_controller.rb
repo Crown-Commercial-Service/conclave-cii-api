@@ -5,7 +5,6 @@ class ApplicationMockController < ActionController::API
   rescue_from ApiValidations::ApiError, with: :return_error_code
   before_action :validate_api_key
   before_action :enable_mock_service
-  after_action :disable_mock_service
   attr_accessor :mock_service, :mock_controller
 
   def run_mock
@@ -15,10 +14,12 @@ class ApplicationMockController < ActionController::API
   end
 
   def return_error_code_http
+    disable_mock_service
     render json: '', status: :not_found
   end
 
   def return_error_code(code)
+    disable_mock_service
     render json: '', status: code.to_s
   end
 
@@ -31,6 +32,7 @@ class ApplicationMockController < ActionController::API
   end
 
   def response_result(result)
+    disable_mock_service
     if result.blank?
       render json: '', status: :not_found
     else

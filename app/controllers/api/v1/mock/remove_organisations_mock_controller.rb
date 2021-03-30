@@ -7,7 +7,7 @@ module Api
         def delete_orginisation
           run_mock
           result = @mock_controller.delete_orginisation
-
+          disable_mock_service
           if result.blank?
             render json: '', status: :ok
           else
