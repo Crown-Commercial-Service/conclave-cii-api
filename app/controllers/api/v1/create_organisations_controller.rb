@@ -22,8 +22,6 @@ module Api
         end
       end
 
-      private
-
       def primary_organisation
         organisation = OrganisationSchemeIdentifier.new
         organisation.scheme_code = @api_result[:identifier][:scheme]

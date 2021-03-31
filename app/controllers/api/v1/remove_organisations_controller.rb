@@ -13,15 +13,15 @@ module Api
         render json: '', status: :bad_request
       end
 
+      def validate_params
+        validate = ApiValidations::ManageRegisteredOrganisation.new(params)
+        render json: validate.errors, status: :bad_request unless validate.valid?
+      end
+
       private
 
       def delete_all_orginsation_ids
         OrganisationSchemeIdentifier.destroy_by(ccs_org_id: params[:ccs_org_id].to_s)
-      end
-
-      def validate_params
-        validate = ApiValidations::ManageRegisteredOrganisation.new(params)
-        render json: validate.errors, status: :bad_request unless validate.valid?
       end
 
       def return_error_code(code)

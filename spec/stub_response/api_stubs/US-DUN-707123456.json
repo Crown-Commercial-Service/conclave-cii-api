@@ -1,9 +1,9 @@
 {
     "organization": {
-        "duns": "500191747",
-        "primaryName": "Digital BUSINESS CCS",
-        "registeredName": "Digital BUSINESS CCS",
-        "defaultCurrency": "GBP",
+        "duns": "707123456",
+        "primaryName": "Company Example 707123456",
+        "registeredName": "Company Example 707123456",
+        "defaultCurrency": "Currency",
         "telephone": [
             {
                 "telephoneNumber": null,
@@ -13,36 +13,29 @@
         ],
         "primaryAddress": {
             "language": {
-                "description": "English",
+                "description": "Language",
                 "dnbCode": 39
             },
             "addressCountry": {
-                "name": "United Kingdom",
-                "isoAlpha2Code": "GB"
+                "name": "Country",
+                "isoAlpha2Code": "CC"
             },
             "continentalRegion": {
-                "name": "Europe"
+                "name": "Continent"
             },
             "addressLocality": {
-                "name": "LONDON"
+                "name": "Locality"
             },
             "minorTownName": null,
             "addressRegion": {},
             "addressCounty": {},
-            "postalCode": "EC2V 7NQ",
+            "postalCode": "AB1C 2DE",
             "postalCodePosition": {},
-            "streetNumber": null,
-            "streetName": null,
+            "streetNumber": 123,
+            "streetName": "Fake Street",
             "streetAddress": {
-                "line1": "1001 Gresham Street",
+                "line1": "123 Fake Street",
                 "line2": null
-            },
-            "postOfficeBox": {},
-            "latitude": 51.51563,
-            "longitude": -0.09366,
-            "geographicalPrecision": {
-                "description": "Postal Code Centroid",
-                "dnbCode": 30258
             },
             "isRegisteredAddress": null,
             "locationOwnership": {},
@@ -51,9 +44,9 @@
         },
         "registrationNumbers": [
             {
-                "registrationNumber": "125656234",
-                "typeDescription": "COMPANIES REGISTRY OFFICE Number (GB)",
-                "typeDnBCode": 2541
+                "registrationNumber": "SC301234",
+                "typeDescription": "The Charity Commission for Scotland",
+                "typeDnBCode": 33461
             }
         ],
         "dunsControlStatus": {
