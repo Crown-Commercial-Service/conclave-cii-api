@@ -15,12 +15,12 @@ module Api
         end
       end
 
-      private
-
       def validate_params
         validate = ApiValidations::ManageRegisteredOrganisation.new(params)
         render json: validate.errors, status: :bad_request unless validate.valid?
       end
+
+      private
 
       def return_error_code(code)
         render json: '', status: code.to_s
