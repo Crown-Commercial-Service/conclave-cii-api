@@ -13,6 +13,11 @@ module Api
         render json: '', status: :bad_request
       end
 
+      def validate_params
+        validate = ApiValidations::RemoveOrganisationAditionalIdentifier.new(params)
+        render json: validate.errors, status: :bad_request unless validate.valid?
+      end
+
       private
 
       def delete_orginsation
@@ -20,11 +25,6 @@ module Api
                                              scheme_org_reg_number: params[:identifier][:id].to_s,
                                              scheme_code: params[:identifier][:scheme].to_s,
                                              primary_scheme: false).destroy
-      end
-
-      def validate_params
-        validate = ApiValidations::RemoveOrganisationAditionalIdentifier.new(params)
-        render json: validate.errors, status: :bad_request unless validate.valid?
       end
 
       def return_error_code(code)

@@ -1,0 +1,58 @@
+{
+    "organization": {
+        "duns": "505123456",
+        "primaryName": "Company Example 505123456",
+        "registeredName": "Company Example 505123456",
+        "defaultCurrency": "Currency",
+        "telephone": [
+            {
+                "telephoneNumber": null,
+                "isdCode": null,
+                "isUnreachable": false
+            }
+        ],
+        "primaryAddress": {
+            "language": {
+                "description": "Language",
+                "dnbCode": 39
+            },
+            "addressCountry": {
+                "name": "Country",
+                "isoAlpha2Code": "CC"
+            },
+            "continentalRegion": {
+                "name": "Continent"
+            },
+            "addressLocality": {
+                "name": "Locality"
+            },
+            "minorTownName": null,
+            "addressRegion": {},
+            "addressCounty": {},
+            "postalCode": "AB1C 2DE",
+            "postalCodePosition": {},
+            "streetNumber": 123,
+            "streetName": "Fake Street",
+            "streetAddress": {
+                "line1": "123 Fake Street",
+                "line2": null
+            },
+            "isRegisteredAddress": null,
+            "locationOwnership": {},
+            "congressionalDistricts": [],
+            "isResidentialAddress": null
+        },
+        "registrationNumbers": [
+            {
+                "registrationNumber": "09012345",
+                "typeDescription": "COMPANIES REGISTRY OFFICE Number (GB)",
+                "typeDnBCode": 2541
+            }
+        ],
+        "dunsControlStatus": {
+            "operatingStatus":{
+                "dnbCode": 9074
+            }
+        }
+    }
+}
