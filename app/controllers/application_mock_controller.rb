@@ -40,8 +40,8 @@ class ApplicationMockController < ActionController::API
     end
   end
 
-  def delete_response_result(result)
+  def delete_endpoint_return(data)
+    render json: data, status: :ok if data.blank?
     disable_mock_service
-    render json: result, status: :ok if result.blank?
   end
 end
