@@ -19,7 +19,8 @@
    "address": {
        "streetAddress": "123 Example Street",
        "addressLocality": "Locality",
-       "postalCode": "A1 2BC"
+       "postalCode": "A1 2BC",
+       "region": "Test Region"
    },
    "sources":[
       "ccew",
@@ -70,7 +71,7 @@
       },
       {
          "orgid":"XI-GRID-grid.123456.1",
-         "url":"http://www.example.org.uk//XI-GRID-grid.123456.1.json"
+         "url":"http://www.example.org.uk/XI-GRID-grid.123456.1.json"
       }
    ]
 }

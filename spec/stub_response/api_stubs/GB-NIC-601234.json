@@ -1,5 +1,5 @@
 {
-    "id": "GB-NIC-601234",
+    "id": "GB-NIC-NIC601234",
     "name": "Charity Example NIC601234",
     "charityNumber": "NIC601234",
     "companyNumber": null,
@@ -27,7 +27,7 @@
     "links": [
  
         {
-            "site": "Charity Commission England and Wales",
+            "site": "Charity Commission Northern Ireland",
             "url": "http://www.example.org.uk",
             "orgid": "GB-NIC-601234"
         },
