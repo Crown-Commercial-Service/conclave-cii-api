@@ -42,8 +42,6 @@ class ApplicationMockController < ActionController::API
 
   def delete_response_result(result)
     disable_mock_service
-    if result.blank?
-      render json: result, status: :ok
-    end
+    render json: result, status: :ok if result.blank?
   end
 end
