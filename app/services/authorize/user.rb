@@ -20,7 +20,7 @@ module Authorize
       decoded_token
     end
 
-    def validate_orginsation_user
+    def validate_organisation_user
       decoded_token = validate_and_decode_token
       ApiValidations::ApiErrorValidationResponse.new(:user_access_unauthorized) unless decoded_token[0]['roles'].include?(ENV['ACCESS_ORGANISATION_ADMIN'])
     end
@@ -39,7 +39,7 @@ module Authorize
       validate_client_id
       validate_user_access_token
       validate_access_token
-      validate_orginsation_user
+      validate_organisation_user
       validate_ccs_org_id
     end
 

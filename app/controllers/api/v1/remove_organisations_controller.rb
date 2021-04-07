@@ -6,8 +6,8 @@ module Api
       before_action :validate_api_key
       before_action :validate_params
 
-      def delete_orginisation
-        delete_all_orginsation_ids
+      def delete_organisation
+        delete_all_organisation_ids
         render json: '', status: :ok
       rescue StandardError
         render json: '', status: :bad_request
@@ -20,7 +20,7 @@ module Api
 
       private
 
-      def delete_all_orginsation_ids
+      def delete_all_organisation_ids
         OrganisationSchemeIdentifier.destroy_by(ccs_org_id: params[:ccs_org_id].to_s)
       end
 
