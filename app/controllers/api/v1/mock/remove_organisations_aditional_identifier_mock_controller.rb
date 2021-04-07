@@ -7,12 +7,7 @@ module Api
         def delete_addtional_identifier
           run_mock
           result = @mock_controller.delete_addtional_identifier
-          disable_mock_service
-          if result.blank?
-            render json: '', status: :ok
-          else
-            render json: '', status: :not_found
-          end
+          delete_response_result(result)
         end
 
         def remove_organisations_aditional_identifier
