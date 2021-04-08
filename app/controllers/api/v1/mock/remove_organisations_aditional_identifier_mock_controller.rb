@@ -7,7 +7,7 @@ module Api
         def delete_addtional_identifier
           run_mock
           result = @mock_controller.delete_addtional_identifier
-          response_result(result)
+          delete_response_result(result)
         end
 
         def remove_organisations_aditional_identifier

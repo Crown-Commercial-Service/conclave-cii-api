@@ -19,7 +19,8 @@
     "address": {
         "streetAddress": "123 Example Street",
         "addressLocality": "Locality",
-        "postalCode": "A1 2BC"
+        "postalCode": "A1 2BC",
+        "addressRegion": "Test Region"
     },
     "links": [
 
