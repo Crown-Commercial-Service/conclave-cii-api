@@ -50,5 +50,18 @@ module Common
     def self.hide_all_ccs_schemes(scheme_id, status)
       scheme_id == Common::AdditionalIdentifier::SCHEME_CCS ? false : status
     end
+
+    def self.bearer_token(request)
+      pattern = /^Bearer /
+      header  = request['Authorization']
+      header.gsub(pattern, '') if header&.match(pattern)
+    end
+
+    def self.decode_token(request)
+      bearer_token_from_header = Common::ApiHelper.bearer_token(request)
+      JWT.decode bearer_token_from_header, nil, false if bearer_token_from_header.present?
+    rescue StandardError
+      {}
+    end
   end
 end
