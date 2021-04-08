@@ -2,7 +2,7 @@
     "id": "GB-CHC-707123",
     "name": "Charity Example 707123",
     "charityNumber": "707123",
-    "companyNumber": "02012345",
+    "companyNumber": "SC201234",
     "description": "Charity Example Description",
     "url": "http://www.example.org.uk",
     "dateRemoved": null,
@@ -45,19 +45,19 @@
             "orgid": "GB-CHC-707123"
         }
     ],
-    "orgIDs":[ "GB-CHC-707123","GB-COH-02012345","GB-SC-SC201234" ],
+    "orgIDs":[ "GB-CHC-707123","GB-SC-SC201234","GB-COH-02012345" ],
     "linked_records": [
         {
             "orgid": "GB-CHC-707123",
             "url": "http://www.example.org.uk/GB-CHC-707123.json"
         },
         {
-            "orgid": "GB-COH-02012345",
-            "url": "http://www.example.org.uk/GB-CHC-02012345.json"
-        },
-        {
             "orgid": "GB-SC-SC201234",
             "url": "http://www.example.org.uk/GB-SC-SC201234.json"
+        },
+        {
+            "orgid": "GB-COH-02012345",
+            "url": "http://www.example.org.uk/GB-CHC-02012345.json"
         }
     ]
 }
