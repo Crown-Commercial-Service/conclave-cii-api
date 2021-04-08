@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe ApiValidations::ApiErrorValidationResponse, type: :model do
-  describe '#call' do
+  xdescribe '#call' do
     context 'when success' do
       it 'does not raise exception' do
         expect { described_class.new(nil).call }.not_to raise_exception

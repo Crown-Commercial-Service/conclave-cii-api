@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::RemoveOrganisationsAditionalIdentifierController, type: :controller do
-  describe 'delete_additional_identifier' do
+  xdescribe 'delete_additional_identifier' do
     context 'when authenticated' do
       before do
         request.headers['Apikey'] = '1B4B9BBC9ADA4EA65E98A9A32F8D4'
