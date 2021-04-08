@@ -45,7 +45,7 @@
             "orgid": "GB-CHC-707123"
         }
     ],
-    "orgIDs":[ "GB-CHC-707123","GB-SC-SC201234","GB-COH-02012345" ],
+    "orgIDs":[ "GB-CHC-707123","GB-SC-SC201234" ],
     "linked_records": [
         {
             "orgid": "GB-CHC-707123",
@@ -54,10 +54,6 @@
         {
             "orgid": "GB-SC-SC201234",
             "url": "http://www.example.org.uk/GB-SC-SC201234.json"
-        },
-        {
-            "orgid": "GB-COH-02012345",
-            "url": "http://www.example.org.uk/GB-CHC-02012345.json"
         }
     ]
 }
