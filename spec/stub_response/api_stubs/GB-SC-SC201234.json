@@ -1,8 +1,8 @@
 {
    "id": "GB-SC-SC201234",
    "name": "Charity Example SC201234",
-   "charityNumber": "SC201234",
-   "companyNumber": null,
+   "charityNumber": null,
+   "companyNumber": "SC201234",
    "description": "Charity Example Description",
    "url": "http://www.example.org.uk",
    "dateRemoved": null,
@@ -49,7 +49,7 @@
        }
    ],
    "orgIDs":[
-      "GB-SC-SC201234"
+      "GB-SC-SC201234","GB-CHC-707123"
    ],
    "linked_records":[
        {
