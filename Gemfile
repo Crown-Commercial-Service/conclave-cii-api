@@ -37,7 +37,7 @@ gem 'flog'
 gem 'vault'
 # error logging
 gem 'rollbar'
-gem 'webmock'
+gem 'webmock', '>= 3.12.1'
 
 group :development, :test do
   gem 'listen', '~> 3.2'
@@ -48,10 +48,10 @@ group :development, :test do
   gem 'dotenv-rails', '>= 2.7.6'
   gem 'i18n-tasks', '>= 0.9.33'
   gem 'rspec-rails', '>= 4.0.2'
-  gem 'rubocop'
-  gem 'rubocop-performance'
-  gem 'rubocop-rails'
-  gem 'rubocop-rspec' # or gem 'rubocop-minitest'
+  gem 'rubocop', '>= 1.12.0'
+  gem 'rubocop-performance', '>= 1.10.2'
+  gem 'rubocop-rails', '>= 2.9.1'
+  gem 'rubocop-rspec' , '>= 2.2.0' # or gem 'rubocop-minitest'
   gem 'brakeman'
   gem 'pry-rails'
   gem 'factory_bot_rails', '>= 6.1.0'
