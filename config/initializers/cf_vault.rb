@@ -3,14 +3,12 @@ require 'rollbar'
 def config_vault
   vcap_services = JSON.parse(ENV['VCAP_SERVICES'])
   key_store_path = ''
-  vault_engine = 'cubbyhole'
   Vault.configure do |config|
     vcap_services['hashicorp-vault'].each do |key, value|
-      key_store_path = "#{vault_engine}/#{ENV['SERVER_ENV_NAME']}"
-      config.address = 'https://dev.vault.ai-cloud.uk:8443/'
+      key_store_path = "#{key['credentials']['backends_shared']['space']}/#{ENV['SERVER_ENV_NAME']}"
+      config.address = key['credentials']['address']
       config.token = key['credentials']['auth']['token']
     end
-
     config.ssl_verify = true
   end
   set_env(key_store_path)
