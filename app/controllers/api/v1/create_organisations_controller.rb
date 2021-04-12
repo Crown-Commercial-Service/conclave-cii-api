@@ -11,7 +11,7 @@ module Api
       def index
         result = search_scheme_api
 
-        # Disabled until we rnew salesforce credentials
+        # Disabled until we renew salesforce credentials
         # result = Salesforce::AdditionalIdentifier.new(result).build_response if result.present?
 
         primary_organisation if result.present?

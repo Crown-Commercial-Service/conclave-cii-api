@@ -11,7 +11,7 @@ module Api
       def index
         result = search_scheme_api
 
-        # Disabled until we rnew salesforce credentials
+        # Disabled until we renew salesforce credentials
         # Common::SalesforceHelper.new(result, params[:ccs_org_id]).insert_salesforce_record if result.present?
 
         save_or_update_organisation_scheme if result.present?
