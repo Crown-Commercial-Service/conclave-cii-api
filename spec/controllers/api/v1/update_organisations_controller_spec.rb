@@ -6,6 +6,64 @@ RSpec.describe Api::V1::UpdateOrganisationsController, type: :controller do
       let(:clientid) { 'validID' }
       let(:ccs_org_id) { nil }
       let(:jwt_token) { JWT.encode({ roles: ENV['ACCESS_ORGANISATION_ADMIN'], ciiOrgId: ccs_org_id }, 'test') }
+      let(:scheme_register) { FactoryBot.create(:scheme_register, scheme_register_code: 'GB-CHC') }
+      let(:organisation_scheme_identifier) { FactoryBot.create(:organisation_scheme_identifier, ccs_org_id: ccs_org_id, scheme_code: scheme_register.scheme_register_code) }
+      let(:response_body) do
+        {
+          id: 'GB-CHC-101123',
+          name: 'Charity Example 101123',
+          charityNumber: '101123',
+          companyNumber: nil,
+          description: 'Charity Example Description',
+          url: 'http://www.example.org.uk',
+          dateRemoved: nil,
+          active: true,
+          parent: nil,
+          organisationType: [
+            'Registered Charity',
+            'Registered Charity (England and Wales)'
+          ],
+          organisationTypePrimary: 'Registered Charity',
+          alternateName: [],
+          telephone: '07123456789',
+          email: 'example@email.com',
+          address: {
+            streetAddress: '123 Example Street',
+            addressLocality: 'Locality',
+            postalCode: 'A1 2BC'
+          },
+          links: [
+
+            {
+              site: 'Charity Commission England and Wales',
+              url: 'http://www.example.org.uk',
+              orgid: 'GB-CHC-101123'
+            },
+            {
+              site: 'Charity1',
+              url: 'http://www.example.org.uk',
+              orgid: 'GB-CHC-101123'
+            },
+            {
+              site: 'Charity2',
+              url: 'http://www.example.org.uk',
+              orgid: 'GB-CHC-101123'
+            },
+            {
+              site: 'Charity3',
+              url: 'http://www.example.org.uk',
+              orgid: 'GB-CHC-101123'
+            }
+          ],
+          orgIDs: ['GB-CHC-101123'],
+          linked_records: [
+            {
+              orgid: 'GB-CHC-101123',
+              url: 'http://www.example.org.uk/GB-CHC-101123.json'
+            }
+          ]
+        }
+      end
 
       before do
         request.headers['Apikey'] = '1B4B9BBC9ADA4EA65E98A9A32F8D4'
@@ -21,17 +79,62 @@ RSpec.describe Api::V1::UpdateOrganisationsController, type: :controller do
             }
           )
           .to_return(status: 200, body: 'true', headers: {})
+        stub_request(:get, "https://findthatcharity.uk/orgid/GB-CHC-#{ccs_org_id}.json")
+          .with(
+            headers: {
+              'Accept' => '*/*',
+              'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+              'User-Agent' => 'Faraday v1.3.0'
+            }
+          )
+          .to_return(status: 200, body: response_body.to_json, headers: {})
       end
 
       context 'when success' do
         let(:ccs_org_id) { '101123' }
-        let(:scheme_register) { FactoryBot.create(:scheme_register, scheme_register_code: 'GB-CHC') }
-        let(:organisation_scheme_identifier) { FactoryBot.create(:organisation_scheme_identifier, ccs_org_id: ccs_org_id, scheme_code: scheme_register.scheme_register_code) }
-        let(:response_body) do
+
+        it 'returns 201' do
+          put :index, params: { ccs_org_id: ccs_org_id, identifier: { id: organisation_scheme_identifier.ccs_org_id, scheme: scheme_register.scheme_register_code }, clientid: clientid }
+          expect(response).to have_http_status(:ok)
+        end
+      end
+
+      context 'when not found' do
+        it 'returns 401' do
+          put :index, params: { ccs_org_id: 'test', identifier: { id: 'test', scheme: 'test' }, clientid: clientid }
+          expect(response).to have_http_status(:unauthorized)
+        end
+      end
+
+      context 'when invalid params' do
+        it 'returns 401' do
+          put :index, params: { ccs_org_id: nil, identifier: { id: nil, scheme: nil }, clientid: clientid }
+          expect(response).to have_http_status(:unauthorized)
+        end
+      end
+
+      context 'when the first identifier cannot be found' do
+        let(:ccs_org_id) { '101123' }
+        let(:ccs_org_id_1) { '101122' }
+        let(:scheme_register_1) { FactoryBot.create(:scheme_register, scheme_register_code: 'GB-CHC') }
+        let(:organisation_scheme_identifier_1) { FactoryBot.create(:organisation_scheme_identifier, ccs_org_id:ccs_org_id_1, scheme_code: scheme_register_1.scheme_register_code) }
+
+        it 'returns 404' do
+          put :index, params: { ccs_org_id: ccs_org_id, identifier: { id: organisation_scheme_identifier_1.ccs_org_id, scheme: organisation_scheme_identifier_1.scheme_code }, clientid: clientid }
+          expect(response).to have_http_status(:not_found)
+        end
+      end
+
+      context 'when duplicate' do
+        let(:ccs_org_id) { '101123' }
+        let(:ccs_org_id_1) { '101122' }
+        let(:scheme_register_1) { FactoryBot.create(:scheme_register, scheme_register_code: 'GB-CHC') }
+        let(:organisation_scheme_identifier_1) { FactoryBot.create(:organisation_scheme_identifier, ccs_org_id:ccs_org_id_1, scheme_code: scheme_register_1.scheme_register_code, scheme_org_reg_number: ccs_org_id_1) }
+        let(:response_body_1) do
           {
-            id: 'GB-CHC-101123',
-            name: 'Charity Example 101123',
-            charityNumber: '101123',
+            id: "GB-CHC-#{ccs_org_id_1}",
+            name: "Charity Example #{ccs_org_id_1}",
+            charityNumber: ccs_org_id_1,
             companyNumber: nil,
             description: 'Charity Example Description',
             url: 'http://www.example.org.uk',
@@ -56,63 +159,49 @@ RSpec.describe Api::V1::UpdateOrganisationsController, type: :controller do
               {
                 site: 'Charity Commission England and Wales',
                 url: 'http://www.example.org.uk',
-                orgid: 'GB-CHC-101123'
+                orgid: 'GB-CHC-'+ccs_org_id_1
               },
               {
                 site: 'Charity1',
                 url: 'http://www.example.org.uk',
-                orgid: 'GB-CHC-101123'
+                orgid: 'GB-CHC-'+ccs_org_id_1
               },
               {
                 site: 'Charity2',
                 url: 'http://www.example.org.uk',
-                orgid: 'GB-CHC-101123'
+                orgid: 'GB-CHC-'+ccs_org_id_1
               },
               {
                 site: 'Charity3',
                 url: 'http://www.example.org.uk',
-                orgid: 'GB-CHC-101123'
+                orgid: 'GB-CHC-'+ccs_org_id_1
               }
             ],
-            orgIDs: ['GB-CHC-101123'],
+            orgIDs: ["GB-CHC-#{ccs_org_id_1}"],
             linked_records: [
               {
-                orgid: 'GB-CHC-101123',
-                url: 'http://www.example.org.uk/GB-CHC-101123.json'
+                orgid: "GB-CHC-#{ccs_org_id_1}",
+                url: "http://www.example.org.uk/GB-CHC-#{ccs_org_id_1}.json"
               }
             ]
           }
         end
 
         before do
-          stub_request(:get, "https://findthatcharity.uk/orgid/GB-CHC-#{ccs_org_id}.json")
-            .with(
+          organisation_scheme_identifier
+          stub_request(:get, "https://findthatcharity.uk/orgid/GB-CHC-#{ccs_org_id_1}.json").
+            with(
               headers: {
-                'Accept' => '*/*',
-                'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-                'User-Agent' => 'Faraday v1.3.0'
-              }
-            )
-            .to_return(status: 200, body: response_body.to_json, headers: {})
+                'Accept'=>'*/*',
+                'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+                'User-Agent'=>'Faraday v1.3.0'
+              }).
+            to_return(status: 200, body: response_body_1.to_json, headers: {})
         end
 
-        it 'returns 201' do
-          put :index, params: { ccs_org_id: ccs_org_id, identifier: { id: organisation_scheme_identifier.ccs_org_id, scheme: scheme_register.scheme_register_code }, clientid: clientid }
-          expect(response).to have_http_status(:ok)
-        end
-      end
-
-      context 'when not found' do
-        it 'returns 401' do
-          put :index, params: { ccs_org_id: 'test', identifier: { id: 'test', scheme: 'test' }, clientid: clientid }
-          expect(response).to have_http_status(:unauthorized)
-        end
-      end
-
-      context 'when invalid params' do
-        it 'returns 401' do
-          put :index, params: { ccs_org_id: nil, identifier: { id: nil, scheme: nil }, clientid: clientid }
-          expect(response).to have_http_status(:unauthorized)
+        it 'returns duplicate' do
+          put :index, params: { ccs_org_id: ccs_org_id, identifier: { id: organisation_scheme_identifier_1.ccs_org_id, scheme: organisation_scheme_identifier_1.scheme_code }, clientid: clientid }
+          expect(response).to have_http_status(405)
         end
       end
     end
