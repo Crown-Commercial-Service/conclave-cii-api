@@ -6,6 +6,8 @@ RSpec.describe Api::V1::RemoveOrganisationsAdditionalIdentifierController, type:
       let(:clientid) { 'validID' }
       let(:ccs_org_id) { nil }
       let(:jwt_token) { JWT.encode({ roles: ENV['ACCESS_ORGANISATION_ADMIN'], ciiOrgId: ccs_org_id }, 'test') }
+      let(:scheme_register) { FactoryBot.create(:scheme_register) }
+      let(:organisation_scheme_identifier) { FactoryBot.create(:organisation_scheme_identifier, scheme_org_reg_number: ccs_org_id, scheme_code: scheme_register.scheme_register_code, ccs_org_id: ccs_org_id, primary_scheme: false) }
 
       before do
         request.headers['Apikey'] = '1B4B9BBC9ADA4EA65E98A9A32F8D4'
@@ -25,8 +27,6 @@ RSpec.describe Api::V1::RemoveOrganisationsAdditionalIdentifierController, type:
 
       context 'when success' do
         let(:ccs_org_id) { '101123' }
-        let(:scheme_register) { FactoryBot.create(:scheme_register) }
-        let(:organisation_scheme_identifier) { FactoryBot.create(:organisation_scheme_identifier, scheme_org_reg_number: ccs_org_id, scheme_code: scheme_register.scheme_register_code, ccs_org_id: ccs_org_id, primary_scheme: false) }
 
         it 'returns 200' do
           delete :delete_additional_identifier, params: { identifier: { id: organisation_scheme_identifier.ccs_org_id, scheme: scheme_register.scheme_register_code }, ccs_org_id: organisation_scheme_identifier.ccs_org_id, clientid: clientid }
@@ -42,9 +42,11 @@ RSpec.describe Api::V1::RemoveOrganisationsAdditionalIdentifierController, type:
       end
 
       context 'when invalid params' do
-        it 'returns 401' do
-          delete :delete_additional_identifier, params: { ccs_org_id: nil, clientid: clientid }
-          expect(response).to have_http_status(:unauthorized)
+        let(:ccs_org_id) { '101123' }
+
+        it 'returns 400' do
+          delete :delete_additional_identifier, params: { ccs_org_id: ccs_org_id, clientid: clientid }
+          expect(response).to have_http_status(:bad_request)
         end
       end
     end
