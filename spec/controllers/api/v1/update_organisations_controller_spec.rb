@@ -115,26 +115,26 @@ RSpec.describe Api::V1::UpdateOrganisationsController, type: :controller do
 
       context 'when the first identifier cannot be found' do
         let(:ccs_org_id) { '101123' }
-        let(:ccs_org_id_1) { '101122' }
-        let(:scheme_register_1) { FactoryBot.create(:scheme_register, scheme_register_code: 'GB-CHC') }
-        let(:organisation_scheme_identifier_1) { FactoryBot.create(:organisation_scheme_identifier, ccs_org_id:ccs_org_id_1, scheme_code: scheme_register_1.scheme_register_code) }
+        let(:ccs_org_id_second) { '101122' }
+        let(:scheme_register_second) { FactoryBot.create(:scheme_register, scheme_register_code: 'GB-CHC') }
+        let(:organisation_scheme_identifier_second) { FactoryBot.create(:organisation_scheme_identifier, ccs_org_id: ccs_org_id_second, scheme_code: scheme_register_second.scheme_register_code) }
 
         it 'returns 404' do
-          put :index, params: { ccs_org_id: ccs_org_id, identifier: { id: organisation_scheme_identifier_1.ccs_org_id, scheme: organisation_scheme_identifier_1.scheme_code }, clientid: clientid }
+          put :index, params: { ccs_org_id: ccs_org_id, identifier: { id: organisation_scheme_identifier_second.ccs_org_id, scheme: organisation_scheme_identifier_second.scheme_code }, clientid: clientid }
           expect(response).to have_http_status(:not_found)
         end
       end
 
       context 'when duplicate' do
         let(:ccs_org_id) { '101123' }
-        let(:ccs_org_id_1) { '101122' }
-        let(:scheme_register_1) { FactoryBot.create(:scheme_register, scheme_register_code: 'GB-CHC') }
-        let(:organisation_scheme_identifier_1) { FactoryBot.create(:organisation_scheme_identifier, ccs_org_id:ccs_org_id_1, scheme_code: scheme_register_1.scheme_register_code, scheme_org_reg_number: ccs_org_id_1) }
-        let(:response_body_1) do
+        let(:ccs_org_id_second) { '101122' }
+        let(:scheme_register_second) { FactoryBot.create(:scheme_register, scheme_register_code: 'GB-CHC') }
+        let(:organisation_scheme_identifier_second) { FactoryBot.create(:organisation_scheme_identifier, ccs_org_id: ccs_org_id_second, scheme_code: scheme_register_second.scheme_register_code, scheme_org_reg_number: ccs_org_id_second) }
+        let(:response_body_second) do
           {
-            id: "GB-CHC-#{ccs_org_id_1}",
-            name: "Charity Example #{ccs_org_id_1}",
-            charityNumber: ccs_org_id_1,
+            id: "GB-CHC-#{ccs_org_id_second}",
+            name: "Charity Example #{ccs_org_id_second}",
+            charityNumber: ccs_org_id_second,
             companyNumber: nil,
             description: 'Charity Example Description',
             url: 'http://www.example.org.uk',
@@ -159,29 +159,29 @@ RSpec.describe Api::V1::UpdateOrganisationsController, type: :controller do
               {
                 site: 'Charity Commission England and Wales',
                 url: 'http://www.example.org.uk',
-                orgid: 'GB-CHC-'+ccs_org_id_1
+                orgid: "GB-CHC-#{ccs_org_id_second}"
               },
               {
                 site: 'Charity1',
                 url: 'http://www.example.org.uk',
-                orgid: 'GB-CHC-'+ccs_org_id_1
+                orgid: "GB-CHC-#{ccs_org_id_second}"
               },
               {
                 site: 'Charity2',
                 url: 'http://www.example.org.uk',
-                orgid: 'GB-CHC-'+ccs_org_id_1
+                orgid: "GB-CHC-#{ccs_org_id_second}"
               },
               {
                 site: 'Charity3',
                 url: 'http://www.example.org.uk',
-                orgid: 'GB-CHC-'+ccs_org_id_1
+                orgid: "GB-CHC-#{ccs_org_id_second}"
               }
             ],
-            orgIDs: ["GB-CHC-#{ccs_org_id_1}"],
+            orgIDs: ["GB-CHC-#{ccs_org_id_second}"],
             linked_records: [
               {
-                orgid: "GB-CHC-#{ccs_org_id_1}",
-                url: "http://www.example.org.uk/GB-CHC-#{ccs_org_id_1}.json"
+                orgid: "GB-CHC-#{ccs_org_id_second}",
+                url: "http://www.example.org.uk/GB-CHC-#{ccs_org_id_second}.json"
               }
             ]
           }
@@ -189,19 +189,20 @@ RSpec.describe Api::V1::UpdateOrganisationsController, type: :controller do
 
         before do
           organisation_scheme_identifier
-          stub_request(:get, "https://findthatcharity.uk/orgid/GB-CHC-#{ccs_org_id_1}.json").
-            with(
+          stub_request(:get, "https://findthatcharity.uk/orgid/GB-CHC-#{ccs_org_id_second}.json")
+            .with(
               headers: {
-                'Accept'=>'*/*',
-                'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-                'User-Agent'=>'Faraday v1.3.0'
-              }).
-            to_return(status: 200, body: response_body_1.to_json, headers: {})
+                'Accept' => '*/*',
+                'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+                'User-Agent' => 'Faraday v1.3.0'
+              }
+            )
+            .to_return(status: 200, body: response_body_second.to_json, headers: {})
         end
 
         it 'returns duplicate' do
-          put :index, params: { ccs_org_id: ccs_org_id, identifier: { id: organisation_scheme_identifier_1.ccs_org_id, scheme: organisation_scheme_identifier_1.scheme_code }, clientid: clientid }
-          expect(response).to have_http_status(405)
+          put :index, params: { ccs_org_id: ccs_org_id, identifier: { id: organisation_scheme_identifier_second.ccs_org_id, scheme: organisation_scheme_identifier_second.scheme_code }, clientid: clientid }
+          expect(response).to have_http_status(:method_not_allowed)
         end
       end
     end
