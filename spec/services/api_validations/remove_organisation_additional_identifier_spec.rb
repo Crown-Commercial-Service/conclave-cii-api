@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe ApiValidations::RemoveOrganisationAditionalIdentifier, type: :model do
+RSpec.describe ApiValidations::RemoveOrganisationAdditionalIdentifier, type: :model do
   describe 'validations' do
     let(:ccs_org_id) { '101123' }
     let(:scheme_register) { FactoryBot.create(:scheme_register, scheme_register_code: 'GB-CHC') }

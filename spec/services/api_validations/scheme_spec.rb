@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe ApiValidations::Scheme, type: :model do
-  xdescribe 'validations' do
+  describe 'validations' do
     let(:scheme_register) { FactoryBot.create(:scheme_register) }
     let(:organisation_scheme_identifier) { FactoryBot.create(:organisation_scheme_identifier, scheme_code: scheme_register.scheme_register_code) }
     let(:organisation_scheme_identifier1) { FactoryBot.create(:organisation_scheme_identifier) }
