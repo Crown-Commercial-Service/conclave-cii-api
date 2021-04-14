@@ -51,7 +51,7 @@ group :development, :test do
   gem 'rubocop', '>= 1.12.0'
   gem 'rubocop-performance', '>= 1.10.2'
   gem 'rubocop-rails', '>= 2.9.1'
-  gem 'rubocop-rspec' , '>= 2.2.0' # or gem 'rubocop-minitest'
+  gem 'rubocop-rspec', '>= 2.2.0' # or gem 'rubocop-minitest'
   gem 'brakeman'
   gem 'pry-rails'
   gem 'factory_bot_rails', '>= 6.1.0'
