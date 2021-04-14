@@ -4,7 +4,7 @@ module Api
       class RemoveOrganisationsMockController < ApplicationMockController
         before_action :remove_organisations
 
-        def delete_orginisation
+        def delete_organisation
           run_mock
           result = @mock_controller.delete_orginisation
           delete_response_result(result)
