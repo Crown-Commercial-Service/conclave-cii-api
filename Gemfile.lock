@@ -305,6 +305,7 @@ DEPENDENCIES
   i18n-tasks (>= 0.9.33)
   jwt
   listen (~> 3.2)
+  mimemagic (~> 0.3.6)
   olive_branch (>= 3.0.0)
   pg (~> 0.18.4)
   pry-rails
