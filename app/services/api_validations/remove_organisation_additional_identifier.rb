@@ -1,5 +1,5 @@
 module ApiValidations
-  class RemoveOrganisationAditionalIdentifier
+  class RemoveOrganisationAdditionalIdentifier
     include ActiveModel::Validations
     include ActiveModel::Validations::Callbacks
 
