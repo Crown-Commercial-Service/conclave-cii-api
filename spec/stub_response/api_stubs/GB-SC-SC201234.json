@@ -1,7 +1,7 @@
 {
    "id": "GB-SC-SC201234",
    "name": "Charity Example SC201234",
-   "charityNumber": null,
+   "charityNumber": "SC201234",
    "companyNumber": "SC201234",
    "description": "Charity Example Description",
    "url": "http://www.example.org.uk",
