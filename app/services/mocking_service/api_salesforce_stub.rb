@@ -43,13 +43,13 @@ module MockingService
     end
 
     def url
-      saleforce_token
+      salesforce_token
       salesforce = Salesforce::Search.new(@params[:id], @params[:scheme])
       url_argument = salesforce.build_arguments
       @api_url = "#{ENV['SALESFORCE_AUTH_URL']}/services/data/v45.0/query?q=SELECT+ID,name,Status__c,Supplier_DUNS_Number__c,Company_Registration_Number__c,Account_URN__c+FROM+account+WHERE+#{url_argument}"
     end
 
-    def saleforce_token
+    def salesforce_token
       token_response = File.read('spec/stub_response/tokens/salesforce_token.json')
       salesforce = Salesforce::Search.new(@params[:id], @params[:scheme])
       salesforce.post_params.inspect

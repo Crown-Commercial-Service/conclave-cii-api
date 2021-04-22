@@ -1,9 +1,9 @@
 module Api
   module V1
     class BuyerRegistrationController < ActionController::API
-      include Authorize::Token
+      include Authorize::IntegrationToken
       rescue_from ApiValidations::ApiError, with: :return_error_code
-      before_action :validate_api_key
+      before_action :validate_integration_key
       before_action :validate_params
 
       attr_accessor :ccs_org_id, :salesforce_result
