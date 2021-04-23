@@ -7,7 +7,7 @@ RSpec.describe Api::V1::RemoveOrganisationsController, type: :controller do
       let(:organisation_scheme_identifier) { FactoryBot.create(:organisation_scheme_identifier, scheme_org_reg_number: ccs_org_id, scheme_code: scheme_register.scheme_register_code, ccs_org_id: ccs_org_id) }
 
       before do
-        request.headers['Apikey'] = '1B4B9BBC9ADA4EA65E98A9A32F8D4'
+        request.headers['Apikey'] = '6348G438RT834GR4827GRO834G8G348RO8238'
       end
 
       context 'when success' do

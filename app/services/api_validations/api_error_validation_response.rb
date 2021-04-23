@@ -8,9 +8,9 @@ module ApiValidations
 
     def call
       case @errors_key
-      when :id, :scheme, :identifier, :organisation, :additional_identifiers, :ccs_org_id
+      when :id, :scheme, :identifier, :organisation, :additional_identifiers, :ccs_org_id, :account_id_type_does_not_exist
         raise_exception(Common::StatusCodes::BAD_REQUEST)
-      when :no_scheme_found, :no_scheme_id_found, :ccs_org_id_not_found, :account_id_type_does_not_exist
+      when :no_scheme_found, :no_scheme_id_found, :ccs_org_id_not_found
         raise_exception(Common::StatusCodes::NOT_FOUND)
       when :duplicate_id
         raise_exception(Common::StatusCodes::DUPLICATE_RESOURCE)
