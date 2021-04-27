@@ -32,20 +32,20 @@ RSpec.describe Api::V1::RegisteredOrganisationsSchemesController, type: :control
           expect(response).to have_http_status(:ok)
         end
       end
+      # Add these back once user authentication is enabled on this route
+      # context 'when not found' do
+      #   it 'returns 401' do
+      #     get :search_organisation, params: { ccs_org_id: 'test', clientid: clientid }
+      #     expect(response).to have_http_status(:unauthorized)
+      #   end
+      # end
 
-      context 'when not found' do
-        it 'returns 401' do
-          get :search_organisation, params: { ccs_org_id: 'test', clientid: clientid }
-          expect(response).to have_http_status(:unauthorized)
-        end
-      end
-
-      context 'when invalid params' do
-        it 'returns 401' do
-          get :search_organisation, params: { ccs_org_id: nil, clientid: clientid }
-          expect(response).to have_http_status(:unauthorized)
-        end
-      end
+      # context 'when invalid params' do
+      #   it 'returns 401' do
+      #     get :search_organisation, params: { ccs_org_id: nil, clientid: clientid }
+      #     expect(response).to have_http_status(:unauthorized)
+      #   end
+      # end
     end
 
     context 'when invalid ApiKey' do

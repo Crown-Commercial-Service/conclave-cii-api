@@ -2,9 +2,9 @@ module Salesforce
   class SalesforceBuyerRegistration < Salesforce::Search
     def build_arguments
       case @scheme_id
-      when Common::SalesforceSearchIds::ID
+      when Common::SalesforceSearchIds::SFID
         salesforce_id
-      when Common::SalesforceSearchIds::URN
+      when Common::SalesforceSearchIds::SFURN
         salesforce_urn
       end
     end
