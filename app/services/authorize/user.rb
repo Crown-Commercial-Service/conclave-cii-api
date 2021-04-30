@@ -5,6 +5,8 @@ module Authorize
     end
 
     def validate_user_access_token
+      logger = Rails.logger
+      logger.info Common::ApiHelper.bearer_token(request.headers)
       ApiValidations::ApiErrorValidationResponse.new(:missing_access_token) if Common::ApiHelper.bearer_token(request.headers).blank?
     end
 
