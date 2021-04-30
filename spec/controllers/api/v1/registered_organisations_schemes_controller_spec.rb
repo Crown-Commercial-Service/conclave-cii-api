@@ -8,7 +8,7 @@ RSpec.describe Api::V1::RegisteredOrganisationsSchemesController, type: :control
 
     context 'when authorized' do
       before do
-        request.headers['Apikey'] = '1B4B9BBC9ADA4EA65E98A9A32F8D4'
+        request.headers['x-api-key'] = '1B4B9BBC9ADA4EA65E98A9A32F8D4'
         request.headers['Authorization'] = "Bearer #{jwt_token}"
         stub_request(:post, "http://www.test.com/security/validate_token?clientid=#{clientid}")
           .with(
@@ -50,7 +50,7 @@ RSpec.describe Api::V1::RegisteredOrganisationsSchemesController, type: :control
 
     context 'when invalid ApiKey' do
       it 'returns 401' do
-        request.headers['Apikey'] = 'invalid'
+        request.headers['x-api-key'] = 'invalid'
         get :search_organisation
         expect(response).to have_http_status(:unauthorized)
       end

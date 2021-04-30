@@ -36,7 +36,7 @@ RSpec.describe 'Stub validations', type: :request do
 
   def request_get_headers
     {
-      'Apikey' => '1B4B9BBC9ADA4EA65E98A9A32F8D4',
+      'x-api-key' => '1B4B9BBC9ADA4EA65E98A9A32F8D4',
       'CONTENT_TYPE' => 'application/json',
       'ACCEPT' => 'application/json'
     }
@@ -44,7 +44,7 @@ RSpec.describe 'Stub validations', type: :request do
 
   def request_post_headers
     {
-      'Apikey' => '1B4B9BBC9ADA4EA65E98A9A32F8D4',
+      'x-api-key' => '1B4B9BBC9ADA4EA65E98A9A32F8D4',
     }
   end
 

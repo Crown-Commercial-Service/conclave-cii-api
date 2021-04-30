@@ -11,11 +11,7 @@ module Authorize
     end
 
     def api_key_to_string
-      if request.headers['x-api-key'].present?
-        request.headers['x-api-key'].to_s
-      elsif request.headers['Apikey'].present?
-        request.headers['Apikey'].to_s
-      end
+      request.headers['x-api-key'].to_s if request.headers['x-api-key'].present?
     end
 
     def authenticate_api_key
