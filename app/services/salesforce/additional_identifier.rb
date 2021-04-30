@@ -9,18 +9,18 @@ module Salesforce
     end
 
     def build_response
-      serch_only_validated_primary
+      search_only_validated_primary
       find_from_additional_identifiers unless @found_record
       @results
     end
 
     private
 
-    def serch_only_validated_primary
+    def search_only_validated_primary
       salesforce_from_primary_scheme if @valid_schemes.include? @results[:identifier][:scheme]
     end
 
-    def serch_only_validated_additional_identifiers(identifier)
+    def search_only_validated_additional_identifiers(identifier)
       salesforce_from_additional_identifiers(identifier[:id], identifier[:scheme]) if @valid_schemes.include? identifier[:scheme]
     end
 
@@ -48,7 +48,7 @@ module Salesforce
 
     def find_from_additional_identifiers
       @results[:additionalIdentifiers].each do |identifier|
-        serch_only_validated_additional_identifiers(identifier) unless @found_record
+        search_only_validated_additional_identifiers(identifier) unless @found_record
       end
     end
 

@@ -1,0 +1,77 @@
+ {
+   "id": "GB-CHC-1012345",
+   "name": "Charity Example 1012345",
+   "charityNumber": "1012345",
+   "companyNumber": null,
+   "description": "Charity Example Description",
+   "url": "http://www.example.org.uk",
+   "dateRemoved": null,
+   "active": true,
+   "parent": null,
+   "organisationType": [
+      "Registered Charity",
+      "Registered Charity (England and Wales)"
+   ],
+   "organisationTypePrimary": "Registered Charity",
+   "alternateName": ["Alt Name A", "Alt Name B"],
+   "telephone": "07123456789",
+   "email": "example@email.com",
+   "address": {
+       "streetAddress": "123 Example Street",
+       "addressLocality": "Locality",
+       "postalCode": "A1 2BC",
+       "region": "Test Region"
+   },
+   "sources":[
+      "ccew",
+      "rom"
+   ],
+   "links": [
+
+       {
+           "site": "Charity Commission England and Wales",
+           "url": "http://www.example.org.uk",
+           "orgid": "GB-CHC-1012345"
+       },
+       {
+           "site": "Charity1",
+           "url": "http://www.example.org.uk",
+           "orgid": "GB-CHC-1012345"
+       },
+       {
+           "site": "Charity2",
+           "url": "http://www.example.org.uk",
+           "orgid": "GB-CHC-1012345"
+       },
+       {
+           "site": "Charity3",
+           "url": "http://www.example.org.uk",
+           "orgid": "GB-CHC-1012345"
+       }
+   ],
+   "orgIDs":[
+      "GB-CHC-1012345"
+   ],
+   "linked_records":[
+      {
+         "orgid":"GB-CHC-1012345",
+         "url":"http://www.example.org.uk/GB-CHC-1012345.json"
+      },
+      {
+         "orgid":"GB-CHC-909123",
+         "url":"http://www.example.org.uk/GB-CHC-909123.json"
+      },
+      {
+         "orgid":"GB-COH-RC000123",
+         "url":"http://www.example.org.uk/GB-COH-RC000123.json"
+      },
+      {
+       "orgid":"GB-SC-SC032345",
+       "url":"http://www.example.org.uk/GB-SC-SC032345.json"
+      },
+      {
+         "orgid":"XI-GRID-grid.123456.1",
+         "url":"http://www.example.org.uk/XI-GRID-grid.123456.1.json"
+      }
+   ]
+}

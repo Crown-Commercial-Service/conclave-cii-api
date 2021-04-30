@@ -7,7 +7,7 @@ module Common
       @ccs_org_id = ccs_org_id
     end
 
-    def fetch_salesfore_record
+    def fetch_salesforce_record
       @results = Salesforce::AdditionalIdentifier.new(@results).build_response if @results.present?
     end
 
@@ -16,7 +16,7 @@ module Common
     end
 
     def insert_salesforce_record
-      fetch_salesfore_record
+      fetch_salesforce_record
       insert_if_not_exists
     end
 

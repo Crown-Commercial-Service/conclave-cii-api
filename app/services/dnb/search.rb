@@ -23,7 +23,7 @@ module Dnb
       params = { productId: 'cmptcs', versionId: 'v1' }
       conn.authorization :Bearer, token['access_token']
       resp = conn.get("/v1/data/duns/#{@duns_number}", params)
-      @result = ActiveSupport::JSON.decode(resp.body)
+      @result = ActiveSupport::JSON.decode(resp.body) if resp.status == 200
 
       if resp.status == 200 && @result.key?('organization') && @result['organization']['dunsControlStatus']['operatingStatus']['dnbCode'] == 9074
         build_response
@@ -36,7 +36,7 @@ module Dnb
       {
         name: name,
         identifier: Dnb::Indentifier.new(@result).build_response,
-        additionalIdentifiers: filter_additional_indentifers,
+        additionalIdentifiers: filter_additional_indentifiers,
         address: Dnb::Address.new(@result).build_response,
         contactPoint: Dnb::Contact.new(@result).build_response
       }
@@ -50,7 +50,7 @@ module Dnb
       @additional_indentifers_list.concat(Common::AdditionalIdentifier.new.filter_dandb_ids(@result['organization']['registrationNumbers'], @duns_number))
     end
 
-    def filter_additional_indentifers
+    def filter_additional_indentifiers
       additional_identifiers
       @additional_indentifers_list.uniq { |identifier| identifier[:id] }
     end

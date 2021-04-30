@@ -2,8 +2,10 @@ module Api
   module V1
     class UpdateOrganisationsController < ActionController::API
       include Authorize::Token
+      include Authorize::User
       rescue_from ApiValidations::ApiError, with: :return_error_code
       before_action :validate_api_key
+      before_action :validate_user
       before_action :validate_params
 
       attr_accessor :ccs_org_id, :api_result
@@ -20,6 +22,11 @@ module Api
         else
           render json: [{ ccs_org_id: @ccs_org_id }], status: :ok
         end
+      end
+
+      def validate_params
+        validate = ApiValidations::UpdateOrganisation.new(params)
+        render json: validate.errors, status: :bad_request unless validate.valid?
       end
 
       private
@@ -53,11 +60,6 @@ module Api
         organisation[:active] = true
         organisation.save
         @ccs_org_id = organisation.present? ? params[:ccs_org_id] : nil
-      end
-
-      def validate_params
-        validate = ApiValidations::UpdateOrganisation.new(params)
-        render json: validate.errors, status: :bad_request unless validate.valid?
       end
 
       def return_error_code(code)
