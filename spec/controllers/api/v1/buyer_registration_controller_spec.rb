@@ -4,7 +4,7 @@ RSpec.describe Api::V1::BuyerRegistrationController, type: :controller do
   describe 'create_buyer' do
     context 'when authorized' do
       before do
-        request.headers['Apikey'] = '6348G438RT834GR4827GRO834G8G348RO8238'
+        request.headers['x-api-key'] = '6348G438RT834GR4827GRO834G8G348RO8238'
         sf_params = {
           'username' => ENV['SALESFORCE_USERNAME'],
           'password' => ENV['SALESFORCE_PASSWORD'] + ENV['SALESFORCE_SECURITY_TOKEN'],
@@ -75,7 +75,7 @@ RSpec.describe Api::V1::BuyerRegistrationController, type: :controller do
 
     context 'when invalid ApiKey' do
       it 'returns 401' do
-        request.headers['Apikey'] = 'invalid'
+        request.headers['x-api-key'] = 'invalid'
         post :create_buyer
         expect(response).to have_http_status(:unauthorized)
       end

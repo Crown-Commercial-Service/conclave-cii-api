@@ -35,7 +35,7 @@ RSpec.describe Api::V1::SchemesController, type: :controller do
 
     context 'when invalid ApiKey' do
       it 'returns 401' do
-        request.headers['Apikey'] = 'invalid'
+        request.headers['x-api-key'] = 'invalid'
         get :schemes
         expect(response).to have_http_status(:unauthorized)
       end

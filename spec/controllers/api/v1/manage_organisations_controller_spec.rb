@@ -116,7 +116,7 @@ RSpec.describe Api::V1::ManageOrganisationsController, type: :controller do
 
     context 'when invalid ApiKey' do
       it 'returns 401' do
-        request.headers['Apikey'] = 'invalid'
+        request.headers['x-api-key'] = 'invalid'
         post :search_organisation
         expect(response).to have_http_status(:unauthorized)
       end
