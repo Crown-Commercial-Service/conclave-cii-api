@@ -43,7 +43,8 @@ module Salesforce
       return unless salesforce_result.present? && @found_record == false
 
       @results[:additionalIdentifiers].push(salesforce_result)
-      @found_record = true    end
+      @found_record = true
+    end
 
     def find_from_additional_identifiers
       @results[:additionalIdentifiers].each do |identifier|
