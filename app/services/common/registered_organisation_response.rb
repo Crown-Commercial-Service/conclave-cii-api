@@ -1,20 +1,20 @@
 module Common
   class RegisteredOrganisationResponse
-    def initialize(ccs_org_id, active: false)
+    def initialize(ccs_org_id, hidden: true)
       super()
       @ccs_org_id = ccs_org_id
-      @results = active.blank? ? search_organisation : search_organisation_all
+      @results = hidden.blank? ? search_organisation : search_organisation_all
       @primary_name = ''
       @primary_identifier = {}
       @additional_identifier = []
     end
 
     def search_organisation
-      OrganisationSchemeIdentifier.select(:scheme_org_reg_number, :scheme_code, :primary_scheme, :uri, :legal_name).where(ccs_org_id: @ccs_org_id).where(active: true)
+      OrganisationSchemeIdentifier.select(:scheme_org_reg_number, :scheme_code, :primary_scheme, :uri, :legal_name).where(ccs_org_id: @ccs_org_id).where(hidden: false)
     end
 
     def search_organisation_all
-      OrganisationSchemeIdentifier.select(:scheme_org_reg_number, :scheme_code, :primary_scheme, :active, :uri, :legal_name).where(ccs_org_id: @ccs_org_id)
+      OrganisationSchemeIdentifier.select(:scheme_org_reg_number, :scheme_code, :primary_scheme, :hidden, :uri, :legal_name).where(ccs_org_id: @ccs_org_id)
     end
 
     def response_payload
@@ -57,13 +57,13 @@ module Common
         uri: uri(indetifier)
       }
 
-      scheme_indetifier[:hidden] = hidden_status(indetifier) if indetifier.attributes.key?('active')
+      scheme_indetifier[:hidden] = hidden_status(indetifier) if indetifier.attributes.key?('hidden')
 
       scheme_indetifier
     end
 
     def hidden_status(indetifier)
-      indetifier.active ? false : true
+      indetifier.hidden ? true : false
     end
 
     def legal_name(indetifier)

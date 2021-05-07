@@ -10,6 +10,6 @@ FactoryBot.define do
       "test#{n}"
     end
     primary_scheme { true }
-    active { true }
+    hidden { false }
   end
 end
