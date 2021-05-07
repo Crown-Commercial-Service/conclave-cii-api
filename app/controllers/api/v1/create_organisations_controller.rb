@@ -30,7 +30,7 @@ module Api
         organisation.legal_name = @api_result[:identifier][:legalName]
         organisation.ccs_org_id = Common::GenerateId.ccs_org_id
         organisation.primary_scheme = true
-        organisation.active = true
+        organisation.hidden = false
         organisation.save
         @ccs_org_id = organisation.ccs_org_id
       end
@@ -43,7 +43,7 @@ module Api
         organisation.legal_name = additional_identifier[:legalName]
         organisation.ccs_org_id = @ccs_org_id
         organisation.primary_scheme = false
-        organisation.active = Common::ApiHelper.hide_all_ccs_schemes(additional_identifier[:scheme], status)
+        organisation.hidden = Common::ApiHelper.hide_all_ccs_schemes(additional_identifier[:scheme], status)
         organisation.save
         organisation.ccs_org_id
       end
