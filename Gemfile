@@ -4,7 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '2.7.2'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.0.3', '>= 6.0.3.5'
+gem 'rails', '~> 6.0.3', '>= 6.0.3.7'
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3', '~> 1.4'
 # Use Puma as the app server
@@ -46,8 +46,8 @@ group :development, :test do
   # gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'dotenv-rails', '>= 2.7.6'
-  gem 'i18n-tasks', '>= 0.9.33'
-  gem 'rspec-rails', '>= 4.0.2'
+  gem 'i18n-tasks', '>= 0.9.34'
+  gem 'rspec-rails', '>= 5.0.1'
   gem 'rubocop', '>= 1.12.0'
   gem 'rubocop-performance', '>= 1.10.2'
   gem 'rubocop-rails', '>= 2.9.1'
