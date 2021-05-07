@@ -43,12 +43,11 @@ module Salesforce
       return unless salesforce_result.present? && @found_record == false
 
       @results[:additionalIdentifiers].push(salesforce_result)
-      @found_record = true unless @results[:identifier][:scheme] == Common::AdditionalIdentifier::SCHEME_COMPANIES_HOUSE || Common::AdditionalIdentifier::SCHEME_DANDB # GB-COH or US-DUN.
-    end
+      @found_record = true    end
 
     def find_from_additional_identifiers
       @results[:additionalIdentifiers].each do |identifier|
-        search_only_validated_additional_identifiers(identifier) unless @found_record
+        search_only_validated_additional_identifiers(identifier)
       end
     end
 
