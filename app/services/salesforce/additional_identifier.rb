@@ -8,7 +8,7 @@ module Salesforce
       @valid_schemes = [Common::AdditionalIdentifier::SCHEME_COMPANIES_HOUSE, Common::AdditionalIdentifier::SCHEME_DANDB]
     end
 
-    def build_response #
+    def build_response
       search_only_validated_primary
       find_from_additional_identifiers unless @found_record
       @results
