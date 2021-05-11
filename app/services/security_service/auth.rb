@@ -10,7 +10,7 @@ module SecurityService
       conn = Faraday.new(url: ENV['SECURITY_SERVICE_URL'])
       conn.authorization :Bearer, @access_token
       resp = conn.post(url, '', { 'Content-Type' => 'application/x-www-form-urlencoded' })
-
+      ApiLogging::Logger.api_status_error('Security Token Validation | method:sec_api_validate_token', resp)
       if resp.status == 200
         true if resp.body == 'true'
       else

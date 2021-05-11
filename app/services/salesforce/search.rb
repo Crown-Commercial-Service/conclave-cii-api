@@ -22,6 +22,7 @@ module Salesforce
       conn = Faraday.new(url: ENV['SALESFORCE_AUTH_URL'])
       params = post_params
       resp = conn.post('/services/oauth2/token', params, { 'Content-Type' => 'application/x-www-form-urlencoded' })
+      ApiLogging::Logger.api_status_error('Salesforce method:fetch_token', resp)
       resp.body
     end
 
@@ -33,6 +34,7 @@ module Salesforce
       conn = Faraday.new(url: ENV['SALESFORCE_AUTH_URL'], request: { params_encoder: Faraday::FlatParamsEncoder })
       conn.authorization :Bearer, token['access_token']
       resp = conn.get(url)
+      ApiLogging::Logger.api_status_error('Salesforce method:fetch_results', resp)
       @result = ActiveSupport::JSON.decode(resp.body) if resp.status == 200
 
       if resp.status == 200 && Common::ApiHelper.exists_or_null(@result['records'][0]).present?
