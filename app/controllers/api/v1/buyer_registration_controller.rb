@@ -32,7 +32,7 @@ module Api
         organisation.legal_name = @api_result[:legalName]
         organisation.ccs_org_id = Common::GenerateId.ccs_org_id
         organisation.primary_scheme = false
-        organisation.active = false
+        organisation.hidden = true
         organisation.save
         @ccs_org_id = organisation.ccs_org_id
       end
