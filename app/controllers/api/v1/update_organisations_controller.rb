@@ -44,7 +44,7 @@ module Api
         organisation[:uri] = @api_result[:identifier][:uri]
         organisation[:legal_name] = @api_result[:identifier][:legalName]
         organisation[:primary_scheme] = organisation[:primary_scheme]
-        organisation[:active] = true
+        organisation[:hidden] = false
         organisation.save
         @ccs_org_id = organisation.present? ? params[:ccs_org_id] : nil
       end
@@ -57,7 +57,7 @@ module Api
         organisation[:uri] = @api_result[:identifier][:uri]
         organisation[:legal_name] = @api_result[:identifier][:legalName]
         organisation[:primary_scheme] = false
-        organisation[:active] = true
+        organisation[:hidden] = false
         organisation.save
         @ccs_org_id = organisation.present? ? params[:ccs_org_id] : nil
       end
