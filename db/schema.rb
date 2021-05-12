@@ -10,9 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_08_122248) do
+ActiveRecord::Schema.define(version: 2021_05_11_175222) do
 
-  # These are extensions that must be enabled in order to support this database.
+  # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
 
@@ -23,7 +23,7 @@ ActiveRecord::Schema.define(version: 2021_03_08_122248) do
     t.boolean "primary_scheme"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.boolean "hidden", default: true
+    t.boolean "hidden", default: false
     t.string "uri", default: ""
     t.string "legal_name", default: ""
     t.index ["ccs_org_id"], name: "index_organisation_scheme_identifiers_on_ccs_org_id"

@@ -34,5 +34,3 @@ def config_rollbar
 end
 
 config_vault if ENV['SERVER_ENV_NAME'].present?
-
-config_rollbar
