@@ -12,6 +12,7 @@ module FindThatCharity
     def fetch_results
       conn = Faraday.new(url: ENV['FINDTHATCHARITY_API_ENDPOINT'])
       resp = conn.get("/orgid/#{@scheme_id}-#{@charity_number}.json")
+      ApiLogging::Logger.api_status_error('Find that Charity | method:fetch_results', resp)
       @result = ActiveSupport::JSON.decode(resp.body) if resp.status == 200
 
       if resp.status == 200 && @result.key?('active') && @result['active'] == true
@@ -27,7 +28,7 @@ module FindThatCharity
       {
         name: name,
         identifier: FindThatCharity::Identifier.new(@scheme_id, @result).build_response,
-        additionalIdentifiers: filter_additional_indentifers,
+        additionalIdentifiers: filter_additional_indentifiers,
         address: FindThatCharity::Address.new(@result).build_response,
         contactPoint: FindThatCharity::Contact.new(@result).build_response
       }
@@ -37,7 +38,7 @@ module FindThatCharity
       additional_identifiers_linked_records if Common::ApiHelper.exists_or_null(@result['linked_records']).present?
     end
 
-    def filter_additional_indentifers
+    def filter_additional_indentifiers
       additional_identifiers
       @additional_indentifers_list.uniq { |identifier| identifier[:id] }
     end

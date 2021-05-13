@@ -1,0 +1,59 @@
+{
+    "id": "GB-CHC-404123",
+    "name": "Charity Example 404123",
+    "charityNumber": "404123",
+    "companyNumber": "04012345",
+    "description": "Charity Example Description",
+    "url": "http://www.example.org.uk",
+    "dateRemoved": null,
+    "active": true,
+    "parent": null,
+    "organisationType": [
+        "Registered Charity",
+        "Registered Charity (England and Wales)"
+    ],
+    "organisationTypePrimary": "Registered Charity",
+    "alternateName": [],
+    "telephone": "07123456789",
+    "email": "example@email.com",
+    "address": {
+        "streetAddress": "123 Example Street",
+        "addressLocality": "Locality",
+        "postalCode": "A1 2BC",
+        "region": "Test Region"
+    },
+    "links": [
+
+        {
+            "site": "Charity Commission England and Wales",
+            "url": "http://www.example.org.uk",
+            "orgid": "GB-CHC-404123"
+        },
+        {
+            "site": "Charity1",
+            "url": "http://www.example.org.uk",
+            "orgid": "GB-CHC-404123"
+        },
+        {
+            "site": "Charity2",
+            "url": "http://www.example.org.uk",
+            "orgid": "GB-CHC-404123"
+        },
+        {
+            "site": "Charity3",
+            "url": "http://www.example.org.uk",
+            "orgid": "GB-CHC-404123"
+        }
+    ],
+    "orgIDs":[ "GB-CHC-404123","GB-SC-SC012345" ],
+    "linked_records": [
+        {
+            "orgid": "GB-CHC-404123",
+            "url": "http://www.example.org.uk/GB-CHC-404123.json"
+        },
+        {
+            "orgid": "GB-SC-SC012345",
+            "url": "http://www.example.org.uk/GB-SC-SC012345.json"
+        }
+    ]
+}
