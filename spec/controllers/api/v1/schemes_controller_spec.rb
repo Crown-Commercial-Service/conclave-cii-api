@@ -4,7 +4,8 @@ RSpec.describe Api::V1::SchemesController, type: :controller do
   describe 'get' do
     context 'when authorized' do
       before do
-        request.headers['x-api-key'] = 'F3CAE7C17E276974E88351712957D'
+        client_registered = FactoryBot.create :client
+        request.headers['x-api-key'] = client_registered.api_key
       end
 
       describe 'GET schemes' do
