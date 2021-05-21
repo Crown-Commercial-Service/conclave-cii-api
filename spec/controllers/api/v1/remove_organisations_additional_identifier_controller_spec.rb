@@ -10,7 +10,8 @@ RSpec.describe Api::V1::RemoveOrganisationsAdditionalIdentifierController, type:
       let(:organisation_scheme_identifier) { FactoryBot.create(:organisation_scheme_identifier, scheme_org_reg_number: ccs_org_id, scheme_code: scheme_register.scheme_register_code, ccs_org_id: ccs_org_id, primary_scheme: false) }
 
       before do
-        request.headers['x-api-key'] = '1B4B9BBC9ADA4EA65E98A9A32F8D4'
+        client_registered = FactoryBot.create :client
+        request.headers['x-api-key'] = client_registered.api_key
         request.headers['Authorization'] = "Bearer #{jwt_token}"
         stub_request(:post, "http://www.test.com/security/validate_token?clientid=#{clientid}")
           .with(
