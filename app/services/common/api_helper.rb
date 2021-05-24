@@ -63,5 +63,10 @@ module Common
     rescue StandardError
       {}
     end
+
+    def self.find_client(api_key_string)
+      client = Client.find_by(api_key: api_key_string.to_s)
+      client.id
+    end
   end
 end

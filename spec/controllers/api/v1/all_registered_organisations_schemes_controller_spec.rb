@@ -22,7 +22,8 @@ RSpec.describe Api::V1::AllRegisteredOrganisationsSchemesController, type: :cont
 
     context 'when authorized' do
       before do
-        request.headers['x-api-key'] = '1B4B9BBC9ADA4EA65E98A9A32F8D4'
+        client_registered = FactoryBot.create :client
+        request.headers['x-api-key'] = client_registered.api_key
         request.headers['Authorization'] = "Bearer #{jwt_token}"
       end
 
