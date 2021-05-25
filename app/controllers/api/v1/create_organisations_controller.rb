@@ -56,7 +56,7 @@ module Api
           if identifier_ids.include? user_params[:id]
             add_additional_identifier(user_params, false)
           else
-            add_additional_identifier(user_params, truegit )
+            add_additional_identifier(user_params, true)
           end
         end
       end
