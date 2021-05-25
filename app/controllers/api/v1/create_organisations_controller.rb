@@ -54,9 +54,9 @@ module Api
         identifier_ids = params[:additional_identifiers].present? ? search_addional_identifiers : []
         @api_result[:additionalIdentifiers].each do |user_params|
           if identifier_ids.include? user_params[:id]
-            add_additional_identifier(user_params, true)
-          else
             add_additional_identifier(user_params, false)
+          else
+            add_additional_identifier(user_params, truegit )
           end
         end
       end
