@@ -48,6 +48,9 @@ module Common
     end
 
     def self.hide_all_ccs_schemes(scheme_id, status)
+      puts
+      puts "heree-->1 #{scheme_id}, #{status}, #{Common::AdditionalIdentifier::SCHEME_CCS}"
+      puts
       scheme_id == Common::AdditionalIdentifier::SCHEME_CCS ? false : status
     end
 
