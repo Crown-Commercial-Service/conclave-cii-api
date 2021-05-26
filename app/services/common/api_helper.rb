@@ -48,7 +48,7 @@ module Common
     end
 
     def self.hide_all_ccs_schemes(scheme_id, status)
-      scheme_id == Common::AdditionalIdentifier::SCHEME_CCS ? false : status
+      scheme_id == Common::AdditionalIdentifier::SCHEME_CCS ? true : status
     end
 
     def self.bearer_token(request)
