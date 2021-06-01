@@ -48,7 +48,7 @@ module Common
     end
 
     def self.hide_all_ccs_schemes(scheme_id, status)
-      scheme_id == Common::AdditionalIdentifier::SCHEME_CCS ? false : status
+      scheme_id == Common::AdditionalIdentifier::SCHEME_CCS ? true : status
     end
 
     def self.bearer_token(request)
@@ -62,6 +62,11 @@ module Common
       JWT.decode bearer_token_from_header, nil, false if bearer_token_from_header.present?
     rescue StandardError
       {}
+    end
+
+    def self.find_client(api_key_string)
+      client = Client.find_by(api_key: api_key_string.to_s)
+      client.id
     end
   end
 end

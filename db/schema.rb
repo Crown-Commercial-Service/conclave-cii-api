@@ -10,11 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_08_122248) do
+ActiveRecord::Schema.define(version: 2021_05_20_005544) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
+
+  create_table "clients", id: :serial, force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.string "api_key", limit: 255
+    t.boolean "active"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "organisation_scheme_identifiers", id: :serial, force: :cascade do |t|
     t.bigint "ccs_org_id"
@@ -23,9 +32,10 @@ ActiveRecord::Schema.define(version: 2021_03_08_122248) do
     t.boolean "primary_scheme"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.boolean "active", default: false
+    t.boolean "hidden", default: false
     t.string "uri", default: ""
     t.string "legal_name", default: ""
+    t.integer "client_id"
     t.index ["ccs_org_id"], name: "index_organisation_scheme_identifiers_on_ccs_org_id"
     t.index ["scheme_code"], name: "index_organisation_scheme_identifiers_on_scheme_code"
     t.index ["scheme_org_reg_number"], name: "index_organisation_scheme_identifiers_on_scheme_org_reg_number", unique: true
@@ -37,7 +47,6 @@ ActiveRecord::Schema.define(version: 2021_03_08_122248) do
     t.string "scheme_uri", limit: 200
     t.string "scheme_identifier"
     t.string "scheme_country_code", limit: 10
-    t.integer "rank"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

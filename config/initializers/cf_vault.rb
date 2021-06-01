@@ -9,7 +9,7 @@ def config_vault
       config.address = key['credentials']['address']
       config.token = key['credentials']['auth']['token']
     end
-    config.ssl_verify = true
+    config.ssl_verify = false
   end
   set_env(key_store_path)
  end
@@ -24,12 +24,13 @@ end
 
 def config_rollbar
   Rollbar.configure do |config|
-    ['development','testing'].each do |env|
+    ['sandbox'].each do |env|
       config.access_token = ENV['ROLLBAR_ACCESS_TOKEN']
       config.environment = env
     end
   end
-  ApiLogging::Logger.info('App Deployed & Rollbar Successfully Configured')
+  Rails.logger.info('App Deployed & Rollbar Successfully Configured')
+  Rollbar.info('App Deployed & Rollbar Successfully Configured')
 end
 
 config_vault if ENV['SERVER_ENV_NAME'].present?
