@@ -39,7 +39,7 @@ module Common
       organisation.legal_name = additional_identifier[:legalName]
       organisation.ccs_org_id = @ccs_org_id
       organisation.primary_scheme = false
-      organisation.hidden = false
+      organisation.hidden = true
       organisation.save
     end
   end

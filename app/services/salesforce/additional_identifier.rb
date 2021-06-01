@@ -48,7 +48,7 @@ module Salesforce
 
     def find_from_additional_identifiers
       @results[:additionalIdentifiers].each do |identifier|
-        search_only_validated_additional_identifiers(identifier)
+        search_only_validated_additional_identifiers(identifier) unless @found_record
       end
     end
 
