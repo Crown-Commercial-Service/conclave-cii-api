@@ -9,7 +9,7 @@ def config_vault
       config.address = key['credentials']['address']
       config.token = key['credentials']['auth']['token']
     end
-    config.ssl_verify = true
+    config.ssl_verify = false
   end
   set_env(key_store_path)
  end
