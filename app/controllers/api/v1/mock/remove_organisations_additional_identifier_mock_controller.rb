@@ -25,9 +25,9 @@ module Api
 
         def delete_organisation
           OrganisationSchemeIdentifier.find_by(ccs_org_id: params[:ccs_org_id].to_s,
-                                              scheme_org_reg_number: params[:identifier][:id].to_s,
-                                              scheme_code: params[:identifier][:scheme].to_s,
-                                              primary_scheme: false).destroy
+                                                scheme_org_reg_number: params[:identifier][:id].to_s,
+                                                scheme_code: params[:identifier][:scheme].to_s,
+                                                primary_scheme: false).destroy
         end
 
         def return_error_code(code)
