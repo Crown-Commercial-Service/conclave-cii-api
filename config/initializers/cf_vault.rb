@@ -2,13 +2,18 @@ require 'rollbar'
 
 def config_vault
   vcap_services = JSON.parse(ENV['VCAP_SERVICES'])
+
   key_store_path = ''
   Vault.configure do |config|
     vcap_services['hashicorp-vault'].each do |key, value|
       key_store_path = "#{key['credentials']['backends_shared']['space']}/#{ENV['SERVER_ENV_NAME']}"
       config.address = key['credentials']['address']
+      key['credentials']['auth']['token'] = ENV['VAULT_TOKEN']
       config.token = key['credentials']['auth']['token']
     end
+
+    
+    ENV['VCAP_SERVICES'] = JSON.generate(vcap_services)
     config.ssl_verify = false
   end
   set_env(key_store_path)
