@@ -13,8 +13,6 @@ module Api
         scheme_result = api_result
         additional_organisation if scheme_result.present?
 
-        if scheme_result[:id] == Common::AdditionalIdentifier::SCHEME_COMPANIES_HOUSE
-
         id_results = search_scheme_api
         coh_scheme_check(id_results)
         all_identifiers if defined?(id_results[:additionalIdentifiers])
