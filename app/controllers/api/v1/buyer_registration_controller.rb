@@ -34,7 +34,7 @@ module Api
             return add_primary_organisation(identifiers) if identifiers[:scheme] == Common::AdditionalIdentifier::SCHEME_COMPANIES_HOUSE
           end
         else
-          add_primary_organisation(id_result[:identifier])
+          add_primary_organisation(id_results[:identifier])
         end
       end
 
