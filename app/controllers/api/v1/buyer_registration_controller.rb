@@ -9,12 +9,15 @@ module Api
       attr_accessor :ccs_org_id, :salesforce_result
 
       def create_buyer
-        id_results = search_scheme_api
-        coh_scheme_check(id_results)
-        all_identifiers if defined?(id_results[:additionalIdentifiers])
 
         scheme_result = api_result
         additional_organisation if scheme_result.present?
+
+        if scheme_result[:id] == Common::AdditionalIdentifier::SCHEME_COMPANIES_HOUSE
+
+        id_results = search_scheme_api
+        coh_scheme_check(id_results)
+        all_identifiers if defined?(id_results[:additionalIdentifiers])
 
         if scheme_result.blank?
           render json: '', status: :not_found
@@ -44,17 +47,16 @@ module Api
         organisation.scheme_org_reg_number = identfier[:id]
         organisation.uri = identfier[:uri]
         organisation.legal_name = identfier[:legalName]
-        organisation.ccs_org_id = Common::GenerateId.ccs_org_id
+        organisation.ccs_org_id = @ccs_org_id
         organisation.primary_scheme = true
         organisation.hidden = false
         organisation.client_id = Common::ApiHelper.find_client(api_key_to_string)
         organisation.save
-        @ccs_org_id = organisation.ccs_org_id
       end
 
       def all_identifiers
         @all_identifier_api_result[:additionalIdentifiers].each do |identfier|
-          additional_organisation(identfier, false)
+          additional_organisation(identfier, false) unless identifier[:scheme] == Common::AdditionalIdentifier::SCHEME_COMPANIES_HOUSE
         end
       end
 
@@ -74,10 +76,11 @@ module Api
         organisation.scheme_org_reg_number = identfier[:id]
         organisation.uri = identfier[:uri]
         organisation.legal_name = identfier[:legalName]
-        organisation.ccs_org_id = @ccs_org_id
+        organisation.ccs_org_id = Common::GenerateId.ccs_org_id
         organisation.primary_scheme = false
         organisation.hidden = hidden
         organisation.save
+        @ccs_org_id = organisation.ccs_org_id
       end
 
       def buyer_exists
@@ -89,6 +92,13 @@ module Api
         search_api_with_params = Salesforce::SalesforceBuyerRegistration.new(params[:account_id], params[:account_id_type])
         search_api_with_params.fetch_results
       end
+
+      # { ^^^^^^^returns^^^^^^^^^
+      #   scheme: Common::AdditionalIdentifier::SCHEME_CCS, "GB-CCS"
+      #   id: salesforce_scheme_id,
+      #   legalName: legal_name,
+      #   uri: uri,
+      # }
 
       def api_result
         @api_result = api_search_result
