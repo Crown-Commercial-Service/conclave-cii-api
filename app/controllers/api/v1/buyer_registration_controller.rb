@@ -31,7 +31,7 @@ module Api
       def coh_scheme_check(id_results)
         if defined?(id_results[:additionalIdentifiers])
           id_result[:additionalIdentifiers].each do |identifiers|
-            add_primary_organisation(identifiers) if identifiers[:scheme] == Common::AdditionalIdentifier::SCHEME_COMPANIES_HOUSE
+            return add_primary_organisation(identifiers) if identifiers[:scheme] == Common::AdditionalIdentifier::SCHEME_COMPANIES_HOUSE
           end
         else
           add_primary_organisation(id_result[:identifier])
