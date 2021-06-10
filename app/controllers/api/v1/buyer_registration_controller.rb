@@ -9,12 +9,13 @@ module Api
       attr_accessor :ccs_org_id, :salesforce_result
 
       def create_buyer
-        scheme_result = api_result
-        additional_organisation if scheme_result.present?
-
+        @
         id_results = search_scheme_api
         coh_scheme_check(id_results)
         all_identifiers if defined?(id_results[:additionalIdentifiers])
+
+        scheme_result = api_result
+        additional_organisation if scheme_result.present?
 
         if scheme_result.blank?
           render json: '', status: :not_found
@@ -29,11 +30,7 @@ module Api
       end
 
       def coh_scheme_check(id_results)
-        return if id_results.blank?
-
-        if id_result[:identifier][:scheme] == Common::AdditionalIdentifier::SCHEME_COMPANIES_HOUSE
-          add_primary_organisation(id_result[:identifier])
-        elsif defined?(id_results[:additionalIdentifiers])
+        if defined?(id_results[:additionalIdentifiers])
           id_result[:additionalIdentifiers].each do |identifiers|
             add_primary_organisation(identifiers) if identifiers[:scheme] == Common::AdditionalIdentifier::SCHEME_COMPANIES_HOUSE
           end
