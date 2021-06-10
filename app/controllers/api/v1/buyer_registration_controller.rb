@@ -67,7 +67,7 @@ module Api
         additional_identifier_search_api_with_params.call
       end
 
-      def additional_organisation(identfier = @api_result, hidden = true)
+      def additional_organisation(identfier = @api_result, hidden: true)
         buyer_exists
         organisation = OrganisationSchemeIdentifier.new
         organisation.scheme_code = identfier[:scheme]
