@@ -9,7 +9,6 @@ module Api
       attr_accessor :ccs_org_id, :salesforce_result
 
       def create_buyer
-        @
         id_results = search_scheme_api
         coh_scheme_check(id_results)
         all_identifiers if defined?(id_results[:additionalIdentifiers])
