@@ -14,9 +14,7 @@ module Api
 
         coh_scheme_check if @companies_and_or_duns_ids.any?
 
-        additional_organisation(@salesforce_api_result, true) if @salesforce_api_result.present?
-
-        if @salesforce_api_result.blank? || @companies_and_or_duns_ids.none?
+        if @salesforce_api_result.blank?
           render json: '', status: :not_found
         else
           render json: { ccs_org_id: @ccs_org_id }
@@ -33,16 +31,22 @@ module Api
       end
 
       def coh_scheme_check
-        duns_api_results = api_search_result(@companies_and_or_duns_ids[0], Common::AdditionalIdentifier::SCHEME_DANDB)
+        duns_api_results = api_search_result(@companies_and_or_duns_ids[0], Common::AdditionalIdentifier::SCHEME_DANDB) || false
+
+        return unless duns_api_results
 
         if @companies_and_or_duns_ids.length == 2
-          coh_api_results = api_search_result(@companies_and_or_duns_ids[1], Common::AdditionalIdentifier::SCHEME_COMPANIES_HOUSE)
+          coh_api_results = api_search_result(@companies_and_or_duns_ids[1], Common::AdditionalIdentifier::SCHEME_COMPANIES_HOUSE) || false
+
+          return unless coh_api_results
+
           primary_organisation(coh_api_results[:identfier])
           additional_organisation(duns_api_results[:identifier], false)
         else
           primary_organisation(duns_api_results[:identifier])
           add_additional_identifiers(duns_api_results[:additionalIdentifiers])
         end
+        additional_organisation(@salesforce_api_result, true) if @salesforce_api_result.present?
       end
 
       def primary_organisation(identfier)
