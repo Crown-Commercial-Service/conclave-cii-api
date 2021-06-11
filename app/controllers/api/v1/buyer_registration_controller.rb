@@ -10,11 +10,10 @@ module Api
       attr_accessor :ccs_org_id, :salesforce_result
 
       def create_buyer
-
         salesforce_api_search
 
         coh_scheme_check if @companies_and_or_duns_ids.any?
-        
+
         additional_organisation(@salesforce_api_result) if @salesforce_api_result.present?
 
         if @salesforce_api_result.blank? || @companies_and_or_duns_ids.blank?
@@ -34,10 +33,10 @@ module Api
       end
 
       def coh_scheme_check
-        duns_api_results = api_search_result(@companies_and_or_duns_ids[0] ,Common::AdditionalIdentifier::SCHEME_DANDB)
+        duns_api_results = api_search_result(@companies_and_or_duns_ids[0], Common::AdditionalIdentifier::SCHEME_DANDB)
 
         if @companies_and_or_duns_ids.length == 2
-          coh_api_results = api_search_result(@companies_and_or_duns_ids[1] ,Common::AdditionalIdentifier::SCHEME_COMPANIES_HOUSE)
+          coh_api_results = api_search_result(@companies_and_or_duns_ids[1], Common::AdditionalIdentifier::SCHEME_COMPANIES_HOUSE)
           primary_organisation(coh_api_results[:identfier])
           additional_organisation(duns_api_results[:identifier], false)
         else
