@@ -9,7 +9,7 @@
             },
             "Id": "NSO7IUSHF98HFP9WEH9XVR",
             "Name": "Dummy organisation",
-            "Supplier_DUNS_Number__c": "999123456",
+            "Supplier_DUNS_Number__c": "",
             "Company_Registration_Number__c": "09212345",
             "Account_URN__c": "56734565567"
         }
