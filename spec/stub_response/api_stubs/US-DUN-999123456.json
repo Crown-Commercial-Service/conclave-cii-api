@@ -44,9 +44,14 @@
         },
         "registrationNumbers": [
             {
-                "registrationNumber": "09912345",
+                "registrationNumber": "09212345",
                 "typeDescription": "COMPANIES REGISTRY OFFICE Number (GB)",
                 "typeDnBCode": 2541
+            },
+            {
+                "registrationNumber": "999123",
+                "typeDescription": "Charity Commission for England & Wales Charity Number (GB)",
+                "typeDnBCode": 33463
             }
         ],
         "dunsControlStatus": {

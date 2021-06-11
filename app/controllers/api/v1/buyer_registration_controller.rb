@@ -62,7 +62,6 @@ module Api
           primary_organisation(duns_api_results[:identifier])
           add_additional_identifiers(duns_api_results[:additionalIdentifiers])
         end
-        true
       end
 
       def add_additional_identifiers(additional_identifiers)
