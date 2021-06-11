@@ -5,19 +5,19 @@ module Api
       rescue_from ApiValidations::ApiError, with: :return_error_code
       before_action :validate_integration_key
       before_action :validate_params
+      before_action :create_ccs_org_id
 
       attr_accessor :ccs_org_id, :salesforce_result
 
       def create_buyer
 
-        scheme_result = api_result
-        additional_organisation if scheme_result.present?
+        salesforce_api_search
 
-        id_results = search_scheme_api
-        coh_scheme_check(id_results)
-        all_identifiers if defined?(id_results[:additionalIdentifiers])
+        coh_scheme_check if @companies_and_or_duns_ids.any?
+        
+        additional_organisation(@salesforce_api_result) if @salesforce_api_result.present?
 
-        if scheme_result.blank?
+        if @salesforce_api_result.blank? || @companies_and_or_duns_ids.blank?
           render json: '', status: :not_found
         else
           render json: { ccs_org_id: @ccs_org_id }
@@ -29,17 +29,24 @@ module Api
         render json: validate.errors, status: :bad_request unless validate.valid?
       end
 
-      def coh_scheme_check(id_results)
-        if defined?(id_results[:additionalIdentifiers])
-          id_result[:additionalIdentifiers].each do |identifiers|
-            return add_primary_organisation(identifiers) if identifiers[:scheme] == Common::AdditionalIdentifier::SCHEME_COMPANIES_HOUSE
-          end
+      def create_ccs_org_id
+        @ccs_org_id = Common::GenerateId.ccs_org_id
+      end
+
+      def coh_scheme_check
+        duns_api_results = api_search_result(@companies_and_or_duns_ids[0] ,Common::AdditionalIdentifier::SCHEME_DANDB)
+
+        if @companies_and_or_duns_ids.length == 2
+          coh_api_results = api_search_result(@companies_and_or_duns_ids[1] ,Common::AdditionalIdentifier::SCHEME_COMPANIES_HOUSE)
+          primary_organisation(coh_api_results[:identfier])
+          additional_organisation(duns_api_results[:identifier], false)
         else
-          add_primary_organisation(id_results[:identifier])
+          primary_organisation(duns_api_results[:identifier])
+          add_additional_identifiers(duns_api_results[:additionalIdentifiers])
         end
       end
 
-      def add_primary_organisation(identfier)
+      def primary_organisation(identfier)
         organisation = OrganisationSchemeIdentifier.new
         organisation.scheme_code = identfier[:scheme]
         organisation.scheme_org_reg_number = identfier[:id]
@@ -52,54 +59,39 @@ module Api
         organisation.save
       end
 
-      def all_identifiers
-        @all_identifier_api_result[:additionalIdentifiers].each do |identfier|
-          additional_organisation(identfier, false) unless identifier[:scheme] == Common::AdditionalIdentifier::SCHEME_COMPANIES_HOUSE
+      def add_additional_identifiers(additional_identifiers)
+        additional_identifiers.each do |identfier|
+          additional_organisation(identfier, false)
         end
       end
 
-      def search_scheme_api
-        @all_identifier_api_result = all_identifier_api_search_result
-      end
-
-      def all_identifier_api_search_result
-        additional_identifier_search_api_with_params = SearchApi.new(params[:account_id], params[:account_id_type])
+      def api_search_result(id, scheme)
+        additional_identifier_search_api_with_params = SearchApi.new(id, scheme)
         additional_identifier_search_api_with_params.call
       end
 
-      def additional_organisation(identfier = @api_result, hidden: true)
+      def additional_organisation(identfier, hidden)
         buyer_exists
         organisation = OrganisationSchemeIdentifier.new
         organisation.scheme_code = identfier[:scheme]
         organisation.scheme_org_reg_number = identfier[:id]
         organisation.uri = identfier[:uri]
         organisation.legal_name = identfier[:legalName]
-        organisation.ccs_org_id = Common::GenerateId.ccs_org_id
+        organisation.ccs_org_id = @ccs_org_id
         organisation.primary_scheme = false
         organisation.hidden = hidden
         organisation.save
-        @ccs_org_id = organisation.ccs_org_id
       end
 
       def buyer_exists
-        validate = ApiValidations::BuyerExists.new(@api_result)
+        validate = ApiValidations::BuyerExists.new(@salesforce_api_result)
         render json: validate.errors, status: :method_not_allowed unless validate.valid?
       end
 
-      def api_search_result
+      def salesforce_api_search
         search_api_with_params = Salesforce::SalesforceBuyerRegistration.new(params[:account_id], params[:account_id_type])
-        search_api_with_params.fetch_results
-      end
-
-      # { ^^^^^^^returns^^^^^^^^^
-      #   scheme: Common::AdditionalIdentifier::SCHEME_CCS, "GB-CCS"
-      #   id: salesforce_scheme_id,
-      #   legalName: legal_name,
-      #   uri: uri,
-      # }
-
-      def api_result
-        @api_result = api_search_result
+        @salesforce_api_result = search_api_with_params.fetch_results
+        @companies_and_or_duns_ids = search_api_with_params.results
       end
 
       def return_error_code(code)

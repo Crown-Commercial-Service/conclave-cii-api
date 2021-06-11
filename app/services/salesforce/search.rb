@@ -44,6 +44,15 @@ module Salesforce
       end
     end
 
+    def results
+      return false if Common::ApiHelper.exists_or_null(@result['records'][0]).present?
+      if @result['records'][0].key?('Company_Registration_Number__c')
+        [  @result['records'][0]['Supplier_DUNS_Number__c'], @result['records'][0]['Company_Registration_Number__c']  ]
+      else
+        [  @result['records'][0]['Supplier_DUNS_Number__c']  ]
+      end
+    end
+
     def response_payload
       {
         scheme: Common::AdditionalIdentifier::SCHEME_CCS,
