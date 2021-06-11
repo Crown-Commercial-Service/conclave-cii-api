@@ -12,7 +12,9 @@ module Api
       def create_buyer
         salesforce_api_search
 
-        coh_scheme_check if @companies_and_or_duns_ids.any?
+        add_schemes = coh_scheme_check if @companies_and_or_duns_ids.any?
+
+        additional_organisation(@salesforce_api_result, true) if @salesforce_api_result.present?
 
         if @salesforce_api_result.blank?
           render json: '', status: :not_found
@@ -42,15 +44,20 @@ module Api
         api_search_result(id, scheme) || false
       end
 
+      def api_search_result(id, scheme)
+        additional_identifier_search_api_with_params = SearchApi.new(id, scheme)
+        additional_identifier_search_api_with_params.call
+      end
+
       def coh_scheme_check
         duns_api_results = duns_api_query
 
-        return unless duns_api_results
+        return false unless duns_api_results
 
         if @companies_and_or_duns_ids.length == 2
           coh_api_results = coh_api_query
 
-          return unless coh_api_results
+          return false unless coh_api_results
 
           primary_organisation(coh_api_results[:identfier])
           additional_organisation(duns_api_results[:identifier], false)
@@ -58,7 +65,13 @@ module Api
           primary_organisation(duns_api_results[:identifier])
           add_additional_identifiers(duns_api_results[:additionalIdentifiers])
         end
-        additional_organisation(@salesforce_api_result, true) if @salesforce_api_result.present?
+        true
+      end
+
+      def add_additional_identifiers(additional_identifiers)
+        additional_identifiers.each do |identfier|
+          additional_organisation(identfier, false)
+        end
       end
 
       def primary_organisation(identfier)
@@ -72,17 +85,6 @@ module Api
         organisation.hidden = false
         organisation.client_id = Common::ApiHelper.find_client(api_key_to_string)
         organisation.save
-      end
-
-      def add_additional_identifiers(additional_identifiers)
-        additional_identifiers.each do |identfier|
-          additional_organisation(identfier, false)
-        end
-      end
-
-      def api_search_result(id, scheme)
-        additional_identifier_search_api_with_params = SearchApi.new(id, scheme)
-        additional_identifier_search_api_with_params.call
       end
 
       def additional_organisation(identfier, hidden)
