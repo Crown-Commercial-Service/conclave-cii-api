@@ -30,17 +30,25 @@ module Api
         @ccs_org_id = Common::GenerateId.ccs_org_id
       end
 
-      def coh_scheme_check
+      def duns_api_query
         scheme = Common::AdditionalIdentifier::SCHEME_DANDB
         id = @companies_and_or_duns_ids[0]
-        duns_api_results = api_search_result(id, scheme) || false
+        api_search_result(id, scheme) || false
+      end
+
+      def coh_api_query
+        scheme = Common::AdditionalIdentifier::SCHEME_COMPANIES_HOUSE
+        id = @companies_and_or_duns_ids[1]
+        api_search_result(id, scheme) || false
+      end
+
+      def coh_scheme_check
+        duns_api_results = duns_api_query
 
         return unless duns_api_results
 
         if @companies_and_or_duns_ids.length == 2
-          scheme = Common::AdditionalIdentifier::SCHEME_COMPANIES_HOUSE
-          id = @companies_and_or_duns_ids[1]
-          coh_api_results = api_search_result(id, scheme) || false
+          coh_api_results = coh_api_query
 
           return unless coh_api_results
 
