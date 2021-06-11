@@ -31,12 +31,16 @@ module Api
       end
 
       def coh_scheme_check
-        duns_api_results = api_search_result(@companies_and_or_duns_ids[0], Common::AdditionalIdentifier::SCHEME_DANDB) || false
+        scheme = Common::AdditionalIdentifier::SCHEME_DANDB
+        id = @companies_and_or_duns_ids[0]
+        duns_api_results = api_search_result(id, scheme) || false
 
         return unless duns_api_results
 
         if @companies_and_or_duns_ids.length == 2
-          coh_api_results = api_search_result(@companies_and_or_duns_ids[1], Common::AdditionalIdentifier::SCHEME_COMPANIES_HOUSE) || false
+          scheme = Common::AdditionalIdentifier::SCHEME_COMPANIES_HOUSE
+          id = @companies_and_or_duns_ids[1]
+          coh_api_results = api_search_result(id, scheme) || false
 
           return unless coh_api_results
 
