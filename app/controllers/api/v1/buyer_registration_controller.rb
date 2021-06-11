@@ -16,7 +16,7 @@ module Api
 
         additional_organisation(@salesforce_api_result) if @salesforce_api_result.present?
 
-        if @salesforce_api_result.blank? || @companies_and_or_duns_ids.blank?
+        if @salesforce_api_result.blank? || @companies_and_or_duns_ids.none?
           render json: '', status: :not_found
         else
           render json: { ccs_org_id: @ccs_org_id }

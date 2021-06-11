@@ -45,9 +45,9 @@ module Salesforce
     end
 
     def results
-      if @result['records'][0].key?('Company_Registration_Number__c')
+      if @result['records'][0].respond_to?('Company_Registration_Number__c')
         [@result['records'][0]['Supplier_DUNS_Number__c'], @result['records'][0]['Company_Registration_Number__c']]
-      elsif @result['records'][0].key?('Supplier_DUNS_Number__c')
+      elsif @result['records'][0].respond_to?('Supplier_DUNS_Number__c')
         [@result['records'][0]['Supplier_DUNS_Number__c']]
       else
         []
