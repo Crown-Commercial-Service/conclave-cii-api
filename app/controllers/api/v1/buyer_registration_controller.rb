@@ -54,7 +54,7 @@ module Api
 
         if @companies_and_or_duns_ids.length == 2
           coh_api_results = coh_api_query
-
+          return unless coh_api_results
           primary_organisation(coh_api_results[:identfier])
           additional_organisation(duns_api_results[:identifier], false)
         else

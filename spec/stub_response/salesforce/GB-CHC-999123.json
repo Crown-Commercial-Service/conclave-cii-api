@@ -1,0 +1,17 @@
+{
+    "totalSize": 1,
+    "done": true,
+    "records": [
+        {
+            "attributes": {
+                "type": "Account",
+                "url": "/services/data/v46.0/subjects/Accout/NSO7IUSHF98HFP9WEH9XVR"
+            },
+            "Id": "NSO7IUSHF98HFP9WEH9XVR",
+            "Name": "Dummy organisation",
+            "Supplier_DUNS_Number__c": "999123456",
+            "Company_Registration_Number__c": "09212345",
+            "Account_URN__c": "56734565567"
+        }
+    ]
+}

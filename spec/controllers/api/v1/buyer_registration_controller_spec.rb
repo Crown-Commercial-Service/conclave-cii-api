@@ -13,10 +13,10 @@ RSpec.describe Api::V1::BuyerRegistrationController, type: :controller do
           'client_secret' => ENV['SALESFORCE_CLIENT_SECRET']
         }
         token_response = File.read('spec/stub_response/tokens/salesforce_token.json')
-        sf_response = File.read('spec/stub_response/salesforce/GB-CHC-101123.json')
+        sf_response = File.read('spec/stub_response/salesforce/GB-CHC-999123.json')
 
-        valid_id = 'NSO7IUSHF98HFP9WEH9FFG'
-        invalid_id = 'NSO7IUSHF98HFP9WEH9FFH'
+        valid_id = 'NSO7IUSHF98HFP9WEH9XVR'
+        invalid_id = 'NSO7IUSHF98HFP9WEH9XVS'
 
         stub_request(:post, "#{ENV['SALESFORCE_AUTH_URL']}/services/oauth2/token")
           .with(
@@ -53,21 +53,21 @@ RSpec.describe Api::V1::BuyerRegistrationController, type: :controller do
 
       context 'when success' do
         it 'returns 200' do
-          post :create_buyer, params: { account_id_type: 'sfid', account_id: 'NSO7IUSHF98HFP9WEH9FFG' }
+          post :create_buyer, params: { account_id_type: 'sfid', account_id: 'NSO7IUSHF98HFP9WEH9XVR' }
           expect(response).to have_http_status(:ok)
         end
       end
 
       context 'when not found' do
         it 'returns 404' do
-          post :create_buyer, params: { account_id_type: 'sfid', account_id: 'NSO7IUSHF98HFP9WEH9FFH' }
+          post :create_buyer, params: { account_id_type: 'sfid', account_id: 'NSO7IUSHF98HFP9WEH9XVS' }
           expect(response).to have_http_status(:not_found)
         end
       end
 
       context 'when invalid params' do
         it 'returns 400' do
-          post :create_buyer, params: { account_id_type: 'sfurd', account_id: 'NSO7IUSHF98HFP9WEH9FFG' }
+          post :create_buyer, params: { account_id_type: 'sfurd', account_id: 'NSO7IUSHF98HFP9WEH9XVR' }
           expect(response).to have_http_status(:bad_request)
         end
       end

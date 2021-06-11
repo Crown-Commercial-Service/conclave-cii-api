@@ -1,8 +1,8 @@
 {
-    "id": "GB-CHC-505123",
-    "name": "Charity Example 505123",
-    "charityNumber": "505123",
-    "companyNumber": "08012345",
+    "id": "GB-CHC-999123",
+    "name": "Charity Example 999123",
+    "charityNumber": "999123",
+    "companyNumber": "09212345",
     "description": "Charity Example Description",
     "url": "http://www.example.org.uk",
     "dateRemoved": null,
@@ -27,37 +27,37 @@
         {
             "site": "Charity Commission England and Wales",
             "url": "http://www.example.org.uk",
-            "orgid": "GB-CHC-505123"
+            "orgid": "GB-CHC-999123"
         },
         {
             "site": "Charity1",
             "url": "http://www.example.org.uk",
-            "orgid": "GB-CHC-505123"
+            "orgid": "GB-CHC-999123"
         },
         {
             "site": "Charity2",
             "url": "http://www.example.org.uk",
-            "orgid": "GB-CHC-505123"
+            "orgid": "GB-CHC-999123"
         },
         {
             "site": "Charity3",
             "url": "http://www.example.org.uk",
-            "orgid": "GB-CHC-505123"
+            "orgid": "GB-CHC-999123"
         }
     ],
-    "orgIDs":[ "GB-CHC-505123","GB-COH-08012345","GB-SC-SC022345" ],
+    "orgIDs":[ "GB-CHC-999123", "GB-COH-09212345", "US-DUN-999123456" ],
     "linked_records": [
         {
-            "orgid": "GB-CHC-505123",
-            "url": "http://www.example.org.uk/GB-CHC-505123.json"
+            "orgid": "GB-CHC-999123",
+            "url": "http://www.example.org.uk/GB-CHC-999123.json"
         },
         {
-            "orgid": "GB-COH-08012345",
-            "url": "http://www.example.org.uk/GB-COH-08012345.json"
+            "orgid": "GB-COH-09212345",
+            "url": "http://www.example.org.uk/GB-COH-09212345.json"
         },
         {
-            "orgid": "GB-SC-SC022345",
-            "url": "http://www.example.org.uk/GB-SC-SC022345.json"
+            "orgid": "US-DUN-999123456",
+            "url": "http://www.example.org.uk/US-DUN-999123456.json"
         }
     ]
 }
