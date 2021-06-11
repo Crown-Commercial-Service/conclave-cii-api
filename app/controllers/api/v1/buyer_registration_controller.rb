@@ -14,7 +14,7 @@ module Api
 
         coh_scheme_check if @companies_and_or_duns_ids.any?
 
-        additional_organisation(@salesforce_api_result) if @salesforce_api_result.present?
+        additional_organisation(@salesforce_api_result, true) if @salesforce_api_result.present?
 
         if @salesforce_api_result.blank? || @companies_and_or_duns_ids.none?
           render json: '', status: :not_found
@@ -90,7 +90,7 @@ module Api
       def salesforce_api_search
         search_api_with_params = Salesforce::SalesforceBuyerRegistration.new(params[:account_id], params[:account_id_type])
         @salesforce_api_result = search_api_with_params.fetch_results
-        @companies_and_or_duns_ids = search_api_with_params.results
+        @companies_and_or_duns_ids = search_api_with_params.fetch_results.results
       end
 
       def return_error_code(code)
