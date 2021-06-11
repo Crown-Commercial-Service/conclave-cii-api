@@ -90,7 +90,7 @@ module Api
       def salesforce_api_search
         search_api_with_params = Salesforce::SalesforceBuyerRegistration.new(params[:account_id], params[:account_id_type])
         @salesforce_api_result = search_api_with_params.fetch_results
-        @companies_and_or_duns_ids = search_api_with_params.fetch_results.results
+        @companies_and_or_duns_ids = search_api_with_params.results
       end
 
       def return_error_code(code)
