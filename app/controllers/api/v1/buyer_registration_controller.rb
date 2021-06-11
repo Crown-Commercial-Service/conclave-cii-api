@@ -12,7 +12,7 @@ module Api
       def create_buyer
         salesforce_api_search
 
-        add_schemes = coh_scheme_check if @companies_and_or_duns_ids.any?
+        coh_scheme_check if @companies_and_or_duns_ids.any?
 
         additional_organisation(@salesforce_api_result, true) if @salesforce_api_result.present?
 
