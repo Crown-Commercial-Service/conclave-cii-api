@@ -11,7 +11,6 @@ module Api
 
       def create_buyer
         salesforce_api_search
-        buyer_exists
 
         create_organisation = coh_scheme_check if @companies_and_or_duns_ids.any?
 
@@ -110,6 +109,7 @@ module Api
         search_api_with_params = Salesforce::SalesforceBuyerRegistration.new(params[:account_id], params[:account_id_type])
         @salesforce_api_result = search_api_with_params.fetch_results
         @companies_and_or_duns_ids = search_api_with_params.results
+        buyer_exists
       end
 
       def return_error_code(code)
