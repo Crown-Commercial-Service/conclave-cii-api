@@ -11,12 +11,13 @@ module Api
 
       def create_buyer
         salesforce_api_search
+        buyer_exists
 
-        coh_scheme_check if @companies_and_or_duns_ids.any?
+        create_organisation = coh_scheme_check if @companies_and_or_duns_ids.any?
 
-        additional_organisation(@salesforce_api_result, true) if @salesforce_api_result.present?
+        additional_organisation(@salesforce_api_result, true) if @salesforce_api_result.present? && create_organisation
 
-        if @salesforce_api_result.blank?
+        if @salesforce_api_result.blank? || !create_organisation
           render json: '', status: :not_found
         else
           render json: { ccs_org_id: @ccs_org_id }
@@ -51,45 +52,49 @@ module Api
 
       def coh_scheme_check
         duns_api_results = duns_api_query
+        return false unless duns_api_results
 
         if @companies_and_or_duns_ids.length == 2
           coh_api_results = coh_api_query
-          return unless coh_api_results
+          return false unless coh_api_results
 
-          primary_organisation(coh_api_results[:identfier])
+          primary_organisation(coh_api_results[:identifier])
           additional_organisation(duns_api_results[:identifier], false)
         else
           primary_organisation(duns_api_results[:identifier])
           add_additional_identifiers(duns_api_results[:additionalIdentifiers])
         end
+        true
       end
 
       def add_additional_identifiers(additional_identifiers)
-        additional_identifiers.each do |identfier|
-          additional_organisation(identfier, false)
+        additional_identifiers.each do |identifier|
+          puts
+          puts "heree-->11#{identifier}"
+          puts
+          additional_organisation(identifier, false)
         end
       end
 
-      def primary_organisation(identfier)
+      def primary_organisation(identifier)
         organisation = OrganisationSchemeIdentifier.new
-        organisation.scheme_code = identfier[:scheme]
-        organisation.scheme_org_reg_number = identfier[:id]
-        organisation.uri = identfier[:uri]
-        organisation.legal_name = identfier[:legalName]
+        organisation.scheme_code = identifier[:scheme]
+        organisation.scheme_org_reg_number = identifier[:id]
+        organisation.uri = identifier[:uri]
+        organisation.legal_name = identifier[:legalName]
         organisation.ccs_org_id = @ccs_org_id
         organisation.primary_scheme = true
         organisation.hidden = false
-        organisation.client_id = Common::ApiHelper.find_client(api_key_to_string)
+        # organisation.client_id = Common::ApiHelper.find_client(api_key_to_string)
         organisation.save
       end
 
-      def additional_organisation(identfier, hidden)
-        buyer_exists
+      def additional_organisation(identifier, hidden)
         organisation = OrganisationSchemeIdentifier.new
-        organisation.scheme_code = identfier[:scheme]
-        organisation.scheme_org_reg_number = identfier[:id]
-        organisation.uri = identfier[:uri]
-        organisation.legal_name = identfier[:legalName]
+        organisation.scheme_code = identifier[:scheme]
+        organisation.scheme_org_reg_number = identifier[:id]
+        organisation.uri = identifier[:uri]
+        organisation.legal_name = identifier[:legalName]
         organisation.ccs_org_id = @ccs_org_id
         organisation.primary_scheme = false
         organisation.hidden = hidden
