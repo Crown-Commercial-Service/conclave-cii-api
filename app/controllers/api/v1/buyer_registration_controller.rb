@@ -68,9 +68,6 @@ module Api
 
       def add_additional_identifiers(additional_identifiers)
         additional_identifiers.each do |identifier|
-          puts
-          puts "heree-->11#{identifier}"
-          puts
           additional_organisation(identifier, false)
         end
       end
