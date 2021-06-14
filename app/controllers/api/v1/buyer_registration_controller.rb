@@ -49,19 +49,26 @@ module Api
         additional_identifier_search_api_with_params.call
       end
 
+      def api_results_check
+        @duns_api_results = duns_api_query
+        @coh_api_results = coh_api_query if @companies_and_or_duns_ids.length == 2
+        
+        if @duns_api_results === false || @coh_api_results === false
+          false
+        else
+          true
+        end
+      end
+
       def coh_scheme_check
-        duns_api_results = duns_api_query
-        return false unless duns_api_results
+        return false unless api_results_check
 
         if @companies_and_or_duns_ids.length == 2
-          coh_api_results = coh_api_query
-          return false unless coh_api_results
-
-          primary_organisation(coh_api_results[:identifier])
-          additional_organisation(duns_api_results[:identifier], false)
+          primary_organisation(@coh_api_results[:identifier])
+          additional_organisation(@duns_api_results[:identifier], false)
         else
-          primary_organisation(duns_api_results[:identifier])
-          add_additional_identifiers(duns_api_results[:additionalIdentifiers])
+          primary_organisation(@duns_api_results[:identifier])
+          add_additional_identifiers(@duns_api_results[:additionalIdentifiers])
         end
         true
       end
