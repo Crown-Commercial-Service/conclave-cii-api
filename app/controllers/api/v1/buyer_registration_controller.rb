@@ -52,12 +52,8 @@ module Api
       def api_results_check
         @duns_api_results = duns_api_query
         @coh_api_results = coh_api_query if @companies_and_or_duns_ids.length == 2
-        
-        if @duns_api_results === false || @coh_api_results === false || !@salesforce_api_result.present?
-          false
-        else
-          true
-        end
+
+        !(@duns_api_results == false || @coh_api_results == false || @salesforce_api_result.blank?)
       end
 
       def coh_scheme_check
