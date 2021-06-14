@@ -14,7 +14,7 @@ module Api
 
         create_organisation = coh_scheme_check if @companies_and_or_duns_ids.any?
 
-        additional_organisation(@salesforce_api_result, true) if @salesforce_api_result.present? && create_organisation
+        additional_organisation(@salesforce_api_result, true) if create_organisation # if @salesforce_api_result.present?
 
         if @salesforce_api_result.blank? || !create_organisation
           render json: '', status: :not_found
@@ -53,7 +53,7 @@ module Api
         @duns_api_results = duns_api_query
         @coh_api_results = coh_api_query if @companies_and_or_duns_ids.length == 2
         
-        if @duns_api_results === false || @coh_api_results === false
+        if @duns_api_results === false || @coh_api_results === false || !@salesforce_api_result.present?
           false
         else
           true
