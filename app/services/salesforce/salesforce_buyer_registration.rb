@@ -18,10 +18,12 @@ module Salesforce
     end
 
     def results
-      if @result['records'][0].key?('Company_Registration_Number__c')
-        [@result['records'][0]['Supplier_DUNS_Number__c'], @result['records'][0]['Company_Registration_Number__c']]
-      elsif @result['records'][0].key?('Supplier_DUNS_Number__c')
-        [@result['records'][0]['Supplier_DUNS_Number__c']]
+      record = @result['records'][0]
+
+      if record.key?('Company_Registration_Number__c') && record['Company_Registration_Number__c'].present? && record['Company_Registration_Number__c'] != 'Unknown' # 'str.downcase' causes a 500 error.
+        [record['Supplier_DUNS_Number__c'], record['Company_Registration_Number__c']]
+      elsif record.key?('Supplier_DUNS_Number__c') && record['Supplier_DUNS_Number__c'].present? && record['Supplier_DUNS_Number__c'] != 'Unknown' # 'str.downcase' causes a 500 error.
+        [record['Supplier_DUNS_Number__c']]
       else
         []
       end
