@@ -14,11 +14,6 @@ module Api
 
         create_organisation = coh_scheme_check if @companies_and_or_duns_ids.any?
 
-        puts
-        puts 444
-        puts @salesforce_api_result
-        puts
-
         additional_organisation(@salesforce_api_result, true) if @salesforce_api_result.present?
 
         if @salesforce_api_result.blank? && !create_organisation.present?
@@ -50,22 +45,12 @@ module Api
       end
 
       def api_search_result(id, scheme)
-        puts
-        puts 111
-        puts id
-        puts scheme
-        puts
         additional_identifier_search_api_with_params = SearchApi.new(id, scheme)
         additional_identifier_search_api_with_params.call
       end
 
       def api_results_check
         @duns_api_results = duns_api_query
-        puts
-        puts 222
-        puts @companies_and_or_duns_ids.length
-        puts @companies_and_or_duns_ids
-        puts
         @coh_api_results = coh_api_query if @companies_and_or_duns_ids.length == 2
 
         !(@duns_api_results == false || @coh_api_results == false || @salesforce_api_result.blank?)
@@ -100,7 +85,7 @@ module Api
         organisation.primary_scheme = true
         organisation.hidden = false
         # organisation.client_id = Common::ApiHelper.find_client(api_key_to_string)
-        #organisation.save
+        organisation.save
       end
 
       def additional_organisation(identifier, hidden)
@@ -112,7 +97,7 @@ module Api
         organisation.ccs_org_id = @ccs_org_id
         organisation.primary_scheme = false
         organisation.hidden = hidden
-        #organisation.save
+        organisation.save
       end
 
       def buyer_exists
@@ -124,11 +109,6 @@ module Api
         search_api_with_params = Salesforce::SalesforceBuyerRegistration.new(params[:account_id], params[:account_id_type])
         @salesforce_api_result = search_api_with_params.fetch_results
         @companies_and_or_duns_ids = search_api_with_params.results
-        puts
-        puts "000"
-        puts @salesforce_api_result
-        puts @companies_and_or_duns_ids
-        puts
         buyer_exists
       end
 
