@@ -14,9 +14,9 @@ module Api
 
         create_organisation = coh_scheme_check if @companies_and_or_duns_ids.any?
 
-        additional_organisation(@salesforce_api_result, true) if create_organisation # if @salesforce_api_result.present?
+        additional_organisation(@salesforce_api_result, true) if @salesforce_api_result.present?
 
-        if @salesforce_api_result.blank? || !create_organisation
+        if @salesforce_api_result.blank? && create_organisation.blank?
           render json: '', status: :not_found
         else
           render json: { ccs_org_id: @ccs_org_id }
