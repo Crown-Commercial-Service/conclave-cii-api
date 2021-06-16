@@ -47,6 +47,7 @@ ActiveRecord::Schema.define(version: 2021_05_20_005544) do
     t.string "scheme_uri", limit: 200
     t.string "scheme_identifier"
     t.string "scheme_country_code", limit: 10
+    t.integer "rank"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
