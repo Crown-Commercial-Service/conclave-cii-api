@@ -18,15 +18,14 @@ module Salesforce
     end
 
     def results
+      results_array = []
       record = @result['records'][0]
 
-      if record.key?('Company_Registration_Number__c') && record['Company_Registration_Number__c'].present? && record['Company_Registration_Number__c'] != 'Unknown' # 'str.downcase' causes a 500 error.
-        [record['Supplier_DUNS_Number__c'], record['Company_Registration_Number__c']]
-      elsif record.key?('Supplier_DUNS_Number__c') && record['Supplier_DUNS_Number__c'].present? && record['Supplier_DUNS_Number__c'] != 'Unknown' # 'str.downcase' causes a 500 error.
-        [record['Supplier_DUNS_Number__c']]
-      else
-        []
-      end
+      return unless record.key?('Company_Registration_Number__c') && record.key?('Supplier_DUNS_Number__c')
+
+      results_array.push("GB-COH-#{record['Company_Registration_Number__c']}") if record['Company_Registration_Number__c'].present? && !!!(record['Company_Registration_Number__c'] =~ /[a-zA-Z]/)
+      results_array.push("US-DUN-#{record['Supplier_DUNS_Number__c']}") if record['Supplier_DUNS_Number__c'].present? && !!!(record['Supplier_DUNS_Number__c'] =~ /[a-zA-Z]/)
+      results_array
     end
   end
 end
