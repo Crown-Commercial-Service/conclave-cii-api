@@ -58,12 +58,12 @@ RSpec.describe Api::V1::BuyerRegistrationController, type: :controller do
       #   end
       # end
 
-      # context 'when not found' do
-      #   it 'returns 404' do
-      #     post :create_buyer, params: { account_id_type: 'sfid', account_id: 'NSO7IUSHF98HFP9WEH9FFH' }
-      #     expect(response).to have_http_status(:not_found)
-      #   end
-      # end
+      context 'when not found' do
+        it 'returns 404' do
+          post :create_buyer, params: { account_id_type: 'sfid', account_id: 'NSO7IUSHF98HFP9WEH9FFH' }
+          expect(response).to have_http_status(:not_found)
+        end
+      end
 
       context 'when invalid params' do
         it 'returns 400' do
