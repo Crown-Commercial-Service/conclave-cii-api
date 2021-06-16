@@ -17,11 +17,15 @@ module Salesforce
       "Account_URN__c='#{@id_number}'"
     end
 
+    def record_key_check(record)
+      record.key?('Company_Registration_Number__c') && record.key?('Supplier_DUNS_Number__c')
+    end
+
     def results
       results_array = []
       record = @result['records'][0]
 
-      return unless record.key?('Company_Registration_Number__c') && record.key?('Supplier_DUNS_Number__c')
+      return unless record_key_check(record)
 
       results_array.push("GB-COH-#{record['Company_Registration_Number__c']}") if record['Company_Registration_Number__c'].present? && !!!(record['Company_Registration_Number__c'] =~ /[a-zA-Z]/)
       results_array.push("US-DUN-#{record['Supplier_DUNS_Number__c']}") if record['Supplier_DUNS_Number__c'].present? && !!!(record['Supplier_DUNS_Number__c'] =~ /[a-zA-Z]/)
