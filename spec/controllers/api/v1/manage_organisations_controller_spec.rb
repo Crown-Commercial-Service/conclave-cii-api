@@ -106,26 +106,19 @@ RSpec.describe Api::V1::ManageOrganisationsController, type: :controller do
           expect(response).to have_http_status(:not_found)
         end
       end
-
-      context 'when invalid params' do
-        it 'returns 400' do
-          post :search_organisation, params: { ccs_org_id: organisation_scheme_identifier.ccs_org_id.to_s, clientid: clientid }
-          expect(response).to have_http_status(:bad_request)
-        end
-      end
     end
 
     context 'when invalid ApiKey' do
       it 'returns 401' do
         request.headers['x-api-key'] = 'invalid'
-        post :search_organisation
+        post :search_organisation, params: { id: 'test', scheme: 'test', ccs_org_id: 21342414, clientid: 'sbdiwqhg9d13g2gg3171284' }
         expect(response).to have_http_status(:unauthorized)
       end
     end
 
     context 'when no ApiKey' do
       it 'returns 401' do
-        post :search_organisation
+        post :search_organisation, params: { id: 'test', scheme: 'test', ccs_org_id: 21342414, clientid: 'sbdiwqhg9d13g2gg3171284' }
         expect(response).to have_http_status(:unauthorized)
       end
     end

@@ -1,18 +1,32 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   get '/', to: 'home#index'
-  get '/identities/schemes/organisation', to: 'api/v1/organisations#search_organisation'
-  get '/identities/schemes/identifiers', to: 'api/v1/organisations#search_organisation'
-  post '/identities/schemes/organisation', to: 'api/v1/create_organisations#index'
+  # OLD ROUTES
+  # get '/identities/schemes/organisation', to: 'api/v1/organisations#search_organisation'
+  # get '/identities/schemes/identifiers', to: 'api/v1/organisations#search_organisation'
+  # post '/identities/schemes/organisation', to: 'api/v1/create_organisations#index'
+  # get '/identities/schemes', to: 'api/v1/schemes#schemes'
+  # delete '/identities/schemes/organisation', to: 'api/v1/remove_organisations_additional_identifier#delete_additional_identifier'
+  # delete '/identities/organisation', to: 'api/v1/remove_organisations#delete_organisation'
+  # put '/identities/schemes/organisation', to: 'api/v1/update_organisations#index'
+  # get '/identities/schemes/manageidentifiers', to: 'api/v1/manage_organisations#search_organisation'
+  # get '/identities/schemes/organisations', to: 'api/v1/registered_organisations_schemes#search_organisation'
+  # get '/identities/schemes/organisations/all', to: 'api/v1/all_registered_organisations_schemes#search_organisation'
+  # post '/identities/schemes/register-buyer', to: 'api/v1/buyer_registration#create_buyer'
+  # END OLD ROUTES
+
+  # new endpoints
   get '/identities/schemes', to: 'api/v1/schemes#schemes'
-  delete '/identities/schemes/organisation', to: 'api/v1/remove_organisations_additional_identifier#delete_additional_identifier'
-  delete '/identities/organisation', to: 'api/v1/remove_organisations#delete_organisation'
-  put '/identities/schemes/organisation', to: 'api/v1/update_organisations#index'
-  get '/identities/schemes/manageidentifiers', to: 'api/v1/manage_organisations#search_organisation'
-  get '/identities/schemes/organisations', to: 'api/v1/registered_organisations_schemes#search_organisation'
+  get '/identities/schemes/:scheme/identifiers/:id', to: 'api/v1/organisations#search_organisation'
+  put '/identities/organisations/:ccs_org_id/schemes/:scheme/identifiers/:id/client/:clientid', to: 'api/v1/update_organisations#index'
+  get '/identities/organisations/:ccs_org_id/schemes/:scheme/identifiers/:id/client/:clientid', to: 'api/v1/manage_organisations#search_organisation'
+  get '/identities/organisations/:ccs_org_id/client/:clientid', to: 'api/v1/registered_organisations_schemes#search_organisation'
+  get '/identities/organisations/:ccs_org_id/client/:clientid/all', to: 'api/v1/all_registered_organisations_schemes#search_organisation'
+  delete '/identities/organisations', to: 'api/v1/remove_organisations_additional_identifier#delete_additional_identifier'
+  delete '/identities/organisations/:ccs_org_id', to: 'api/v1/remove_organisations#delete_organisation'
   get '/identities/schemes/organisations/all', to: 'api/v1/all_registered_organisations_schemes#search_organisation'
   post '/identities/schemes/register-buyer', to: 'api/v1/buyer_registration#create_buyer'
-  
+  post '/identities/schemes/organisation', to: 'api/v1/create_organisations#index'
   # these are testing endpoint will be removed on live
   namespace :api do
     namespace :v1 do

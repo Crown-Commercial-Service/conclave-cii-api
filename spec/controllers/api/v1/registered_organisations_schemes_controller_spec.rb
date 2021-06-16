@@ -52,14 +52,14 @@ RSpec.describe Api::V1::RegisteredOrganisationsSchemesController, type: :control
     context 'when invalid ApiKey' do
       it 'returns 401' do
         request.headers['x-api-key'] = 'invalid'
-        get :search_organisation
+        get :search_organisation, params: { ccs_org_id: 29842981489214, clientid: 'n8f23er9h349hh439h94' }
         expect(response).to have_http_status(:unauthorized)
       end
     end
 
     context 'when no ApiKey' do
       it 'returns 401' do
-        get :search_organisation
+        get :search_organisation, params: { ccs_org_id: 29842981489214, clientid: 'n8f23er9h349hh439h94' }
         expect(response).to have_http_status(:unauthorized)
       end
     end
