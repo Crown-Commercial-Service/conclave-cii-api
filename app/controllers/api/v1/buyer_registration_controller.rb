@@ -19,7 +19,7 @@ module Api
         if @salesforce_api_result.blank? && organisation.blank?
           render json: '', status: :not_found
         else
-          render json: { ccs_org_id: @ccs_org_id }
+          render json: [{ ccs_org_id: @ccs_org_id }], status: :created
         end
       end
 
