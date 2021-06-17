@@ -68,5 +68,13 @@ module Common
       client = Client.find_by(api_key: api_key_string.to_s)
       client.id
     end
+
+    def self.find_mock_duns_org(scheme, id)
+      if id.to_s == Common::AdditionalIdentifier::MOCK_DANDB_ID && scheme.to_s == Common::AdditionalIdentifier::SCHEME_DANDB
+        true
+      else
+        id.to_s == Common::AdditionalIdentifier::MOCK_SF_ID && scheme.to_s == Common::AdditionalIdentifier::SCHEME_CCS
+      end
+    end
   end
 end

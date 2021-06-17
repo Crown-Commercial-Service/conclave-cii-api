@@ -105,7 +105,7 @@ module Api
         organisation.primary_scheme = true
         organisation.hidden = false
         # organisation.client_id = Common::ApiHelper.find_client(api_key_to_string)
-        organisation.save
+        organisation.save unless Common::ApiHelper.find_mock_duns_org(identifier[:scheme], identifier[:id])
       end
 
       def additional_organisation(identifier, hidden)
@@ -117,7 +117,7 @@ module Api
         organisation.ccs_org_id = @ccs_org_id
         organisation.primary_scheme = false
         organisation.hidden = hidden
-        organisation.save
+        organisation.save unless Common::ApiHelper.find_mock_duns_org(identifier[:scheme], identifier[:id])
       end
 
       def buyer_exists
