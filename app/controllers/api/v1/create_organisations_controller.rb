@@ -19,15 +19,18 @@ module Api
 
         # If the dummy org (US-DUN-111111111) has been found, this will add it to db, and return the ccs_org_id to be rendered. (Part of work for Nick Fine).
         result = Common::ApiHelper.add_dummy_org if @mock_duns
+        render_results(result)
+      end
 
+      def render_results(result)
         if result.blank?
           render json: '', status: :not_found
         else
-          render json: [{ ccs_org_id: @ccs_org_id || result}], status: :created
+          render json: [{ ccs_org_id: @ccs_org_id || result }], status: :created
         end
       end
 
-       # This is checking for the dummy org (US-DUN-111111111) in params. Sets global variable to true or false, for the rest of controller behavoir. (Part of work for Nick Fine).
+      # This is checking for the dummy org (US-DUN-111111111) in params. Sets global variable to true or false, for the rest of controller behavoir. (Part of work for Nick Fine).
       def mock_duns_check
         @mock_duns = Common::ApiHelper.find_mock_duns_org(params[:identifier][:scheme], params[:identifier][:id]) if params.present?
       end
@@ -73,6 +76,7 @@ module Api
 
       def validate_params
         return if @mock_duns
+
         validate = ApiValidations::CreateOrganisation.new(params)
         render json: validate.errors, status: :bad_request unless validate.valid?
       end

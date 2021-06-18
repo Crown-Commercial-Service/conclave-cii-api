@@ -71,7 +71,7 @@ module Common
 
     # Returns a random 4 digit number, to concatonate onto a dummy id. (Part of work for Nick Fine).
     def self.generate_random_id_end
-      (1000 + rand(8999)).to_i
+      rand(1000..9998).to_i
     end
 
     # Returns true or false, depending on if the dummy org is found or not. (Part of work for Nick Fine).
@@ -89,7 +89,7 @@ module Common
       organisation.scheme_code = Common::AdditionalIdentifier::SCHEME_DANDB
       organisation.scheme_org_reg_number = "11111#{Common::ApiHelper.generate_random_id_end}"
       organisation.uri = 'test.com'
-      organisation.legal_name = "Nicks Testing Organisation"
+      organisation.legal_name = 'Nicks Testing Organisation'
       organisation.ccs_org_id = Common::GenerateId.ccs_org_id
       organisation.primary_scheme = true
       organisation.hidden = false
