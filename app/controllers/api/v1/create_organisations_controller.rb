@@ -21,7 +21,7 @@ module Api
         additional_identifiers if defined?(result[:additionalIdentifiers])
 
         # If the dummy org (US-DUN-111111111) has been found, this will add it to db, and return the ccs_org_id to be rendered. (Part of work for Nick Fine).
-        result = Common::ApiHelper.add_dummy_org if @mock_duns
+        result = Common::ApiHelper.add_dummy_org(api_key_to_string) if @mock_duns
         render_results(result)
       end
 
