@@ -97,5 +97,32 @@ module Common
       organisation.save
       organisation.ccs_org_id
     end
+
+    def self.return_mock_duns
+      {
+        name: 'Nicks Testing Organisation',
+        identifier: {
+          scheme: Common::AdditionalIdentifier::SCHEME_DANDB,
+          id: Common::AdditionalIdentifier::MOCK_DANDB_ID,
+          legalName: 'Nicks Testing Organisation',
+          uri: ''
+        },
+        additionalIdentifiers: [],
+        address: {
+          streetAddress: 'Testing',
+          locality: 'Testing',
+          region: 'Testing',
+          postalCode: 'AB12 3CD',
+          countryName: 'England'
+        },
+        contactPoint: {
+          name: '',
+          email: '',
+          telephone: '01234567890',
+          faxNumber: '',
+          uri: ''
+        }
+      }
+    end
   end
 end
