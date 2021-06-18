@@ -84,7 +84,7 @@ module Common
     end
 
     # Creates and adds the dummy org, and returns the created ccs_ord_id. (Part of work for Nick Fine).
-    def self.add_dummy_org
+    def self.add_dummy_org(api_key_to_string)
       organisation = OrganisationSchemeIdentifier.new
       organisation.scheme_code = Common::AdditionalIdentifier::SCHEME_DANDB
       organisation.scheme_org_reg_number = "11111#{Common::ApiHelper.generate_random_id_end}"
@@ -93,9 +93,36 @@ module Common
       organisation.ccs_org_id = Common::GenerateId.ccs_org_id
       organisation.primary_scheme = true
       organisation.hidden = false
-      # organisation.client_id = Common::ApiHelper.find_client(api_key_to_string)
+      organisation.client_id = Common::ApiHelper.find_client(api_key_to_string)
       organisation.save
       organisation.ccs_org_id
+    end
+
+    def self.return_mock_duns
+      {
+        name: 'Nicks Testing Organisation',
+        identifier: {
+          scheme: Common::AdditionalIdentifier::SCHEME_DANDB,
+          id: Common::AdditionalIdentifier::MOCK_DANDB_ID,
+          legalName: 'Nicks Testing Organisation',
+          uri: ''
+        },
+        additionalIdentifiers: [],
+        address: {
+          streetAddress: 'Testing',
+          locality: 'Testing',
+          region: 'Testing',
+          postalCode: 'AB12 3CD',
+          countryName: 'England'
+        },
+        contactPoint: {
+          name: '',
+          email: '',
+          telephone: '01234567890',
+          faxNumber: '',
+          uri: ''
+        }
+      }
     end
   end
 end
