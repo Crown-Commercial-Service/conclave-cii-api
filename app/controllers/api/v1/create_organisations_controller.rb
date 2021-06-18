@@ -4,29 +4,34 @@ module Api
       include Authorize::Token
       rescue_from ApiValidations::ApiError, with: :return_error_code
       before_action :validate_api_key
+      # This is checking for the dummy org (US-DUN-111111111) in params. must be done first, to stop external api call. (Part of work for Nick Fine).
+      before_action :mock_duns_check
       before_action :validate_params
 
       attr_accessor :ccs_org_id, :api_result
 
       def index
-        result = search_scheme_api
-
+        result = search_scheme_api unless @mock_duns
         result = Salesforce::AdditionalIdentifier.new(result).build_response if result.present?
 
         primary_organisation if result.present?
         additional_identifiers if defined?(result[:additionalIdentifiers])
+
+        # If the dummy org (US-DUN-111111111) has been found, this will add it to db, and return the ccs_org_id to be rendered. (Part of work for Nick Fine).
+        result = Common::ApiHelper.add_dummy_org if @mock_duns
+
         if result.blank?
           render json: '', status: :not_found
         else
-          render json: [{ ccs_org_id: @ccs_org_id }], status: :created
+          render json: [{ ccs_org_id: @ccs_org_id || result}], status: :created
         end
       end
 
-      def mock_duns_org_check(scheme, id)
-        Common::ApiHelper.find_mock_duns_org(scheme, id)
+       # This is checking for the dummy org (US-DUN-111111111) in params. Sets global variable to true or false, for the rest of controller behavoir. (Part of work for Nick Fine).
+      def mock_duns_check
+        @mock_duns = Common::ApiHelper.find_mock_duns_org(params[:identifier][:scheme], params[:identifier][:id]) if params.present?
       end
 
-      # rubocop: disable Metrics/AbcSize
       def primary_organisation
         organisation = OrganisationSchemeIdentifier.new
         organisation.scheme_code = @api_result[:identifier][:scheme]
@@ -37,10 +42,9 @@ module Api
         organisation.primary_scheme = true
         organisation.hidden = false
         organisation.client_id = Common::ApiHelper.find_client(api_key_to_string)
-        organisation.save unless mock_duns_org_check(@api_result[:identifier][:scheme], @api_result[:identifier][:id])
+        organisation.save
         @ccs_org_id = organisation.ccs_org_id
       end
-      # rubocop: enable Metrics/AbcSize
 
       def add_additional_identifier(additional_identifier, status)
         organisation = OrganisationSchemeIdentifier.new
@@ -52,7 +56,7 @@ module Api
         organisation.primary_scheme = false
         organisation.hidden = Common::ApiHelper.hide_all_ccs_schemes(additional_identifier[:scheme], status)
         organisation.client_id = Common::ApiHelper.find_client(api_key_to_string)
-        organisation.save unless mock_duns_org_check(additional_identifier[:scheme], additional_identifier[:id])
+        organisation.save
         organisation.ccs_org_id
       end
 
@@ -68,6 +72,7 @@ module Api
       end
 
       def validate_params
+        return if @mock_duns
         validate = ApiValidations::CreateOrganisation.new(params)
         render json: validate.errors, status: :bad_request unless validate.valid?
       end
