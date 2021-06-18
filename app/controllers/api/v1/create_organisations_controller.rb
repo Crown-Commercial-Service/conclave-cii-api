@@ -12,7 +12,7 @@ module Api
 
       def index
         result = search_scheme_api unless @mock_duns
-        result = Salesforce::AdditionalIdentifier.new(result).build_response if result.present?
+        result = salesforce_additional_identifier(result) if result.present?
 
         primary_organisation if result.present?
         additional_identifiers if defined?(result[:additionalIdentifiers])
@@ -100,6 +100,10 @@ module Api
       def api_search_result
         search_api_with_params = SearchApi.new(params[:identifier][:id], params[:identifier][:scheme])
         search_api_with_params.call
+      end
+
+      def salesforce_additional_identifier(result)
+        Salesforce::AdditionalIdentifier.new(result).build_response
       end
     end
   end
