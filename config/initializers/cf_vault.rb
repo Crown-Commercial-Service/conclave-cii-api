@@ -8,6 +8,7 @@ def config_vault
     vcap_services['hashicorp-vault'].each do |key, value|
       key_store_path = "#{key['credentials']['backends_shared']['space']}/#{ENV['SERVER_ENV_NAME']}"
       config.address = key['credentials']['address']
+      key['credentials']['auth']['token'] = ENV['VAULT_TOKEN']
       config.token = key['credentials']['auth']['token']
     end
 
