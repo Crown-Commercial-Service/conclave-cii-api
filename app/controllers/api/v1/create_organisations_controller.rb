@@ -22,6 +22,11 @@ module Api
         end
       end
 
+      def mock_duns_org_check(scheme, id)
+        Common::ApiHelper.find_mock_duns_org(scheme, id)
+      end
+
+      # rubocop: disable Metrics/AbcSize
       def primary_organisation
         organisation = OrganisationSchemeIdentifier.new
         organisation.scheme_code = @api_result[:identifier][:scheme]
@@ -32,9 +37,10 @@ module Api
         organisation.primary_scheme = true
         organisation.hidden = false
         organisation.client_id = Common::ApiHelper.find_client(api_key_to_string)
-        organisation.save
+        organisation.save unless mock_duns_org_check(@api_result[:identifier][:scheme], @api_result[:identifier][:id])
         @ccs_org_id = organisation.ccs_org_id
       end
+      # rubocop: enable Metrics/AbcSize
 
       def add_additional_identifier(additional_identifier, status)
         organisation = OrganisationSchemeIdentifier.new
@@ -46,7 +52,7 @@ module Api
         organisation.primary_scheme = false
         organisation.hidden = Common::ApiHelper.hide_all_ccs_schemes(additional_identifier[:scheme], status)
         organisation.client_id = Common::ApiHelper.find_client(api_key_to_string)
-        organisation.save
+        organisation.save unless mock_duns_org_check(additional_identifier[:scheme], additional_identifier[:id])
         organisation.ccs_org_id
       end
 
