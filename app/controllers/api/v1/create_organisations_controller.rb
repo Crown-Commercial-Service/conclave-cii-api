@@ -12,9 +12,12 @@ module Api
 
       def index
         result = search_scheme_api unless @mock_duns
-        result = salesforce_additional_identifier(result) if result.present?
 
-        primary_organisation if result.present?
+        if result.present?
+          result = salesforce_additional_identifier(result)
+          primary_organisation
+        end
+
         additional_identifiers if defined?(result[:additionalIdentifiers])
 
         # If the dummy org (US-DUN-111111111) has been found, this will add it to db, and return the ccs_org_id to be rendered. (Part of work for Nick Fine).
