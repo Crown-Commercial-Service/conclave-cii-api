@@ -126,11 +126,6 @@ fi
 VAULT_ENV="$CF_SPACE"
 SET_MEMORY="1000M"
 
-if [[ "$CF_SPACE" == "pre-production"]]
-then
-  SET_MEMORY="8000M"
-fi
-
 cd "$SCRIPT_PATH" || exit
 
 # login and target space
