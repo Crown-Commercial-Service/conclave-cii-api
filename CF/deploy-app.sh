@@ -100,7 +100,7 @@ then
     fi
   fi
 
-  if [[ "$CF_SPACE" == "preproduction" || "$CF_SPACE" == "production" ]]
+  if [[ "$CF_SPACE" == "pre-production" || "$CF_SPACE" == "production" ]]
   then
     if [[ ! "$BRANCH" == "main" ]]
     then
@@ -125,6 +125,11 @@ fi
 # Set environment variables to be fed into manifest.yml file, that is generated.
 VAULT_ENV="$CF_SPACE"
 SET_MEMORY="1000M"
+
+if [[ "$CF_SPACE" == "pre-production"]]
+  then
+    SET_MEMORY="8000M"
+fi
 
 cd "$SCRIPT_PATH" || exit
 
