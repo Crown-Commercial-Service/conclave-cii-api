@@ -1,0 +1,16 @@
+---
+applications:
+- name: conclave-cii-CF_SPACE
+  memory: SET_MEMORY
+  buildpacks:
+    - https://github.com/cloudfoundry/ruby-buildpack.git
+  instances: 1
+  random-route: true
+  routes:
+    - route: conclave-cii-CF_SPACE.apps.internal
+  services:
+    - conclave-cii-pg-service
+    - cii-api-splunk-CF_SPACE
+  env:
+    SERVER_ENV_NAME: VAULT_ENV
+    

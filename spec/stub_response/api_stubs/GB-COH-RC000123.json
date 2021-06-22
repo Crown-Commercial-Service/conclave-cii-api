@@ -1,0 +1,14 @@
+{
+   "company_name": "Company Example RC000123",
+   "company_number": "RC000123",
+   "url": "http://www.example.org.uk",
+   "uri": "http://www.example.org.uk",
+   "registered_office_address": {
+       "locality": "Locality",
+       "postal_code": "A1 2BC",
+       "country": "Country",
+       "address_line_1": "123 Example Street",
+       "region": "Test Region"
+   },
+   "company_status": "active"
+}
