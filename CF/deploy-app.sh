@@ -127,8 +127,8 @@ VAULT_ENV="$CF_SPACE"
 SET_MEMORY="1000M"
 
 if [[ "$CF_SPACE" == "pre-production"]]
-  then
-    SET_MEMORY="8000M"
+then
+  SET_MEMORY="8000M"
 fi
 
 cd "$SCRIPT_PATH" || exit
@@ -145,3 +145,4 @@ cd .. || exit
 
 # CF Push
 cf push conclave-cii-"$CF_SPACE" -f CF/"$CF_SPACE".manifest.yml
+
