@@ -100,7 +100,7 @@ then
     fi
   fi
 
-  if [[ "$CF_SPACE" == "preproduction" || "$CF_SPACE" == "production" ]]
+  if [[ "$CF_SPACE" == "pre-production" || "$CF_SPACE" == "production" ]]
   then
     if [[ ! "$BRANCH" == "main" ]]
     then
