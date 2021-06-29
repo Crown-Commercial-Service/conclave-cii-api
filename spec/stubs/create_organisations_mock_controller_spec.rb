@@ -51,8 +51,6 @@ RSpec.describe 'Stub validations', type: :request do
   end
 
   Dir.each_child('spec/stub_response/api_stubs') do |filename|
-    next if filename.to_s.include?('01112345' || '222123456' || '111123456')
-
     describe 'Test mock services includes salesforce mock' do
       it filename do
         get '/identities/schemes/organisation', params: get_params(filename), headers: request_get_headers
