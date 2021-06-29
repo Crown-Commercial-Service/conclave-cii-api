@@ -42,13 +42,6 @@
            "congressionalDistricts": [],
            "isResidentialAddress": null
        },
-       "registrationNumbers":[
-        {
-            "registrationNumber": "444123",
-            "typeDescription": "The Charity Commission for Northern Ireland",
-            "typeDnBCode": 33462
-        }
-      ],
        "dunsControlStatus": {
            "operatingStatus":{
                "description":"Active",
