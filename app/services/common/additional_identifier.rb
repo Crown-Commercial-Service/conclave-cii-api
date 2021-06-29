@@ -14,7 +14,7 @@ module Common
     SCHEME_CCS = 'GB-CCS'.freeze
 
     # The below three constants are required to match the correct uri provided in the identifiers uri property.
-    # If you change any of these variable names, it must also be updated in identifier.rb, in the module 'FindThatCharity'.
+    # If you change any of these variable names, it must also be updated in identifier.rb, in the module 'FindThatCharity'
     GB_CHC_SCHEME_URI_SITE = 'Charity Commission England and Wales'.freeze
     GB_NIC_SCHEME_URI_SITE = 'Charity Commission Northern Ireland'.freeze
     GB_SC_SCHEME_URI_SITE = 'Office of Scottish Charity Regulator'.freeze

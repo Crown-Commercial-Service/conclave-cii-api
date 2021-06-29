@@ -16,7 +16,9 @@ module Api
 
         additional_organisation(@salesforce_api_result, true) if @salesforce_api_result.present?
 
-        if @salesforce_api_result.blank? && organisation.blank?
+        if @duplicate
+          render json: '', status: :method_not_allowed
+        elsif @salesforce_api_result.blank? && organisation.blank?
           render json: '', status: :not_found
         else
           render json: [{ ccs_org_id: @ccs_org_id }], status: :created
@@ -96,6 +98,7 @@ module Api
       end
 
       def primary_organisation(identifier)
+        organisation_exists(identifier)
         organisation = OrganisationSchemeIdentifier.new
         organisation.scheme_code = identifier[:scheme]
         organisation.scheme_org_reg_number = identifier[:id]
@@ -105,10 +108,11 @@ module Api
         organisation.primary_scheme = true
         organisation.hidden = false
         # organisation.client_id = Common::ApiHelper.find_client(api_key_to_string)
-        organisation.save
+        organisation.save unless @duplicate
       end
 
       def additional_organisation(identifier, hidden)
+        organisation_exists(identifier)
         organisation = OrganisationSchemeIdentifier.new
         organisation.scheme_code = identifier[:scheme]
         organisation.scheme_org_reg_number = identifier[:id]
@@ -117,7 +121,8 @@ module Api
         organisation.ccs_org_id = @ccs_org_id
         organisation.primary_scheme = false
         organisation.hidden = hidden
-        organisation.save
+        # organisation.client_id = Common::ApiHelper.find_client(api_key_to_string)
+        organisation.save unless @duplicate
       end
 
       def buyer_exists
@@ -125,11 +130,19 @@ module Api
         render json: validate.errors, status: :method_not_allowed unless validate.valid?
       end
 
+      def organisation_exists(org)
+        return if @duplicate
+
+        @duplicate = false
+        organisation = OrganisationSchemeIdentifier.find_by(scheme_org_reg_number: org[:id], scheme_code: org[:scheme])
+        @duplicate = true if organisation.present?
+      end
+
       def salesforce_api_search
         search_api_with_params = Salesforce::SalesforceBuyerRegistration.new(params[:account_id], params[:account_id_type])
         @salesforce_api_result = search_api_with_params.fetch_results
-        @companies_and_duns_ids = search_api_with_params.results
         buyer_exists
+        @companies_and_duns_ids = search_api_with_params.results
       end
 
       def return_error_code(code)
