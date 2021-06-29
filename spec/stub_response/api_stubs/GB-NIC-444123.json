@@ -1,0 +1,59 @@
+{
+    "id": "GB-NIC-NIC444123",
+    "name": "Charity Example NIC444123",
+    "charityNumber": "NIC444123",
+    "companyNumber": null,
+    "description": "Charity Example Description",
+    "url": "http://www.example.org.uk",
+    "dateRemoved": null,
+    "active": true,
+    "parent": null,
+    "organisationType": [
+       "Registered Charity",
+       "Registered Charity (England and Wales)"
+    ],
+    "organisationTypePrimary": "Registered Charity",
+    "alternateName": ["Alt Name A", "Alt Name B"],
+    "telephone": "07123456789",
+    "email": "example@email.com",
+    "address": {
+        "streetAddress": "123 Example Street",
+        "addressLocality": "Locality",
+        "postalCode": "A1 2BC"
+    },
+    "sources":[
+       "ccni"
+    ],
+    "links": [
+ 
+        {
+            "site": "Charity Commission Northern Ireland",
+            "url": "http://www.example.org.uk",
+            "orgid": "GB-NIC-444123"
+        },
+        {
+            "site": "Charity1",
+            "url": "http://www.example.org.uk",
+            "orgid": "GB-NIC-444123"
+        },
+        {
+            "site": "Charity2",
+            "url": "http://www.example.org.uk",
+            "orgid": "GB-NIC-444123"
+        },
+        {
+            "site": "Charity3",
+            "url": "http://www.example.org.uk",
+            "orgid": "GB-NIC-444123"
+        }
+    ],
+    "orgIDs":[
+       "GB-NIC-444123"
+    ],
+    "linked_records":[
+       {
+          "orgid":"GB-NIC-444123",
+          "url":"http://www.example.org.uk/GB-NIC-401234.json"
+       }
+    ]
+ }

@@ -5,11 +5,12 @@ module Api
       rescue_from ApiValidations::ApiError, with: :return_error_code
       before_action :validate_integration_key
       before_action :validate_params
-      before_action :create_ccs_org_id
 
       attr_accessor :ccs_org_id, :salesforce_result
 
       def create_buyer
+        create_ccs_org_id
+
         salesforce_api_search
 
         organisation = create_organisation if @companies_and_duns_ids.any?

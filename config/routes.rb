@@ -36,6 +36,7 @@ Rails.application.routes.draw do
         get '/identities/schemes/manageidentifiers', to: 'manage_organisations_mock#search_organisation'
         get '/identities/schemes/organisations', to: 'registered_organisations_schemes_mock#search_organisation'
         get '/identities/schemes/organisations/all', to: 'all_registered_organisations_schemes_mock#search_organisation'
+        post '/identities/schemes/register-buyer', to: 'buyer_registration_mock#create_buyer'
       end
     end
   end
