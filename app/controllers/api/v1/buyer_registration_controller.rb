@@ -142,6 +142,8 @@ module Api
         search_api_with_params = Salesforce::SalesforceBuyerRegistration.new(params[:account_id], params[:account_id_type])
         @salesforce_api_result = search_api_with_params.fetch_results
         buyer_exists
+        status_code = search_api_with_params.sf_status
+        return_error_code(status_code) if status_code > 399
         @companies_and_duns_ids = search_api_with_params.results
       end
 
