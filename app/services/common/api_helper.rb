@@ -124,5 +124,9 @@ module Common
         }
       }
     end
+
+    def self.return_all_organisation_schemes(ccs_org_id)
+      Common::RegisteredOrganisationResponse.new(ccs_org_id, hidden: true).response_payload
+    end
   end
 end

@@ -48,7 +48,7 @@ deploy:
     on:
       branch: integration
   - provider: script
-    script: bash CF/deploy-app.sh -u $CF_USER -o $CF_ORG -p $CF_PASS -s preproduction
+    script: bash CF/deploy-app.sh -u $CF_USER -o $CF_ORG -p $CF_PASS -s pre-production
     on:
       branch: main
   - provider: script
