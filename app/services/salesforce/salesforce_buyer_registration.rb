@@ -1,5 +1,7 @@
 module Salesforce
   class SalesforceBuyerRegistration < Salesforce::Search
+    attr_reader :sf_status
+
     def build_arguments
       case @scheme_id
       when Common::SalesforceSearchIds::SFID
