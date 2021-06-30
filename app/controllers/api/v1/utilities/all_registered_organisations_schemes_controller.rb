@@ -5,18 +5,18 @@ module Api
         include Authorize::DeleteToken
         rescue_from ApiValidations::ApiError, with: :return_error_code
         before_action :validate_key
-        before_action :validate_params
+        before_action :validate_all_params
 
-        def search_organisation
-          result = Common::RegisteredOrganisationResponse.new(params[:ccs_org_id], hidden: true).response_payload
-          if result.present?
-            render json: result, status: :ok
+        def search_all_organisation
+          result_all = Common::ApiHelper.return_all_organisation_schemes(params[:ccs_org_id])
+          if result_all.present?
+            render json: result_all, status: :ok
           else
             render json: '', status: :not_found
           end
         end
 
-        def validate_params
+        def validate_all_params
           validate = ApiValidations::ManageRegisteredOrganisation.new(params)
           render json: validate.errors, status: :bad_request unless validate.valid?
         end

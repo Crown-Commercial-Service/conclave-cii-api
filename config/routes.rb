@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   get '/identities/schemes/manageidentifiers', to: 'api/v1/manage_organisations#search_organisation'
   get '/identities/schemes/organisations', to: 'api/v1/registered_organisations_schemes#search_organisation'
   get '/identities/schemes/organisations/all', to: 'api/v1/all_registered_organisations_schemes#search_organisation'
-  get '/identities/schemes/organisations/sso/all', to: 'api/v1/utilities/all_registered_organisations_schemes#search_organisation'
+  get '/identities/schemes/organisations/sso/all', to: 'api/v1/utilities/all_registered_organisations_schemes#search_all_organisation'
   post '/identities/schemes/register-buyer', to: 'api/v1/buyer_registration#create_buyer'
   
   # these are testing endpoint will be removed on live
