@@ -2,9 +2,9 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::CreateOrganisationsController, type: :controller do
   describe 'index' do
-    let(:clientid) { 'validID' }
+    let(:clientid) { ENV['CLIENT_ID'] }
     let(:ccs_org_id) { nil }
-    let(:jwt_token) { JWT.encode({ roles: ENV['ACCESS_ORGANISATION_ADMIN'], ciiOrgId: ccs_org_id }, 'test') }
+    let(:jwt_token) { JWT.encode({ roles: ENV['ACCESS_ORGANISATION_ADMIN'], ciiOrgId: ccs_org_id, aud: ENV['CLIENT_ID'] }, 'test') }
 
     context 'when success' do
       before do

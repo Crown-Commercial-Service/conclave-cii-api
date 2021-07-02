@@ -3,9 +3,9 @@ require 'rails_helper'
 RSpec.describe Api::V1::RemoveOrganisationsAdditionalIdentifierController, type: :controller do
   describe 'delete_additional_identifier' do
     context 'when authenticated' do
-      let(:clientid) { 'validID' }
+      let(:clientid) { ENV['CLIENT_ID'] }
       let(:ccs_org_id) { nil }
-      let(:jwt_token) { JWT.encode({ roles: ENV['ACCESS_ORGANISATION_ADMIN'], ciiOrgId: ccs_org_id }, 'test') }
+      let(:jwt_token) { JWT.encode({ roles: ENV['ACCESS_ORGANISATION_ADMIN'], ciiOrgId: ccs_org_id, aud: ENV['CLIENT_ID'] }, 'test') }
       let(:scheme_register) { FactoryBot.create(:scheme_register) }
       let(:organisation_scheme_identifier) { FactoryBot.create(:organisation_scheme_identifier, scheme_org_reg_number: ccs_org_id, scheme_code: scheme_register.scheme_register_code, ccs_org_id: ccs_org_id, primary_scheme: false) }
 
@@ -30,32 +30,26 @@ RSpec.describe Api::V1::RemoveOrganisationsAdditionalIdentifierController, type:
         let(:ccs_org_id) { '101123' }
 
         it 'returns 200' do
-          delete :delete_additional_identifier, params: { identifier: { id: organisation_scheme_identifier.ccs_org_id, scheme: scheme_register.scheme_register_code }, ccs_org_id: organisation_scheme_identifier.ccs_org_id, clientid: clientid }
+          delete :delete_additional_identifier, params: { id: organisation_scheme_identifier.ccs_org_id, scheme: scheme_register.scheme_register_code, ccs_org_id: organisation_scheme_identifier.ccs_org_id }
           expect(response).to have_http_status(:ok)
         end
       end
 
       context 'when not found' do
         it 'returns 401' do
-          delete :delete_additional_identifier, params: { ccs_org_id: 'test', clientid: clientid }
+          puts request.headers['x-api-key']
+          delete :delete_additional_identifier, params: { ccs_org_id: 'test', id: 32141244, scheme: 'GB-COH' }
           expect(response).to have_http_status(:unauthorized)
-        end
-      end
-
-      context 'when invalid params' do
-        let(:ccs_org_id) { '101123' }
-
-        it 'returns 400' do
-          delete :delete_additional_identifier, params: { ccs_org_id: ccs_org_id, clientid: clientid }
-          expect(response).to have_http_status(:bad_request)
         end
       end
     end
 
     context 'when invalid ApiKey' do
+      let(:ccs_org_id) { '101123' }
+
       it 'returns 401' do
         request.headers['x-api-key'] = 'invalid'
-        delete :delete_additional_identifier
+        delete :delete_additional_identifier, params: { ccs_org_id: ccs_org_id, id: 32141244, scheme: 'GB-COH' }
         expect(response).to have_http_status(:unauthorized)
       end
     end

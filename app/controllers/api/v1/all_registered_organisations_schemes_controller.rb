@@ -11,7 +11,7 @@ module Api
       def search_organisation
         result = Common::RegisteredOrganisationResponse.new(params[:ccs_org_id], hidden: true).response_payload
         if result.present?
-          render json: result, status: :ok
+          render json: result[0], status: :ok
         else
           render json: '', status: :not_found
         end

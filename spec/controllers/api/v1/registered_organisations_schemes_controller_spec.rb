@@ -2,9 +2,9 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::RegisteredOrganisationsSchemesController, type: :controller do
   describe 'search_organisation' do
-    let(:clientid) { 'validID' }
+    let(:clientid) { ENV['CLIENT_ID'] }
     let(:ccs_org_id) { nil }
-    let(:jwt_token) { JWT.encode({ roles: ENV['ACCESS_ORGANISATION_ADMIN'], ciiOrgId: ccs_org_id }, 'test') }
+    let(:jwt_token) { JWT.encode({ roles: ENV['ACCESS_ORGANISATION_ADMIN'], ciiOrgId: ccs_org_id, aud: ENV['CLIENT_ID'] }, 'test') }
 
     context 'when authorized' do
       before do
@@ -29,7 +29,7 @@ RSpec.describe Api::V1::RegisteredOrganisationsSchemesController, type: :control
         let(:ccs_org_id) { organisation_scheme_identifier.ccs_org_id.to_s }
 
         it 'returns 200' do
-          get :search_organisation, params: { ccs_org_id: ccs_org_id, clientid: clientid }
+          get :search_organisation, params: { ccs_org_id: ccs_org_id }
           expect(response).to have_http_status(:ok)
         end
       end
@@ -52,14 +52,14 @@ RSpec.describe Api::V1::RegisteredOrganisationsSchemesController, type: :control
     context 'when invalid ApiKey' do
       it 'returns 401' do
         request.headers['x-api-key'] = 'invalid'
-        get :search_organisation
+        get :search_organisation, params: { ccs_org_id: 29842981489214, clientid: 'n8f23er9h349hh439h94' }
         expect(response).to have_http_status(:unauthorized)
       end
     end
 
     context 'when no ApiKey' do
       it 'returns 401' do
-        get :search_organisation
+        get :search_organisation, params: { ccs_org_id: 29842981489214, clientid: 'n8f23er9h349hh439h94' }
         expect(response).to have_http_status(:unauthorized)
       end
     end
