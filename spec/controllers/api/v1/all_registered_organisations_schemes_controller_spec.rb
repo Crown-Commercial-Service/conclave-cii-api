@@ -4,7 +4,7 @@ RSpec.describe Api::V1::AllRegisteredOrganisationsSchemesController, type: :cont
   describe 'search_organisation' do
     let(:clientid) { ENV['CLIENT_ID'] }
     let(:ccs_org_id) { nil }
-    let(:jwt_token) { JWT.encode({ roles: ENV['ACCESS_CCS_ADMIN'], ciiOrgId: ccs_org_id , aud: ENV['CLIENT_ID']}, 'test') }
+    let(:jwt_token) { JWT.encode({ roles: ENV['ACCESS_CCS_ADMIN'], ciiOrgId: ccs_org_id, aud: ENV['CLIENT_ID'] }, 'test') }
 
     before do
       stub_request(:post, "http://www.test.com/security/validate_token?clientid=#{clientid}")

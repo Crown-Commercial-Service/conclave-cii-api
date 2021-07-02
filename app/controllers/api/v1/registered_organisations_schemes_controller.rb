@@ -6,7 +6,7 @@ module Api
       # include Authorize::User
       rescue_from ApiValidations::ApiError, with: :return_error_code
       before_action :validate_api_key
-      #before_action :validate_user
+      # before_action :validate_user
       before_action :validate_params
 
       def search_organisation
