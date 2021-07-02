@@ -2,9 +2,9 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::AllRegisteredOrganisationsSchemesController, type: :controller do
   describe 'search_organisation' do
-    let(:clientid) { 'validID' }
+    let(:clientid) { ENV['CLIENT_ID'] }
     let(:ccs_org_id) { nil }
-    let(:jwt_token) { JWT.encode({ roles: ENV['ACCESS_CCS_ADMIN'], ciiOrgId: ccs_org_id }, 'test') }
+    let(:jwt_token) { JWT.encode({ roles: ENV['ACCESS_CCS_ADMIN'], ciiOrgId: ccs_org_id , aud: ENV['CLIENT_ID']}, 'test') }
 
     before do
       stub_request(:post, "http://www.test.com/security/validate_token?clientid=#{clientid}")
@@ -32,6 +32,7 @@ RSpec.describe Api::V1::AllRegisteredOrganisationsSchemesController, type: :cont
         let(:ccs_org_id) { organisation_scheme_identifier.ccs_org_id.to_s }
 
         it 'returns 200' do
+          puts ccs_org_id
           get :search_organisation, params: { ccs_org_id: ccs_org_id }
           expect(response).to have_http_status(:ok)
         end
@@ -47,9 +48,9 @@ RSpec.describe Api::V1::AllRegisteredOrganisationsSchemesController, type: :cont
       end
 
       context 'when invalid params' do
-        it 'returns 404' do
+        it 'returns 401' do
           get :search_organisation, params: { ccs_org_id: 'null' }
-          expect(response).to have_http_status(:not_found)
+          expect(response).to have_http_status(:unauthorized)
         end
       end
     end
