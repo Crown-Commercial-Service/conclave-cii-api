@@ -100,16 +100,10 @@ RSpec.describe Api::V1::UpdateOrganisationsController, type: :controller do
         end
       end
 
-      context 'when invalid params' do
-        it 'returns 401' do
-          put :index, params: { ccs_org_id: 37612738, id: 34355354, scheme: 'BG-COH', clientid: clientid }
-          expect(response).to have_http_status(:unauthorized)
-        end
-      end
-
       context 'when no ApiKey' do
-        it 'returns 401' do
-          put :index, params: { ccs_org_id: 'test', id: 'test', scheme: 'test', clientid: clientid }
+        it 'returns 404' do
+          request.headers['x-api-key'] = 'invalid'
+          put :index, params: { ccs_org_id: 'test', id: 'test', scheme: 'test' }
           expect(response).to have_http_status(:unauthorized)
         end
       end

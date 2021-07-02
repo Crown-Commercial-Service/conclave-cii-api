@@ -6,13 +6,13 @@ module Api
       # include Authorize::User
       rescue_from ApiValidations::ApiError, with: :return_error_code
       before_action :validate_api_key
-      # before_action :validate_user
+      before_action :validate_user
       before_action :validate_params
 
       def search_organisation
         result = Common::RegisteredOrganisationResponse.new(params[:ccs_org_id], hidden: false).response_payload
         if result.present?
-          render json: result, status: :ok
+          render json: result[0], status: :ok
         else
           render json: '', status: :not_found
         end

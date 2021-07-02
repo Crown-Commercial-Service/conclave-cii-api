@@ -32,7 +32,7 @@ RSpec.describe Api::V1::AllRegisteredOrganisationsSchemesController, type: :cont
         let(:ccs_org_id) { organisation_scheme_identifier.ccs_org_id.to_s }
 
         it 'returns 200' do
-          get :search_organisation, params: { ccs_org_id: ccs_org_id, clientid: clientid }
+          get :search_organisation, params: { ccs_org_id: ccs_org_id }
           expect(response).to have_http_status(:ok)
         end
       end
@@ -41,15 +41,15 @@ RSpec.describe Api::V1::AllRegisteredOrganisationsSchemesController, type: :cont
         let(:ccs_org_id) { '125656234' }
 
         it 'returns 404' do
-          get :search_organisation, params: { ccs_org_id: ccs_org_id, clientid: clientid }
+          get :search_organisation, params: { ccs_org_id: ccs_org_id }
           expect(response).to have_http_status(:not_found)
         end
       end
 
       context 'when invalid params' do
-        it 'returns 401' do
-          get :search_organisation, params: { ccs_org_id: nil, clientid: clientid }
-          expect(response).to have_http_status(:unauthorized)
+        it 'returns 404' do
+          get :search_organisation, params: { ccs_org_id: 'null' }
+          expect(response).to have_http_status(:not_found)
         end
       end
     end
@@ -57,14 +57,14 @@ RSpec.describe Api::V1::AllRegisteredOrganisationsSchemesController, type: :cont
     context 'when invalid ApiKey' do
       it 'returns 401' do
         request.headers['x-api-key'] = 'invalid'
-        get :search_organisation
+        get :search_organisation, params: { ccs_org_id: 'null' }
         expect(response).to have_http_status(:unauthorized)
       end
     end
 
     context 'when no ApiKey' do
       it 'returns 401' do
-        get :search_organisation
+        get :search_organisation, params: { ccs_org_id: 'null' }
         expect(response).to have_http_status(:unauthorized)
       end
     end

@@ -5,7 +5,7 @@ module ApiValidations
 
     attr_reader :data
 
-    validates_presence_of :identifier, :ccs_org_id, presence: true
+    validates_presence_of :id, :scheme, :ccs_org_id, presence: true
     validate :validate_ccs_org_id
     validate :validate_identifiers
 
@@ -32,7 +32,10 @@ module ApiValidations
     end
 
     def validate_identifiers
-      validate = ApiValidations::RemoveScheme.new(@data['identifier'])
+      identifier = {}
+      identifier['id'] = @data['id']
+      identifier['scheme'] = @data['scheme']
+      validate = ApiValidations::RemoveScheme.new(identifier)
       errors.add(:identifier, validate.errors) unless validate.valid?
     end
   end

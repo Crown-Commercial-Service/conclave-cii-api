@@ -30,32 +30,25 @@ RSpec.describe Api::V1::RemoveOrganisationsAdditionalIdentifierController, type:
         let(:ccs_org_id) { '101123' }
 
         it 'returns 200' do
-          delete :delete_additional_identifier, params: { identifier: { id: organisation_scheme_identifier.ccs_org_id, scheme: scheme_register.scheme_register_code }, ccs_org_id: organisation_scheme_identifier.ccs_org_id, clientid: clientid }
+          delete :delete_additional_identifier, params: { id: organisation_scheme_identifier.ccs_org_id, scheme: scheme_register.scheme_register_code, ccs_org_id: organisation_scheme_identifier.ccs_org_id }
           expect(response).to have_http_status(:ok)
         end
       end
 
       context 'when not found' do
-        it 'returns 401' do
-          delete :delete_additional_identifier, params: { ccs_org_id: 'test', clientid: clientid }
-          expect(response).to have_http_status(:unauthorized)
-        end
-      end
-
-      context 'when invalid params' do
-        let(:ccs_org_id) { '101123' }
-
-        it 'returns 400' do
-          delete :delete_additional_identifier, params: { ccs_org_id: ccs_org_id, clientid: clientid }
-          expect(response).to have_http_status(:bad_request)
+        it 'returns 404' do
+          delete :delete_additional_identifier, params: { ccs_org_id: 'test', id: 32141244, scheme: 'GB-COH' }
+          expect(response).to have_http_status(:not_found)
         end
       end
     end
 
     context 'when invalid ApiKey' do
+      let(:ccs_org_id) { '101123' }
+
       it 'returns 401' do
         request.headers['x-api-key'] = 'invalid'
-        delete :delete_additional_identifier
+        delete :delete_additional_identifier, params: { ccs_org_id: ccs_org_id, id: 32141244, scheme: 'GB-COH' }
         expect(response).to have_http_status(:unauthorized)
       end
     end
