@@ -37,7 +37,6 @@ RSpec.describe Api::V1::RemoveOrganisationsAdditionalIdentifierController, type:
 
       context 'when not found' do
         it 'returns 401' do
-          puts request.headers['x-api-key']
           delete :delete_additional_identifier, params: { ccs_org_id: 'test', id: 32141244, scheme: 'GB-COH' }
           expect(response).to have_http_status(:unauthorized)
         end

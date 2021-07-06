@@ -44,7 +44,7 @@ module Common
     end
 
     def self.remove_white_space_from_id(id)
-      id.delete(' ')
+      id.to_s.gsub(/\s+/, '')
     end
 
     def self.hide_all_ccs_schemes(scheme_id, status)
