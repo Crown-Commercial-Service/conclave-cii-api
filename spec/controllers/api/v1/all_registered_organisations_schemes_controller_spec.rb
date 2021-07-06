@@ -32,7 +32,6 @@ RSpec.describe Api::V1::AllRegisteredOrganisationsSchemesController, type: :cont
         let(:ccs_org_id) { organisation_scheme_identifier.ccs_org_id.to_s }
 
         it 'returns 200' do
-          puts ccs_org_id
           get :search_organisation, params: { ccs_org_id: ccs_org_id }
           expect(response).to have_http_status(:ok)
         end

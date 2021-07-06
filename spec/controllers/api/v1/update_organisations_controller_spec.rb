@@ -197,7 +197,7 @@ RSpec.describe Api::V1::UpdateOrganisationsController, type: :controller do
 
         it 'returns duplicate' do
           put :index, params: { ccs_org_id: ccs_org_id, id: organisation_scheme_identifier_second.ccs_org_id, scheme: organisation_scheme_identifier_second.scheme_code, clientid: clientid }
-          expect(response).to have_http_status(:method_not_allowed)
+          expect(response).to have_http_status(:conflict)
         end
       end
     end

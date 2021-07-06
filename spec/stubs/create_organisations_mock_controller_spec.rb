@@ -58,7 +58,7 @@ RSpec.describe 'Stub validations', type: :request do
         get_response = response.status
 
         search_params = { identifier: get_params(filename) }
-        post '/identities/schemes/organisation', params: search_params, headers: request_post_headers
+        post '/identities/organisation', params: search_params, headers: request_post_headers
 
         test_expectation(get_response, response)
       end
