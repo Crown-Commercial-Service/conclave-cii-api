@@ -42,13 +42,6 @@
             "congressionalDistricts": [],
             "isResidentialAddress": null
         },
-        "registrationNumbers": [
-            {
-                "registrationNumber": "SC301234",
-                "typeDescription": "The Charity Commission for Scotland",
-                "typeDnBCode": 33461
-            }
-        ],
         "dunsControlStatus": {
             "operatingStatus":{
                 "dnbCode": 9074
