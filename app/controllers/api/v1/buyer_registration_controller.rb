@@ -8,18 +8,36 @@ module Api
 
       attr_accessor :ccs_org_id, :salesforce_result
 
-      def create_buyer
+      def create_buyer(mock_req: false)
         create_ccs_org_id
 
         salesforce_api_search
 
-        organisation = create_organisation if @companies_and_duns_ids.any?
+        @organisation = create_organisation if @companies_and_duns_ids.any?
 
         additional_organisation(@salesforce_api_result, true) if @salesforce_api_result.present?
 
+        if mock_req
+          render_mocking_service
+        else
+          render_buyers_reg
+        end
+      end
+
+      def render_buyers_reg
         if @duplicate
           render json: '', status: :method_not_allowed
-        elsif @salesforce_api_result.blank? && organisation.blank?
+        elsif @salesforce_api_result.blank? && @organisation.blank?
+          render json: '', status: :not_found
+        else
+          render json: [{ ccs_org_id: @ccs_org_id }], status: :created
+        end
+      end
+
+      def render_mocking_service
+        if @duplicate
+          render json: [{ status: 405 }], status: :method_not_allowed
+        elsif @salesforce_api_result.blank? && @organisation.blank?
           render json: '', status: :not_found
         else
           render json: [{ ccs_org_id: @ccs_org_id }], status: :created
@@ -72,6 +90,10 @@ module Api
       end
 
       def api_search_result(id, scheme)
+        return if id.empty?
+        return if id.to_s == 'UNKNOWN'
+        return if id.to_s.include? '77777777'
+
         additional_identifier_search_api_with_params = SearchApi.new(id, scheme)
         additional_identifier_search_api_with_params.call
       end
@@ -79,12 +101,12 @@ module Api
       def create_organisation
         return false unless api_results_check
 
-        if @companies_and_duns_ids.length == 2
+        if @coh_api_results.present? && @duns_api_results.present?
           primary_organisation(@coh_api_results[:identifier])
           additional_organisation(@duns_api_results[:identifier], false)
-        elsif @companies_and_duns_ids.length == 1 && schemes_check(@coh_scheme)
+        elsif @coh_api_results.present?
           primary_organisation(@coh_api_results[:identifier])
-        elsif @companies_and_duns_ids.length == 1 && schemes_check(@duns_scheme)
+        elsif @duns_api_results.present?
           primary_organisation(@duns_api_results[:identifier])
           add_additional_identifiers(@duns_api_results[:additionalIdentifiers])
         end

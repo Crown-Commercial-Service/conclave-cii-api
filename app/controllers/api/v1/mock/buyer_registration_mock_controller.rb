@@ -6,7 +6,7 @@ module Api
 
         def create_buyer
           run_mock
-          result = @mock_controller.create_buyer
+          result = @mock_controller.create_buyer(mock_req: true)
           response_result(result)
         end
 
