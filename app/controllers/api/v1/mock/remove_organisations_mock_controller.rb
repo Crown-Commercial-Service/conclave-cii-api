@@ -6,7 +6,7 @@ module Api
 
         def delete_organisation
           run_mock
-          result = @mock_controller.delete_orginisation
+          result = @mock_controller.delete_organisation
           delete_response_result(result)
         end
 
