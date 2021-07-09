@@ -53,11 +53,12 @@ RSpec.describe 'Stub validations', type: :request do
   Dir.each_child('spec/stub_response/api_stubs') do |filename|
     describe 'Test mock services includes salesforce mock' do
       it filename do
-        get '/identities/schemes/organisation', params: get_params(filename), headers: request_get_headers
+        url_arguments = get_params(filename)
+        get "/identities/schemes/#{url_arguments[:scheme]}/identifiers/#{url_arguments[:id]}", headers: request_get_headers
         get_response = response.status
 
         search_params = { identifier: get_params(filename) }
-        post '/identities/schemes/organisation', params: search_params, headers: request_post_headers
+        post '/identities/organisation', params: search_params, headers: request_post_headers
 
         test_expectation(get_response, response)
       end

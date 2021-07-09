@@ -4,6 +4,8 @@ module Common
     DANDB_ENG_WALES_CHARITY_NUMBER_CODE = 33463
     DANDB_SCOTTISH_CHARITY_NUMBER_CODE = 33461
     DANDB_NORTHERN_IRELAND_CHARITY_NUMBER_CODE = 33462
+    MOCK_DANDB_ID = '111111111'.freeze
+    MOCK_SF_ID = 'NSO7IUSHF98HFP9WEH7NSF~56734565478'.freeze
     SCHEME_ENG_WALES_CHARITY = 'GB-CHC'.freeze
     SCHEME_NORTHEN_IRELAND_CHARITY = 'GB-NIC'.freeze
     SCHEME_SCOTISH_CHARITY = 'GB-SC'.freeze
@@ -12,7 +14,7 @@ module Common
     SCHEME_CCS = 'GB-CCS'.freeze
 
     # The below three constants are required to match the correct uri provided in the identifiers uri property.
-    # If you change any of these variable names, it must also be updated in identifier.rb, in the module 'FindThatCharity'.
+    # If you change any of these variable names, it must also be updated in identifier.rb, in the module 'FindThatCharity'
     GB_CHC_SCHEME_URI_SITE = 'Charity Commission England and Wales'.freeze
     GB_NIC_SCHEME_URI_SITE = 'Charity Commission Northern Ireland'.freeze
     GB_SC_SCHEME_URI_SITE = 'Office of Scottish Charity Regulator'.freeze

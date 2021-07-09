@@ -23,6 +23,8 @@ module Api
       private
 
       def api_result
+        return Common::ApiHelper.return_mock_duns if Common::ApiHelper.find_mock_duns_org(params[:scheme], params[:id])
+
         search_api_with_params = SearchApi.new(params[:id], params[:scheme])
         search_api_with_params.call
       end

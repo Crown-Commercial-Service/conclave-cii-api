@@ -6,6 +6,7 @@ module Salesforce
       @scheme_id = scheme_id
       @error = nil
       @result = []
+      @sf_status = nil
     end
 
     def post_params
@@ -35,6 +36,7 @@ module Salesforce
       conn.authorization :Bearer, token['access_token']
       resp = conn.get(url)
       ApiLogging::Logger.api_status_error('Salesforce method:fetch_results', resp)
+      @sf_status = resp.status
       @result = ActiveSupport::JSON.decode(resp.body) if resp.status == 200
 
       if resp.status == 200 && Common::ApiHelper.exists_or_null(@result['records'][0]).present?
