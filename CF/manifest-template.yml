@@ -3,7 +3,7 @@ applications:
 - name: conclave-cii-CF_SPACE
   memory: SET_MEMORY
   buildpacks:
-    - https://github.com/cloudfoundry/ruby-buildpack.git
+    - https://github.com/cloudfoundry/ruby-buildpack/releases/tag/v1.8.42
   instances: 1
   random-route: true
   routes:
