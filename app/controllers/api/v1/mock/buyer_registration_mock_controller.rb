@@ -5,6 +5,11 @@ module Api
         before_action :buyer_registration
 
         def create_buyer
+          if params[:account_id].blank? || params[:account_id_type].blank?
+            response_result('')
+            return
+          end
+
           run_mock
           result = @mock_controller.create_buyer(mock_req: true)
           response_result(result)
