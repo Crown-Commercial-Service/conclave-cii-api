@@ -6,7 +6,7 @@ module Api
 
         def create_buyer
           if params[:account_id].blank? || params[:account_id_type].blank?
-            response_result('')
+            render json: '', status: :bad_request
             return
           end
 
