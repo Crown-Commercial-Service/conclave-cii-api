@@ -20,8 +20,7 @@ module Api
         elsif @api_result.blank? && @sales_force_organisation_created == false
           render json: '', status: :not_found
         else
-          result = Common::RegisteredOrganisationResponse.new(@ccs_org_id, hidden: true).response_payload_migration
-          render json: result[0], status: :created
+          render json: build_response, status: :created
         end
       end
 
@@ -165,6 +164,13 @@ module Api
 
       def return_error_code(code)
         render json: '', status: code.to_s
+      end
+
+      def build_response
+        result = Common::RegisteredOrganisationResponse.new(@ccs_org_id, hidden: true).response_payload_migration
+        result[0][:address] = Common::AddressHelper.new(@api_result).build_response
+        result[0][:contactPoint] = Common::ContactHelper.new(@api_result).build_response
+        result[0]
       end
     end
   end
