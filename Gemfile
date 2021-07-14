@@ -31,7 +31,7 @@ gem 'graphlient'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem 'rack-cors'
 # For converting between cases for API request & response
-gem 'olive_branch', '>= 3.0.0'
+gem 'olive_branch', '>= 4.0.0'
 # test code complexity
 gem 'flog'
 gem 'vault'
