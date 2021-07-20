@@ -7,22 +7,37 @@ module Api
       before_action :validate_params
       before_action :create_ccs_org_id
 
-      attr_accessor :ccs_org_id, :salesforce_result
+      attr_accessor :ccs_org_id, :salesforce_result, :api_result, :sales_force_organisation_created
 
       def create_buyer
-        salesforce_api_search
-
-        organisation = create_organisation if @companies_and_duns_ids.any?
-
-        additional_organisation(@salesforce_api_result, true) if @salesforce_api_result.present?
+        schemes_list = Common::AdditionalIdentifier.new
+        create_from_schemes if schemes_list.schemes.include? params[:account_id_type].to_s
+        create_from_salesforce if Common::SalesforceSearchIds.account_id_types_salesforce.include? params[:account_id_type].to_s
 
         if @duplicate
           render json: '', status: :method_not_allowed
-        elsif @salesforce_api_result.blank? && organisation.blank?
+        # elsif @api_result.blank? && organisation.blank?
+        elsif @api_result.blank? && @sales_force_organisation_created == false
           render json: '', status: :not_found
         else
-          render json: { ccs_org_id: @ccs_org_id }, status: :created
+          render json: build_response, status: :created
         end
+      end
+
+      def create_from_salesforce
+        salesforce_api_search
+        @sales_force_organisation_created = create_organisation if @companies_and_duns_ids.any?
+        additional_organisation(@api_result, true) if @api_result.present?
+      end
+
+      def create_from_schemes
+        @api_result = api_search_result(params[:account_id], params[:account_id_type])
+
+        @api_result = Salesforce::AdditionalIdentifier.new(@api_result).build_response if @api_result.present?
+
+        primary_organisation(@api_result[:identifier]) if @api_result.present? && @api_result[:identifier].present?
+        add_additional_identifiers(@api_result[:additionalIdentifiers]) if @api_result.present? && @api_result[:additionalIdentifiers].present?
+        @api_result
       end
 
       def validate_params
@@ -45,7 +60,7 @@ module Api
         @coh_api_results = coh_api_query
 
         return false if @coh_api_results.blank? && @duns_api_results.blank?
-        return false if @salesforce_api_result.blank?
+        return false if @api_result.blank?
 
         true
       end
@@ -120,14 +135,14 @@ module Api
         organisation.legal_name = identifier[:legalName]
         organisation.ccs_org_id = @ccs_org_id
         organisation.primary_scheme = false
-        organisation.hidden = hidden
+        organisation.hidden = Common::ApiHelper.hide_all_ccs_schemes(identifier[:scheme], hidden)
         # organisation.client_id = Common::ApiHelper.find_client(api_key_to_string)
         organisation.save unless @duplicate
       end
 
       def buyer_exists
-        validate = ApiValidations::BuyerExists.new(@salesforce_api_result)
-        render json: validate.errors, status: :method_not_allowed unless validate.valid?
+        validate = ApiValidations::BuyerExists.new(@api_result)
+        render json: validate.errors, status: :conflict unless validate.valid?
       end
 
       def organisation_exists(org)
@@ -140,7 +155,7 @@ module Api
 
       def salesforce_api_search
         search_api_with_params = Salesforce::SalesforceBuyerRegistration.new(params[:account_id], params[:account_id_type])
-        @salesforce_api_result = search_api_with_params.fetch_results
+        @api_result = search_api_with_params.fetch_results
         buyer_exists
         status_code = search_api_with_params.sf_status
         return_error_code(status_code) if status_code > 399
@@ -149,6 +164,13 @@ module Api
 
       def return_error_code(code)
         render json: '', status: code.to_s
+      end
+
+      def build_response
+        result = Common::RegisteredOrganisationResponse.new(@ccs_org_id, hidden: false).response_payload_migration
+        result[0][:address] = Common::AddressHelper.new(@api_result).build_response
+        result[0][:contactPoint] = Common::ContactHelper.new(@api_result).build_response
+        result[0]
       end
     end
   end
