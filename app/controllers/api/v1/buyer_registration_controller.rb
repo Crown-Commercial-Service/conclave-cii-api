@@ -8,7 +8,8 @@ module Api
 
       attr_accessor :ccs_org_id, :salesforce_result, :api_result, :sales_force_organisation_created
 
-      def create_buyer
+      def create_buyer(mock_req: false)
+        create_ccs_org_id
         schemes_list = Common::AdditionalIdentifier.new
         create_from_schemes if schemes_list.schemes.include? params[:account_id_type].to_s
         create_from_salesforce if Common::SalesforceSearchIds.account_id_types_salesforce.include? params[:account_id_type].to_s
@@ -17,6 +18,16 @@ module Api
           render_mocking_service
         else
           render_buyers_reg
+        end
+      end
+
+      def render_mocking_service
+        if @duplicate
+          render json: [{ status: 405 }], status: :method_not_allowed
+        elsif @api_result.blank? && @organisation.blank?
+          render json: '', status: :not_found
+        else
+          render json: [{ ccs_org_id: @ccs_org_id }], status: :created
         end
       end
 
@@ -54,8 +65,6 @@ module Api
 
       def create_ccs_org_id
         @ccs_org_id = Common::GenerateId.ccs_org_id
-        @duns_scheme = Common::AdditionalIdentifier::SCHEME_DANDB
-        @coh_scheme = Common::AdditionalIdentifier::SCHEME_COMPANIES_HOUSE
       end
 
       def schemes_check(scheme)
@@ -73,21 +82,21 @@ module Api
       end
 
       def duns_api_query
-        return unless schemes_check(@duns_scheme)
+        return unless schemes_check('US-DUN'.freeze)
 
         @companies_and_duns_ids.each do |e| # e = US-DUN-123456 as a valid example.
-          @id = e[7..] if e.include?(@duns_scheme) # 123456
-          @scheme = e[..5] if e.include?(@duns_scheme) # US-DUN
+          @id = e[7..] if e.include?('US-DUN'.freeze) # 123456
+          @scheme = e[..5] if e.include?('US-DUN'.freeze) # US-DUN
         end
         api_search_result(@id, @scheme)
       end
 
       def coh_api_query
-        return unless schemes_check(@coh_scheme)
+        return unless schemes_check('GB-COH'.freeze)
 
         @companies_and_duns_ids.each do |e| # e = GB-COH-123456 as a valid example.
-          @id = e[7..] if e.include?(@coh_scheme) # 123456
-          @scheme = e[..5] if e.include?(@coh_scheme) # GB-COH
+          @id = e[7..] if e.include?('GB-COH'.freeze) # 123456
+          @scheme = e[..5] if e.include?('GB-COH'.freeze) # GB-COH
         end
         api_search_result(@id, @scheme)
       end
