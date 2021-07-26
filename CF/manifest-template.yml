@@ -4,7 +4,7 @@ applications:
   memory: SET_MEMORY
   buildpacks:
     - https://github.com/cloudfoundry/ruby-buildpack.git#v1.8.42
-  instances: 3
+  instances: 1
   random-route: true
   routes:
     - route: conclave-cii-CF_SPACE.apps.internal

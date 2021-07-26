@@ -7,6 +7,7 @@ module ApiValidations
     end
 
     def call
+      Rails.logger.info @errors_key
       case @errors_key
       when :id, :scheme, :identifier, :organisation, :additional_identifiers, :ccs_org_id, :account_id_type_does_not_exist
         raise_exception(Common::StatusCodes::BAD_REQUEST)

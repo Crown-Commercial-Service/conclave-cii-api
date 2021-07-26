@@ -30,7 +30,7 @@ module Api
           render json: '', status: :not_found
         else
           # @ccs_org not generated if dummy org (US-DUN-111111111) was found, in this case 'result' holds ccs_org_id, from when it was added to db in helper. (Part of work for Nick Fine).
-          render json: [{ ccs_org_id: @ccs_org_id || result }], status: :created
+          render json: { ccs_org_id: @ccs_org_id || result }, status: :created
         end
       end
 
