@@ -23,11 +23,11 @@ module Api
 
       def render_mocking_service
         if @duplicate
-          render json: [{ status: 405 }], status: :method_not_allowed
+          render json: { status: 405 }, status: :method_not_allowed
         elsif @api_result.blank? && @organisation.blank?
           render json: '', status: :not_found
         else
-          render json: [{ ccs_org_id: @ccs_org_id }], status: :created
+          render json: { ccs_org_id: @ccs_org_id }, status: :created
         end
       end
 
