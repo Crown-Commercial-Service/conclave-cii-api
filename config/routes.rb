@@ -28,9 +28,9 @@ Rails.application.routes.draw do
     namespace :v1 do
       namespace :mock do
         get '/identities/schemes/:scheme/identifiers/:id', to: 'organisations_mock#search_organisation'
-        post '/identities/schemes/organisation', to: 'create_organisations_mock#index'
+        post '/identities/organisations', to: 'create_organisations_mock#index'
         get '/identities/schemes', to: 'schemes_mock#schemes'
-        delete '/identities/schemes/organisation', to: 'remove_organisations_additional_identifier_mock#delete_additional_identifier'
+        delete '/identities/organisations/:ccs_org_id/schemes/:scheme/identifiers/:id', to: 'remove_organisations_additional_identifier_mock#delete_additional_identifier'
         delete '/identities/organisations/:ccs_org_id', to: 'remove_organisations_mock#delete_organisation'
         put '/identities/organisations/:ccs_org_id/schemes/:scheme/identifiers/:id', to: 'update_organisations_mock#index'
         get '/identities/organisations/:ccs_org_id/schemes/:scheme/identifiers/:id', to: 'manage_organisations_mock#search_organisation'
