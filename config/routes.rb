@@ -22,39 +22,41 @@ Rails.application.routes.draw do
       end
     end
   end
-  # Mock new routes
-  # namespace :api do
-  #   namespace :v1 do
-  #     namespace :mock do
-  #       get '/identities/schemes/:scheme/identifiers/:id', to: 'organisations_mock#search_organisation'
-  #       post '/identities/schemes/organisation', to: 'create_organisations_mock#index'
-  #       get '/identities/schemes', to: 'schemes_mock#schemes'
-  #       delete '/identities/schemes/organisation', to: 'remove_organisations_additional_identifier_mock#delete_additional_identifier'
-  #       delete '/identities/organisations/:ccs_org_id', to: 'remove_organisations_mock#delete_organisation'
-  #       put '/identities/organisations/:ccs_org_id/schemes/:scheme/identifiers/:id', to: 'update_organisations_mock#index'
-  #       get '/identities/organisations/:ccs_org_id/schemes/:scheme/identifiers/:id', to: 'manage_organisations_mock#search_organisation'
-  #       get '/identities/organisations/:ccs_org_id', to: 'registered_organisations_schemes_mock#search_organisation'
-  #       get '/identities/organisations/:ccs_org_id/all', to: 'all_registered_organisations_schemes_mock#search_organisation'
-  #     end
-  #   end
-  # end
 
-  # these are Mock testing endpoint will be removed on live
+  # Mock new routes
   namespace :api do
     namespace :v1 do
       namespace :mock do
-        get '/identities/schemes/organisation', to: 'organisations_mock#search_organisation'
-        get '/identities/schemes/identifiers', to: 'organisations_mock#search_organisation'
+        get '/identities/schemes/:scheme/identifiers/:id', to: 'organisations_mock#search_organisation'
         post '/identities/schemes/organisation', to: 'create_organisations_mock#index'
         get '/identities/schemes', to: 'schemes_mock#schemes'
         delete '/identities/schemes/organisation', to: 'remove_organisations_additional_identifier_mock#delete_additional_identifier'
-        delete '/identities/organisation', to: 'remove_organisations_mock#delete_organisation'
-        put '/identities/schemes/organisation', to: 'update_organisations_mock#index'
-        get '/identities/schemes/manageidentifiers', to: 'manage_organisations_mock#search_organisation'
-        get '/identities/schemes/organisations', to: 'registered_organisations_schemes_mock#search_organisation'
-        get '/identities/schemes/organisations/all', to: 'all_registered_organisations_schemes_mock#search_organisation'
+        delete '/identities/organisations/:ccs_org_id', to: 'remove_organisations_mock#delete_organisation'
+        put '/identities/organisations/:ccs_org_id/schemes/:scheme/identifiers/:id', to: 'update_organisations_mock#index'
+        get '/identities/organisations/:ccs_org_id/schemes/:scheme/identifiers/:id', to: 'manage_organisations_mock#search_organisation'
+        get '/identities/organisations/:ccs_org_id', to: 'registered_organisations_schemes_mock#search_organisation'
+        get '/identities/organisations/:ccs_org_id/all', to: 'all_registered_organisations_schemes_mock#search_organisation'
         post '/identities/schemes/register-buyer', to: 'buyer_registration_mock#create_buyer'
       end
     end
   end
+
+  # Mock old routes
+  # namespace :api do
+  #   namespace :v1 do
+  #     namespace :mock do
+  #       get '/identities/schemes/organisation', to: 'organisations_mock#search_organisation'
+  #       get '/identities/schemes/identifiers', to: 'organisations_mock#search_organisation'
+  #       post '/identities/schemes/organisation', to: 'create_organisations_mock#index'
+  #       get '/identities/schemes', to: 'schemes_mock#schemes'
+  #       delete '/identities/schemes/organisation', to: 'remove_organisations_additional_identifier_mock#delete_additional_identifier'
+  #       delete '/identities/organisation', to: 'remove_organisations_mock#delete_organisation'
+  #       put '/identities/schemes/organisation', to: 'update_organisations_mock#index'
+  #       get '/identities/schemes/manageidentifiers', to: 'manage_organisations_mock#search_organisation'
+  #       get '/identities/schemes/organisations', to: 'registered_organisations_schemes_mock#search_organisation'
+  #       get '/identities/schemes/organisations/all', to: 'all_registered_organisations_schemes_mock#search_organisation'
+  #       post '/identities/schemes/register-buyer', to: 'buyer_registration_mock#create_buyer'
+  #     end
+  #   end
+  # end
 end
