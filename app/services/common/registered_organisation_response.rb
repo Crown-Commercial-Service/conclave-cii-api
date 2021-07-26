@@ -25,6 +25,15 @@ module Common
       ]
     end
 
+    def response_payload_migration
+      build_response
+      [
+        organisationId: @ccs_org_id,
+        identifier: @primary_identifier,
+        additionalIdentifiers: @additional_identifier
+      ]
+    end
+
     def build_response
       @results.each do |result|
         build_response_structure(result)
