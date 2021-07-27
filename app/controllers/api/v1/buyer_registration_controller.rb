@@ -167,7 +167,7 @@ module Api
       end
 
       def build_response
-        result = Common::RegisteredOrganisationResponse.new(@ccs_org_id, hidden: false).response_payload_migration
+        result = Common::MigrationOrganisationResponse.new(@ccs_org_id, hidden: false).response_payload_migration
         result[0][:address] = Common::AddressHelper.new(@api_result).build_response
         result[0][:contactPoint] = Common::ContactHelper.new(@api_result).build_response
         result[0]
