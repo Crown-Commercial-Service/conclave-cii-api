@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   delete '/identities/organisations/:ccs_org_id', to: 'api/v1/remove_organisations#delete_organisation'
   get '/identities/organisations/:ccs_org_id/all', to: 'api/v1/all_registered_organisations_schemes#search_organisation'
   get '/identities/organisations/sso/:ccs_org_id/all', to: 'api/v1/utilities/all_registered_organisations_schemes#search_all_organisation'
-  post '/identities/organisations/schemes', to: 'api/v1/buyer_registration#create_buyer'
+  post '/identities/organisations/schemes/:account_id_type/identifiers/:account_id', to: 'api/v1/buyer_registration#create_buyer'
   post '/identities/organisations', to: 'api/v1/create_organisations#index'
   # these are testing endpoint will be removed on live
   namespace :api do
