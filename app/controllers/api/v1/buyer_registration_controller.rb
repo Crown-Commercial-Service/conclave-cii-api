@@ -15,7 +15,7 @@ module Api
         create_from_salesforce if Common::SalesforceSearchIds.account_id_types_salesforce.include? params[:account_id_type].to_s
 
         if @duplicate
-          render json: '', status: :method_not_allowed
+          render json: '', status: :conflict
         # elsif @api_result.blank? && organisation.blank?
         elsif @api_result.blank? && @sales_force_organisation_created == false
           render json: '', status: :not_found
