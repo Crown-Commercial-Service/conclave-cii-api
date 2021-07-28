@@ -76,14 +76,14 @@ RSpec.describe Api::V1::BuyerRegistrationController, type: :controller do
     context 'when invalid ApiKey' do
       it 'returns 401' do
         request.headers['x-api-key'] = 'invalid'
-        post :create_buyer
+        post :create_buyer, params: { account_id_type: 'sfurd', account_id: 'NSO7IUSHF98HFP9WEH9FFG' }
         expect(response).to have_http_status(:unauthorized)
       end
     end
 
     context 'when no ApiKey' do
       it 'returns 401' do
-        post :create_buyer
+        post :create_buyer, params: { account_id_type: 'sfurd', account_id: 'NSO7IUSHF98HFP9WEH9FFG' }
         expect(response).to have_http_status(:unauthorized)
       end
     end
