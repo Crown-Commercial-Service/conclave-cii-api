@@ -7,7 +7,7 @@ module Api
         def delete_additional_identifier
           run_mock
           org = @mock_controller.find_organisation
-          @mock_controller.delete_additional_identifier unless org.blank?
+          @mock_controller.delete_additional_identifier if org.present?
           delete_additional_response_result(org)
         end
 
