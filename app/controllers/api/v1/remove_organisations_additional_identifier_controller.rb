@@ -20,6 +20,13 @@ module Api
         render json: validate.errors, status: :bad_request unless validate.valid?
       end
 
+      def find_organisation
+        OrganisationSchemeIdentifier.find_by(ccs_org_id: params[:ccs_org_id].to_s,
+                                             scheme_org_reg_number: params[:id].to_s,
+                                             scheme_code: params[:scheme].to_s,
+                                             primary_scheme: false)
+      end
+
       private
 
       def delete_organisation

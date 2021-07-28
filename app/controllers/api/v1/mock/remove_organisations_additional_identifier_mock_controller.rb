@@ -1,37 +1,18 @@
 module Api
   module V1
     module Mock
-      class RemoveOrganisationsAdditionalIdentifierMockController < ActionController::API
-        # include Authorize::Token
-        # include Authorize::User
-        rescue_from ApiValidations::ApiError, with: :return_error_code
-        # before_action :validate_api_key
-        # before_action :validate_user
-        before_action :validate_params
+      class RemoveOrganisationsAdditionalIdentifierMockController < ApplicationMockController
+        before_action :remove_additional_organisations
 
         def delete_additional_identifier
-          delete_organisation
-          render json: '', status: :ok
-        rescue StandardError
-          render json: '', status: :bad_request
+          run_mock
+          org = @mock_controller.find_organisation
+          @mock_controller.delete_additional_identifier unless org.blank?
+          delete_additional_response_result(org)
         end
 
-        def validate_params
-          validate = ApiValidations::RemoveOrganisationAdditionalIdentifier.new(params)
-          render json: validate.errors, status: :bad_request unless validate.valid?
-        end
-
-        private
-
-        def delete_organisation
-          OrganisationSchemeIdentifier.find_by(ccs_org_id: params[:ccs_org_id].to_s,
-                                               scheme_org_reg_number: params[:id].to_s,
-                                               scheme_code: params[:scheme].to_s,
-                                               primary_scheme: false).destroy
-        end
-
-        def return_error_code(code)
-          render json: '', status: code.to_s
+        def remove_additional_organisations
+          @mock_controller = Api::V1::RemoveOrganisationsAdditionalIdentifierController.new
         end
       end
     end
