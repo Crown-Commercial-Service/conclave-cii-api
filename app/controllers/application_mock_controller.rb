@@ -44,4 +44,13 @@ class ApplicationMockController < ActionController::API
     disable_mock_service
     render json: result, status: :ok if result.blank?
   end
+
+  def delete_additional_response_result(org)
+    disable_mock_service
+    if org.blank?
+      render json: '', status: :not_found
+    else
+      render json: '', status: :ok
+    end
+  end
 end
