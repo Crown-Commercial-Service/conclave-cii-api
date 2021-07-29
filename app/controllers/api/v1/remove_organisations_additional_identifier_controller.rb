@@ -27,6 +27,17 @@ module Api
                                              primary_scheme: false)
       end
 
+      def primary_org_check
+        result = Common::RegisteredOrganisationResponse.new(params[:ccs_org_id].to_s).response_payload
+        return false if result.blank?
+
+        result_scheme = result[0][:identifier][:scheme].to_s
+        result_id = result[0][:identifier][:id].to_s
+        return true if result_scheme == params[:scheme].to_s && result_id == params[:id].to_s
+
+        false
+      end
+
       private
 
       def delete_organisation
