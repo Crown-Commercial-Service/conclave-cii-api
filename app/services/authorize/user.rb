@@ -1,7 +1,8 @@
 module Authorize
   module User
     def validate_client_id
-      ApiValidations::ApiErrorValidationResponse.new(:missing_client_id) if params[:clientid].blank?
+      decoded_token = validate_and_decode_token
+      ApiValidations::ApiErrorValidationResponse.new(:missing_client_id) if decoded_token[0]['aud'].blank?
     end
 
     def validate_user_access_token
@@ -33,7 +34,8 @@ module Authorize
     end
 
     def validate_access_token
-      validate_token = SecurityService::Auth.new(params[:clientid], Common::ApiHelper.bearer_token(request.headers)).sec_api_validate_token
+      decoded_token = validate_and_decode_token
+      validate_token = SecurityService::Auth.new(decoded_token[0]['aud'], Common::ApiHelper.bearer_token(request.headers)).sec_api_validate_token
       ApiValidations::ApiErrorValidationResponse.new(:invalid_user_access_token) if validate_token.blank?
     end
 

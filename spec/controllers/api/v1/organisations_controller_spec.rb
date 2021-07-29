@@ -30,14 +30,14 @@ RSpec.describe Api::V1::OrganisationsController, type: :controller do
     context 'when invalid ApiKey' do
       it 'returns 401' do
         request.headers['x-api-key'] = 'invalid'
-        post :search_organisation
+        get :search_organisation, params: { scheme: 'US-DUN', id: '606123456' }
         expect(response).to have_http_status(:unauthorized)
       end
     end
 
     context 'when no ApiKey' do
       it 'returns 401' do
-        post :search_organisation
+        get :search_organisation, params: { scheme: 'US-DUN', id: '606123456' }
         expect(response).to have_http_status(:unauthorized)
       end
     end
