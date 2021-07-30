@@ -11,7 +11,8 @@ Rails.application.routes.draw do
   delete '/identities/organisations/:ccs_org_id', to: 'api/v1/remove_organisations#delete_organisation'
   get '/identities/organisations/:ccs_org_id/all', to: 'api/v1/all_registered_organisations_schemes#search_organisation'
   get '/identities/organisations/sso/:ccs_org_id/all', to: 'api/v1/utilities/all_registered_organisations_schemes#search_all_organisation'
-  post '/identities/organisations/schemes', to: 'api/v1/buyer_registration#create_buyer'
+  post '/identities/organisations/schemes/:account_id_type/identifiers/:account_id', to: 'api/v1/buyer_registration#create_buyer'
+  get '/identities/organisations/schemes/codes', to: 'api/v1/buyer_registration_schemes#buyer_schemes'
   post '/identities/organisations', to: 'api/v1/create_organisations#index'
   # these are testing endpoint will be removed on live
   namespace :api do
@@ -36,7 +37,8 @@ Rails.application.routes.draw do
         get '/identities/organisations/:ccs_org_id/schemes/:scheme/identifiers/:id', to: 'manage_organisations_mock#search_organisation'
         get '/identities/organisations/:ccs_org_id', to: 'registered_organisations_schemes_mock#search_organisation'
         get '/identities/organisations/:ccs_org_id/all', to: 'all_registered_organisations_schemes_mock#search_organisation'
-        post '/identities/schemes/register-buyer', to: 'buyer_registration_mock#create_buyer'
+        post '/identities/organisations/schemes/:account_id_type/identifiers/:account_id', to: 'buyer_registration_mock#create_buyer'
+        get '/identities/organisations/schemes/codes', to: 'api/v1/buyer_registration_schemes_mock#buyer_schemes'
       end
     end
   end
