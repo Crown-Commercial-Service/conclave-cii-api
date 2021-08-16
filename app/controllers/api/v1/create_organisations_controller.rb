@@ -14,7 +14,8 @@ module Api
         result = search_scheme_api unless @mock_duns
 
         if result.present?
-          result = salesforce_additional_identifier(result)
+          result = salesforce_additional_identifier(@api_result)
+          validate_salesforce(@api_result[:additionalIdentifiers]) if defined?(@api_result[:additionalIdentifiers])
           primary_organisation
         end
 
@@ -108,6 +109,17 @@ module Api
 
       def salesforce_additional_identifier(result)
         Salesforce::AdditionalIdentifier.new(result).build_response
+      end
+
+      def validate_additional_schemes(schmes)
+        validate = ApiValidations::Scheme.new(schmes)
+        render json: validate.errors, status: :conflict unless validate.valid?
+      end
+
+      def validate_salesforce
+        @api_result[:additionalIdentifiers].each do |user_params|
+          validate_additional_schemes(user_params) if user_params[:scheme] == Common::AdditionalIdentifier::SCHEME_CCS
+        end
       end
     end
   end
