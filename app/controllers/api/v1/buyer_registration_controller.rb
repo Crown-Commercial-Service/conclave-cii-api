@@ -16,12 +16,16 @@ module Api
 
         if @duplicate
           render json: '', status: :conflict
-        # elsif @api_result.blank? && organisation.blank?
         elsif @api_result.blank? && @sales_force_organisation_created == false
           render json: '', status: :not_found
         else
-          render json: build_response, status: :created
+          return_success
         end
+      end
+
+      def return_success
+        render json: build_response, status: :created if @api_result.present?
+        render json: [], status: :not_found if @api_result.blank?
       end
 
       def create_from_salesforce
@@ -32,9 +36,8 @@ module Api
 
       def create_from_schemes
         @api_result = api_search_result(params[:account_id], params[:account_id_type])
-
         @api_result = Salesforce::AdditionalIdentifier.new(@api_result).build_response if @api_result.present?
-
+        validate_salesforce
         primary_organisation(@api_result[:identifier]) if @api_result.present? && @api_result[:identifier].present?
         add_additional_identifiers(@api_result[:additionalIdentifiers]) if @api_result.present? && @api_result[:additionalIdentifiers].present?
         @api_result
@@ -171,6 +174,17 @@ module Api
         result[0][:address] = Common::AddressHelper.new(@api_result).build_response
         result[0][:contactPoint] = Common::ContactHelper.new(@api_result).build_response
         result[0]
+      end
+
+      def validate_additional_schemes(schmes)
+        validate = ApiValidations::Scheme.new(schmes)
+        render json: validate.errors, status: :conflict unless validate.valid?
+      end
+
+      def validate_salesforce
+        @api_result[:additionalIdentifiers].each do |user_params|
+          validate_additional_schemes(user_params) if user_params[:scheme] == Common::AdditionalIdentifier::SCHEME_CCS
+        end
       end
     end
   end
