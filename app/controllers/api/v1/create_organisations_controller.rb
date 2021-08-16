@@ -12,18 +12,19 @@ module Api
 
       def index
         result = search_scheme_api unless @mock_duns
-
-        if result.present?
-          result = salesforce_additional_identifier(@api_result)
-          validate_salesforce if defined?(@api_result[:additionalIdentifiers])
-          primary_organisation
-        end
-
-        additional_identifiers if defined?(result[:additionalIdentifiers])
-
+        generate_record(result)
         # If the dummy org (US-DUN-111111111) has been found, this will add it to db, and return the ccs_org_id to be rendered. (Part of work for Nick Fine).
         result = Common::ApiHelper.add_dummy_org(api_key_to_string) if @mock_duns
         render_results(result)
+      end
+
+      def generate_record(result)
+        return if result.blank?
+
+        result = salesforce_additional_identifier(@api_result)
+        validate_salesforce if defined?(@api_result[:additionalIdentifiers])
+        primary_organisation
+        additional_identifiers if defined?(result[:additionalIdentifiers])
       end
 
       def render_results(result)
