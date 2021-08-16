@@ -15,7 +15,7 @@ module Api
 
         if result.present?
           result = salesforce_additional_identifier(@api_result)
-          validate_salesforce(@api_result[:additionalIdentifiers]) if defined?(@api_result[:additionalIdentifiers])
+          validate_salesforce if defined?(@api_result[:additionalIdentifiers])
           primary_organisation
         end
 
