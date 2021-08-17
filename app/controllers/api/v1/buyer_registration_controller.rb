@@ -60,7 +60,7 @@ module Api
       end
 
       def validate_params
-        params[:account_id_type] = params[:account_id_type].to_s.delete('-').downcase
+        params[:account_id_type] = params[:account_id_type].to_s.delete('-').downcase unless params[:account_id_type].include?('US'.freeze) || params[:account_id_type].include?('GB'.freeze)
         validate = ApiValidations::BuyerRegistration.new(params)
         render json: validate.errors, status: :bad_request unless validate.valid?
       end
