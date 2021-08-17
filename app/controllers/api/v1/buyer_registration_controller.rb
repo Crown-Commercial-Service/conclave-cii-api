@@ -24,23 +24,27 @@ module Api
       # Method to capture some additional mocking service requests, which are missed by not calling any external api's.
       def render_mocking_service
         if @duplicate
-          render json: { status: 405 }, status: :method_not_allowed
+          render json: '', status: :conflict
         elsif @api_result.blank? && @organisation.blank?
           render json: '', status: :not_found
         else
-          render json: { ccs_org_id: @ccs_org_id }, status: :created
+          render json: build_response, status: :created
         end
       end
 
       def render_buyers_reg
         if @duplicate
-          render json: '', status: :method_not_allowed
-        # elsif @api_result.blank? && organisation.blank?
+          render json: '', status: :conflict
         elsif @api_result.blank? && @sales_force_organisation_created == false
           render json: '', status: :not_found
         else
-          render json: build_response, status: :created
+          return_success
         end
+      end
+
+      def return_success
+        render json: build_response, status: :created if @api_result.present?
+        render json: [], status: :not_found if @api_result.blank?
       end
 
       def create_from_salesforce
