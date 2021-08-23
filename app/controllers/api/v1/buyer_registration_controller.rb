@@ -21,7 +21,7 @@ module Api
         end
       end
 
-      # Method to capture some additional mocking service requests, which are missed by not calling any external api's.
+      # Method to capture some additional mocking service requests, which are missed by not calling any external api's
       def render_mocking_service
         if @duplicate
           render json: '', status: :conflict
