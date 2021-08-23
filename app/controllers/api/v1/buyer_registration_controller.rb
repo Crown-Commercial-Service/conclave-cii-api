@@ -21,8 +21,18 @@ module Api
         end
       end
 
-      # Method to capture some additional mocking service requests, which are missed by not calling any external api's.
+      # Method to capture some additional mocking service requests, which are missed by not calling any external api's
       def render_mocking_service
+        if @duplicate
+          render json: '', status: :conflict
+        elsif @api_result.blank? && @organisation.blank?
+          render json: '', status: :not_found
+        else
+          render json: build_response, status: :created
+        end
+      end
+
+      def render_buyers_reg
         if @duplicate
           render json: '', status: :conflict
         elsif @api_result.blank? && @sales_force_organisation_created == false
