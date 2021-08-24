@@ -15,7 +15,7 @@ module Api
         create_from_salesforce if Common::SalesforceSearchIds.account_id_types_salesforce.include? params[:account_id_type].to_s
 
         if @duplicate
-          render json: '', status: :conflict
+          render json: { ccs_org_id: @duplicate_ccs_org_id }, status: :conflict
         elsif @api_result.blank? && @sales_force_organisation_created == false
           render json: '', status: :not_found
         else
@@ -30,8 +30,8 @@ module Api
 
       def create_from_salesforce
         salesforce_api_search
-        @sales_force_organisation_created = create_organisation if @companies_and_duns_ids.any?
-        additional_organisation(@api_result, true) if @api_result.present?
+        @sales_force_organisation_created = create_organisation if !@duplicate && @companies_and_duns_ids.any?
+        additional_organisation(@api_result, true) if @api_result.present? && !@duplicate
       end
 
       def create_from_schemes
@@ -145,7 +145,8 @@ module Api
 
       def buyer_exists
         validate = ApiValidations::BuyerExists.new(@api_result)
-        render json: validate.errors, status: :conflict unless validate.valid?
+        @duplicate_ccs_org_id = validate.ccs_organisation_exists
+        @duplicate = true if @duplicate_ccs_org_id
       end
 
       def organisation_exists(org)
@@ -160,9 +161,7 @@ module Api
         search_api_with_params = Salesforce::SalesforceBuyerRegistration.new(params[:account_id], params[:account_id_type])
         @api_result = search_api_with_params.fetch_results
         buyer_exists
-        status_code = search_api_with_params.sf_status
-        return_error_code(status_code) if status_code > 399
-        @companies_and_duns_ids = search_api_with_params.results
+        @companies_and_duns_ids = search_api_with_params.results unless @duplicate
       end
 
       def return_error_code(code)
