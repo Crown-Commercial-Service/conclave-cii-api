@@ -10,9 +10,20 @@ module FindThatCharity
     end
 
     def fetch_results
-      conn = Faraday.new(url: ENV['FINDTHATCHARITY_API_ENDPOINT'])
+      # conn = Faraday.new(url: ENV['FINDTHATCHARITY_API_ENDPOINT'])
+
+      conn = Faraday.new(url: ENV['FINDTHATCHARITY_API_ENDPOINT']) do |builder|
+        builder.use Faraday::HttpCache, store: Rails.cache, logger: Rails.logger, shared_cache: false
+        builder.use Faraday::OverrideCacheControl, cache_control: 'public, max-age=3600'
+        builder.adapter Faraday.default_adapter
+      end
+
       resp = conn.get("/orgid/#{@scheme_id}-#{@charity_number}.json")
+
       ApiLogging::Logger.api_status_error('Find that Charity | method:fetch_results', resp)
+      ApiLogging::Logger.info(resp.headers['X-RateLimit-Remain'])
+      ApiLogging::Logger.info(resp.inspect)
+
       @result = ActiveSupport::JSON.decode(resp.body) if resp.status == 200
 
       if resp.status == 200 && @result.key?('active') && @result['active'] == true
