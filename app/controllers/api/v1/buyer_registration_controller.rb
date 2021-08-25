@@ -30,7 +30,7 @@ module Api
 
       def create_from_salesforce
         salesforce_api_search
-        @sales_force_organisation_created = create_organisation if !@duplicate && @companies_and_duns_ids.any?
+        @sales_force_organisation_created = create_organisation if !@duplicate && @companies_and_duns_ids && @companies_and_duns_ids.any?
         additional_organisation(@api_result, true) if @api_result.present? && !@duplicate
       end
 
