@@ -4,7 +4,8 @@ module Api
       include Authorize::IntegrationToken
       rescue_from ApiValidations::ApiError, with: :return_error_code
       before_action :validate_integration_key
-      before_action :validate_params
+      # No longer needed as the DM endpoint now handles all incoming param validations.
+      # before_action :validate_params
       before_action :create_ccs_org_id
 
       attr_accessor :ccs_org_id, :salesforce_result, :api_result, :sales_force_organisation_created
@@ -36,10 +37,12 @@ module Api
 
       def create_from_schemes
         @api_result = api_search_result(params[:account_id], params[:account_id_type])
-        @api_result = Salesforce::AdditionalIdentifier.new(@api_result).build_response if @api_result.present?
+        return if @api_result.blank?
+
+        @api_result = Salesforce::AdditionalIdentifier.new(@api_result).build_response
         validate_salesforce
-        primary_organisation(@api_result[:identifier]) if @api_result.present? && @api_result[:identifier].present?
-        add_additional_identifiers(@api_result[:additionalIdentifiers]) if @api_result.present? && @api_result[:additionalIdentifiers].present?
+        primary_organisation(@api_result[:identifier]) if @api_result[:identifier].present?
+        add_additional_identifiers(@api_result[:additionalIdentifiers]) if @api_result[:additionalIdentifiers].present?
         @api_result
       end
 
