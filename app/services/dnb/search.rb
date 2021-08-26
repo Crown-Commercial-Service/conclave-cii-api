@@ -20,21 +20,11 @@ module Dnb
 
     def fetch_results
       token = JSON.parse(fetch_token)
-
-      puts token
-      # conn = Faraday.new(url: ENV['DNB_API_ENDPOINT'])
-      conn = Faraday.new(url: ENV['DNB_API_ENDPOINT']) do |builder|
-        builder.use Faraday::HttpCache, store: Rails.cache, logger: Rails.logger, shared_cache: false
-        builder.use Faraday::OverrideCacheControl, cache_control: 'public, max-age=3600'
-        builder.adapter Faraday.default_adapter
-      end
-
+      conn = Common::ApiHelper.faraday_new(url: ENV['DNB_API_ENDPOINT'])
       params = { productId: 'cmptcs', versionId: 'v1' }
       conn.authorization :Bearer, token['access_token']
       resp = conn.get("/v1/data/duns/#{@duns_number}", params)
-      ApiLogging::Logger.api_status_error('DNB API| method:fetch_results', resp)
-      ApiLogging::Logger.info(resp.headers['X-RateLimit-Remain'])
-      ApiLogging::Logger.info(resp.inspect)
+      logging(resp)
       @result = ActiveSupport::JSON.decode(resp.body) if resp.status == 200
 
       if resp.status == 200 && @result.key?('organization') && @result['organization']['dunsControlStatus']['operatingStatus']['dnbCode'] == 9074
@@ -77,6 +67,11 @@ module Dnb
       api_param.present? ? api_param : ''
     rescue StandardError => e
       ApiLogging::Logger.info(e)
+    end
+
+    def logging(resp)
+      ApiLogging::Logger.api_status_error('DNB API| method:fetch_results', resp)
+      ApiLogging::Logger.info(resp.headers['X-RateLimit-Remain'])
     end
   end
 end

@@ -31,14 +31,14 @@ module ApiLogging
       ActiveSupport::Notifications.subscribe 'http_cache.faraday' do |*args|
         event = ActiveSupport::Notifications::Event.new(*args)
         cache_status = event.payload[:cache_status]
-        puts cache_status
+        ApiLogging::Logger.info(cache_status)
         case cache_status
         when :fresh, :valid
-          puts 'api-calls.cache_hits'
+          ApiLogging::Logger.info('api-calls.cache_hits')
         when :invalid, :miss
-          puts 'api-calls.cache_misses'
+          ApiLogging::Logger.info('api-calls.cache_misses')
         when :unacceptable
-          puts 'api-calls.cache_bypass'
+          ApiLogging::Logger.info('api-calls.cache_bypass')
         end
       end
     end

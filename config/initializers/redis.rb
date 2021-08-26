@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
-Redis.current = Redis.new(url:  ENV['REDIS_URL'],
-    port: ENV['REDIS_PORT'],
-    db:   ENV['REDIS_DB'],
-    password: ENV['REDIS_PASSWORD'],
-    username: ENV['REDIS_USERNAME'])
+if ENV['SERVER_ENV_NAME'].present?
+    vcap_services = JSON.parse(ENV['VCAP_SERVICES'])
+    vcap_services['redis'].each do |key, value|
+        if key['credentials'].present?
+            ENV['REDIS_URL'] = key['credentials']['uri']
+        end
+    end
+end
+
