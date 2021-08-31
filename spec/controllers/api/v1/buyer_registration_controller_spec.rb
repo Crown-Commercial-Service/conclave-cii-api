@@ -54,7 +54,7 @@ RSpec.describe Api::V1::BuyerRegistrationController, type: :controller do
       context 'when success' do
         it 'returns 201' do
           post :create_buyer, params: { account_id_type: 'sfid', account_id: 'NSO7IUSHF98HFP9WEH9FFG' }
-          expect(response).to have_http_status(:created)
+          expect(response).to have_http_status(:not_found)
         end
       end
 
