@@ -14,7 +14,7 @@ module Api
         schemes_list = Common::AdditionalIdentifier.new
         create_from_schemes if schemes_list.schemes.include? params[:account_id_type].to_s
         create_from_salesforce if Common::SalesforceSearchIds.account_id_types_salesforce.include? params[:account_id_type].to_s
-
+        puts "here-->1 #{@duplicate_ccs_org_id}" if @duplicate_ccs_org_id
         if @duplicate_ccs_org_id
           render json: { ccs_org_id: @duplicate_ccs_org_id }, status: :conflict
         elsif @api_result.blank? && @sales_force_organisation_created == false
@@ -55,7 +55,6 @@ module Api
         @ccs_org_id = Common::GenerateId.ccs_org_id
         @duns_scheme = Common::AdditionalIdentifier::SCHEME_DANDB
         @coh_scheme = Common::AdditionalIdentifier::SCHEME_COMPANIES_HOUSE
-        @duplicate_ccs_org_id = ''
       end
 
       def schemes_check(scheme)
