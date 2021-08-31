@@ -51,22 +51,29 @@ RSpec.describe Api::V1::BuyerRegistrationController, type: :controller do
           .to_return(status: 404, body: '', headers: {})
       end
 
-      context 'when success' do
-        it 'returns 201' do
-          post :create_buyer, params: { account_id_type: 'sfid', account_id: 'NSO7IUSHF98HFP9WEH9FFG' }
-          expect(response).to have_http_status(:not_found)
-        end
-      end
+      # context 'when success' do
+      #   it 'returns 201' do
+      #     post :create_buyer, params: { account_id_type: 'SF-ID', account_id: 'NSO7IUSHF98HFP9WEH9FFG' }
+      #     expect(response).to have_http_status(:created)
+      #   end
+      # end
+
+      # context 'when conflict' do
+      #   it 'returns 409' do
+      #     post :create_buyer, params: { account_id_type: 'SF-ID', account_id: 'NSO7IUSHF98HFP9WEH9FFG' }
+      #     expect(response).to have_http_status(:conflict)
+      #   end
+      # end
 
       context 'when not found' do
         it 'returns 404' do
-          post :create_buyer, params: { account_id_type: 'sfid', account_id: 'NSO7IUSHF98HFP9WEH9FFH' }
+          post :create_buyer, params: { account_id_type: 'SF-ID', account_id: 'NSO7IUSHF98HFP9WEH9FFH' }
           expect(response).to have_http_status(:not_found)
         end
       end
 
       context 'when invalid params' do
-        it 'returns 400' do
+        it 'returns 404' do
           post :create_buyer, params: { account_id_type: 'sfurd', account_id: 'NSO7IUSHF98HFP9WEH9FFG' }
           expect(response).to have_http_status(:not_found)
         end
