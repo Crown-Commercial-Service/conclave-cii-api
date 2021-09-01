@@ -166,7 +166,11 @@ module Api
       end
 
       def return_error_code(code)
-        render json: '', status: code.to_s
+        if code.to_s == '409'
+          render json: { ccs_org_id: @validate_duplicate.buyers_reg_duplicate_id }, status: code.to_s
+        else
+          render json: '', status: code.to_s
+        end
       end
 
       def build_response
@@ -176,9 +180,9 @@ module Api
         result[0]
       end
 
-      def validate_additional_schemes(schmes)
-        validate = ApiValidations::Scheme.new(schmes)
-        render json: validate.errors, status: :conflict unless validate.valid?
+      def validate_additional_schemes(schemes)
+        @validate_duplicate = ApiValidations::Scheme.new(schemes)
+        render json: @validate_duplicate.errors, status: :conflict unless @validate_duplicate.valid?
       end
 
       def validate_salesforce
