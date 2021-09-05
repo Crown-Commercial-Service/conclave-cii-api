@@ -56,6 +56,7 @@ RSpec.describe Api::V1::BuyerRegistrationController, type: :controller do
       #     post :create_buyer, params: { account_id_type: 'SF-ID', account_id: 'NSO7IUSHF98HFP9WEH9FFG' }
       #     expect(response).to have_http_status(:created)
       #   end
+      #
       # end
 
       # context 'when conflict' do
@@ -63,6 +64,7 @@ RSpec.describe Api::V1::BuyerRegistrationController, type: :controller do
       #     post :create_buyer, params: { account_id_type: 'SF-ID', account_id: 'NSO7IUSHF98HFP9WEH9FFG' }
       #     expect(response).to have_http_status(:conflict)
       #   end
+      #
       # end
 
       context 'when not found' do
