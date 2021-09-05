@@ -59,7 +59,7 @@ RSpec.describe Api::V1::BuyerRegistrationController, type: :controller do
             }
           )
           .to_return(status: 200, body: "", headers: {})
-        stub_request(:get, "https://biwbdqwbdiwebiu.com/services/data/v45.0/query?q=SELECT%20ID,name,Status__c,Supplier_DUNS_Number__c,Company_Registration_Number__c,Account_URN__c%20FROM%20account%20WHERE%20Account_URN__c='567345655679'")
+        stub_request(:get, "#{ENV['SALESFORCE_AUTH_URL']}/services/data/v45.0/query?q=SELECT%20ID,name,Status__c,Supplier_DUNS_Number__c,Company_Registration_Number__c,Account_URN__c%20FROM%20account%20WHERE%20Account_URN__c='567345655679'")
           .with(
             headers: {
               'Accept'=>'*/*',
