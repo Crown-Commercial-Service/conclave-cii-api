@@ -89,9 +89,9 @@ module Api
       def duns_api_query
         return unless schemes_check(@duns_scheme)
 
-        @companies_and_duns_ids.each do |e| # e = US-DUN-123456 as a valid example.
-          @id = e[7..] if e.include?(@duns_scheme) # 123456
-          @scheme = e[..5] if e.include?(@duns_scheme) # US-DUN
+        @companies_and_duns_ids.each do |e|
+          @id = e[7..] if e.include?(@duns_scheme)
+          @scheme = e[..5] if e.include?(@duns_scheme)
         end
         api_search_result(@id, @scheme)
       end
@@ -99,9 +99,9 @@ module Api
       def coh_api_query
         return unless schemes_check(@coh_scheme)
 
-        @companies_and_duns_ids.each do |e| # e = GB-COH-123456 as a valid example.
-          @id = e[7..] if e.include?(@coh_scheme) # 123456
-          @scheme = e[..5] if e.include?(@coh_scheme) # GB-COH
+        @companies_and_duns_ids.each do |e|
+          @id = e[7..] if e.include?(@coh_scheme)
+          @scheme = e[..5] if e.include?(@coh_scheme)
         end
         api_search_result(@id, @scheme)
       end
@@ -143,7 +143,6 @@ module Api
         organisation.ccs_org_id = @ccs_org_id
         organisation.primary_scheme = true
         organisation.hidden = false
-        # organisation.client_id = Common::ApiHelper.find_client(api_key_to_string)
         organisation.save unless @duplicate_ccs_org_id
       end
 
@@ -157,7 +156,6 @@ module Api
         organisation.ccs_org_id = @ccs_org_id
         organisation.primary_scheme = false
         organisation.hidden = Common::ApiHelper.hide_all_ccs_schemes(identifier[:scheme], hidden)
-        # organisation.client_id = Common::ApiHelper.find_client(api_key_to_string)
         organisation.save unless @duplicate_ccs_org_id
       end
 
