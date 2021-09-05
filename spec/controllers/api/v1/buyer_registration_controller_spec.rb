@@ -49,21 +49,11 @@ RSpec.describe Api::V1::BuyerRegistrationController, type: :controller do
             }
           )
           .to_return(status: 404, body: '', headers: {})
-        stub_request(:get, 'https://api.company-information.service.gov.uk/company/06012345')
-          .with(
-            headers: {
-              'Accept' => '*/*',
-              'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-              'Authorization' => 'Basic S3pIVjcyMFFzQ2w2Rm5KaWV6RkI0THFMb29zYmZpdWJ3d2hvaWVob3dpdXF3aXU6Og==',
-              'User-Agent' => 'Faraday v1.3.0'
-            }
-          )
-          .to_return(status: 200, body: '', headers: {})
       end
 
       context 'when success' do
         it 'returns 201' do
-          post :create_buyer, params: { account_id_type: 'SF-ID', account_id: 'NSO7IUSHF98HFP9WEH9FFG' }
+          post :create_buyer, params: { account_id_type: 'SF-ID', account_id: '001b000003YNtGBAA1' }
           expect(response).to have_http_status(:created)
         end
       end
