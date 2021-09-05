@@ -59,15 +59,16 @@ module Api
 
       def search_saleforce_identifiers
         salesforce_id = @api_result[:additionalIdentifiers][0][:id].split(/~/, 2).first
-        if salesforce_id
-          salesforce_api = Salesforce::SalesforceBuyerRegistration.new(salesforce_id, @sf_scheme)
-          salesforce_api.fetch_results
-          @companies_and_duns_ids = salesforce_api.results
-        end
+        return unless salesforce_id
+
+        salesforce_api = Salesforce::SalesforceBuyerRegistration.new(salesforce_id, @sf_scheme)
+        salesforce_api.fetch_results
+        @companies_and_duns_ids = salesforce_api.results
       end
 
       def create_org_check
         return true if !@duplicate_ccs_org_id && @companies_and_duns_ids && @companies_and_duns_ids.any?
+
         false
       end
 
