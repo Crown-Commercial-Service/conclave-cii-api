@@ -78,6 +78,13 @@ RSpec.describe Api::V1::BuyerRegistrationController, type: :controller do
           expect(response).to have_http_status(:not_found)
         end
       end
+
+      context 'when no params' do
+        it 'returns 404' do
+          post :create_buyer, params: { account_id_type: '', account_id: '' }
+          expect(response).to have_http_status(:not_found)
+        end
+      end
     end
 
     context 'when invalid ApiKey' do
