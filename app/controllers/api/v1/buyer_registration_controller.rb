@@ -4,44 +4,9 @@ module Api
       include Authorize::IntegrationToken
       rescue_from ApiValidations::ApiError, with: :return_error_code
       before_action :validate_integration_key
-      before_action :validate_params
       before_action :create_ccs_org_id
 
       attr_accessor :ccs_org_id, :salesforce_result, :api_result, :sales_force_organisation_created
-
-      def create_buyer
-        schemes_list = Common::AdditionalIdentifier.new
-        create_from_schemes if schemes_list.schemes.include? params[:account_id_type].to_s
-        create_from_salesforce if Common::SalesforceSearchIds.account_id_types_salesforce.include? params[:account_id_type].to_s
-
-        if @duplicate
-          render json: { ccs_org_id: @duplicate_ccs_org_id }, status: :conflict
-        elsif @api_result.blank? && @sales_force_organisation_created == false
-          render json: '', status: :not_found
-        else
-          return_success
-        end
-      end
-
-      def return_success
-        render json: build_response, status: :created if @api_result.present?
-        render json: [], status: :not_found if @api_result.blank?
-      end
-
-      def create_from_salesforce
-        salesforce_api_search
-        @sales_force_organisation_created = create_organisation if !@duplicate && @companies_and_duns_ids && @companies_and_duns_ids.any?
-        additional_organisation(@api_result, true) if @api_result.present? && !@duplicate
-      end
-
-      def create_from_schemes
-        @api_result = api_search_result(params[:account_id], params[:account_id_type])
-        @api_result = Salesforce::AdditionalIdentifier.new(@api_result).build_response if @api_result.present?
-        validate_salesforce
-        primary_organisation(@api_result[:identifier]) if @api_result.present? && @api_result[:identifier].present?
-        add_additional_identifiers(@api_result[:additionalIdentifiers]) if @api_result.present? && @api_result[:additionalIdentifiers].present?
-        @api_result
-      end
 
       def validate_params
         validate = ApiValidations::BuyerRegistration.new(params)
@@ -52,6 +17,59 @@ module Api
         @ccs_org_id = Common::GenerateId.ccs_org_id
         @duns_scheme = Common::AdditionalIdentifier::SCHEME_DANDB
         @coh_scheme = Common::AdditionalIdentifier::SCHEME_COMPANIES_HOUSE
+        @sf_scheme = Common::SalesforceSearchIds::SFID
+      end
+
+      def create_buyer
+        schemes_list = Common::AdditionalIdentifier.new
+        create_from_schemes if schemes_list.schemes.include? params[:account_id_type].to_s
+        create_from_salesforce if Common::SalesforceSearchIds.account_id_types_salesforce.include? params[:account_id_type].to_s
+
+        if @duplicate_ccs_org_id
+          render json: { ccs_org_id: @duplicate_ccs_org_id }, status: :conflict
+        elsif @api_result.blank? && @sales_force_organisation_created == false
+          render json: '', status: :not_found
+        else
+          return_success
+        end
+      end
+
+      def return_success
+        render json: build_response, status: :created if @api_result.present?
+        render json: '', status: :not_found if @api_result.blank?
+      end
+
+      def create_from_salesforce
+        salesforce_api_search
+        @sales_force_organisation_created = create_organisation if create_org_check
+        additional_organisation(@api_result, true) if @api_result.present? && !@duplicate_ccs_org_id
+      end
+
+      def create_from_schemes
+        @api_result = api_search_result(params[:account_id], params[:account_id_type])
+        return if @api_result.blank?
+
+        @api_result = Salesforce::AdditionalIdentifier.new(@api_result).build_response
+        validate_salesforce
+        search_saleforce_identifiers
+        @sales_force_organisation_created = create_organisation if create_org_check
+        primary_organisation(@api_result[:identifier]) if !@sales_force_organisation_created && @api_result[:identifier].present?
+        add_additional_identifiers(@api_result[:additionalIdentifiers]) if @api_result[:additionalIdentifiers].present?
+      end
+
+      def search_saleforce_identifiers
+        salesforce_id = @api_result[:additionalIdentifiers][0][:id].split(/~/, 2).first
+        return unless salesforce_id
+
+        salesforce_api = Salesforce::SalesforceBuyerRegistration.new(salesforce_id, @sf_scheme)
+        salesforce_api.fetch_results
+        @companies_and_duns_ids = salesforce_api.results
+      end
+
+      def create_org_check
+        return true if !@duplicate_ccs_org_id && @companies_and_duns_ids && @companies_and_duns_ids.any?
+
+        false
       end
 
       def schemes_check(scheme)
@@ -126,7 +144,7 @@ module Api
         organisation.primary_scheme = true
         organisation.hidden = false
         # organisation.client_id = Common::ApiHelper.find_client(api_key_to_string)
-        organisation.save unless @duplicate
+        organisation.save unless @duplicate_ccs_org_id
       end
 
       def additional_organisation(identifier, hidden)
@@ -140,44 +158,47 @@ module Api
         organisation.primary_scheme = false
         organisation.hidden = Common::ApiHelper.hide_all_ccs_schemes(identifier[:scheme], hidden)
         # organisation.client_id = Common::ApiHelper.find_client(api_key_to_string)
-        organisation.save unless @duplicate
+        organisation.save unless @duplicate_ccs_org_id
       end
 
       def buyer_exists
         validate = ApiValidations::BuyerExists.new(@api_result)
         @duplicate_ccs_org_id = validate.ccs_organisation_exists
-        @duplicate = true if @duplicate_ccs_org_id
       end
 
       def organisation_exists(org)
-        return if @duplicate
+        return if @duplicate_ccs_org_id
 
-        @duplicate = false
         organisation = OrganisationSchemeIdentifier.find_by(scheme_org_reg_number: org[:id], scheme_code: org[:scheme])
-        @duplicate = true if organisation.present?
+        @duplicate_ccs_org_id = organisation['ccs_org_id'] if organisation.present?
       end
 
       def salesforce_api_search
         search_api_with_params = Salesforce::SalesforceBuyerRegistration.new(params[:account_id], params[:account_id_type])
         @api_result = search_api_with_params.fetch_results
         buyer_exists
-        @companies_and_duns_ids = search_api_with_params.results unless @duplicate
+        @companies_and_duns_ids = search_api_with_params.results unless @duplicate_ccs_org_id
       end
 
       def return_error_code(code)
-        render json: '', status: code.to_s
+        if code.to_s == '409'
+          render json: { ccs_org_id: @validate_duplicate.buyers_reg_duplicate_id }, status: code.to_s
+        else
+          render json: '', status: code.to_s
+        end
       end
 
       def build_response
         result = Common::MigrationOrganisationResponse.new(@ccs_org_id, hidden: false).response_payload_migration
+        @api_result = api_search_result(@companies_and_duns_ids[0][7..], @companies_and_duns_ids[0][0..5])
         result[0][:address] = Common::AddressHelper.new(@api_result).build_response
         result[0][:contactPoint] = Common::ContactHelper.new(@api_result).build_response
         result[0]
       end
 
-      def validate_additional_schemes(schmes)
-        validate = ApiValidations::Scheme.new(schmes)
-        render json: validate.errors, status: :conflict unless validate.valid?
+      def validate_additional_schemes(schemes)
+        @validate_duplicate = ApiValidations::Scheme.new(schemes)
+        render json: @validate_duplicate.errors, status: :conflict unless @validate_duplicate.valid?
       end
 
       def validate_salesforce

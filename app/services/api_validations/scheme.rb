@@ -4,6 +4,7 @@ module ApiValidations
     include ActiveModel::Validations::Callbacks
 
     validates_presence_of :scheme, :id, presence: true
+    validate :buyers_reg_duplicate_search
     validate :scheme_id_exists
     validate :organisation_exists
 
@@ -46,6 +47,18 @@ module ApiValidations
       data_id = Common::ApiHelper.filter_charity_number(@data[:id], @data[:scheme])
       scheme_identifier = OrganisationSchemeIdentifier.find_by(scheme_org_reg_number: Common::ApiHelper.remove_white_space_from_id(data_id).to_s)
       check_duplicate(scheme_identifier)
+    end
+
+    def buyers_reg_duplicate_search
+      return unless @data[:scheme] == Common::AdditionalIdentifier::SCHEME_CCS && @data[:id]
+
+      data_id = Common::ApiHelper.filter_charity_number(@data[:id], @data[:scheme])
+      scheme_identifier = OrganisationSchemeIdentifier.find_by(scheme_org_reg_number: Common::ApiHelper.remove_white_space_from_id(data_id).to_s)
+      @ccs_org_id = scheme_identifier['ccs_org_id'] if scheme_identifier && scheme_identifier['ccs_org_id']
+    end
+
+    def buyers_reg_duplicate_id
+      @ccs_org_id
     end
   end
 end
