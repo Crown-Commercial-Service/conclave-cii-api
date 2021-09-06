@@ -29,6 +29,16 @@ RSpec.describe Api::V1::BuyerRegistrationController, type: :controller do
             }
           )
           .to_return(status: 200, body: token_response, headers: {})
+        stub_request(:get, "#{ENV['COMPANIES_HOUSE_API_ENDPOINT']}/company/06012345")
+          .with(
+            headers: {
+              'Accept' => '*/*',
+              'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+              'Authorization' => 'Basic S3pIVjcyMFFzQ2w2Rm5KaWV6RkI0THFMb29zYmZpdWJ3d2hvaWVob3dpdXF3aXU6Og==',
+              'User-Agent' => 'Faraday v1.3.0'
+            }
+          )
+          .to_return(status: 200, body: sf_response, headers: {})
         stub_request(:get, "#{ENV['SALESFORCE_AUTH_URL']}/services/data/v45.0/query?q=SELECT%20ID,name,Status__c,Supplier_DUNS_Number__c,Company_Registration_Number__c,Account_URN__c%20FROM%20account%20WHERE%20Id='#{valid_id}'")
           .with(
             headers: {
