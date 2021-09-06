@@ -58,7 +58,7 @@ RSpec.describe Api::V1::BuyerRegistrationController, type: :controller do
               'User-Agent' => 'Faraday v1.3.0'
             }
           )
-          .to_return(status: 200, body: '', headers: {})
+          .to_return(status: 404, body: '', headers: {})
       end
 
       # context 'when success id' do
