@@ -4,11 +4,21 @@ module Api
       include Authorize::IntegrationToken
       rescue_from ApiValidations::ApiError, with: :return_error_code
       before_action :validate_integration_key
-      # No longer needed as the DM endpoint now handles all incoming param validations.
-      # before_action :validate_params
       before_action :create_ccs_org_id
 
       attr_accessor :ccs_org_id, :salesforce_result, :api_result, :sales_force_organisation_created
+
+      def validate_params
+        validate = ApiValidations::BuyerRegistration.new(params)
+        render json: validate.errors, status: :bad_request unless validate.valid?
+      end
+
+      def create_ccs_org_id
+        @ccs_org_id = Common::GenerateId.ccs_org_id
+        @duns_scheme = Common::AdditionalIdentifier::SCHEME_DANDB
+        @coh_scheme = Common::AdditionalIdentifier::SCHEME_COMPANIES_HOUSE
+        @sf_scheme = Common::SalesforceSearchIds::SFID
+      end
 
       def create_buyer
         schemes_list = Common::AdditionalIdentifier.new
@@ -26,12 +36,12 @@ module Api
 
       def return_success
         render json: build_response, status: :created if @api_result.present?
-        render json: [], status: :not_found if @api_result.blank?
+        render json: '', status: :not_found if @api_result.blank?
       end
 
       def create_from_salesforce
         salesforce_api_search
-        @sales_force_organisation_created = create_organisation if !@duplicate_ccs_org_id && @companies_and_duns_ids && @companies_and_duns_ids.any?
+        @sales_force_organisation_created = create_organisation if create_org_check
         additional_organisation(@api_result, true) if @api_result.present? && !@duplicate_ccs_org_id
       end
 
@@ -41,20 +51,25 @@ module Api
 
         @api_result = Salesforce::AdditionalIdentifier.new(@api_result).build_response
         validate_salesforce
-        primary_organisation(@api_result[:identifier]) if @api_result[:identifier].present?
+        search_saleforce_identifiers
+        @sales_force_organisation_created = create_organisation if create_org_check
+        primary_organisation(@api_result[:identifier]) if !@sales_force_organisation_created && @api_result[:identifier].present?
         add_additional_identifiers(@api_result[:additionalIdentifiers]) if @api_result[:additionalIdentifiers].present?
-        @api_result
       end
 
-      def validate_params
-        validate = ApiValidations::BuyerRegistration.new(params)
-        render json: validate.errors, status: :bad_request unless validate.valid?
+      def search_saleforce_identifiers
+        salesforce_id = @api_result[:additionalIdentifiers][0][:id].split(/~/, 2).first
+        return unless salesforce_id
+
+        salesforce_api = Salesforce::SalesforceBuyerRegistration.new(salesforce_id, @sf_scheme)
+        salesforce_api.fetch_results
+        @companies_and_duns_ids = salesforce_api.results
       end
 
-      def create_ccs_org_id
-        @ccs_org_id = Common::GenerateId.ccs_org_id
-        @duns_scheme = Common::AdditionalIdentifier::SCHEME_DANDB
-        @coh_scheme = Common::AdditionalIdentifier::SCHEME_COMPANIES_HOUSE
+      def create_org_check
+        return true if !@duplicate_ccs_org_id && @companies_and_duns_ids && @companies_and_duns_ids.any?
+
+        false
       end
 
       def schemes_check(scheme)
@@ -74,9 +89,9 @@ module Api
       def duns_api_query
         return unless schemes_check(@duns_scheme)
 
-        @companies_and_duns_ids.each do |e| # e = US-DUN-123456 as a valid example.
-          @id = e[7..] if e.include?(@duns_scheme) # 123456
-          @scheme = e[..5] if e.include?(@duns_scheme) # US-DUN
+        @companies_and_duns_ids.each do |e|
+          @id = e[7..] if e.include?(@duns_scheme)
+          @scheme = e[..5] if e.include?(@duns_scheme)
         end
         api_search_result(@id, @scheme)
       end
@@ -84,9 +99,9 @@ module Api
       def coh_api_query
         return unless schemes_check(@coh_scheme)
 
-        @companies_and_duns_ids.each do |e| # e = GB-COH-123456 as a valid example.
-          @id = e[7..] if e.include?(@coh_scheme) # 123456
-          @scheme = e[..5] if e.include?(@coh_scheme) # GB-COH
+        @companies_and_duns_ids.each do |e|
+          @id = e[7..] if e.include?(@coh_scheme)
+          @scheme = e[..5] if e.include?(@coh_scheme)
         end
         api_search_result(@id, @scheme)
       end
@@ -128,7 +143,6 @@ module Api
         organisation.ccs_org_id = @ccs_org_id
         organisation.primary_scheme = true
         organisation.hidden = false
-        # organisation.client_id = Common::ApiHelper.find_client(api_key_to_string)
         organisation.save unless @duplicate_ccs_org_id
       end
 
@@ -142,7 +156,6 @@ module Api
         organisation.ccs_org_id = @ccs_org_id
         organisation.primary_scheme = false
         organisation.hidden = Common::ApiHelper.hide_all_ccs_schemes(identifier[:scheme], hidden)
-        # organisation.client_id = Common::ApiHelper.find_client(api_key_to_string)
         organisation.save unless @duplicate_ccs_org_id
       end
 
@@ -175,6 +188,7 @@ module Api
 
       def build_response
         result = Common::MigrationOrganisationResponse.new(@ccs_org_id, hidden: false).response_payload_migration
+        @api_result = api_search_result(@companies_and_duns_ids[0][7..], @companies_and_duns_ids[0][0..5])
         result[0][:address] = Common::AddressHelper.new(@api_result).build_response
         result[0][:contactPoint] = Common::ContactHelper.new(@api_result).build_response
         result[0]
