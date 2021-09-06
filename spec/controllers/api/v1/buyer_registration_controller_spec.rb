@@ -51,9 +51,23 @@ RSpec.describe Api::V1::BuyerRegistrationController, type: :controller do
           .to_return(status: 404, body: '', headers: {})
       end
 
-      # context 'when success' do
+      # context 'when success id' do
       #   it 'returns 201' do
       #     post :create_buyer, params: { account_id_type: 'SF-ID', account_id: 'NSO7IUSHF98HFP9WEH9FFG' }
+      #     expect(response).to have_http_status(:created)
+      #   end
+      # end
+
+      # context 'when success urn' do
+      #   it 'returns 201' do
+      #     post :create_buyer, params: { account_id_type: 'SF-URN', account_id: '56734565567' }
+      #     expect(response).to have_http_status(:created)
+      #   end
+      # end
+
+      # context 'when success company' do
+      #   it 'returns 201' do
+      #     post :create_buyer, params: { account_id_type: 'GB-COH', account_id: '06012345' }
       #     expect(response).to have_http_status(:created)
       #   end
       # end
@@ -65,9 +79,23 @@ RSpec.describe Api::V1::BuyerRegistrationController, type: :controller do
       #   end
       # end
 
-      context 'when not found' do
+      context 'when not found id' do
         it 'returns 404' do
           post :create_buyer, params: { account_id_type: 'SF-ID', account_id: 'NSO7IUSHF98HFP9WEH9FFH' }
+          expect(response).to have_http_status(:not_found)
+        end
+      end
+
+      context 'when not found urn' do
+        it 'returns 404' do
+          post :create_buyer, params: { account_id_type: 'SF-URN', account_id: '575675756756' }
+          expect(response).to have_http_status(:not_found)
+        end
+      end
+
+      context 'when not found company' do
+        it 'returns 404' do
+          post :create_buyer, params: { account_id_type: 'GB-COH', account_id: '01234567' }
           expect(response).to have_http_status(:not_found)
         end
       end
@@ -83,6 +111,14 @@ RSpec.describe Api::V1::BuyerRegistrationController, type: :controller do
     context 'when invalid ApiKey' do
       it 'returns 401' do
         request.headers['x-api-key'] = 'invalid'
+        post :create_buyer, params: { account_id_type: 'sfurd', account_id: 'NSO7IUSHF98HFP9WEH9FFG' }
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
+
+    context 'when invalid header' do
+      it 'returns 401' do
+        request.headers['ApiKey'] = ''
         post :create_buyer, params: { account_id_type: 'sfurd', account_id: 'NSO7IUSHF98HFP9WEH9FFG' }
         expect(response).to have_http_status(:unauthorized)
       end
