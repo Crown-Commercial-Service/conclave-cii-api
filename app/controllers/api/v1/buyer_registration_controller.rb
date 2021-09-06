@@ -189,8 +189,6 @@ module Api
       def build_response
         result = Common::MigrationOrganisationResponse.new(@ccs_org_id, hidden: false).response_payload_migration
         @api_result = api_search_result(@companies_and_duns_ids[0][7..], @companies_and_duns_ids[0][0..5])
-        return unless @api_result
-
         result[0][:address] = Common::AddressHelper.new(@api_result).build_response
         result[0][:contactPoint] = Common::ContactHelper.new(@api_result).build_response
         result[0]
