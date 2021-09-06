@@ -61,12 +61,12 @@ RSpec.describe Api::V1::BuyerRegistrationController, type: :controller do
           .to_return(status: 404, body: '', headers: {})
       end
 
-      # context 'when success id' do
-      #   it 'returns 201' do
-      #     post :create_buyer, params: { account_id_type: 'SF-ID', account_id: 'NSO7IUSHF98HFP9WEH9FFG' }
-      #     expect(response).to have_http_status(:created)
-      #   end
-      # end
+      context 'when success id' do
+        it 'returns 201' do
+          post :create_buyer, params: { account_id_type: 'SF-ID', account_id: 'NSO7IUSHF98HFP9WEH9FFG' }
+          expect(response).to have_http_status(:created)
+        end
+      end
 
       # context 'when success urn' do
       #   it 'returns 201' do
