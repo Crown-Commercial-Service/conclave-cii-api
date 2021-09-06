@@ -68,12 +68,12 @@ RSpec.describe Api::V1::BuyerRegistrationController, type: :controller do
       #   end
       # end
 
-      context 'when success urn' do
-        it 'returns 201' do
-          post :create_buyer, params: { account_id_type: 'SF-URN', account_id: '56734565567' }
-          expect(response).to have_http_status(:created)
-        end
-      end
+      # context 'when success urn' do
+      #   it 'returns 201' do
+      #     post :create_buyer, params: { account_id_type: 'SF-URN', account_id: '56734565567' }
+      #     expect(response).to have_http_status(:created)
+      #   end
+      # end
 
       # context 'when success company' do
       #   it 'returns 201' do
@@ -96,12 +96,12 @@ RSpec.describe Api::V1::BuyerRegistrationController, type: :controller do
         end
       end
 
-      # context 'when not found urn' do
-      #   it 'returns 404' do
-      #     post :create_buyer, params: { account_id_type: 'SF-URN', account_id: '575675756756' }
-      #     expect(response).to have_http_status(:not_found)
-      #   end
-      # end
+      context 'when not found urn' do
+        it 'returns 404' do
+          post :create_buyer, params: { account_id_type: 'SF-URN', account_id: '575675756756' }
+          expect(response).to have_http_status(:not_found)
+        end
+      end
 
       # context 'when not found company' do
       #   it 'returns 404' do
