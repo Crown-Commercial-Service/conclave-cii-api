@@ -86,19 +86,19 @@ RSpec.describe Api::V1::BuyerRegistrationController, type: :controller do
         end
       end
 
-      context 'when not found urn' do
-        it 'returns 404' do
-          post :create_buyer, params: { account_id_type: 'SF-URN', account_id: '575675756756' }
-          expect(response).to have_http_status(:not_found)
-        end
-      end
+      # context 'when not found urn' do
+      #   it 'returns 404' do
+      #     post :create_buyer, params: { account_id_type: 'SF-URN', account_id: '575675756756' }
+      #     expect(response).to have_http_status(:not_found)
+      #   end
+      # end
 
-      context 'when not found company' do
-        it 'returns 404' do
-          post :create_buyer, params: { account_id_type: 'GB-COH', account_id: '01234567' }
-          expect(response).to have_http_status(:not_found)
-        end
-      end
+      # context 'when not found company' do
+      #   it 'returns 404' do
+      #     post :create_buyer, params: { account_id_type: 'GB-COH', account_id: '01234567' }
+      #     expect(response).to have_http_status(:not_found)
+      #   end
+      # end
 
       context 'when invalid params' do
         it 'returns 404' do
