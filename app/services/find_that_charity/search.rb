@@ -10,9 +10,9 @@ module FindThatCharity
     end
 
     def fetch_results
-      conn = Faraday.new(url: ENV['FINDTHATCHARITY_API_ENDPOINT'])
+      conn = Common::ApiHelper.faraday_new(url: ENV['FINDTHATCHARITY_API_ENDPOINT'])
       resp = conn.get("/orgid/#{@scheme_id}-#{@charity_number}.json")
-      ApiLogging::Logger.api_status_error('Find that Charity | method:fetch_results', resp)
+      logging(resp)
       @result = ActiveSupport::JSON.decode(resp.body) if resp.status == 200
 
       if resp.status == 200 && @result.key?('active') && @result['active'] == true
@@ -67,6 +67,11 @@ module FindThatCharity
       charity_number = Common::ApiHelper.remove_nic(charity_number) if Common::AdditionalIdentifier::SCHEME_NORTHEN_IRELAND_CHARITY == scheme_id
       charity_number = Common::ApiHelper.add_sc(charity_number) if Common::AdditionalIdentifier::SCHEME_SCOTISH_CHARITY == scheme_id
       charity_number
+    end
+
+    def logging(resp)
+      ApiLogging::Logger.api_status_error('Find that Charity | method:fetch_results', resp)
+      ApiLogging::Logger.info(resp.headers['X-RateLimit-Remain'])
     end
   end
 end

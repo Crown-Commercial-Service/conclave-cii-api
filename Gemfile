@@ -27,7 +27,12 @@ gem 'pg', '~> 0.18.4'
 gem 'jwt'
 gem 'faraday'
 gem 'faraday_middleware'
+gem 'faraday-http-cache'
 gem 'graphlient'
+# Redis gems
+gem 'redis'
+gem 'redis-namespace'
+gem 'redis-rails'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem 'rack-cors'
 # For converting between cases for API request & response
