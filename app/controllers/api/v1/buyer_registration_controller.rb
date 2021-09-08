@@ -182,15 +182,23 @@ module Api
 
       def return_error_code(code)
         if code.to_s == '409'
-          render json: { ccs_org_id: @validate_duplicate.buyers_reg_duplicate_id }, status: code.to_s
+          render json: { ccs_org_id: find_ccs_org_id }, status: code.to_s
         else
           render json: '', status: code.to_s
         end
       end
 
+      def find_ccs_org_id
+        return @validate_duplicate.buyers_reg_duplicate_id if @validate_duplicate
+
+        id = Common::ApiHelper.filter_charity_number(params[:account_id], params[:account_id_type])
+        scheme_identifier = OrganisationSchemeIdentifier.find_by(scheme_org_reg_number: Common::ApiHelper.remove_white_space_from_id(id).to_s)
+        scheme_identifier[:ccs_org_id]
+      end
+
       def build_response
         result = Common::MigrationOrganisationResponse.new(@ccs_org_id, hidden: false).response_payload_migration
-        @api_result = api_search_result(@companies_and_duns_ids[0][7..], @companies_and_duns_ids[0][0..5])
+        @api_result = api_search_result(@companies_and_duns_ids[0][7..], @companies_and_duns_ids[0][0..5]) if @companies_and_duns_ids
         result[0][:address] = Common::AddressHelper.new(@api_result).build_response
         result[0][:contactPoint] = Common::ContactHelper.new(@api_result).build_response
         result[0]
