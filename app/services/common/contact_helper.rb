@@ -16,23 +16,23 @@ module Common
     end
 
     def name
-      @result[:contactPoint].present? ? exists_or_null(@result[:contactPoint][:name]) : ''
+      @result && @result[:contactPoint].present? ? exists_or_null(@result[:contactPoint][:name]) : ''
     end
 
     def fax_number
-      @result[:contactPoint].present? ? exists_or_null(@result[:contactPoint][:faxNumber]) : ''
+      @result && @result[:contactPoint].present? ? exists_or_null(@result[:contactPoint][:faxNumber]) : ''
     end
 
     def uri
-      @result[:contactPoint].present? ? exists_or_null(@result[:contactPoint][:uri]) : ''
+      @result && @result[:contactPoint].present? ? exists_or_null(@result[:contactPoint][:uri]) : ''
     end
 
     def email
-      @result[:contactPoint].present? ? exists_or_null(@result[:contactPoint][:email]) : ''
+      @result && @result[:contactPoint].present? ? exists_or_null(@result[:contactPoint][:email]) : ''
     end
 
     def telephone
-      @result[:contactPoint].present? ? exists_or_null(@result[:contactPoint][:telephone]) : ''
+      @result && @result[:contactPoint].present? ? exists_or_null(@result[:contactPoint][:telephone]) : ''
     end
 
     private

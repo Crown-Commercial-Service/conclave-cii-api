@@ -16,23 +16,23 @@ module Common
     end
 
     def street_address
-      @result[:address].present? ? exists_or_null(@result[:address][:streetAddress]) : ''
+      @result && @result[:address].present? ? exists_or_null(@result[:address][:streetAddress]) : ''
     end
 
     def locality
-      @result[:address].present? ? exists_or_null(@result[:address][:locality]) : ''
+      @result && @result[:address].present? ? exists_or_null(@result[:address][:locality]) : ''
     end
 
     def region
-      @result[:address].present? ? exists_or_null(@result[:address][:region]) : ''
+      @result && @result[:address].present? ? exists_or_null(@result[:address][:region]) : ''
     end
 
     def postal_code
-      @result[:address].present? ? exists_or_null(@result[:address][:postalCode]) : ''
+      @result && @result[:address].present? ? exists_or_null(@result[:address][:postalCode]) : ''
     end
 
     def country_name
-      country = @result[:address].present? ? exists_or_null(@result[:address][:countryName]) : ''
+      country = @result && @result[:address].present? ? exists_or_null(@result[:address][:countryName]) : ''
       country.present? ? country : ''
     end
 
