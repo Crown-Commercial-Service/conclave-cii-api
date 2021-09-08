@@ -1,12 +1,13 @@
 class SearchApi
   attr_reader :result
 
-  def initialize(organisation_id, scheme_id, ccs_org_id = nil)
+  def initialize(organisation_id, scheme_id, ccs_org_id = nil, address_lookup: false)
     @organisation_id = Common::ApiHelper.remove_white_space_from_id(organisation_id)
     @scheme_id = scheme_id
     @ccs_org_id = ccs_org_id
     @result = []
     @addtional_identfiers = []
+    @address_lookup = address_lookup
   end
 
   def call
@@ -44,6 +45,8 @@ class SearchApi
   end
 
   def get_addtional_identfiers(identfiers)
+    return if @address_lookup
+
     identfiers.each do |identfier|
       identfier[:ccs_org_id] = @ccs_org_id unless @ccs_org_id.nil?
       validate_additional_identifiers(identfier)

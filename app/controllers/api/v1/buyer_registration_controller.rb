@@ -58,7 +58,7 @@ module Api
       end
 
       def search_saleforce_identifiers
-        salesforce_id = @api_result[:additionalIdentifiers][0][:id].split(/~/, 2).first
+        salesforce_id = @api_result[:additionalIdentifiers][0][:id].split(/~/, 2).first if @api_result[:additionalIdentifiers].any?
         return unless salesforce_id
 
         salesforce_api = Salesforce::SalesforceBuyerRegistration.new(salesforce_id, @sf_scheme)
@@ -67,7 +67,7 @@ module Api
       end
 
       def create_org_check
-        return true if !@duplicate_ccs_org_id && @companies_and_duns_ids && @companies_and_duns_ids.any?
+        return true if !@duplicate_ccs_org_id && @companies_and_duns_ids&.any?
 
         false
       end
@@ -193,12 +193,12 @@ module Api
 
         id = Common::ApiHelper.filter_charity_number(params[:account_id], params[:account_id_type])
         scheme_identifier = OrganisationSchemeIdentifier.find_by(scheme_org_reg_number: Common::ApiHelper.remove_white_space_from_id(id).to_s)
-        scheme_identifier[:ccs_org_id]
+        scheme_identifier[:ccs_org_id] if scheme_identifier
       end
 
       def build_response
         result = Common::MigrationOrganisationResponse.new(@ccs_org_id, hidden: false).response_payload_migration
-        @api_result = api_search_result(@companies_and_duns_ids[0][7..], @companies_and_duns_ids[0][0..5]) if @companies_and_duns_ids
+        @api_result = SearchApi.new(@companies_and_duns_ids[0][7..], @companies_and_duns_ids[0][0..5], nil, address_lookup: true).call if @companies_and_duns_ids&.any?
         result[0][:address] = Common::AddressHelper.new(@api_result).build_response
         result[0][:contactPoint] = Common::ContactHelper.new(@api_result).build_response
         result[0]
