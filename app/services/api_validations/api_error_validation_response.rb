@@ -1,8 +1,9 @@
 module ApiValidations
   class ApiErrorValidationResponse
-    def initialize(errors_key)
+    def initialize(errors_key, ccs_org_id = nil)
       super()
       @errors_key = errors_key
+      @ccs_org_id = ccs_org_id
       call
     end
 
@@ -21,6 +22,7 @@ module ApiValidations
     end
 
     def raise_exception(code)
+      return raise ApiValidations::ApiError, @ccs_org_id if code == Common::StatusCodes::DUPLICATE_RESOURCE && @ccs_org_id
       raise ApiValidations::ApiError, code
     end
   end

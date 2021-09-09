@@ -13,11 +13,14 @@ module ApiValidations
     # remove this callback to revert back to rails default error handling
     after_validation :http_validation_response
 
-    def initialize(data)
+    def initialize(data, buyers_reg: false)
       @data = data || {}
+      @ccs_org_id = nil
+      @buyers_reg = buyers_reg
     end
 
     def http_validation_response
+      return ApiValidations::ApiErrorValidationResponse.new(errors.messages.keys.first, @ccs_org_id) if @buyers_reg && @ccs_org_id
       ApiValidations::ApiErrorValidationResponse.new(errors.messages.keys.first)
     end
 
@@ -50,7 +53,7 @@ module ApiValidations
     end
 
     def buyers_reg_duplicate_search
-      return unless @data[:scheme] == Common::AdditionalIdentifier::SCHEME_CCS && @data[:id]
+      return unless @data[:id]
 
       data_id = Common::ApiHelper.filter_charity_number(@data[:id], @data[:scheme])
       scheme_identifier = OrganisationSchemeIdentifier.find_by(scheme_org_reg_number: Common::ApiHelper.remove_white_space_from_id(data_id).to_s)
