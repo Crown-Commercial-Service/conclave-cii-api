@@ -23,6 +23,7 @@ module ApiValidations
 
     def raise_exception(code)
       return raise ApiValidations::ApiError, @ccs_org_id if code == Common::StatusCodes::DUPLICATE_RESOURCE && @ccs_org_id
+
       raise ApiValidations::ApiError, code
     end
   end

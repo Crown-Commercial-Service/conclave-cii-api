@@ -21,6 +21,7 @@ module ApiValidations
 
     def http_validation_response
       return ApiValidations::ApiErrorValidationResponse.new(errors.messages.keys.first, @ccs_org_id) if @buyers_reg && @ccs_org_id
+
       ApiValidations::ApiErrorValidationResponse.new(errors.messages.keys.first)
     end
 
