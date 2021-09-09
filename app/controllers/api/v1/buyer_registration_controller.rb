@@ -35,7 +35,8 @@ module Api
       end
 
       def return_success
-        render json: build_response, status: :created if @api_result.present?
+        return render json: build_response, status: :created if @api_result.present?
+
         render json: '', status: :not_found if @api_result.blank?
       end
 
