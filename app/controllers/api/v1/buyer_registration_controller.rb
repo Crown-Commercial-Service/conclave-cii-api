@@ -47,7 +47,7 @@ module Api
       end
 
       def create_from_schemes
-        @api_result = api_search_result(params[:account_id], params[:account_id_type])
+        @api_result = api_search_result(params[:account_id], params[:account_id_type], validate_buyers: true)
         return if @api_result.blank?
 
         @api_result = Salesforce::AdditionalIdentifier.new(@api_result).build_response
@@ -107,8 +107,8 @@ module Api
         api_search_result(@id, @scheme)
       end
 
-      def api_search_result(id, scheme)
-        additional_identifier_search_api_with_params = SearchApi.new(id, scheme)
+      def api_search_result(id, scheme, validate_buyers: false)
+        additional_identifier_search_api_with_params = SearchApi.new(id, scheme, buyers_reg: validate_buyers)
         additional_identifier_search_api_with_params.call
       end
 
@@ -184,6 +184,8 @@ module Api
       def return_error_code(code)
         if code.to_s == '409'
           render json: { ccs_org_id: find_ccs_org_id }, status: code.to_s
+        elsif code.to_s.length > 3
+          render json: { ccs_org_id: code }, status: '409'.freeze
         else
           render json: '', status: code.to_s
         end
