@@ -4,7 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '2.7.2'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.0.3', '>= 6.0.3.7'
+gem 'rails', '~> 6.0.4', '>= 6.0.4.1'
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3', '~> 1.4'
 # Use Puma as the app server
@@ -27,11 +27,16 @@ gem 'pg', '~> 0.18.4'
 gem 'jwt'
 gem 'faraday'
 gem 'faraday_middleware'
+gem 'faraday-http-cache'
 gem 'graphlient'
+# Redis gems
+gem 'redis'
+gem 'redis-namespace'
+gem 'redis-rails', '>= 5.0.2'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem 'rack-cors'
 # For converting between cases for API request & response
-gem 'olive_branch', '>= 3.0.0'
+gem 'olive_branch', '>= 4.0.0'
 # test code complexity
 gem 'flog'
 gem 'vault'
@@ -54,7 +59,7 @@ group :development, :test do
   gem 'rubocop-rspec', '>= 2.2.0' # or gem 'rubocop-minitest'
   gem 'brakeman'
   gem 'pry-rails'
-  gem 'factory_bot_rails', '>= 6.1.0'
+  gem 'factory_bot_rails', '>= 6.2.0'
   gem 'simplecov', require: false
 end
 

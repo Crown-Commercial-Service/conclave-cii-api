@@ -4,6 +4,7 @@ module ApiValidations
     include ActiveModel::Validations::Callbacks
 
     validates_presence_of :scheme, :id, presence: true
+    validate :buyers_reg_duplicate_search
     validate :scheme_id_exists
     validate :organisation_exists
 
@@ -12,11 +13,15 @@ module ApiValidations
     # remove this callback to revert back to rails default error handling
     after_validation :http_validation_response
 
-    def initialize(data)
+    def initialize(data, buyers_reg: false)
       @data = data || {}
+      @ccs_org_id = nil
+      @buyers_reg = buyers_reg
     end
 
     def http_validation_response
+      return ApiValidations::ApiErrorValidationResponse.new(errors.messages.keys.first, @ccs_org_id) if @buyers_reg && @ccs_org_id
+
       ApiValidations::ApiErrorValidationResponse.new(errors.messages.keys.first)
     end
 
@@ -44,8 +49,20 @@ module ApiValidations
       return unless @data[:id]
 
       data_id = Common::ApiHelper.filter_charity_number(@data[:id], @data[:scheme])
-      scheme_identifier = OrganisationSchemeIdentifier.find_by(scheme_org_reg_number: data_id.to_s)
+      scheme_identifier = OrganisationSchemeIdentifier.find_by(scheme_org_reg_number: Common::ApiHelper.remove_white_space_from_id(data_id).to_s)
       check_duplicate(scheme_identifier)
+    end
+
+    def buyers_reg_duplicate_search
+      return unless @data[:id]
+
+      data_id = Common::ApiHelper.filter_charity_number(@data[:id], @data[:scheme])
+      scheme_identifier = OrganisationSchemeIdentifier.find_by(scheme_org_reg_number: Common::ApiHelper.remove_white_space_from_id(data_id).to_s)
+      @ccs_org_id = scheme_identifier['ccs_org_id'] if scheme_identifier && scheme_identifier['ccs_org_id']
+    end
+
+    def buyers_reg_duplicate_id
+      @ccs_org_id
     end
   end
 end

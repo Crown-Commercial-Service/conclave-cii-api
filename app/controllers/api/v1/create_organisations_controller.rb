@@ -12,17 +12,19 @@ module Api
 
       def index
         result = search_scheme_api unless @mock_duns
-
-        if result.present?
-          result = salesforce_additional_identifier(result)
-          primary_organisation
-        end
-
-        additional_identifiers if defined?(result[:additionalIdentifiers])
-
+        generate_record(result)
         # If the dummy org (US-DUN-111111111) has been found, this will add it to db, and return the ccs_org_id to be rendered. (Part of work for Nick Fine).
         result = Common::ApiHelper.add_dummy_org(api_key_to_string) if @mock_duns
         render_results(result)
+      end
+
+      def generate_record(result)
+        return if result.blank?
+
+        result = salesforce_additional_identifier(@api_result)
+        validate_salesforce if defined?(@api_result[:additionalIdentifiers])
+        primary_organisation
+        additional_identifiers if defined?(result[:additionalIdentifiers])
       end
 
       def render_results(result)
@@ -30,7 +32,7 @@ module Api
           render json: '', status: :not_found
         else
           # @ccs_org not generated if dummy org (US-DUN-111111111) was found, in this case 'result' holds ccs_org_id, from when it was added to db in helper. (Part of work for Nick Fine).
-          render json: [{ ccs_org_id: @ccs_org_id || result }], status: :created
+          render json: { ccs_org_id: @ccs_org_id || result }, status: :created
         end
       end
 
@@ -108,6 +110,17 @@ module Api
 
       def salesforce_additional_identifier(result)
         Salesforce::AdditionalIdentifier.new(result).build_response
+      end
+
+      def validate_additional_schemes(schmes)
+        validate = ApiValidations::Scheme.new(schmes)
+        render json: validate.errors, status: :conflict unless validate.valid?
+      end
+
+      def validate_salesforce
+        @api_result[:additionalIdentifiers].each do |user_params|
+          validate_additional_schemes(user_params) if user_params[:scheme] == Common::AdditionalIdentifier::SCHEME_CCS
+        end
       end
     end
   end
