@@ -44,7 +44,7 @@ module Common
     end
 
     def self.remove_white_space_from_id(id)
-      id.delete(' ')
+      id.to_s.gsub(/\s+/, '')
     end
 
     def self.hide_all_ccs_schemes(scheme_id, status)
@@ -127,6 +127,14 @@ module Common
 
     def self.return_all_organisation_schemes(ccs_org_id)
       Common::RegisteredOrganisationResponse.new(ccs_org_id, hidden: true).response_payload
+    end
+
+    def self.faraday_new(options)
+      Faraday.new(options) do |builder|
+        builder.use Faraday::HttpCache, store: Rails.cache, logger: Rails.logger, shared_cache: false
+        builder.use Faraday::OverrideCacheControl, cache_control: 'public, max-age=86400'
+        builder.adapter Faraday.default_adapter
+      end
     end
   end
 end

@@ -9,7 +9,7 @@ RSpec.describe ApiValidations::RemoveOrganisationAdditionalIdentifier, type: :mo
 
     context 'when all params are present' do
       it 'is valid' do
-        expect(described_class.new({ identifier: organisation_params, 'identifier' => organisation_params, ccs_org_id: organisation_scheme_identifier.ccs_org_id }).valid?).to eq true
+        expect(described_class.new({ id: 24325263, scheme: 'GB-COH', ccs_org_id: organisation_scheme_identifier.ccs_org_id }).valid?).to eq true
       end
     end
 
