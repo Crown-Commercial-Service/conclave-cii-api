@@ -55,5 +55,9 @@ deploy:
     script: bash CF/deploy-app.sh -u $CF_USER -o $CF_ORG -p $CF_PASS -s sandbox
     on:
       branch: sandbox
+  - provider: script
+    script: bash CF/deploy-app.sh -u $CF_USER -o $CF_ORG -p $CF_PASS -s uat
+    on:
+      branch: uat
 after_script:
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
