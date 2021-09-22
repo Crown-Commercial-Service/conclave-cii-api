@@ -11,7 +11,7 @@ env:
     - CF_ORG=$deploy_org_name
     - CF_PASS=$deploy_password
     - CC_TEST_REPORTER_ID=$CC_TEST_REPORTER_ID
-    - SPACE=$SPACE
+    - CF_SPACE=$SPACE
 services:
   - postgresql
 addons:
@@ -37,7 +37,7 @@ before_deploy:
   - sudo apt-get install cf7-cli
 deploy:
   - provider: script
-    script: bash CF/deploy-app.sh -u $CF_USER -o $CF_ORG -p $CF_PASS -s $SPACE
+    script: bash CF/deploy-app.sh -u $CF_USER -o $CF_ORG -p $CF_PASS -s $CF_SPACE
     on:
       all_branches: true
 after_script:
