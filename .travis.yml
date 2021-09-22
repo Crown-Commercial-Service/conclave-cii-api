@@ -40,6 +40,6 @@ deploy:
     script: bash CF/deploy-app.sh -u $CF_USER -o $CF_ORG -p $CF_PASS -s $CF_SPACE
     on:
       all_branches: true
-      condition: $SPACE =~ ^(develop|staging|integration|uat|main|sandbox)$
+      condition: $SPACE =~ ^(development|testing|integration|uat|pre-production|sandbox)$
 after_script:
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
