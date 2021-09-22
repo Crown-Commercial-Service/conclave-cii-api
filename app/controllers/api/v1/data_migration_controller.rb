@@ -1,15 +1,15 @@
 module Api
   module V1
-    class BuyerRegistrationController < ActionController::API
-      include Authorize::IntegrationToken
+    class DataMigrationController < ActionController::API
+      #include Authorize::IntegrationToken
       rescue_from ApiValidations::ApiError, with: :return_error_code
-      before_action :validate_integration_key
+      #before_action :validate_integration_key
       before_action :create_ccs_org_id
 
       attr_accessor :ccs_org_id, :salesforce_result, :api_result, :sales_force_organisation_created
 
       def validate_params
-        validate = ApiValidations::BuyerRegistration.new(params)
+        validate = ApiValidations::DataMigration.new(params)
         render json: validate.errors, status: :bad_request unless validate.valid?
       end
 
@@ -20,7 +20,7 @@ module Api
         @sf_scheme = Common::SalesforceSearchIds::SFID
       end
 
-      def create_buyer
+      def create_org_profile
         schemes_list = Common::AdditionalIdentifier.new
         create_from_schemes if schemes_list.schemes.include? params[:account_id_type].to_s
         create_from_salesforce if Common::SalesforceSearchIds.account_id_types_salesforce.include? params[:account_id_type].to_s
@@ -62,7 +62,7 @@ module Api
         salesforce_id = @api_result[:additionalIdentifiers][0][:id].split(/~/, 2).first if @api_result[:additionalIdentifiers].any?
         return unless salesforce_id
 
-        salesforce_api = Salesforce::SalesforceBuyerRegistration.new(salesforce_id, @sf_scheme)
+        salesforce_api = Salesforce::SalesforceDataMigration.new(salesforce_id, @sf_scheme)
         salesforce_api.fetch_results
         @companies_and_duns_ids = salesforce_api.results
       end
@@ -108,7 +108,7 @@ module Api
       end
 
       def api_search_result(id, scheme)
-        additional_identifier_search_api_with_params = SearchApi.new(id, scheme, buyers_reg: true)
+        additional_identifier_search_api_with_params = SearchApi.new(id, scheme, data_migration_req: true)
         additional_identifier_search_api_with_params.call
       end
 
@@ -162,8 +162,8 @@ module Api
         organisation.save unless @duplicate_ccs_org_id
       end
 
-      def buyer_exists
-        validate = ApiValidations::BuyerExists.new(@api_result)
+      def org_profile_exists
+        validate = ApiValidations::OrgProfileExists.new(@api_result)
         @duplicate_ccs_org_id = validate.ccs_organisation_exists
       end
 
@@ -175,9 +175,9 @@ module Api
       end
 
       def salesforce_api_search
-        search_api_with_params = Salesforce::SalesforceBuyerRegistration.new(params[:account_id], params[:account_id_type])
+        search_api_with_params = Salesforce::SalesforceDataMigration.new(params[:account_id], params[:account_id_type])
         @api_result = search_api_with_params.fetch_results
-        buyer_exists
+        org_profile_exists
         @companies_and_duns_ids = search_api_with_params.results unless @duplicate_ccs_org_id
       end
 
@@ -192,7 +192,7 @@ module Api
       end
 
       def find_ccs_org_id
-        return @validate_duplicate.buyers_reg_duplicate_id if @validate_duplicate
+        return @validate_duplicate.data_migration_duplicate_id if @validate_duplicate
 
         id = Common::ApiHelper.filter_charity_number(params[:account_id], params[:account_id_type])
         scheme_identifier = OrganisationSchemeIdentifier.find_by(scheme_org_reg_number: Common::ApiHelper.remove_white_space_from_id(id).to_s)

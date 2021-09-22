@@ -36,32 +36,8 @@ before_deploy:
   - sudo apt-get install cf7-cli
 deploy:
   - provider: script
-    script: bash CF/deploy-app.sh -u $CF_USER -o $CF_ORG -p $CF_PASS -s development
+    script: bash CF/deploy-app.sh -u $CF_USER -o $CF_ORG -p $CF_PASS -s $SPACE
     on:
-      branch: develop
-  - provider: script
-    script: bash CF/deploy-app.sh -u $CF_USER -o $CF_ORG -p $CF_PASS -s testing
-    on:
-      branch: staging
-  - provider: script
-    script: bash CF/deploy-app.sh -u $CF_USER -o $CF_ORG -p $CF_PASS -s integration
-    on:
-      branch: integration
-  - provider: script
-    script: bash CF/deploy-app.sh -u $CF_USER -o $CF_ORG -p $CF_PASS -s pre-production
-    on:
-      branch: main
-  - provider: script
-    script: bash CF/deploy-app.sh -u $CF_USER -o $CF_ORG -p $CF_PASS -s production
-    on:
-      branch: main
-  - provider: script
-    script: bash CF/deploy-app.sh -u $CF_USER -o $CF_ORG -p $CF_PASS -s sandbox
-    on:
-      branch: sandbox
-  - provider: script
-    script: bash CF/deploy-app.sh -u $CF_USER -o $CF_ORG -p $CF_PASS -s uat
-    on:
-      branch: uat
+      all_branches: true
 after_script:
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT

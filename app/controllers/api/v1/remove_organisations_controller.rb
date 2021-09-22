@@ -1,9 +1,9 @@
 module Api
   module V1
     class RemoveOrganisationsController < ActionController::API
-      include Authorize::DeleteToken
+      #include Authorize::DeleteToken
       rescue_from ApiValidations::ApiError, with: :return_error_code
-      before_action :validate_key
+      #before_action :validate_key
       before_action :validate_params
 
       def delete_organisation
