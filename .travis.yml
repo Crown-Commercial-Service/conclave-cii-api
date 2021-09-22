@@ -11,6 +11,7 @@ env:
     - CF_ORG=$deploy_org_name
     - CF_PASS=$deploy_password
     - CC_TEST_REPORTER_ID=$CC_TEST_REPORTER_ID
+    - SPACE=$SPACE
 services:
   - postgresql
 addons:
