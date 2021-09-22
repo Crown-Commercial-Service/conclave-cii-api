@@ -47,7 +47,7 @@ module Api
       end
 
       def create_from_schemes
-        @api_result = api_search_result(params[:account_id], params[:account_id_type], validate_buyers: true)
+        @api_result = api_search_result(params[:account_id], params[:account_id_type])
         return if @api_result.blank?
 
         @api_result = Salesforce::AdditionalIdentifier.new(@api_result).build_response
@@ -107,8 +107,8 @@ module Api
         api_search_result(@id, @scheme)
       end
 
-      def api_search_result(id, scheme, validate_buyers: false)
-        additional_identifier_search_api_with_params = SearchApi.new(id, scheme, buyers_reg: validate_buyers)
+      def api_search_result(id, scheme)
+        additional_identifier_search_api_with_params = SearchApi.new(id, scheme, buyers_reg: true)
         additional_identifier_search_api_with_params.call
       end
 
