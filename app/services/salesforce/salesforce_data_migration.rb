@@ -1,5 +1,5 @@
 module Salesforce
-  class SalesforceBuyerRegistration < Salesforce::Search
+  class SalesforceDataMigration < Salesforce::Search
     attr_reader :sf_status
 
     def build_arguments

@@ -1,5 +1,5 @@
 module ApiValidations
-  class BuyerExists
+  class OrgProfileExists
     include ActiveModel::Validations
     include ActiveModel::Validations::Callbacks
 

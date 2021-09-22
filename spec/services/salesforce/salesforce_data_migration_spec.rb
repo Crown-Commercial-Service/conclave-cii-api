@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Salesforce::SalesforceBuyerRegistration, type: :services do
+RSpec.describe Salesforce::SalesforceDataMigration, type: :services do
   describe 'build_arguments' do
     it 'Arguments with Salesforce ID' do
       result = described_class.new('IWDBI382RI4B8OIU', 'SF-ID').build_arguments
