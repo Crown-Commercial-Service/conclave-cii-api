@@ -88,21 +88,21 @@ module Api
       end
 
       def duns_api_query
-        return unless schemes_check(@duns_scheme)
+        return unless schemes_check('US-DUN'.freeze)
 
         @companies_and_duns_ids.each do |e| # e = US-DUN-123456 as a valid example.
-          @id = e[7..] if e.include?(@duns_scheme) # 123456
-          @scheme = e[..5] if e.include?(@duns_scheme) # US-DUN
+          @id = e[7..] if e.include?('US-DUN'.freeze) # 123456
+          @scheme = e[..5] if e.include?('US-DUN'.freeze) # US-DUN
         end
         api_search_result(@id, @scheme)
       end
 
       def coh_api_query
-        return unless schemes_check(@coh_scheme)
+        return unless schemes_check('GB-COH'.freeze)
 
         @companies_and_duns_ids.each do |e| # e = GB-COH-123456 as a valid example.
-          @id = e[7..] if e.include?(@coh_scheme) # 123456
-          @scheme = e[..5] if e.include?(@coh_scheme) # GB-COH
+          @id = e[7..] if e.include?('GB-COH'.freeze) # 123456
+          @scheme = e[..5] if e.include?('GB-COH'.freeze) # GB-COH
         end
         api_search_result(@id, @scheme)
       end
@@ -115,12 +115,12 @@ module Api
       def create_organisation
         return false unless api_results_check
 
-        if @companies_and_duns_ids.length == 2
+        if @coh_api_results.present? && @duns_api_results.present?
           primary_organisation(@coh_api_results[:identifier])
           additional_organisation(@duns_api_results[:identifier], false)
-        elsif @companies_and_duns_ids.length == 1 && schemes_check(@coh_scheme)
+        elsif @coh_api_results.present?
           primary_organisation(@coh_api_results[:identifier])
-        elsif @companies_and_duns_ids.length == 1 && schemes_check(@duns_scheme)
+        elsif @duns_api_results.present?
           primary_organisation(@duns_api_results[:identifier])
           add_additional_identifiers(@duns_api_results[:additionalIdentifiers])
         end
