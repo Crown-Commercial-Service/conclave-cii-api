@@ -4,6 +4,7 @@ module ApiValidations
     include ActiveModel::Validations::Callbacks
 
     validates_presence_of :scheme, :id, presence: true
+    validate :data_migration_duplicate_search
     validate :scheme_id_exists
     validate :organisation_exists
 
@@ -12,11 +13,15 @@ module ApiValidations
     # remove this callback to revert back to rails default error handling
     after_validation :http_validation_response
 
-    def initialize(data)
+    def initialize(data, data_migration_req: false)
       @data = data || {}
+      @ccs_org_id = nil
+      @data_migration_req = data_migration_req
     end
 
     def http_validation_response
+      return ApiValidations::ApiErrorValidationResponse.new(errors.messages.keys.first, @ccs_org_id) if @data_migration_req && @ccs_org_id
+
       ApiValidations::ApiErrorValidationResponse.new(errors.messages.keys.first)
     end
 
@@ -46,6 +51,18 @@ module ApiValidations
       data_id = Common::ApiHelper.filter_charity_number(@data[:id], @data[:scheme])
       scheme_identifier = OrganisationSchemeIdentifier.find_by(scheme_org_reg_number: Common::ApiHelper.remove_white_space_from_id(data_id).to_s)
       check_duplicate(scheme_identifier)
+    end
+
+    def data_migration_duplicate_search
+      return unless @data[:id]
+
+      data_id = Common::ApiHelper.filter_charity_number(@data[:id], @data[:scheme])
+      scheme_identifier = OrganisationSchemeIdentifier.find_by(scheme_org_reg_number: Common::ApiHelper.remove_white_space_from_id(data_id).to_s)
+      @ccs_org_id = scheme_identifier['ccs_org_id'] if scheme_identifier && scheme_identifier['ccs_org_id']
+    end
+
+    def data_migration_duplicate_id
+      @ccs_org_id
     end
   end
 end
