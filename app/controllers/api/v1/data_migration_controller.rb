@@ -121,12 +121,12 @@ module Api
         elsif @companies_and_duns_ids.length == 1 && schemes_check(@coh_scheme)
           primary_organisation(@coh_api_results[:identifier])
         elsif @companies_and_duns_ids.length == 1 && schemes_check(@duns_scheme)
-          companies_house_additional
+          company_house_additional
         end
         true
       end
 
-      def companies_house_additional
+      def company_house_additional
         if @duns_api_results[:additionalIdentifiers][0][:scheme] == @coh_scheme
           primary_organisation(@duns_api_results[:additionalIdentifiers][0])
           add_additional_identifiers([@duns_api_results[:identifier]])
