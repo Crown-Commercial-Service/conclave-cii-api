@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe Api::V1::BuyerRegistrationController, type: :controller do
-  describe 'create_buyer' do
+RSpec.describe Api::V1::DataMigrationController, type: :controller do
+  describe 'create_org_profile' do
     context 'when authorized' do
       before do
         request.headers['x-api-key'] = '6348G438RT834GR4827GRO834G8G348RO8238'
@@ -53,35 +53,35 @@ RSpec.describe Api::V1::BuyerRegistrationController, type: :controller do
 
       # context 'when success' do
       #   it 'returns 201' do
-      #     post :create_buyer, params: { account_id_type: 'SF-ID', account_id: 'NSO7IUSHF98HFP9WEH9FFG' }
+      #     post :create_org_profile, params: { account_id_type: 'SF-ID', account_id: 'NSO7IUSHF98HFP9WEH9FFG' }
       #     expect(response).to have_http_status(:created)
       #   end
       # end
 
       # context 'when conflict' do
       #   it 'returns 409' do
-      #     post :create_buyer, params: { account_id_type: 'SF-ID', account_id: 'NSO7IUSHF98HFP9WEH9FFG' }
+      #     post :create_org_profile, params: { account_id_type: 'SF-ID', account_id: 'NSO7IUSHF98HFP9WEH9FFG' }
       #     expect(response).to have_http_status(:conflict)
       #   end
       # end
 
       context 'when not found' do
         it 'returns 404' do
-          post :create_buyer, params: { account_id_type: 'SF-ID', account_id: 'NSO7IUSHF98HFP9WEH9FFH' }
+          post :create_org_profile, params: { account_id_type: 'SF-ID', account_id: 'NSO7IUSHF98HFP9WEH9FFH' }
           expect(response).to have_http_status(:not_found)
         end
       end
 
       context 'when invalid params' do
         it 'returns 404' do
-          post :create_buyer, params: { account_id_type: 'sfurd', account_id: 'NSO7IUSHF98HFP9WEH9FFG' }
+          post :create_org_profile, params: { account_id_type: 'sfurd', account_id: 'NSO7IUSHF98HFP9WEH9FFG' }
           expect(response).to have_http_status(:not_found)
         end
       end
 
       context 'when no params' do
         it 'returns 404' do
-          post :create_buyer, params: { account_id_type: '', account_id: '' }
+          post :create_org_profile, params: { account_id_type: '', account_id: '' }
           expect(response).to have_http_status(:not_found)
         end
       end
@@ -90,7 +90,7 @@ RSpec.describe Api::V1::BuyerRegistrationController, type: :controller do
     context 'when invalid ApiKey' do
       it 'returns 401' do
         request.headers['x-api-key'] = 'invalid'
-        post :create_buyer, params: { account_id_type: 'sfurd', account_id: 'NSO7IUSHF98HFP9WEH9FFG' }
+        post :create_org_profile, params: { account_id_type: 'sfurd', account_id: 'NSO7IUSHF98HFP9WEH9FFG' }
         expect(response).to have_http_status(:unauthorized)
       end
     end
@@ -98,14 +98,14 @@ RSpec.describe Api::V1::BuyerRegistrationController, type: :controller do
     context 'when invalid request header' do
       it 'returns 401' do
         request.headers['Apikey'] = ''
-        post :create_buyer, params: { account_id_type: 'sfurd', account_id: 'NSO7IUSHF98HFP9WEH9FFG' }
+        post :create_org_profile, params: { account_id_type: 'sfurd', account_id: 'NSO7IUSHF98HFP9WEH9FFG' }
         expect(response).to have_http_status(:unauthorized)
       end
     end
 
     context 'when no ApiKey' do
       it 'returns 401' do
-        post :create_buyer, params: { account_id_type: 'sfurd', account_id: 'NSO7IUSHF98HFP9WEH9FFG' }
+        post :create_org_profile, params: { account_id_type: 'sfurd', account_id: 'NSO7IUSHF98HFP9WEH9FFG' }
         expect(response).to have_http_status(:unauthorized)
       end
     end
