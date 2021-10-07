@@ -127,7 +127,7 @@ module Api
       end
 
       def company_house_additional
-        if @duns_api_results[:additionalIdentifiers][0][:scheme] == @coh_scheme
+        if @duns_api_results[:additionalIdentifiers].any? && @duns_api_results[:additionalIdentifiers][0][:scheme] == @coh_scheme
           primary_organisation(@duns_api_results[:additionalIdentifiers][0])
           add_additional_identifiers([@duns_api_results[:identifier]])
         else
