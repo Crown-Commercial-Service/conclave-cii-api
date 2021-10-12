@@ -44,7 +44,7 @@ module MockingService
 
     def url
       salesforce_token
-      salesforce = Salesforce::SalesforceBuyerRegistration.new(@params[:id], @params[:scheme].tr('-', ''))
+      salesforce = Salesforce::SalesforceDataMigration.new(@params[:id], @params[:scheme].tr('-', ''))
       url_argument = salesforce.build_arguments
       @api_url = "#{ENV['SALESFORCE_AUTH_URL']}/services/data/v45.0/query?q=SELECT+ID,name,Status__c,Supplier_DUNS_Number__c,Company_Registration_Number__c,Account_URN__c+FROM+account+WHERE+#{url_argument}"
     end
@@ -52,7 +52,7 @@ module MockingService
     def salesforce_token
       token_response = File.read('spec/stub_response/tokens/salesforce_token.json')
 
-      salesforce = Salesforce::SalesforceBuyerRegistration.new(@params[:id], @params[:scheme].tr('-', ''))
+      salesforce = Salesforce::SalesforceDataMigration.new(@params[:id], @params[:scheme].tr('-', ''))
       salesforce.post_params.inspect
       WebMock.stub_request(:post, "#{ENV['SALESFORCE_AUTH_URL']}/services/oauth2/token")
              .with(
