@@ -1,22 +1,22 @@
 module Api
   module V1
     module Mock
-      class BuyerRegistrationMockController < ApplicationMockController
-        before_action :buyer_registration
+      class DataMigrationMockController < ApplicationMockController
+        before_action :data_migration
 
-        def create_buyer
+        def create_org_profile
           if params[:account_id].blank? || params[:account_id_type].blank?
             render json: '', status: :bad_request
             return
           end
 
           run_mock
-          result = @mock_controller.create_buyer(mock_req: true)
+          result = @mock_controller.create_org_profile(mock_req: true)
           response_result(result)
         end
 
-        def buyer_registration
-          @mock_controller = Api::V1::BuyerRegistrationController.new
+        def data_migration
+          @mock_controller = Api::V1::DataMigrationController.new
         end
       end
     end

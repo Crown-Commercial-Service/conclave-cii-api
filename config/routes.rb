@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   post '/identities/organisations/schemes/:account_id_type/identifiers/:account_id', to: 'api/v1/data_migration#create_org_profile'
   get '/identities/organisations/schemes/codes', to: 'api/v1/data_migration_schemes#dm_schemes_helper'
   post '/identities/organisations', to: 'api/v1/create_organisations#index'
+
   # these are testing endpoint will be removed on live
   namespace :api do
     namespace :v1 do
@@ -24,7 +25,7 @@ Rails.application.routes.draw do
     end
   end
 
-  # Mock new routes
+  # Mock routes
   namespace :api do
     namespace :v1 do
       namespace :mock do
@@ -37,28 +38,9 @@ Rails.application.routes.draw do
         get '/identities/organisations/:ccs_org_id/schemes/:scheme/identifiers/:id', to: 'manage_organisations_mock#search_organisation'
         get '/identities/organisations/:ccs_org_id', to: 'registered_organisations_schemes_mock#search_organisation'
         get '/identities/organisations/:ccs_org_id/all', to: 'all_registered_organisations_schemes_mock#search_organisation'
-        post '/identities/organisations/schemes/:account_id_type/identifiers/:account_id', to: 'buyer_registration_mock#create_buyer'
-        get '/identities/organisations/schemes/codes', to: 'api/v1/buyer_registration_schemes_mock#buyer_schemes'
+        post '/identities/organisations/schemes/:account_id_type/identifiers/:account_id', to: 'data_migration_mock#create_org_profile'
+        get '/identities/organisations/schemes/codes', to: 'api/v1/data_migration_schemes_mock#dm_schemes_helper'
       end
     end
   end
-
-  # Mock old routes
-  # namespace :api do
-  #   namespace :v1 do
-  #     namespace :mock do
-  #       get '/identities/schemes/organisation', to: 'organisations_mock#search_organisation'
-  #       get '/identities/schemes/identifiers', to: 'organisations_mock#search_organisation'
-  #       post '/identities/schemes/organisation', to: 'create_organisations_mock#index'
-  #       get '/identities/schemes', to: 'schemes_mock#schemes'
-  #       delete '/identities/schemes/organisation', to: 'remove_organisations_additional_identifier_mock#delete_additional_identifier'
-  #       delete '/identities/organisation', to: 'remove_organisations_mock#delete_organisation'
-  #       put '/identities/schemes/organisation', to: 'update_organisations_mock#index'
-  #       get '/identities/schemes/manageidentifiers', to: 'manage_organisations_mock#search_organisation'
-  #       get '/identities/schemes/organisations', to: 'registered_organisations_schemes_mock#search_organisation'
-  #       get '/identities/schemes/organisations/all', to: 'all_registered_organisations_schemes_mock#search_organisation'
-  #       post '/identities/schemes/register-buyer', to: 'buyer_registration_mock#create_buyer'
-  #     end
-  #   end
-  # end
 end
