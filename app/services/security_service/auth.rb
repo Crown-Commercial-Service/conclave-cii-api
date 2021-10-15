@@ -6,7 +6,7 @@ module SecurityService
     end
 
     def sec_api_validate_token
-      url = "/security/tokens/validation?client-id=#{@client_id}"
+      url = "/security/validate_token?clientid=#{@client_id}"
       conn = Faraday.new(url: ENV['SECURITY_SERVICE_URL'])
       conn.authorization :Bearer, @access_token
       resp = conn.post(url, '', { 'Content-Type' => 'application/x-www-form-urlencoded' })
