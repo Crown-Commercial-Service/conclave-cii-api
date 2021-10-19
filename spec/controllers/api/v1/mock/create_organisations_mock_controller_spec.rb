@@ -14,7 +14,7 @@
 #       param_post_dand_b = { identifier: { scheme: 'US-DUN', id: '101123456' } }
 #       post :index, params: param_post_dand_b
 #       expect(response.status).to eq(201)
-#       expect(response.body).to include('organisationID')
+#       expect(response.body).to include('organisationId')
 #     end
 
 #     it 'create primary record with additional identifiers' do
@@ -22,7 +22,7 @@
 #       param_post_dand_b[:additional_identifiers] = [{ scheme: 'GB-COH', id: '125656234' }]
 #       post :index, params: param_post_dand_b
 #       expect(response.status).to eq(201)
-#       expect(response.body).to include('organisationID')
+#       expect(response.body).to include('organisationId')
 #     end
 #   end
 
@@ -31,7 +31,7 @@
 #       param_post_companies_house = { identifier: { scheme: 'GB-COH', id: '02012345' } }
 #       post :index, params: param_post_companies_house
 #       expect(response.status).to eq(201)
-#       expect(response.body).to include('organisationID')
+#       expect(response.body).to include('organisationId')
 #     end
 #   end
 
@@ -40,7 +40,7 @@
 #       param_find_that_charity = { identifier: { scheme: 'GB-CHC', id: '1012345' } }
 #       post :index, params: param_find_that_charity
 #       expect(response.status).to eq(201)
-#       expect(response.body).to include('organisationID')
+#       expect(response.body).to include('organisationId')
 #     end
 #   end
 # end
