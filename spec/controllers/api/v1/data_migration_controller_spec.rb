@@ -57,7 +57,7 @@ RSpec.describe Api::V1::DataMigrationController, type: :controller do
             headers: {
               'Accept' => '*/*',
               'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-              'Authorization' => 'Bearer t07891Fbasibd60NM9rW9basidj49w7ig7R2S9'
+              'Authorization' => 'Bearer t07891Fbasibd60NM9rW9basidj49w7ig7R2S9',
               'Content-Type' => 'application/x-www-form-urlencoded',
               'User-Agent' => 'Faraday v1.3.0'
             }
@@ -68,7 +68,7 @@ RSpec.describe Api::V1::DataMigrationController, type: :controller do
             headers: {
               'Accept' => '*/*',
               'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-              'Authorization' => 'Bearer t07891Fbasibd60NM9rW9basidj49w7ig7R2S9'
+              'Authorization' => 'Bearer t07891Fbasibd60NM9rW9basidj49w7ig7R2S9',
               'Content-Type' => 'application/x-www-form-urlencoded',
               'User-Agent' => 'Faraday v1.3.0'
             }
