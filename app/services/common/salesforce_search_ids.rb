@@ -2,8 +2,8 @@ module Common
   class SalesforceSearchIds
     URN = 'urn'.freeze
     ID = 'id'.freeze
-    SFURN = 'SF-URN'.freeze
-    SFID = 'SF-ID'.freeze
+    SFURN = 'sfurn'.freeze
+    SFID = 'sfid'.freeze
 
     def self.account_id_types_salesforce
       [Common::SalesforceSearchIds::SFURN, Common::SalesforceSearchIds::SFID]
