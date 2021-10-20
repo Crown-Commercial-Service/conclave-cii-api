@@ -42,6 +42,7 @@ module Authorize
       ApiValidations::ApiErrorValidationResponse.new(:invalid_user_access_token) if validate_token.blank?
     end
 
+    # To be removed when data migration has a role to check for.
     def validate_user_no_role
       validate_client_id
       validate_user_access_token
