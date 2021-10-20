@@ -2,8 +2,10 @@ module Api
   module V1
     class DataMigrationController < ActionController::API
       include Authorize::IntegrationToken
+      include Authorize::User
       rescue_from ApiValidations::ApiError, with: :return_error_code
       before_action :validate_integration_key
+      before_action :validate_user_no_role
       before_action :create_ccs_org_id
 
       attr_accessor :ccs_org_id, :salesforce_result, :api_result, :sales_force_organisation_created
@@ -26,7 +28,7 @@ module Api
         create_from_salesforce if Common::SalesforceSearchIds.account_id_types_salesforce.include? params[:account_id_type].to_s
 
         if @duplicate_ccs_org_id
-          render json: { ccs_org_id: @duplicate_ccs_org_id }, status: :conflict
+          render json: { organisationId: @duplicate_ccs_org_id }, status: :conflict
         elsif @api_result.blank? && @sales_force_organisation_created == false
           render json: '', status: :not_found
         else
@@ -88,21 +90,21 @@ module Api
       end
 
       def duns_api_query
-        return unless schemes_check('US-DUN'.freeze)
+        return unless schemes_check(@duns_scheme)
 
         @companies_and_duns_ids.each do |e| # e = US-DUN-123456 as a valid example.
-          @id = e[7..] if e.include?('US-DUN'.freeze) # 123456
-          @scheme = e[..5] if e.include?('US-DUN'.freeze) # US-DUN
+          @id = e[7..] if e.include?(@duns_scheme) # 123456
+          @scheme = e[..5] if e.include?(@duns_scheme) # US-DUN
         end
         api_search_result(@id, @scheme)
       end
 
       def coh_api_query
-        return unless schemes_check('GB-COH'.freeze)
+        return unless schemes_check(@coh_scheme)
 
         @companies_and_duns_ids.each do |e| # e = GB-COH-123456 as a valid example.
-          @id = e[7..] if e.include?('GB-COH'.freeze) # 123456
-          @scheme = e[..5] if e.include?('GB-COH'.freeze) # GB-COH
+          @id = e[7..] if e.include?(@coh_scheme) # 123456
+          @scheme = e[..5] if e.include?(@coh_scheme) # GB-COH
         end
         api_search_result(@id, @scheme)
       end
@@ -115,17 +117,25 @@ module Api
       def create_organisation
         return false unless api_results_check
 
-        if @coh_api_results.present? && @duns_api_results.present?
+        if @companies_and_duns_ids.length == 2
           primary_organisation(@coh_api_results[:identifier])
           additional_organisation(@duns_api_results[:identifier], false)
-        elsif @coh_api_results.present?
+        elsif @companies_and_duns_ids.length == 1 && schemes_check(@coh_scheme)
           primary_organisation(@coh_api_results[:identifier])
-        elsif @duns_api_results.present?
+        elsif @companies_and_duns_ids.length == 1 && schemes_check(@duns_scheme)
+          company_house_additional
+        end
+        true
+      end
+
+      def company_house_additional
+        if @duns_api_results[:additionalIdentifiers].any? && @duns_api_results[:additionalIdentifiers][0][:scheme] == @coh_scheme
+          primary_organisation(@duns_api_results[:additionalIdentifiers][0])
+          add_additional_identifiers([@duns_api_results[:identifier]])
+        else
           primary_organisation(@duns_api_results[:identifier])
           add_additional_identifiers(@duns_api_results[:additionalIdentifiers])
         end
-
-        true
       end
 
       def add_additional_identifiers(additional_identifiers)
@@ -183,9 +193,9 @@ module Api
 
       def return_error_code(code)
         if code.to_s == '409'
-          render json: { ccs_org_id: find_ccs_org_id }, status: code.to_s
+          render json: { organisationId: find_ccs_org_id }, status: code.to_s
         elsif code.to_s.length > 3
-          render json: { ccs_org_id: code }, status: '409'.freeze
+          render json: { organisationId: code }, status: '409'.freeze
         else
           render json: '', status: code.to_s
         end

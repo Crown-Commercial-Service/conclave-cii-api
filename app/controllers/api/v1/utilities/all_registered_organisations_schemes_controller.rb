@@ -3,8 +3,10 @@ module Api
     module Utilities
       class AllRegisteredOrganisationsSchemesController < ActionController::API
         include Authorize::DeleteToken
+        include Authorize::User
         rescue_from ApiValidations::ApiError, with: :return_error_code
         before_action :validate_key
+        before_action :validate_ccs_admin
         before_action :validate_all_params
 
         def search_all_organisation
