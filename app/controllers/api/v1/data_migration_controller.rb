@@ -2,8 +2,10 @@ module Api
   module V1
     class DataMigrationController < ActionController::API
       include Authorize::IntegrationToken
+      include Authorize::User
       rescue_from ApiValidations::ApiError, with: :return_error_code
       before_action :validate_integration_key
+      before_action :validate_user_no_role
       before_action :create_ccs_org_id
 
       attr_accessor :ccs_org_id, :salesforce_result, :api_result, :sales_force_organisation_created
