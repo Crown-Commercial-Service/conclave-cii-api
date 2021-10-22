@@ -74,11 +74,11 @@ RSpec.describe Api::V1::AllRegisteredOrganisationsSchemesController, type: :cont
     end
 
     context 'when invalid api_key but valid authorization' do
-      it 'returns 404' do
+      it 'returns 401' do
         request.headers['x-api-key'] = 'invalid'
         request.headers['Authorization'] = "Bearer #{jwt_token}"
         get :search_organisation, params: { ccs_org_id: 'null' }
-        expect(response).to have_http_status(:not_found)
+        expect(response).to have_http_status(:unauthorized)
       end
     end
 
