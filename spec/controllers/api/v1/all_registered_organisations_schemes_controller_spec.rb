@@ -54,6 +54,15 @@ RSpec.describe Api::V1::AllRegisteredOrganisationsSchemesController, type: :cont
       end
     end
 
+    context 'when invalid authorization' do
+      it 'returns 401' do
+        request.headers['Authorization'] = 'invalid'
+        get :search_organisation, params: { ccs_org_id: 'null' }
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
+  end
+
     context 'when invalid ApiKey' do
       it 'returns 401' do
         request.headers['x-api-key'] = 'invalid'
