@@ -44,8 +44,32 @@ module Authorize
       ApiValidations::ApiErrorValidationResponse.new(:invalid_user_access_token) if validate_token.blank?
     end
 
-    # To be removed when data migration has a role to check for.
-    def validate_user_no_role
+    def token_to_string
+      request.headers['x-api-key'].to_s if request.headers['x-api-key'].present?
+    end
+
+    def validate_integration_token
+      integration_token = token_to_string
+      return true if ENV['INTEGRATION_TOKEN'] == integration_token
+
+      false
+    end
+
+    def validate_delete_token
+      delete_token = token_to_string
+      return true if ENV['DELETE_TOKEN'] == delete_token
+
+      false
+    end
+
+    def validate_api_token
+      api_token = token_to_string
+      return false if Client.find_by(api_key: api_token.to_s)&.id.blank?
+
+      true
+    end
+
+    def validate_no_role
       validate_client_id
       validate_user_access_token
       validate_access_token
@@ -73,6 +97,24 @@ module Authorize
       validate_user_access_token
       validate_access_token
       validate_service_user
+      validate_ccs_org_id
+    end
+
+    def validate_user_or_key
+      return if validate_integration_token
+
+      validate_client_id
+      validate_user_access_token
+      validate_access_token
+    end
+
+    def validate_ccs_admin_or_api_key
+      return if validate_api_token
+
+      validate_client_id
+      validate_user_access_token
+      validate_access_token
+      validate_ccs_admin_user
       validate_ccs_org_id
     end
   end
