@@ -62,9 +62,9 @@ module Authorize
 
     def validate_api_token
       api_token = token_to_string
-      return true if Client.find_by(api_key: api_token.to_s)&.id.blank?
+      return false if Client.find_by(api_key: api_token.to_s)&.id.blank?
 
-      false
+      true
     end
 
     def validate_no_role
@@ -104,6 +104,16 @@ module Authorize
       validate_client_id
       validate_user_access_token
       validate_access_token
+      validate_ccs_org_id
+    end
+
+    def validate_ccs_admin_or_api_key
+      return if validate_api_token
+
+      validate_client_id
+      validate_user_access_token
+      validate_access_token
+      validate_ccs_admin_user
       validate_ccs_org_id
     end
   end
