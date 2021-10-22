@@ -104,7 +104,6 @@ module Authorize
       validate_client_id
       validate_user_access_token
       validate_access_token
-      validate_ccs_org_id
     end
 
     def validate_ccs_admin_or_api_key
