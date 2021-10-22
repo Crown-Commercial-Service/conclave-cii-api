@@ -49,18 +49,21 @@ module Authorize
     def validate_integration_token
       integration_token = token_to_string
       return true if ENV['INTEGRATION_TOKEN'] == integration_token
+
       false
     end
 
     def validate_delete_token
       delete_token = token_to_string
       return true if ENV['DELETE_TOKEN'] == delete_token
+
       false
     end
 
     def validate_api_token
       api_token = token_to_string
       return true if Client.find_by(api_key: api_token.to_s)&.id.blank?
+
       false
     end
 
@@ -97,6 +100,7 @@ module Authorize
 
     def validate_user_or_key
       return if validate_integration_token
+
       validate_client_id
       validate_user_access_token
       validate_access_token
