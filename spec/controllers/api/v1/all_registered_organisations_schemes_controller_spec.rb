@@ -61,7 +61,6 @@ RSpec.describe Api::V1::AllRegisteredOrganisationsSchemesController, type: :cont
         expect(response).to have_http_status(:unauthorized)
       end
     end
-  end
 
     context 'when invalid ApiKey' do
       it 'returns 401' do
