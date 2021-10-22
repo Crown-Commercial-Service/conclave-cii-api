@@ -56,6 +56,8 @@ RSpec.describe Api::V1::AllRegisteredOrganisationsSchemesController, type: :cont
 
     context 'when invalid authorization' do
       it 'returns 401' do
+        client_registered = FactoryBot.create :client
+        request.headers['x-api-key'] = client_registered.api_key
         request.headers['Authorization'] = 'invalid'
         get :search_organisation, params: { ccs_org_id: 'null' }
         expect(response).to have_http_status(:unauthorized)
