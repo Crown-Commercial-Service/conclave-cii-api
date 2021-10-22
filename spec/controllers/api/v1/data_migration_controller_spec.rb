@@ -112,25 +112,22 @@ RSpec.describe Api::V1::DataMigrationController, type: :controller do
 
       context 'when not found' do
         it 'returns 404' do
-          request.headers['Authorization'] = "Bearer #{jwt_token}"
           post :create_org_profile, params: { account_id_type: 'SF-ID', account_id: 'NSO7IUSHF98HFP9WEH9FFH' }
-          expect(response).to have_http_status(:unauthorized)
+          expect(response).to have_http_status(:not_found)
         end
       end
 
       context 'when invalid params' do
         it 'returns 404' do
-          request.headers['Authorization'] = 'Bearer t07891Fbasibd60NM9rW9basidj49w7ig7R2S9'
           post :create_org_profile, params: { account_id_type: 'sfurd', account_id: 'NSO7IUSHF98HFP9WEH9FFG' }
-          expect(response).to have_http_status(:unauthorized)
+          expect(response).to have_http_status(:not_found)
         end
       end
 
       context 'when no params' do
         it 'returns 404' do
-          request.headers['Authorization'] = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6IiIsImNpaU9yZ0lkIjpudWxsLCJhdWQiOiJ3bmRpb3dkaW8ydWVoMzI5OGhyMyJ9.--zykzxTOhJD4WX2LijXdlgyOlEdCjfv3HprzWyzrhY'
           post :create_org_profile, params: { account_id_type: '', account_id: '' }
-          expect(response).to have_http_status(:unauthorized)
+          expect(response).to have_http_status(:not_found)
         end
       end
     end
@@ -138,7 +135,6 @@ RSpec.describe Api::V1::DataMigrationController, type: :controller do
     context 'when invalid ApiKey' do
       it 'returns 401' do
         request.headers['x-api-key'] = 'invalid'
-        request.headers['Authorization'] = 'invalid'
         post :create_org_profile, params: { account_id_type: 'sfurd', account_id: 'NSO7IUSHF98HFP9WEH9FFG' }
         expect(response).to have_http_status(:unauthorized)
       end
@@ -146,7 +142,6 @@ RSpec.describe Api::V1::DataMigrationController, type: :controller do
 
     context 'when invalid access token' do
       it 'returns 401' do
-        request.headers['x-api-key'] = '6348G438RT834GR4827GRO834G8G348RO8238'
         request.headers['Authorization'] = 'invalid'
         post :create_org_profile, params: { account_id_type: 'sfurd', account_id: 'NSO7IUSHF98HFP9WEH9FFG' }
         expect(response).to have_http_status(:unauthorized)
