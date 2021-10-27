@@ -91,14 +91,6 @@ module Authorize
     end
 
     def validate_integrating_service_user
-      validate_client_id
-      validate_user_access_token
-      validate_access_token
-      validate_service_user
-      validate_ccs_org_id
-    end
-
-    def validate_user_or_key
       return if validate_integration_token
 
       validate_client_id
