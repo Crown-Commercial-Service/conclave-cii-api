@@ -7,7 +7,7 @@ RSpec.describe Api::V1::AllRegisteredOrganisationsSchemesController, type: :cont
     let(:jwt_token) { JWT.encode({ roles: ENV['ACCESS_CCS_ADMIN'], ciiOrgId: ccs_org_id, aud: ENV['CLIENT_ID'] }, 'test') }
 
     before do
-      stub_request(:post, "http://www.test.com/security/tokens/validation?client-id=#{clientid}")
+      stub_request(:post, "http://www.test.com/security/validate_token?clientid=#{clientid}")
         .with(
           headers: {
             'Accept' => '*/*',
@@ -47,33 +47,14 @@ RSpec.describe Api::V1::AllRegisteredOrganisationsSchemesController, type: :cont
       end
 
       context 'when invalid params' do
-        it 'returns 404' do
+        it 'returns 401' do
           get :search_organisation, params: { ccs_org_id: 'null' }
-          expect(response).to have_http_status(:not_found)
+          expect(response).to have_http_status(:unauthorized)
         end
       end
     end
 
-    context 'when valid api_key but invalid authorization' do
-      it 'returns 404' do
-        client_registered = FactoryBot.create :client
-        request.headers['x-api-key'] = client_registered.api_key
-        request.headers['Authorization'] = 'invalid'
-        get :search_organisation, params: { ccs_org_id: 'null' }
-        expect(response).to have_http_status(:not_found)
-      end
-    end
-
-    context 'when invalid api_key but valid authorization' do
-      it 'returns 401' do
-        request.headers['x-api-key'] = 'invalid'
-        request.headers['Authorization'] = "Bearer #{jwt_token}"
-        get :search_organisation, params: { ccs_org_id: 'null' }
-        expect(response).to have_http_status(:unauthorized)
-      end
-    end
-
-    context 'when invalid ApiKey and no authorization' do
+    context 'when invalid ApiKey' do
       it 'returns 401' do
         request.headers['x-api-key'] = 'invalid'
         get :search_organisation, params: { ccs_org_id: 'null' }
@@ -81,7 +62,7 @@ RSpec.describe Api::V1::AllRegisteredOrganisationsSchemesController, type: :cont
       end
     end
 
-    context 'when no ApiKey and no authorization' do
+    context 'when no ApiKey' do
       it 'returns 401' do
         get :search_organisation, params: { ccs_org_id: 'null' }
         expect(response).to have_http_status(:unauthorized)
