@@ -85,6 +85,9 @@ module Authorize
     end
 
     def validate_ccs_admin
+      ApiLogging::Logger.info 'Common::ApiHelper.decode_token(request.headers) logger'
+      ApiLogging::Logger.info Common::ApiHelper.decode_token(request.headers)
+      ApiLogging::Logger.info 'Common::ApiHelper.decode_token(request.headers) logger'
       validate_client_id
       validate_user_access_token
       validate_access_token
