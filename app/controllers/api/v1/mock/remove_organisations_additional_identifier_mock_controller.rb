@@ -2,15 +2,17 @@ module Api
   module V1
     module Mock
       class RemoveOrganisationsAdditionalIdentifierMockController < ApplicationMockController
-        before_action :remove_organisations_additional_identifier
+        before_action :remove_additional_organisations
 
         def delete_additional_identifier
           run_mock
-          result = @mock_controller.delete_additional_identifier
-          delete_response_result(result)
+          additional_org = @mock_controller.find_organisation
+          primary_org_check = @mock_controller.primary_org_check
+          @mock_controller.delete_additional_identifier if additional_org.present?
+          delete_additional_response_result(additional_org, primary_org_check)
         end
 
-        def remove_organisations_additional_identifier
+        def remove_additional_organisations
           @mock_controller = Api::V1::RemoveOrganisationsAdditionalIdentifierController.new
         end
       end
