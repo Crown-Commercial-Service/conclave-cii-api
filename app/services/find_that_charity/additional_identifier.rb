@@ -30,7 +30,7 @@ module FindThatCharity
     end
 
     def legal_name
-      exists_or_null(@search_result[:legalName])
+      exists_or_null(@search_result[:name])
     end
 
     def uri
