@@ -20,7 +20,7 @@ module FindThatCharity
     end
 
     def legal_name
-      exists_or_null(@result['name'])
+      exists_or_null(@result['legalName'])
     end
 
     def uri
