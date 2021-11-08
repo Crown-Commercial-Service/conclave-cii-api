@@ -10,6 +10,8 @@ applications:
     - route: conclave-cii-CF_SPACE.apps.internal
   services:
     - conclave-cii-pg-service
-    - cii-api-splunk-CF_SPACE
+    - cii-api-splunk-preprod
+    - logit-ssl-drain
+    - rollbar
   env:
     SERVER_ENV_NAME: VAULT_ENV
