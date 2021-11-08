@@ -26,7 +26,6 @@ module CompaniesHouse
 
     def build_response
       {
-        name: name,
         identifier: CompaniesHouse::Indentifier.new(@result).build_response,
         additionalIdentifiers: [],
         address: CompaniesHouse::Address.new(@result).build_response,
