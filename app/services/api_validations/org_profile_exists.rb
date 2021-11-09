@@ -19,7 +19,7 @@ module ApiValidations
       return unless @data[:id]
 
       scheme_identifier = OrganisationSchemeIdentifier.find_by(scheme_org_reg_number: @data[:id].to_s)
-      scheme_identifier[:ccs_org_id] if scheme_identifier.present?
+      scheme_identifier[:organisationId] if scheme_identifier.present?
     end
   end
 end

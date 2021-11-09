@@ -9,7 +9,7 @@ module Api
       before_action :validate_params
 
       def search_organisation
-        result = Common::RegisteredOrganisationResponse.new(params[:ccs_org_id], hidden: true).response_payload
+        result = Common::RegisteredOrganisationResponse.new(params[:organisationId], hidden: true).response_payload
         if result.present?
           render json: result[0], status: :ok
         else

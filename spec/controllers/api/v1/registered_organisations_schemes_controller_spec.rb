@@ -3,8 +3,8 @@ require 'rails_helper'
 RSpec.describe Api::V1::RegisteredOrganisationsSchemesController, type: :controller do
   describe 'search_organisation' do
     let(:clientid) { ENV['CLIENT_ID'] }
-    let(:ccs_org_id) { nil }
-    let(:jwt_token) { JWT.encode({ roles: ENV['ACCESS_ORGANISATION_ADMIN'], ciiOrgId: ccs_org_id, aud: ENV['CLIENT_ID'] }, 'test') }
+    let(:organisationId) { nil }
+    let(:jwt_token) { JWT.encode({ roles: ENV['ACCESS_ORGANISATION_ADMIN'], ciiOrgId: organisationId, aud: ENV['CLIENT_ID'] }, 'test') }
 
     context 'when authorized' do
       before do
@@ -26,24 +26,24 @@ RSpec.describe Api::V1::RegisteredOrganisationsSchemesController, type: :control
 
       context 'when success' do
         let(:organisation_scheme_identifier) { FactoryBot.create(:organisation_scheme_identifier) }
-        let(:ccs_org_id) { organisation_scheme_identifier.ccs_org_id.to_s }
+        let(:organisationId) { organisation_scheme_identifier.organisationId.to_s }
 
         it 'returns 200' do
-          get :search_organisation, params: { ccs_org_id: ccs_org_id }
+          get :search_organisation, params: { organisationId: organisationId }
           expect(response).to have_http_status(:ok)
         end
       end
       # Add these back once user authentication is enabled on this route
       # context 'when not found' do
       #   it 'returns 401' do
-      #     get :search_organisation, params: { ccs_org_id: 'test', clientid: clientid }
+      #     get :search_organisation, params: { organisationId: 'test', clientid: clientid }
       #     expect(response).to have_http_status(:unauthorized)
       #   end
       # end
 
       # context 'when invalid params' do
       #   it 'returns 401' do
-      #     get :search_organisation, params: { ccs_org_id: nil, clientid: clientid }
+      #     get :search_organisation, params: { organisationId: nil, clientid: clientid }
       #     expect(response).to have_http_status(:unauthorized)
       #   end
       # end
@@ -52,14 +52,14 @@ RSpec.describe Api::V1::RegisteredOrganisationsSchemesController, type: :control
     context 'when invalid ApiKey' do
       it 'returns 401' do
         request.headers['x-api-key'] = 'invalid'
-        get :search_organisation, params: { ccs_org_id: 29842981489214, clientid: 'n8f23er9h349hh439h94' }
+        get :search_organisation, params: { organisationId: 29842981489214, clientid: 'n8f23er9h349hh439h94' }
         expect(response).to have_http_status(:unauthorized)
       end
     end
 
     context 'when no ApiKey' do
       it 'returns 401' do
-        get :search_organisation, params: { ccs_org_id: 29842981489214, clientid: 'n8f23er9h349hh439h94' }
+        get :search_organisation, params: { organisationId: 29842981489214, clientid: 'n8f23er9h349hh439h94' }
         expect(response).to have_http_status(:unauthorized)
       end
     end

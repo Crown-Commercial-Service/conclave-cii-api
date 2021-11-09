@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe FindThatCharity::Search, type: :model do
-  let(:ccs_org_id) { '101123' }
+  let(:organisationId) { '101123' }
   let(:scheme_register) { FactoryBot.create(:scheme_register) }
-  let(:organisation_scheme_identifier) { FactoryBot.create(:organisation_scheme_identifier, ccs_org_id: ccs_org_id, scheme_code: scheme_register.scheme_register_code) }
+  let(:organisation_scheme_identifier) { FactoryBot.create(:organisation_scheme_identifier, organisationId: organisationId, scheme_code: scheme_register.scheme_register_code) }
   let(:response_body) do
     {
       id: 'GB-CHC-101123',
@@ -82,7 +82,7 @@ RSpec.describe FindThatCharity::Search, type: :model do
 
   describe '#fetch_results' do
     it 'returns the build response' do
-      expect(described_class.new(organisation_scheme_identifier.ccs_org_id, scheme_register.scheme_register_code).fetch_results).to eq(result)
+      expect(described_class.new(organisation_scheme_identifier.organisationId, scheme_register.scheme_register_code).fetch_results).to eq(result)
     end
   end
 end

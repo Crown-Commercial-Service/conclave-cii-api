@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(version: 2021_05_20_005544) do
   end
 
   create_table "organisation_scheme_identifiers", id: :serial, force: :cascade do |t|
-    t.bigint "ccs_org_id"
+    t.bigint "organisationId"
     t.string "scheme_code", limit: 20
     t.string "scheme_org_reg_number"
     t.boolean "primary_scheme"
@@ -36,7 +36,7 @@ ActiveRecord::Schema.define(version: 2021_05_20_005544) do
     t.string "uri", default: ""
     t.string "legal_name", default: ""
     t.integer "client_id"
-    t.index ["ccs_org_id"], name: "index_organisation_scheme_identifiers_on_ccs_org_id"
+    t.index ["organisationId"], name: "index_organisation_scheme_identifiers_on_organisationId"
     t.index ["scheme_code"], name: "index_organisation_scheme_identifiers_on_scheme_code"
     t.index ["scheme_org_reg_number"], name: "index_organisation_scheme_identifiers_on_scheme_org_reg_number", unique: true
   end

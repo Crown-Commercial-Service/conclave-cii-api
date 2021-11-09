@@ -1,7 +1,7 @@
 class CreateOrganisationSchemeIdentifier < ActiveRecord::Migration[6.0]
   def change
     create_table :organisation_scheme_identifiers, id: :integer do |t|
-      t.bigint :ccs_org_id
+      t.bigint :organisationId
       t.string :scheme_code, :limit => 20
       t.string :scheme_org_reg_number
       t.boolean :primary_scheme

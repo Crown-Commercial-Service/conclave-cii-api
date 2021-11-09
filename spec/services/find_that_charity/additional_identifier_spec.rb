@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe FindThatCharity::AdditionalIdentifier, type: :model do
-  let(:ccs_org_id) { '101123' }
+  let(:organisationId) { '101123' }
   let(:scheme_register) { FactoryBot.create(:scheme_register) }
-  let(:organisation_scheme_identifier) { FactoryBot.create(:organisation_scheme_identifier, ccs_org_id: ccs_org_id, scheme_code: scheme_register.scheme_register_code) }
+  let(:organisation_scheme_identifier) { FactoryBot.create(:organisation_scheme_identifier, organisationId: organisationId, scheme_code: scheme_register.scheme_register_code) }
   let(:response_body) do
     {
       id: 'GB-CHC-101123',
@@ -63,7 +63,7 @@ RSpec.describe FindThatCharity::AdditionalIdentifier, type: :model do
   let(:result) { { id: 101123, legalName: 'Charity Example 101123', scheme: 'GB-CCC', uri: '' } }
 
   before do
-    stub_request(:get, "https://findthatcharity.uk/orgid/GB-CCC-#{ccs_org_id}.json")
+    stub_request(:get, "https://findthatcharity.uk/orgid/GB-CCC-#{organisationId}.json")
       .with(
         headers: {
           'Accept' => '*/*',
@@ -76,7 +76,7 @@ RSpec.describe FindThatCharity::AdditionalIdentifier, type: :model do
 
   describe '#build_response' do
     it 'returns the build response' do
-      expect(described_class.new(organisation_scheme_identifier.ccs_org_id, scheme_register.scheme_register_code).build_response).to eq(result)
+      expect(described_class.new(organisation_scheme_identifier.organisationId, scheme_register.scheme_register_code).build_response).to eq(result)
     end
   end
 end

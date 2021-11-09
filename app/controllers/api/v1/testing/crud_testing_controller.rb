@@ -11,13 +11,13 @@ module Api
         end
 
         def delete_org
-          OrganisationSchemeIdentifier.where(ccs_org_id: params[:org_ccs_id].to_s).delete_all
+          OrganisationSchemeIdentifier.where(organisationId: params[:org_ccs_id].to_s).delete_all
         end
 
         def search_org
           return if find_org_ccs_id.blank?
 
-          scheme = OrganisationSchemeIdentifier.select(:scheme_org_reg_number, :ccs_org_id, :primary_scheme, :hidden, 'scheme_code AS scheme', :uri, :legal_name).where(ccs_org_id: find_org_ccs_id.ccs_org_id).as_json(except: :id)
+          scheme = OrganisationSchemeIdentifier.select(:scheme_org_reg_number, :organisationId, :primary_scheme, :hidden, 'scheme_code AS scheme', :uri, :legal_name).where(organisationId: find_org_ccs_id.organisationId).as_json(except: :id)
           if scheme.present?
             render json: scheme, status: :ok
           else

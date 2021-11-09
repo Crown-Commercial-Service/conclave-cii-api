@@ -15,12 +15,12 @@ module ApiValidations
 
     def initialize(data, data_migration_req: false)
       @data = data || {}
-      @ccs_org_id = nil
+      @organisationId = nil
       @data_migration_req = data_migration_req
     end
 
     def http_validation_response
-      return ApiValidations::ApiErrorValidationResponse.new(errors.messages.keys.first, @ccs_org_id) if @data_migration_req && @ccs_org_id
+      return ApiValidations::ApiErrorValidationResponse.new(errors.messages.keys.first, @organisationId) if @data_migration_req && @organisationId
 
       ApiValidations::ApiErrorValidationResponse.new(errors.messages.keys.first)
     end
@@ -37,12 +37,12 @@ module ApiValidations
     end
 
     def id_belongs_to_same_org(org_scheme_result)
-      errors.add(:duplicate_id) if org_scheme_result[:ccs_org_id].to_i != @data[:ccs_org_id].to_i
+      errors.add(:duplicate_id) if org_scheme_result[:organisationId].to_i != @data[:organisationId].to_i
     end
 
     def check_duplicate(scheme_identifier)
-      errors.add(:duplicate_id) if scheme_identifier.present? && @data[:ccs_org_id].blank?
-      id_belongs_to_same_org(scheme_identifier) if scheme_identifier.present? && @data[:ccs_org_id].present?
+      errors.add(:duplicate_id) if scheme_identifier.present? && @data[:organisationId].blank?
+      id_belongs_to_same_org(scheme_identifier) if scheme_identifier.present? && @data[:organisationId].present?
     end
 
     def organisation_exists
@@ -58,11 +58,11 @@ module ApiValidations
 
       data_id = Common::ApiHelper.filter_charity_number(@data[:id], @data[:scheme])
       scheme_identifier = OrganisationSchemeIdentifier.find_by(scheme_org_reg_number: Common::ApiHelper.remove_white_space_from_id(data_id).to_s)
-      @ccs_org_id = scheme_identifier['ccs_org_id'] if scheme_identifier && scheme_identifier['ccs_org_id']
+      @organisationId = scheme_identifier['organisationId'] if scheme_identifier && scheme_identifier['organisationId']
     end
 
     def data_migration_duplicate_id
-      @ccs_org_id
+      @organisationId
     end
   end
 end

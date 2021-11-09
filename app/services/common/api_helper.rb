@@ -90,12 +90,12 @@ module Common
       organisation.scheme_org_reg_number = "11111#{Common::ApiHelper.generate_random_id_end}"
       organisation.uri = 'test.com'
       organisation.legal_name = 'Nicks Testing Organisation'
-      organisation.ccs_org_id = Common::GenerateId.ccs_org_id
+      organisation.organisationId = Common::GenerateId.organisationId
       organisation.primary_scheme = true
       organisation.hidden = false
       organisation.client_id = Common::ApiHelper.find_client(api_key_to_string)
       organisation.save
-      organisation.ccs_org_id
+      organisation.organisationId
     end
 
     def self.return_mock_duns
@@ -125,8 +125,8 @@ module Common
       }
     end
 
-    def self.return_all_organisation_schemes(ccs_org_id)
-      Common::RegisteredOrganisationResponse.new(ccs_org_id, hidden: true).response_payload
+    def self.return_all_organisation_schemes(organisationId)
+      Common::RegisteredOrganisationResponse.new(organisationId, hidden: true).response_payload
     end
 
     def self.faraday_new(options)

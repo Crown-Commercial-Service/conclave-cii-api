@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::DataMigrationController, type: :controller do
   describe 'create_org_profile' do
-    let(:ccs_org_id) { nil }
-    let(:jwt_token) { JWT.encode({ roles: '', ciiOrgId: ccs_org_id, aud: ENV['CLIENT_ID'] }, 'test') }
+    let(:organisationId) { nil }
+    let(:jwt_token) { JWT.encode({ roles: '', ciiOrgId: organisationId, aud: ENV['CLIENT_ID'] }, 'test') }
 
     context 'when authorized' do
       before do

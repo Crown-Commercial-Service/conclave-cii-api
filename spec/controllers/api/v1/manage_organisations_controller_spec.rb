@@ -3,13 +3,13 @@ require 'rails_helper'
 RSpec.describe Api::V1::ManageOrganisationsController, type: :controller do
   describe 'search_organisation' do
     let(:clientid) { ENV['CLIENT_ID'] }
-    let(:ccs_org_id) { nil }
-    let(:jwt_token) { JWT.encode({ roles: ENV['ACCESS_ORGANISATION_ADMIN'], ciiOrgId: ccs_org_id, aud: ENV['CLIENT_ID'] }, 'test') }
+    let(:organisationId) { nil }
+    let(:jwt_token) { JWT.encode({ roles: ENV['ACCESS_ORGANISATION_ADMIN'], ciiOrgId: organisationId, aud: ENV['CLIENT_ID'] }, 'test') }
 
     context 'when authorized' do
-      let(:ccs_org_id) { '101123' }
+      let(:organisationId) { '101123' }
       let(:scheme_register) { FactoryBot.create(:scheme_register, scheme_register_code: 'GB-CHC') }
-      let(:organisation_scheme_identifier) { FactoryBot.create(:organisation_scheme_identifier, ccs_org_id: ccs_org_id, scheme_code: scheme_register.scheme_register_code) }
+      let(:organisation_scheme_identifier) { FactoryBot.create(:organisation_scheme_identifier, organisationId: organisationId, scheme_code: scheme_register.scheme_register_code) }
       let(:response_body) do
         {
           id: 'GB-CHC-101123',
@@ -82,7 +82,7 @@ RSpec.describe Api::V1::ManageOrganisationsController, type: :controller do
             }
           )
           .to_return(status: 200, body: 'true', headers: {})
-        stub_request(:get, "https://findthatcharity.uk/orgid/GB-CHC-#{ccs_org_id}.json")
+        stub_request(:get, "https://findthatcharity.uk/orgid/GB-CHC-#{organisationId}.json")
           .with(
             headers: {
               'Accept' => '*/*',
@@ -95,14 +95,14 @@ RSpec.describe Api::V1::ManageOrganisationsController, type: :controller do
 
       context 'when success' do
         it 'returns 200' do
-          post :search_organisation, params: { id: organisation_scheme_identifier.ccs_org_id.to_s, scheme: scheme_register.scheme_register_code, ccs_org_id: organisation_scheme_identifier.ccs_org_id.to_s, clientid: clientid }
+          post :search_organisation, params: { id: organisation_scheme_identifier.organisationId.to_s, scheme: scheme_register.scheme_register_code, organisationId: organisation_scheme_identifier.organisationId.to_s, clientid: clientid }
           expect(response).to have_http_status(:ok)
         end
       end
 
       context 'when not found' do
         it 'returns 404' do
-          post :search_organisation, params: { id: 'test', scheme: 'test', ccs_org_id: organisation_scheme_identifier.ccs_org_id.to_s, clientid: clientid }
+          post :search_organisation, params: { id: 'test', scheme: 'test', organisationId: organisation_scheme_identifier.organisationId.to_s, clientid: clientid }
           expect(response).to have_http_status(:not_found)
         end
       end
@@ -111,14 +111,14 @@ RSpec.describe Api::V1::ManageOrganisationsController, type: :controller do
     context 'when invalid ApiKey' do
       it 'returns 401' do
         request.headers['x-api-key'] = 'invalid'
-        post :search_organisation, params: { id: 'test', scheme: 'test', ccs_org_id: 21342414, clientid: 'sbdiwqhg9d13g2gg3171284' }
+        post :search_organisation, params: { id: 'test', scheme: 'test', organisationId: 21342414, clientid: 'sbdiwqhg9d13g2gg3171284' }
         expect(response).to have_http_status(:unauthorized)
       end
     end
 
     context 'when no ApiKey' do
       it 'returns 401' do
-        post :search_organisation, params: { id: 'test', scheme: 'test', ccs_org_id: 21342414, clientid: 'sbdiwqhg9d13g2gg3171284' }
+        post :search_organisation, params: { id: 'test', scheme: 'test', organisationId: 21342414, clientid: 'sbdiwqhg9d13g2gg3171284' }
         expect(response).to have_http_status(:unauthorized)
       end
     end

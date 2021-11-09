@@ -39,9 +39,9 @@ RSpec.describe ApiValidations::ApiErrorValidationResponse, type: :model do
         end
       end
 
-      context 'when ccs_org_id is sent' do
+      context 'when organisationId is sent' do
         it 'does raise exception' do
-          expect { described_class.new(:ccs_org_id).call }.to raise_exception(ApiValidations::ApiError)
+          expect { described_class.new(:organisationId).call }.to raise_exception(ApiValidations::ApiError)
         end
       end
     end
@@ -59,9 +59,9 @@ RSpec.describe ApiValidations::ApiErrorValidationResponse, type: :model do
         end
       end
 
-      context 'when ccs_org_id_not_found' do
+      context 'when organisationId_not_found' do
         it 'does raise exception' do
-          expect { described_class.new(:ccs_org_id_not_found).call }.to raise_exception(ApiValidations::ApiError)
+          expect { described_class.new(:organisationId_not_found).call }.to raise_exception(ApiValidations::ApiError)
         end
       end
     end

@@ -2,10 +2,10 @@ require 'rails_helper'
 
 RSpec.describe ApiValidations::CreateOrganisation, type: :model do
   describe 'validations' do
-    let(:ccs_org_id) { '101123' }
+    let(:organisationId) { '101123' }
     let(:scheme_register) { FactoryBot.create(:scheme_register, scheme_register_code: 'GB-CHC') }
-    let(:organisation_scheme_identifier) { FactoryBot.create(:organisation_scheme_identifier, ccs_org_id: ccs_org_id, scheme_code: scheme_register.scheme_register_code) }
-    let(:organisation_params) { { id: organisation_scheme_identifier.ccs_org_id, scheme: scheme_register.scheme_register_code } }
+    let(:organisation_scheme_identifier) { FactoryBot.create(:organisation_scheme_identifier, organisationId: organisationId, scheme_code: scheme_register.scheme_register_code) }
+    let(:organisation_params) { { id: organisation_scheme_identifier.organisationId, scheme: scheme_register.scheme_register_code } }
 
     describe 'identifier' do
       context 'when present' do

@@ -1,8 +1,8 @@
 module Common
   class RegisteredOrganisationResponse
-    def initialize(ccs_org_id, hidden: true)
+    def initialize(organisationId, hidden: true)
       super()
-      @ccs_org_id = ccs_org_id
+      @organisationId = organisationId
       @results = hidden.blank? ? search_organisation : search_organisation_all
       @primary_name = ''
       @primary_identifier = {}
@@ -10,11 +10,11 @@ module Common
     end
 
     def search_organisation
-      OrganisationSchemeIdentifier.select(:scheme_org_reg_number, :scheme_code, :primary_scheme, :uri, :legal_name).where(ccs_org_id: @ccs_org_id).where(hidden: false)
+      OrganisationSchemeIdentifier.select(:scheme_org_reg_number, :scheme_code, :primary_scheme, :uri, :legal_name).where(organisationId: @organisationId).where(hidden: false)
     end
 
     def search_organisation_all
-      OrganisationSchemeIdentifier.select(:scheme_org_reg_number, :scheme_code, :primary_scheme, :hidden, :uri, :legal_name).where(ccs_org_id: @ccs_org_id)
+      OrganisationSchemeIdentifier.select(:scheme_org_reg_number, :scheme_code, :primary_scheme, :hidden, :uri, :legal_name).where(organisationId: @organisationId)
     end
 
     def response_payload

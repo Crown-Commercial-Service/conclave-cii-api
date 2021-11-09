@@ -21,14 +21,14 @@ module Api
       end
 
       def find_organisation
-        OrganisationSchemeIdentifier.find_by(ccs_org_id: params[:ccs_org_id].to_s,
+        OrganisationSchemeIdentifier.find_by(organisationId: params[:organisationId].to_s,
                                              scheme_org_reg_number: params[:id].to_s,
                                              scheme_code: params[:scheme].to_s,
                                              primary_scheme: false)
       end
 
       def primary_org_check
-        result = Common::RegisteredOrganisationResponse.new(params[:ccs_org_id].to_s).response_payload
+        result = Common::RegisteredOrganisationResponse.new(params[:organisationId].to_s).response_payload
         return false if result.blank?
 
         result_scheme = result[0][:identifier][:scheme].to_s
@@ -41,7 +41,7 @@ module Api
       private
 
       def delete_organisation
-        OrganisationSchemeIdentifier.find_by(ccs_org_id: params[:ccs_org_id].to_s,
+        OrganisationSchemeIdentifier.find_by(organisationId: params[:organisationId].to_s,
                                              scheme_org_reg_number: params[:id].to_s,
                                              scheme_code: params[:scheme].to_s,
                                              primary_scheme: false).destroy
