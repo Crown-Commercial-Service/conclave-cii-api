@@ -1,5 +1,5 @@
 module ApiValidations
-  class BuyerRegistration
+  class DataMigration
     include ActiveModel::Validations
     include ActiveModel::Validations::Callbacks
 
