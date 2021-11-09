@@ -2,10 +2,10 @@ require 'rails_helper'
 
 RSpec.describe ApiValidations::RemoveScheme, type: :model do
   describe 'validations' do
-    let(:organisationId) { '101123' }
+    let(:organisation_id) { '101123' }
     let(:scheme_register) { FactoryBot.create(:scheme_register, scheme_register_code: 'GB-CHC') }
-    let(:organisation_scheme_identifier) { FactoryBot.create(:organisation_scheme_identifier, organisationId: organisationId, scheme_code: scheme_register.scheme_register_code, scheme_org_reg_number: organisationId) }
-    let(:organisation_params) { { id: organisation_scheme_identifier.organisationId, scheme: scheme_register.scheme_register_code } }
+    let(:organisation_scheme_identifier) { FactoryBot.create(:organisation_scheme_identifier, organisation_id: organisation_id, scheme_code: scheme_register.scheme_register_code, scheme_org_reg_number: organisation_id) }
+    let(:organisation_params) { { id: organisation_scheme_identifier.organisation_id, scheme: scheme_register.scheme_register_code } }
 
     context 'when all params are present' do
       it 'is valid' do

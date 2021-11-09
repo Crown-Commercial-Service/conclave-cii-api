@@ -8,7 +8,7 @@ module Api
         before_action :validate_all_params
 
         def search_all_organisation
-          result_all = Common::ApiHelper.return_all_organisation_schemes(params[:organisationId])
+          result_all = Common::ApiHelper.return_all_organisation_schemes(params[:organisation_id])
           if result_all.present?
             render json: result_all[0], status: :ok
           else

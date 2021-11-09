@@ -1,10 +1,10 @@
 module Common
   class SalesforceHelper
-    def initialize(results, organisationId)
+    def initialize(results, organisation_id)
       super()
       @error = nil
       @results = results
-      @organisationId = organisationId
+      @organisation_id = organisation_id
     end
 
     def fetch_salesforce_record
@@ -12,7 +12,7 @@ module Common
     end
 
     def check_record_exists
-      OrganisationSchemeIdentifier.find_by(organisationId: @organisationId, scheme_code: Common::AdditionalIdentifier::SCHEME_CCS)
+      OrganisationSchemeIdentifier.find_by(organisation_id: @organisation_id, scheme_code: Common::AdditionalIdentifier::SCHEME_CCS)
     end
 
     def insert_salesforce_record
@@ -37,7 +37,7 @@ module Common
       organisation.scheme_org_reg_number = additional_identifier[:id]
       organisation.uri = additional_identifier[:uri]
       organisation.legal_name = additional_identifier[:legalName]
-      organisation.organisationId = @organisationId
+      organisation.organisation_id = @organisation_id
       organisation.primary_scheme = false
       organisation.hidden = true
       organisation.save

@@ -3,8 +3,8 @@ require 'rails_helper'
 RSpec.describe Api::V1::AllRegisteredOrganisationsSchemesController, type: :controller do
   describe 'search_organisation' do
     let(:clientid) { ENV['CLIENT_ID'] }
-    let(:organisationId) { nil }
-    let(:jwt_token) { JWT.encode({ roles: ENV['ACCESS_CCS_ADMIN'], ciiOrgId: organisationId, aud: ENV['CLIENT_ID'] }, 'test') }
+    let(:organisation_id) { nil }
+    let(:jwt_token) { JWT.encode({ roles: ENV['ACCESS_CCS_ADMIN'], ciiOrgId: organisation_id, aud: ENV['CLIENT_ID'] }, 'test') }
 
     before do
       stub_request(:post, "http://www.test.com/security/tokens/validation?client-id=#{clientid}")
@@ -29,26 +29,26 @@ RSpec.describe Api::V1::AllRegisteredOrganisationsSchemesController, type: :cont
 
       context 'when success' do
         let(:organisation_scheme_identifier) { FactoryBot.create(:organisation_scheme_identifier) }
-        let(:organisationId) { organisation_scheme_identifier.organisationId.to_s }
+        let(:organisation_id) { organisation_scheme_identifier.organisation_id.to_s }
 
         it 'returns 200' do
-          get :search_organisation, params: { organisationId: organisationId }
+          get :search_organisation, params: { organisation_id: organisation_id }
           expect(response).to have_http_status(:ok)
         end
       end
 
       context 'when not found' do
-        let(:organisationId) { '125656234' }
+        let(:organisation_id) { '125656234' }
 
         it 'returns 404' do
-          get :search_organisation, params: { organisationId: organisationId }
+          get :search_organisation, params: { organisation_id: organisation_id }
           expect(response).to have_http_status(:not_found)
         end
       end
 
       context 'when invalid params' do
         it 'returns 401' do
-          get :search_organisation, params: { organisationId: 'null' }
+          get :search_organisation, params: { organisation_id: 'null' }
           expect(response).to have_http_status(:unauthorized)
         end
       end
@@ -57,14 +57,14 @@ RSpec.describe Api::V1::AllRegisteredOrganisationsSchemesController, type: :cont
     context 'when invalid ApiKey' do
       it 'returns 401' do
         request.headers['x-api-key'] = 'invalid'
-        get :search_organisation, params: { organisationId: 'null' }
+        get :search_organisation, params: { organisation_id: 'null' }
         expect(response).to have_http_status(:unauthorized)
       end
     end
 
     context 'when no ApiKey' do
       it 'returns 401' do
-        get :search_organisation, params: { organisationId: 'null' }
+        get :search_organisation, params: { organisation_id: 'null' }
         expect(response).to have_http_status(:unauthorized)
       end
     end

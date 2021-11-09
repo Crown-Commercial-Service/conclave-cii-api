@@ -4,17 +4,17 @@ module Api
       include Authorize::User
       rescue_from ApiValidations::ApiError, with: :return_error_code
       before_action :validate_integrating_service_user
-      before_action :create_organisationId
+      before_action :create_organisation_id
 
-      attr_accessor :organisationId, :salesforce_result, :api_result, :sales_force_organisation_created
+      attr_accessor :organisation_id, :salesforce_result, :api_result, :sales_force_organisation_created
 
       def validate_params
         validate = ApiValidations::DataMigration.new(params)
         render json: validate.errors, status: :bad_request unless validate.valid?
       end
 
-      def create_organisationId
-        @organisationId = Common::GenerateId.organisationId
+      def create_organisation_id
+        @organisation_id = Common::GenerateId.organisation_id
         @duns_scheme = Common::AdditionalIdentifier::SCHEME_DANDB
         @coh_scheme = Common::AdditionalIdentifier::SCHEME_COMPANIES_HOUSE
         @sf_scheme = Common::SalesforceSearchIds::SFID
@@ -25,8 +25,8 @@ module Api
         create_from_schemes if schemes_list.schemes.include? params[:account_id_type].to_s
         create_from_salesforce if Common::SalesforceSearchIds.account_id_types_salesforce.include? params[:account_id_type].to_s
 
-        if @duplicate_organisationId
-          render json: { organisationId: @duplicate_organisationId }, status: :conflict
+        if @duplicate_organisation_id
+          render json: { organisation_id: @duplicate_organisation_id }, status: :conflict
         elsif @api_result.blank? && @sales_force_organisation_created == false
           render json: '', status: :not_found
         else
@@ -43,7 +43,7 @@ module Api
       def create_from_salesforce
         salesforce_api_search
         @sales_force_organisation_created = create_organisation if create_org_check
-        additional_organisation(@api_result, true) if @api_result.present? && !@duplicate_organisationId
+        additional_organisation(@api_result, true) if @api_result.present? && !@duplicate_organisation_id
       end
 
       def create_from_schemes
@@ -68,7 +68,7 @@ module Api
       end
 
       def create_org_check
-        return true if !@duplicate_organisationId && @companies_and_duns_ids&.any?
+        return true if !@duplicate_organisation_id && @companies_and_duns_ids&.any?
 
         false
       end
@@ -149,11 +149,11 @@ module Api
         organisation.scheme_org_reg_number = identifier[:id]
         organisation.uri = identifier[:uri]
         organisation.legal_name = identifier[:legalName]
-        organisation.organisationId = @organisationId
+        organisation.organisation_id = @organisation_id
         organisation.primary_scheme = true
         organisation.hidden = false
         # organisation.client_id = Common::ApiHelper.find_client(api_key_to_string)
-        organisation.save unless @duplicate_organisationId
+        organisation.save unless @duplicate_organisation_id
       end
 
       def additional_organisation(identifier, hidden)
@@ -163,52 +163,52 @@ module Api
         organisation.scheme_org_reg_number = identifier[:id]
         organisation.uri = identifier[:uri]
         organisation.legal_name = identifier[:legalName]
-        organisation.organisationId = @organisationId
+        organisation.organisation_id = @organisation_id
         organisation.primary_scheme = false
         organisation.hidden = Common::ApiHelper.hide_all_ccs_schemes(identifier[:scheme], hidden)
         # organisation.client_id = Common::ApiHelper.find_client(api_key_to_string)
-        organisation.save unless @duplicate_organisationId
+        organisation.save unless @duplicate_organisation_id
       end
 
       def org_profile_exists
         validate = ApiValidations::OrgProfileExists.new(@api_result)
-        @duplicate_organisationId = validate.ccs_organisation_exists
+        @duplicate_organisation_id = validate.ccs_organisation_exists
       end
 
       def organisation_exists(org)
-        return if @duplicate_organisationId
+        return if @duplicate_organisation_id
 
         organisation = OrganisationSchemeIdentifier.find_by(scheme_org_reg_number: org[:id], scheme_code: org[:scheme])
-        @duplicate_organisationId = organisation['organisationId'] if organisation.present?
+        @duplicate_organisation_id = organisation['organisation_id'] if organisation.present?
       end
 
       def salesforce_api_search
         search_api_with_params = Salesforce::SalesforceDataMigration.new(params[:account_id], params[:account_id_type])
         @api_result = search_api_with_params.fetch_results
         org_profile_exists
-        @companies_and_duns_ids = search_api_with_params.results unless @duplicate_organisationId
+        @companies_and_duns_ids = search_api_with_params.results unless @duplicate_organisation_id
       end
 
       def return_error_code(code)
         if code.to_s == '409'
-          render json: { organisationId: find_organisationId }, status: code.to_s
+          render json: { organisation_id: find_organisation_id }, status: code.to_s
         elsif code.to_s.length > 3
-          render json: { organisationId: code }, status: '409'.freeze
+          render json: { organisation_id: code }, status: '409'.freeze
         else
           render json: '', status: code.to_s
         end
       end
 
-      def find_organisationId
+      def find_organisation_id
         return @validate_duplicate.data_migration_duplicate_id if @validate_duplicate
 
         id = Common::ApiHelper.filter_charity_number(params[:account_id], params[:account_id_type])
         scheme_identifier = OrganisationSchemeIdentifier.find_by(scheme_org_reg_number: Common::ApiHelper.remove_white_space_from_id(id).to_s)
-        scheme_identifier[:organisationId] if scheme_identifier
+        scheme_identifier[:organisation_id] if scheme_identifier
       end
 
       def build_response
-        result = Common::MigrationOrganisationResponse.new(@organisationId, hidden: false).response_payload_migration
+        result = Common::MigrationOrganisationResponse.new(@organisation_id, hidden: false).response_payload_migration
         @api_result = SearchApi.new(@companies_and_duns_ids[0][7..], @companies_and_duns_ids[0][0..5], nil, address_lookup: true).call if @companies_and_duns_ids&.any?
         result[0][:address] = Common::AddressHelper.new(@api_result).build_response
         result[0][:contactPoint] = Common::ContactHelper.new(@api_result).build_response

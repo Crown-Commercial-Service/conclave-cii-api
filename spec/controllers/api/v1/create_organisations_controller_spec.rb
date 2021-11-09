@@ -3,8 +3,8 @@ require 'rails_helper'
 RSpec.describe Api::V1::CreateOrganisationsController, type: :controller do
   describe 'index' do
     let(:clientid) { ENV['CLIENT_ID'] }
-    let(:organisationId) { nil }
-    let(:jwt_token) { JWT.encode({ roles: ENV['ACCESS_ORGANISATION_ADMIN'], ciiOrgId: organisationId, aud: ENV['CLIENT_ID'] }, 'test') }
+    let(:organisation_id) { nil }
+    let(:jwt_token) { JWT.encode({ roles: ENV['ACCESS_ORGANISATION_ADMIN'], ciiOrgId: organisation_id, aud: ENV['CLIENT_ID'] }, 'test') }
 
     context 'when success' do
       before do
@@ -19,7 +19,7 @@ RSpec.describe Api::V1::CreateOrganisationsController, type: :controller do
           param_post_dand_b = { identifier: { scheme: 'US-DUN', id: '404123456' } }
           post :index, params: param_post_dand_b
           expect(response.status).to eq(201)
-          expect(response.body).to include('organisationId')
+          expect(response.body).to include('organisation_id')
         end
 
         it 'create primary record with additional identifiers' do
@@ -27,7 +27,7 @@ RSpec.describe Api::V1::CreateOrganisationsController, type: :controller do
           param_post_dand_b[:additional_identifiers] = [{ scheme: 'GB-COH', id: '09012345' }]
           post :index, params: param_post_dand_b
           expect(response.status).to eq(201)
-          expect(response.body).to include('organisationId')
+          expect(response.body).to include('organisation_id')
         end
       end
 
@@ -36,7 +36,7 @@ RSpec.describe Api::V1::CreateOrganisationsController, type: :controller do
           param_post_companies_house = { identifier: { scheme: 'GB-COH', id: '07612345' } }
           post :index, params: param_post_companies_house
           expect(response.status).to eq(201)
-          expect(response.body).to include('organisationId')
+          expect(response.body).to include('organisation_id')
         end
       end
 
@@ -45,7 +45,7 @@ RSpec.describe Api::V1::CreateOrganisationsController, type: :controller do
           param_find_that_charity = { identifier: { scheme: 'GB-CHC', id: '1012345' } }
           post :index, params: param_find_that_charity
           expect(response.status).to eq(201)
-          expect(response.body).to include('organisationId')
+          expect(response.body).to include('organisation_id')
         end
       end
     end

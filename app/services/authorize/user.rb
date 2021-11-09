@@ -9,10 +9,10 @@ module Authorize
       ApiValidations::ApiErrorValidationResponse.new(:missing_access_token) if Common::ApiHelper.bearer_token(request.headers).blank?
     end
 
-    def validate_organisationId
+    def validate_organisation_id
       decoded_token = Common::ApiHelper.decode_token(request.headers)
       ApiValidations::ApiErrorValidationResponse.new(:missing_access_token) if decoded_token.blank?
-      ApiValidations::ApiErrorValidationResponse.new(:organisationId_not_matched) unless decoded_token[0]['ciiOrgId'] == params['organisationId']
+      ApiValidations::ApiErrorValidationResponse.new(:organisation_id_not_matched) unless decoded_token[0]['ciiOrgId'] == params['organisation_id']
     end
 
     def validate_and_decode_token
@@ -71,7 +71,7 @@ module Authorize
       validate_client_id
       validate_user_access_token
       validate_access_token
-      validate_organisationId
+      validate_organisation_id
     end
 
     def validate_user
@@ -79,7 +79,7 @@ module Authorize
       validate_user_access_token
       validate_access_token
       validate_organisation_user
-      validate_organisationId
+      validate_organisation_id
     end
 
     def validate_ccs_admin
@@ -87,7 +87,7 @@ module Authorize
       validate_user_access_token
       validate_access_token
       validate_ccs_admin_user
-      validate_organisationId
+      validate_organisation_id
     end
 
     def validate_integrating_service_user
@@ -105,7 +105,7 @@ module Authorize
       validate_user_access_token
       validate_access_token
       validate_organisation_user
-      validate_organisationId
+      validate_organisation_id
     end
 
     def validate_ccs_admin_or_delete_token
@@ -115,7 +115,7 @@ module Authorize
       validate_user_access_token
       validate_access_token
       validate_ccs_admin_user
-      validate_organisationId
+      validate_organisation_id
     end
   end
 end

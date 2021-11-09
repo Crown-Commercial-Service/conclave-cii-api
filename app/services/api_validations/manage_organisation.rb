@@ -5,9 +5,9 @@ module ApiValidations
 
     attr_reader :data
 
-    validates_presence_of :scheme, :id, :organisationId, presence: true
+    validates_presence_of :scheme, :id, :organisation_id, presence: true
     validate :validate_identifiers
-    validate :validate_organisationId
+    validate :validate_organisation_id
 
     # used to send response relevant http status code to user
     # if validation fails.
@@ -28,16 +28,16 @@ module ApiValidations
 
     def validate_identifiers
       identifier = {}
-      identifier[:organisationId] = @data[:organisationId]
+      identifier[:organisation_id] = @data[:organisation_id]
       identifier[:scheme] = @data[:scheme]
       identifier[:id] = @data[:id]
       validate = ApiValidations::Scheme.new(identifier)
       errors.add(:identifier, validate.errors) unless validate.valid?
     end
 
-    def validate_organisationId
-      validate = OrganisationSchemeIdentifier.find_by(organisationId: @data[:organisationId].to_s)
-      errors.add(:organisationId_not_found, '') if validate.blank?
+    def validate_organisation_id
+      validate = OrganisationSchemeIdentifier.find_by(organisation_id: @data[:organisation_id].to_s)
+      errors.add(:organisation_id_not_found, '') if validate.blank?
     end
   end
 end

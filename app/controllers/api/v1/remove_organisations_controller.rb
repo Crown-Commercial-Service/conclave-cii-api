@@ -21,7 +21,7 @@ module Api
       private
 
       def delete_all_organisation_ids
-        OrganisationSchemeIdentifier.destroy_by(organisationId: params[:organisationId].to_s)
+        OrganisationSchemeIdentifier.destroy_by(organisation_id: params[:organisation_id].to_s)
       end
 
       def return_error_code(code)

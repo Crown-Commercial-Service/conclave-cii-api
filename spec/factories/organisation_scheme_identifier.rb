@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :organisation_scheme_identifier do
-    sequence :organisationId do |n|
+    sequence :organisation_id do |n|
       "1234#{n}"
     end
     sequence :scheme_code do |n|

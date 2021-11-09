@@ -8,19 +8,19 @@ module Api
       before_action :validate_user
       before_action :validate_params
 
-      attr_accessor :organisationId, :api_result
+      attr_accessor :organisation_id, :api_result
 
       def index
         result = search_scheme_api
 
-        Common::SalesforceHelper.new(result, params[:organisationId]).insert_salesforce_record if result.present?
+        Common::SalesforceHelper.new(result, params[:organisation_id]).insert_salesforce_record if result.present?
 
         save_or_update_organisation_scheme if result.present?
 
         if result.blank?
           render json: '', status: :not_found
         else
-          render json: { organisationId: @organisationId }, status: :ok
+          render json: { organisation_id: @organisation_id }, status: :ok
         end
       end
 
@@ -40,13 +40,13 @@ module Api
       def update_organisation(organisation)
         organisation[:scheme_code] = @api_result[:identifier][:scheme]
         organisation[:scheme_org_reg_number] = @api_result[:identifier][:id]
-        organisation[:organisationId] = params[:organisationId]
+        organisation[:organisation_id] = params[:organisation_id]
         organisation[:uri] = @api_result[:identifier][:uri]
         organisation[:legal_name] = @api_result[:identifier][:legalName]
         organisation[:primary_scheme] = organisation[:primary_scheme]
         organisation[:hidden] = false
         organisation.save
-        @organisationId = organisation.present? ? params[:organisationId] : nil
+        @organisation_id = organisation.present? ? params[:organisation_id] : nil
       end
 
       # rubocop:disable Metrics/AbcSize
@@ -54,14 +54,14 @@ module Api
         organisation = OrganisationSchemeIdentifier.new
         organisation[:scheme_code] = @api_result[:identifier][:scheme]
         organisation[:scheme_org_reg_number] = @api_result[:identifier][:id]
-        organisation[:organisationId] = params[:organisationId]
+        organisation[:organisation_id] = params[:organisation_id]
         organisation[:uri] = @api_result[:identifier][:uri]
         organisation[:legal_name] = @api_result[:identifier][:legalName]
         organisation[:primary_scheme] = false
         organisation[:hidden] = false
         organisation[:client_id] = Common::ApiHelper.find_client(api_key_to_string)
         organisation.save
-        @organisationId = organisation.present? ? params[:organisationId] : nil
+        @organisation_id = organisation.present? ? params[:organisation_id] : nil
       end
       # rubocop:enable Metrics/AbcSize
 
@@ -74,7 +74,7 @@ module Api
       end
 
       def api_search_result
-        search_api_with_params = SearchApi.new(params[:id], params[:scheme], params[:organisationId])
+        search_api_with_params = SearchApi.new(params[:id], params[:scheme], params[:organisation_id])
         search_api_with_params.call
       end
     end

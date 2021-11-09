@@ -8,12 +8,12 @@ module Api
       before_action :mock_duns_check
       before_action :validate_params
 
-      attr_accessor :organisationId, :api_result
+      attr_accessor :organisation_id, :api_result
 
       def index
         result = search_scheme_api unless @mock_duns
         generate_record(result)
-        # If the dummy org (US-DUN-111111111) has been found, this will add it to db, and return the organisationId to be rendered. (Part of work for Nick Fine).
+        # If the dummy org (US-DUN-111111111) has been found, this will add it to db, and return the organisation_id to be rendered. (Part of work for Nick Fine).
         result = Common::ApiHelper.add_dummy_org(api_key_to_string) if @mock_duns
         render_results(result)
       end
@@ -31,8 +31,8 @@ module Api
         if result.blank?
           render json: '', status: :not_found
         else
-          # @ccs_org not generated if dummy org (US-DUN-111111111) was found, in this case 'result' holds organisationId, from when it was added to db in helper. (Part of work for Nick Fine).
-          render json: { organisationId: @organisationId || result }, status: :created
+          # @ccs_org not generated if dummy org (US-DUN-111111111) was found, in this case 'result' holds organisation_id, from when it was added to db in helper. (Part of work for Nick Fine).
+          render json: { organisation_id: @organisation_id || result }, status: :created
         end
       end
 
@@ -47,12 +47,12 @@ module Api
         organisation.scheme_org_reg_number = @api_result[:identifier][:id]
         organisation.uri = @api_result[:identifier][:uri]
         organisation.legal_name = @api_result[:identifier][:legalName]
-        organisation.organisationId = Common::GenerateId.organisationId
+        organisation.organisation_id = Common::GenerateId.organisation_id
         organisation.primary_scheme = true
         organisation.hidden = false
         organisation.client_id = Common::ApiHelper.find_client(api_key_to_string)
         organisation.save
-        @organisationId = organisation.organisationId
+        @organisation_id = organisation.organisation_id
       end
 
       def add_additional_identifier(additional_identifier, status)
@@ -61,12 +61,12 @@ module Api
         organisation.scheme_org_reg_number = additional_identifier[:id]
         organisation.uri = additional_identifier[:uri]
         organisation.legal_name = additional_identifier[:legalName]
-        organisation.organisationId = @organisationId
+        organisation.organisation_id = @organisation_id
         organisation.primary_scheme = false
         organisation.hidden = Common::ApiHelper.hide_all_ccs_schemes(additional_identifier[:scheme], status)
         organisation.client_id = Common::ApiHelper.find_client(api_key_to_string)
         organisation.save
-        organisation.organisationId
+        organisation.organisation_id
       end
 
       def additional_identifiers
