@@ -108,8 +108,8 @@ module Authorize
       validate_ccs_org_id
     end
 
-    def validate_ccs_admin_or_delete_token
-      return if validate_delete_token
+    def validate_ccs_admin_or_api_key
+      return if validate_api_token
 
       validate_client_id
       validate_user_access_token
