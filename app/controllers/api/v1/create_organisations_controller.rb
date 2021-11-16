@@ -88,7 +88,11 @@ module Api
       end
 
       def return_error_code(code)
-        render json: '', status: code.to_s
+        if code.to_s.length > 3
+          render json: { organisationId: code }, status: '409'.freeze
+        else
+          render json: '', status: code.to_s
+        end
       end
 
       def search_addional_identifiers
@@ -113,7 +117,7 @@ module Api
       end
 
       def validate_additional_schemes(schmes)
-        validate = ApiValidations::Scheme.new(schmes)
+        validate = ApiValidations::Scheme.new(schmes, return_organisation_id: true)
         render json: validate.errors, status: :conflict unless validate.valid?
       end
 
