@@ -32,13 +32,13 @@ module ApiValidations
 
     def validate_additional_identifiers
       data['additional_identifiers'].each do |user_params|
-        validate = ApiValidations::Scheme.new(user_params)
+        validate = ApiValidations::Scheme.new(user_params, return_organisation_id: true)
         errors.add(:additional_identifiers, validate.errors) unless validate.valid?
       end
     end
 
     def validate_identifiers
-      validate = ApiValidations::Scheme.new(data['identifier'])
+      validate = ApiValidations::Scheme.new(data['identifier'], return_organisation_id: true)
       errors.add(:identifier, validate.errors) unless validate.valid?
     end
   end
