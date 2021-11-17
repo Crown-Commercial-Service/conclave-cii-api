@@ -16,7 +16,7 @@ module Api
       end
 
       def search_internal_organisation(organisation_id)
-        Common::RegisteredOrganisationResponse.new(organisation_id, hidden: true).response_payload
+        Common::RegisteredOrganisationResponse.new(organisation_id, hidden: false).response_payload
       end
 
       def validate_params
