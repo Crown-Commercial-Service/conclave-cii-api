@@ -35,7 +35,7 @@ module Api
 
       def return_error_code(code)
         if code.to_s.length > 3
-          render json: search_internal_organisation(code.to_s) , status: '409'.freeze
+          render json: search_internal_organisation(code.to_s), status: '409'.freeze
         else
           render json: '', status: code.to_s
         end
