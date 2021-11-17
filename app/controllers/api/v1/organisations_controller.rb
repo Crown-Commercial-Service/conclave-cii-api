@@ -15,8 +15,12 @@ module Api
         end
       end
 
+      def search_internal_organisation(organisation_id)
+        Common::RegisteredOrganisationResponse.new(organisation_id, hidden: true).response_payload
+      end
+
       def validate_params
-        validate = ApiValidations::Scheme.new(params)
+        validate = ApiValidations::Scheme.new(params, return_organisation_id: true)
         render json: validate.errors, status: :bad_request unless validate.valid?
       end
 
@@ -30,7 +34,11 @@ module Api
       end
 
       def return_error_code(code)
-        render json: '', status: code.to_s
+        if code.to_s.length > 3
+          render json: search_internal_organisation(code.to_s) , status: '409'.freeze
+        else
+          render json: '', status: code.to_s
+        end
       end
     end
   end
