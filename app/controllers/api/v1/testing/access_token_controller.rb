@@ -40,26 +40,7 @@ module Api
           response = Faraday.post("#{ENV['ACCESS_TOKEN_WRAPPER_URL']}/organisations") do |req|
             req.headers['Content-Type'] = 'application/json'
             req.headers['x-api-key'] = request.headers['x-api-key']
-            req.body = {
-              identifier: {
-                legalName: 'April19Org',
-                uri: 'www.april19org.com'
-              },
-              address: {
-                streetAddress: 'StreetAddress',
-                locality: 'Locality',
-                region: 'Region',
-                postalCode: 'PostalCode',
-                countryCode: 'GB'
-              },
-              detail: {
-                isSme: true,
-                isVcse: false,
-                organisationId: org_id.to_s,
-                rightToBuy: true,
-                isActive: true
-              }
-            }.to_json
+            req.body = org_creation_body(org_id)
           end
 
           return response.body.to_s if response.status == 200 && response.body.present?
@@ -71,6 +52,29 @@ module Api
             Note: 'Org Creation Step'
           }
           false
+        end
+
+        def org_creation_body(org_id)
+          {
+            identifier: {
+              legalName: 'April19Org',
+              uri: 'www.april19org.com'
+            },
+            address: {
+              streetAddress: 'StreetAddress',
+              locality: 'Locality',
+              region: 'Region',
+              postalCode: 'PostalCode',
+              countryCode: 'GB'
+            },
+            detail: {
+              isSme: true,
+              isVcse: false,
+              organisationId: org_id.to_s,
+              rightToBuy: true,
+              isActive: true
+            }
+          }.to_json
         end
 
         def identity_provider(org_id)
@@ -109,22 +113,7 @@ module Api
           response = Faraday.post("#{ENV['ACCESS_TOKEN_WRAPPER_URL']}/users") do |req|
             req.headers['Content-Type'] = 'application/json'
             req.headers['x-api-key'] = request.headers['x-api-key']
-            req.body = {
-              userName: "#{email}@yopmail.com",
-              organisationId: org_id.to_s,
-              firstName: 'Test',
-              lastName: 'Test',
-              title: 0,
-              mfaEnabled: true,
-              password: ENV['ACCESS_TOKEN_USER_PASSWORD'].to_s,
-              accountVerified: true,
-              sendUserRegistrationEmail: false,
-              detail: {
-                id: 0,
-                roleIds: [role.to_i],
-                identityProviderIds: [provider.to_i]
-              }
-            }.to_json
+            req.body = create_user_body(email, org_id, provider, role)
           end
 
           return response.body.to_s if response.status == 200 && response.body.present?
@@ -136,6 +125,25 @@ module Api
             Note: 'User Creation Step'
           }
           false
+        end
+
+        def create_user_body(email, org_id, provider, role)
+          {
+            userName: "#{email}@yopmail.com",
+            organisationId: org_id.to_s,
+            firstName: 'Test',
+            lastName: 'Test',
+            title: 0,
+            mfaEnabled: true,
+            password: ENV['ACCESS_TOKEN_USER_PASSWORD'].to_s,
+            accountVerified: true,
+            sendUserRegistrationEmail: false,
+            detail: {
+              id: 0,
+              roleIds: [role.to_i],
+              identityProviderIds: [provider.to_i]
+            }
+          }.to_json
         end
 
         def post_token
