@@ -38,8 +38,8 @@ module Api
 
         def org_creation(org_id)
           response = Faraday.post("#{ENV['ACCESS_TOKEN_WRAPPER_URL']}/organisations") do |req|
-            req.headers['Content-Type'] = 'application/json'
             req.headers['x-api-key'] = request.headers['x-api-key']
+            req.headers['Content-Type'] = 'application/json'
             req.body = org_creation_body(org_id)
           end
 
@@ -111,9 +111,9 @@ module Api
 
         def create_user(email, org_id, provider, role)
           response = Faraday.post("#{ENV['ACCESS_TOKEN_WRAPPER_URL']}/users") do |req|
+            req.body = create_user_body(email, org_id, provider, role)
             req.headers['Content-Type'] = 'application/json'
             req.headers['x-api-key'] = request.headers['x-api-key']
-            req.body = create_user_body(email, org_id, provider, role)
           end
 
           return response.body.to_s if response.status == 200 && response.body.present?
