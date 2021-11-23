@@ -20,6 +20,7 @@ Rails.application.routes.draw do
       namespace :testing do
         delete '/identities/schemes/organisation', to: 'crud_testing#remove_orginisation'
         get '/search/identities/schemes/organisation', to: 'crud_testing#search_org'
+        post '/access/token/:ccs_org_id/:user_email', to: 'access_token#create_new_access_token'
       end
     end
   end
