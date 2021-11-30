@@ -108,7 +108,7 @@ module Api
       end
 
       def api_search_result(id, scheme)
-        additional_identifier_search_api_with_params = SearchApi.new(id, scheme, data_migration_req: true)
+        additional_identifier_search_api_with_params = SearchApi.new(id, scheme, return_organisation_id: true)
         additional_identifier_search_api_with_params.call
       end
 
