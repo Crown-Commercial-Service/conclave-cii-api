@@ -31,9 +31,9 @@ module Authorize
       ApiValidations::ApiErrorValidationResponse.new(:user_access_unauthorized) unless decoded_token[0]['roles'].include?(ENV['ACCESS_CCS_ADMIN'])
     end
 
-    def validate_service_user
+    def validate_data_migration_user
       decoded_token = validate_and_decode_token
-      ApiValidations::ApiErrorValidationResponse.new(:user_access_unauthorized) unless decoded_token[0]['roles'].include?(ENV['ACCESS_MANAGE_SUBSCRIPTIONS'])
+      ApiValidations::ApiErrorValidationResponse.new(:user_access_unauthorized) unless decoded_token[0]['roles'].include?(ENV['ACCESS_DATA_MIGRATION'])
     end
 
     def validate_access_token
@@ -96,6 +96,7 @@ module Authorize
       validate_client_id
       validate_user_access_token
       validate_access_token
+      validate_data_migration_user
     end
 
     def validate_ccs_org_user_or_api_key
