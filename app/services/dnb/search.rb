@@ -36,6 +36,7 @@ module Dnb
 
     def build_response
       {
+        name: name,
         identifier: Dnb::Indentifier.new(@result).build_response,
         additionalIdentifiers: filter_additional_indentifiers,
         address: Dnb::Address.new(@result).build_response,
