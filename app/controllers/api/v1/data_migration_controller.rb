@@ -1,9 +1,9 @@
 module Api
   module V1
     class DataMigrationController < ActionController::API
-      include Authorize::User
+      #include Authorize::User
       rescue_from ApiValidations::ApiError, with: :return_error_code
-      before_action :validate_integrating_service_user
+      #before_action :validate_integrating_service_user
       before_action :create_ccs_org_id
 
       attr_accessor :ccs_org_id, :salesforce_result, :api_result, :sales_force_organisation_created
@@ -18,6 +18,7 @@ module Api
         @duns_scheme = Common::AdditionalIdentifier::SCHEME_DANDB
         @coh_scheme = Common::AdditionalIdentifier::SCHEME_COMPANIES_HOUSE
         @sf_scheme = Common::SalesforceSearchIds::SFID
+        params[:account_id_type] = params[:account_id_type].downcase.delete('-')
       end
 
       def create_org_profile
