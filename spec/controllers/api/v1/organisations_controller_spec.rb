@@ -32,7 +32,7 @@ RSpec.describe Api::V1::OrganisationsController, type: :controller do
 
         it 'search no params' do
           get :search_organisation, params: { scheme: '', id: '' }
-          expect(response.status).to eq(404)
+          expect(response.status).to eq(400)
         end
       end
     end
