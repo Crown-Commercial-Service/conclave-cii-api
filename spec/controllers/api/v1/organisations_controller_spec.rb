@@ -24,6 +24,11 @@ RSpec.describe Api::V1::OrganisationsController, type: :controller do
           get :search_organisation, params: { scheme: 'GB-CHC', id: '222123' }
           expect(response.status).to eq(200)
         end
+
+        it 'search invalid params' do
+          get :search_organisation, params: { scheme: 'INVALID', id: '12345' }
+          expect(response.status).to eq(404)
+        end
       end
     end
 
