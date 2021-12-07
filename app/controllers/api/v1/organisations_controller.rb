@@ -16,7 +16,9 @@ module Api
       end
 
       def search_internal_organisation(organisation_id)
-        Common::RegisteredOrganisationResponse.new(organisation_id, hidden: false).response_payload
+        result = Common::RegisteredOrganisationResponse.new(organisation_id, hidden: false).response_payload
+        result[0][:address] = Common::AddressHelper.new(api_result).build_response
+        result[0]
       end
 
       def validate_params

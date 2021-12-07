@@ -18,6 +18,7 @@ module Api
         @duns_scheme = Common::AdditionalIdentifier::SCHEME_DANDB
         @coh_scheme = Common::AdditionalIdentifier::SCHEME_COMPANIES_HOUSE
         @sf_scheme = Common::SalesforceSearchIds::SFID
+        params[:account_id_type] = params[:account_id_type].downcase.delete('-')
       end
 
       def create_org_profile
@@ -209,10 +210,22 @@ module Api
 
       def build_response
         result = Common::MigrationOrganisationResponse.new(@ccs_org_id, hidden: false).response_payload_migration
-        @api_result = SearchApi.new(@companies_and_duns_ids[0][7..], @companies_and_duns_ids[0][0..5], nil, address_lookup: true).call if @companies_and_duns_ids&.any?
-        result[0][:address] = Common::AddressHelper.new(@api_result).build_response
-        result[0][:contactPoint] = Common::ContactHelper.new(@api_result).build_response
+        api_result = api_results(result)
+        result[0][:address] = Common::AddressHelper.new(api_result).build_response
+        result[0][:contactPoint] = Common::ContactHelper.new(api_result).build_response
         result[0]
+      end
+
+      def api_results(result)
+        if @coh_api_results
+          @coh_api_results
+        elsif result[0][:identifier][:scheme] == @coh_scheme
+          SearchApi.new(result[0][:identifier][:id], result[0][:identifier][:scheme], address_lookup: true).call
+        elsif result[0][:additionalIdentifiers][0][:scheme] == @coh_scheme
+          SearchApi.new(result[0][:additionalIdentifiers][:id], result[0][:additionalIdentifiers][:scheme], address_lookup: true).call
+        else
+          @duns_api_results
+        end
       end
 
       def validate_additional_schemes(schemes)

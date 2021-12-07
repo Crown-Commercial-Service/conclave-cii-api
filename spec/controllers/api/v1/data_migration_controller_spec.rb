@@ -112,7 +112,7 @@ RSpec.describe Api::V1::DataMigrationController, type: :controller do
 
       context 'when not found' do
         it 'returns 404' do
-          post :create_org_profile, params: { account_id_type: 'SF-ID', account_id: 'NSO7IUSHF98HFP9WEH9FFH' }
+          post :create_org_profile, params: { account_id_type: 'SF-IDD', account_id: '0XZWNSO7SHF98HP9WEH900' }
           expect(response).to have_http_status(:not_found)
         end
       end
