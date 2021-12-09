@@ -13,14 +13,14 @@ module ApiValidations
     # remove this callback to revert back to rails default error handling
     after_validation :http_validation_response
 
-    def initialize(data, data_migration_req: false)
+    def initialize(data, return_organisation_id: false)
       @data = data || {}
       @ccs_org_id = nil
-      @data_migration_req = data_migration_req
+      @return_organisation_id = return_organisation_id
     end
 
     def http_validation_response
-      return ApiValidations::ApiErrorValidationResponse.new(errors.messages.keys.first, @ccs_org_id) if @data_migration_req && @ccs_org_id
+      return ApiValidations::ApiErrorValidationResponse.new(errors.messages.keys.first, @ccs_org_id) if @return_organisation_id && @ccs_org_id
 
       ApiValidations::ApiErrorValidationResponse.new(errors.messages.keys.first)
     end
