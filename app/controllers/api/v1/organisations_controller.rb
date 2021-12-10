@@ -17,7 +17,8 @@ module Api
 
       def search_internal_organisation(organisation_id)
         result = Common::RegisteredOrganisationResponse.new(organisation_id, hidden: false).response_payload
-        result[0][:address] = Common::AddressHelper.new(api_result).build_response
+        api_results = SearchApi.new(result[0][:identifier][:id], result[0][:identifier][:scheme], address_lookup: true).call
+        result[0][:address] = Common::AddressHelper.new(api_results).build_response
         result[0]
       end
 
