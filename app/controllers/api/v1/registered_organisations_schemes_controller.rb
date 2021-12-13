@@ -18,7 +18,6 @@ module Api
       def build_response(result)
         api_result = SearchApi.new(result[0][:identifier][:id], result[0][:identifier][:scheme], address_lookup: true).call
         result[0][:address] = Common::AddressHelper.new(api_result).build_response
-        result[0][:contactPoint] = Common::ContactHelper.new(api_result).build_response
         result[0]
       end
 
