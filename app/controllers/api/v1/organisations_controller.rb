@@ -15,13 +15,6 @@ module Api
         end
       end
 
-      def search_internal_organisation(organisation_id)
-        result = Common::RegisteredOrganisationResponse.new(organisation_id, hidden: false).response_payload
-        api_results = SearchApi.new(result[0][:identifier][:id], result[0][:identifier][:scheme], address_lookup: true).call
-        result[0][:address] = Common::AddressHelper.new(api_results).build_response
-        result[0]
-      end
-
       def validate_params
         validate = ApiValidations::Scheme.new(params, return_organisation_id: true)
         render json: validate.errors, status: :bad_request unless validate.valid?
@@ -38,7 +31,7 @@ module Api
 
       def return_error_code(code)
         if code.to_s.length > 3
-          render json: search_internal_organisation(code.to_s), status: '409'.freeze
+          render json: { organisationId: code.to_s }, status: :conflict
         else
           render json: '', status: code.to_s
         end
