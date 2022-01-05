@@ -47,9 +47,9 @@ RSpec.describe Api::V1::AllRegisteredOrganisationsSchemesController, type: :cont
       end
 
       context 'when invalid params' do
-        it 'returns 401' do
+        it 'returns 404' do
           get :search_organisation, params: { ccs_org_id: 'null' }
-          expect(response).to have_http_status(:unauthorized)
+          expect(response).to have_http_status(:not_found)
         end
       end
     end

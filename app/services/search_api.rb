@@ -1,12 +1,12 @@
 class SearchApi
   attr_reader :result
 
-  def initialize(organisation_id, scheme_id, ccs_org_id = nil, address_lookup: false, data_migration_req: false)
+  def initialize(organisation_id, scheme_id, ccs_org_id = nil, address_lookup: false, return_organisation_id: false)
     @organisation_id = Common::ApiHelper.remove_white_space_from_id(organisation_id)
     @scheme_id = scheme_id
     @ccs_org_id = ccs_org_id
     @result = []
-    @data_migration_req = data_migration_req
+    @return_organisation_id = return_organisation_id
     @addtional_identfiers = []
     @address_lookup = address_lookup
   end
@@ -62,7 +62,7 @@ class SearchApi
   end
 
   def validate_additional_identifiers(identifier)
-    validate = ApiValidations::Scheme.new(identifier, data_migration_req: @data_migration_req)
+    validate = ApiValidations::Scheme.new(identifier, return_organisation_id: @return_organisation_id)
     errors.add(:identifier, validate.errors) unless validate.valid?
   end
 end
