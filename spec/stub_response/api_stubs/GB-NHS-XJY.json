@@ -1,0 +1,48 @@
+{
+	"Organisation": {
+		"Name": "Testing NHS Regsitry",
+		"Date": [
+			{
+				"Type": "Operational",
+				"Start": "1999-11-11",
+				"End": "2011-12-12"
+			}
+		],
+		"OrgId": {
+			"root": "4.14.444.4.414484.4.4.4.4.4.14.44",
+			"assigningAuthorityName": "HDIDI",
+			"extension": "RJY"
+		},
+		"Status": "Active",
+		"LastChangeDate": "2020-10-10",
+		"orgRecordClass": "RCX",
+		"refOnly": true,
+		"GeoLoc": {
+			"Location": {
+				"AddrLn1": "ADDRESS LINE ONE",
+				"AddrLn2": "ADDRESS LINE TWO",
+				"Town": "TOWN",
+				"County": "COUNTY",
+				"PostCode": "AB1 2CD",
+				"Country": "UNITED KINGDOM"
+			}
+		},
+		"Roles": {
+			"Role": [
+				{
+					"id": "RO999",
+					"uniqueRoleId": 37777,
+					"primaryRole": true,
+					"Date": [
+						{
+							"Type": "Operational",
+							"Start": "1999-11-11",
+							"End": "2011-12-12"
+						}
+					],
+					"Status": "Active"
+				}
+			]
+		}
+	}
+}
