@@ -12,7 +12,7 @@ module Api
         delete_organisation
         render json: '', status: :ok
       rescue StandardError
-        render json: '', status: :not_found
+        render json: '', status: :bad_request
       end
 
       def validate_params
