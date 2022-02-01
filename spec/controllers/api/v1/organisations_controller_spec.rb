@@ -25,7 +25,7 @@ RSpec.describe Api::V1::OrganisationsController, type: :controller do
           expect(response.status).to eq(200)
         end
 
-        it 'search Find that charity' do
+        it 'search nhs' do
           get :search_organisation, params: { scheme: 'GB-NHS', id: 'XJY' }
           expect(response.status).to eq(200)
         end
