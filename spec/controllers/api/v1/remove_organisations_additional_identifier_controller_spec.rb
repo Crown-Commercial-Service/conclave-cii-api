@@ -41,6 +41,20 @@ RSpec.describe Api::V1::RemoveOrganisationsAdditionalIdentifierController, type:
           expect(response).to have_http_status(:unauthorized)
         end
       end
+
+      context 'when invalid id' do
+        it 'returns 404' do
+          delete :delete_additional_identifier, params: { ccs_org_id: organisation_scheme_identifier.ccs_org_id, id: 'invalid', scheme: scheme_register.scheme_register_code }
+          expect(response).to have_http_status(:not_found)
+        end
+      end
+
+      context 'when invalid scheme' do
+        it 'returns 404' do
+          delete :delete_additional_identifier, params: { ccs_org_id: organisation_scheme_identifier.ccs_org_id, id: ccs_org_id, scheme: 'invalid' }
+          expect(response).to have_http_status(:not_found)
+        end
+      end
     end
 
     context 'when invalid ApiKey' do
