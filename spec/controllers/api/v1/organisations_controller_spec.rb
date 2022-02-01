@@ -7,14 +7,6 @@ RSpec.describe Api::V1::OrganisationsController, type: :controller do
         MockingService::MockApis.new
         client_registered = FactoryBot.create :client
         request.headers['x-api-key'] = client_registered.api_key
-        stub_request(:get, "https://directory.spineservices.nhs.uk/ORD/2-0-0/organisations/XJY").
-         with(
-           headers: {
-       	  'Accept'=>'*/*',
-       	  'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-       	  'User-Agent'=>'Faraday v1.3.0'
-           }).
-         to_return(status: 200, body: "", headers: {})
       end
 
       describe '#search' do
@@ -34,7 +26,7 @@ RSpec.describe Api::V1::OrganisationsController, type: :controller do
         end
 
         it 'search nhs' do
-          get :search_organisation, params: { scheme: 'GB-NHS', id: 'XJY' }
+          get :search_organisation, params: { scheme: 'GB-NHS', id: 'A23' }
           expect(response.status).to eq(200)
         end
 
