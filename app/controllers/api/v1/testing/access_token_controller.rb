@@ -37,7 +37,7 @@ module Api
         end
 
         def org_creation(org_id)
-          response = Faraday.post("#{ENV['ACCESS_TOKEN_WRAPPER_URL']}/organisations") do |req|
+          response = Faraday.post("#{ENV['ACCESS_TOKEN_SECURITY_URL']}/organisation-profiles") do |req|
             req.headers['x-api-key'] = request.headers['x-api-key']
             req.headers['Content-Type'] = 'application/json'
             req.body = org_creation_body(org_id)
@@ -48,7 +48,7 @@ module Api
           @error_reason = {
             StatusCode: response.status,
             ResponseBody: response.body,
-            RequestURL: "POST #{ENV['ACCESS_TOKEN_WRAPPER_URL']}/organisations",
+            RequestURL: "POST #{ENV['ACCESS_TOKEN_SECURITY_URL']}/organisation-profiles",
             Note: 'Org Creation Step'
           }
           false
@@ -78,7 +78,7 @@ module Api
         end
 
         def identity_provider(org_id)
-          response = Faraday.get("#{ENV['ACCESS_TOKEN_WRAPPER_URL']}/organisations/#{org_id}/identity-providers",
+          response = Faraday.get("#{ENV['ACCESS_TOKEN_SECURITY_URL']}/organisations/#{org_id}/identity-providers",
                                  nil,
                                  { 'x-api-key' => request.headers['x-api-key'] })
 
@@ -87,14 +87,14 @@ module Api
           @error_reason = {
             StatusCode: response.status,
             ResponseBody: response.body,
-            RequestURL: "GET #{ENV['ACCESS_TOKEN_WRAPPER_URL']}/organisations/#{org_id}/identity-providers",
+            RequestURL: "GET #{ENV['ACCESS_TOKEN_SECURITY_URL']}/organisations/#{org_id}/identity-providers",
             Note: 'Identity Provider Step'
           }
           false
         end
 
         def role_id(org_id)
-          response = Faraday.get("#{ENV['ACCESS_TOKEN_WRAPPER_URL']}/organisations/#{org_id}/roles",
+          response = Faraday.get("#{ENV['ACCESS_TOKEN_SECURITY_URL']}/organisations/#{org_id}/roles",
                                  nil,
                                  { 'x-api-key' => request.headers['x-api-key'] })
 
@@ -103,14 +103,14 @@ module Api
           @error_reason = {
             StatusCode: response.status,
             ResponseBody: response.body,
-            RequestURL: "GET #{ENV['ACCESS_TOKEN_WRAPPER_URL']}/organisations/#{org_id}/roles",
+            RequestURL: "GET #{ENV['ACCESS_TOKEN_SECURITY_URL']}/organisations/#{org_id}/roles",
             Note: 'Role ID Step'
           }
           false
         end
 
         def create_user(email, org_id, provider, role)
-          response = Faraday.post("#{ENV['ACCESS_TOKEN_WRAPPER_URL']}/users") do |req|
+          response = Faraday.post("#{ENV['ACCESS_TOKEN_SECURITY_URL']}/user-profiles") do |req|
             req.body = create_user_body(email, org_id, provider, role)
             req.headers['Content-Type'] = 'application/json'
             req.headers['x-api-key'] = request.headers['x-api-key']
@@ -121,7 +121,7 @@ module Api
           @error_reason = {
             StatusCode: response.status,
             ResponseBody: response.body,
-            RequestURL: "POST #{ENV['ACCESS_TOKEN_WRAPPER_URL']}/users",
+            RequestURL: "POST #{ENV['ACCESS_TOKEN_SECURITY_URL']}/user-profiles",
             Note: 'User Creation Step'
           }
           false
