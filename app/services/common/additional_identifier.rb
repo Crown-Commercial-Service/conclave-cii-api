@@ -11,6 +11,7 @@ module Common
     SCHEME_SCOTISH_CHARITY = 'GB-SC'.freeze
     SCHEME_COMPANIES_HOUSE = 'GB-COH'.freeze
     SCHEME_DANDB = 'US-DUN'.freeze
+    SCHEME_NHS = 'GB-NHS'.freeze
     SCHEME_CCS = 'GB-CCS'.freeze
 
     # The below three constants are required to match the correct uri provided in the identifiers uri property.
@@ -20,7 +21,7 @@ module Common
     GB_SC_SCHEME_URI_SITE = 'Office of Scottish Charity Regulator'.freeze
 
     def schemes
-      [SCHEME_ENG_WALES_CHARITY, SCHEME_NORTHEN_IRELAND_CHARITY, SCHEME_SCOTISH_CHARITY, SCHEME_COMPANIES_HOUSE, SCHEME_DANDB]
+      [SCHEME_ENG_WALES_CHARITY, SCHEME_NORTHEN_IRELAND_CHARITY, SCHEME_SCOTISH_CHARITY, SCHEME_COMPANIES_HOUSE, SCHEME_DANDB, SCHEME_NHS]
     end
 
     def dandb_codes
