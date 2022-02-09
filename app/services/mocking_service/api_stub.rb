@@ -52,6 +52,8 @@ module MockingService
       when Common::AdditionalIdentifier::SCHEME_DANDB
         duns_token
         @api_url = "#{ENV['DNB_API_ENDPOINT']}/v1/data/duns/#{@params[:id]}?productId=cmptcs&versionId=v1"
+      when Common::AdditionalIdentifier::SCHEME_NHS
+        @api_url = "https://directory.spineservices.nhs.uk/ORD/2-0-0/organisations/#{@params[:id]}"
       end
     end
 
