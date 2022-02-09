@@ -19,6 +19,8 @@ class SearchApi
       @result =  get_charity(@organisation_id, @scheme_id)
     when Common::AdditionalIdentifier::SCHEME_DANDB
       @result =  get_duns(@organisation_id)
+    when Common::AdditionalIdentifier::SCHEME_NHS
+      @result =  get_nhs(@organisation_id)
     end
 
     @result if @result.present?
@@ -43,6 +45,11 @@ class SearchApi
     results = dnb.fetch_results
     results[:additionalIdentifiers] = get_addtional_identfiers(results[:additionalIdentifiers]) if results.present?
     results
+  end
+
+  def get_nhs(organisation_code)
+    nhs = Nhs::Search.new(organisation_code)
+    nhs.fetch_results
   end
 
   def get_addtional_identfiers(identfiers)
