@@ -131,7 +131,7 @@ module Common
 
     def self.faraday_new(options)
       Faraday.new(options) do |builder|
-        builder.use Faraday::HttpCache, store: Rails.cache, logger: Rails.logger, shared_cache: false
+        builder.use Faraday::HttpCache, store: Rails.cache, logger: Rails.logger, shared_cache: false, serializer: Marshal
         builder.use Faraday::OverrideCacheControl, cache_control: 'public, max-age=86400'
         builder.adapter Faraday.default_adapter
       end
