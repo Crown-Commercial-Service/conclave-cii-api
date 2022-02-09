@@ -100,9 +100,9 @@ then
     fi
   fi
 
-  if [[ "$CF_SPACE" == "pre-production" || "$CF_SPACE" == "production" ]]
+  if [[ "$CF_SPACE" == "pre-production" ]]
   then
-    if [[ ! "$BRANCH" == "main" ]]
+    if [[ ! "$BRANCH" == "preproduction" ]]
     then
       echo "We only deploy the 'main' branch to the $CF_SPACE cf space"
       echo "if you want to deploy $BRANCH to $CF_SPACE use -f"
@@ -123,6 +123,16 @@ then
   if [[ "$CF_SPACE" == "uat" ]]
   then
     if [[ ! "$BRANCH" == "uat" ]]
+    then
+      echo "We only deploy the 'uat' branch to the $CF_SPACE cf space"
+      echo "if you want to deploy $BRANCH to $CF_SPACE use -f"
+      exit 1
+    fi
+  fi
+
+  if [[ "$CF_SPACE" == "production" ]]
+  then
+    if [[ ! "$BRANCH" == "main" ]]
     then
       echo "We only deploy the 'uat' branch to the $CF_SPACE cf space"
       echo "if you want to deploy $BRANCH to $CF_SPACE use -f"
