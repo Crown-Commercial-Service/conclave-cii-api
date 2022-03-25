@@ -3,6 +3,7 @@ require 'rollbar'
 
 private
 
+#New SSM Config, replacing Hashicorp Vault.
 def config_aws
 	vcap_services = JSON.parse(ENV['VCAP_SERVICES'])
 	vcap_services['user-provided'].each do |user_service|
