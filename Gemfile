@@ -4,7 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '2.7.2'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.0.4', '>= 6.0.4.6'
+gem 'rails', '~> 6.0.4', '>= 6.0.4.7'
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3', '~> 1.4'
 # Use Puma as the app server
@@ -43,6 +43,9 @@ gem 'vault'
 # error logging
 gem 'rollbar'
 gem 'webmock', '>= 3.12.1'
+
+# aws ssm
+gem 'aws-sdk-ssm'
 
 group :development, :test do
   gem 'listen', '~> 3.2'

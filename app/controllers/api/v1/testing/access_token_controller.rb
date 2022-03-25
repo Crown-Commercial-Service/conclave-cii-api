@@ -9,6 +9,8 @@ module Api
           render_results(nil) unless params && params[:ccs_org_id] && params[:user_email]
         end
 
+        private
+
         def create_new_access_token
           organisation_id = org_creation(params[:ccs_org_id].to_s)
 
@@ -133,7 +135,7 @@ module Api
             organisationId: org_id.to_s,
             firstName: 'Test',
             lastName: 'Test',
-            title: 0,
+            title: 'Mr',
             mfaEnabled: true,
             password: ENV['ACCESS_TOKEN_USER_PASSWORD'].to_s,
             accountVerified: true,
