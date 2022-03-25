@@ -2,6 +2,7 @@ module Api
   module V1
     module Testing
       class AccessTokenController < ActionController::API
+        # Testing endpoint, to generate an AccessToken for test purposes.
         require 'json'
         before_action :validate_params
 
