@@ -9,8 +9,6 @@ module Api
           render_results(nil) unless params && params[:ccs_org_id] && params[:user_email]
         end
 
-        private
-
         def create_new_access_token
           organisation_id = org_creation(params[:ccs_org_id].to_s)
 
