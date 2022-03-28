@@ -2,14 +2,13 @@ module Api
   module V1
     module Testing
       class AccessTokenController < ActionController::API
+        # Testing endpoint, to generate an AccessToken for test purposes.
         require 'json'
         before_action :validate_params
 
         def validate_params
           render_results(nil) unless params && params[:ccs_org_id] && params[:user_email]
         end
-
-        private
 
         def create_new_access_token
           organisation_id = org_creation(params[:ccs_org_id].to_s)
