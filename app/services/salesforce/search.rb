@@ -11,11 +11,11 @@ module Salesforce
 
     def post_params
       {
-        'username' => 'sf-conclave-api@crowncommercial.gov.uk.preprod',
-        'password' => 'g63t9P0sn%Z9Wo$T' + 'wfidn7NRJ7bltHKFdfbIASQry',
+        'username' => ENV['SALESFORCE_USERNAME'],
+        'password' => ENV['SALESFORCE_PASSWORD'] + ENV['SALESFORCE_SECURITY_TOKEN'],
         'grant_type' => 'password',
-        'client_id' => '3MVG9rKhT8ocoxGkPdSEUBFzU_T4zoB.z.82xrwmDzditQNjqSva4fG74xl8Vmcx_O7tTnwBDQKhFi3i.5eH6',
-        'client_secret' => 'E3C1C403D165F986E3ADCBBE6CD79E271C66BA8964CBF3C9D3847A41C0253ED0'
+        'client_id' => ENV['SALESFORCE_CLIENT_ID'],
+        'client_secret' => ENV['SALESFORCE_CLIENT_SECRET']
       }
     end
 
