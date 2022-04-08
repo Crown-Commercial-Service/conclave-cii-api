@@ -32,9 +32,9 @@ module Api
 
       def validate_params
         if params[:ccs_org_id].present?
-          return_error_code('bad_request') unless validate_organisation_id.valid?
+          render json: '', status: :bad_request unless validate_organisation_id.valid?
         else
-          return_error_code('bad_request') unless validate_scheme
+          render json: '', status: :bad_request unless validate_scheme
         end
       end
 
@@ -43,7 +43,7 @@ module Api
       end
 
       def validate_scheme
-        return Common::AdditionalIdentifier.new.schemes.include? params[:scheme].to_s if params[:scheme].to_s
+        return Common::AdditionalIdentifier.new.schemes.include? params[:scheme]
 
         false
       end
