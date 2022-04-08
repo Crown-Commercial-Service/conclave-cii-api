@@ -9,7 +9,7 @@ This is the Conclave Central Identity Index (CII) API service.
 
 ## Technical documentation
 
-This is a Ruby on Rails application to provide a central register to identify organisations; suppliers using external identifiers It's only presented as an internal API and doesn't face public users.
+This is a Ruby on Rails application to provide a central register to identify organisations; suppliers using external identifiers It's only presented as an internal API and does not face public users.
 
 ### Setup instructions
 #### For OSX/macOS version 10.9 or higher
