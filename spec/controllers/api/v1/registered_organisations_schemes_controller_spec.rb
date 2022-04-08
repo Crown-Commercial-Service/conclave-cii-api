@@ -59,7 +59,7 @@ RSpec.describe Api::V1::RegisteredOrganisationsSchemesController, type: :control
 
       context 'when invalid scheme' do
         it 'returns 400' do
-          get :search_organisation_by_scheme, params: { scheme: 'HB-CHH', id:123456, clientid: clientid }
+          get :search_organisation_by_scheme, params: { scheme: 'HB-CHH', id: 123456, clientid: clientid }
           expect(response).to have_http_status(:bad_request)
         end
       end
