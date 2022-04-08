@@ -6,13 +6,22 @@ module Api
       before_action :validate_ccs_org_user_or_api_key
       before_action :validate_params
 
-      def search_organisation
+      def search_organisation(organisation_id = nil)
+        params[:ccs_org_id] = organisation_id if organisation_id
+
         result = Common::RegisteredOrganisationResponse.new(params[:ccs_org_id], hidden: false).response_payload
         if result.present?
           render json: build_response(result), status: :ok
         else
           render json: '', status: :not_found
         end
+      end
+
+      def search_organisation_by_scheme
+        result = OrganisationSchemeIdentifier.find_by(scheme_org_reg_number: params[:id], scheme_code: params[:scheme])
+        return render json: '', status: :not_found unless result.present? && result[:ccs_org_id].present?
+
+        search_organisation(result[:ccs_org_id])
       end
 
       def build_response(result)
@@ -22,8 +31,19 @@ module Api
       end
 
       def validate_params
+        return validate_organisation_id if params[:ccs_org_id].present?
+
+        validate_scheme
+      end
+
+      def validate_organisation_id
         validate = ApiValidations::ManageRegisteredOrganisation.new(params)
         render json: validate.errors, status: :bad_request unless validate.valid?
+      end
+
+      def validate_scheme
+        validate = Common::AdditionalIdentifier.new.schemes.include? params[:scheme]
+        render json: '', status: :bad_request unless validate
       end
 
       private
