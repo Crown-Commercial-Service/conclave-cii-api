@@ -31,21 +31,19 @@ module Api
       end
 
       def validate_params
-        if params[:ccs_org_id].present?
-          render json: '', status: :bad_request unless validate_organisation_id.valid?
-        else
-          render json: '', status: :bad_request unless validate_scheme
-        end
+        return validate_organisation_id if params[:ccs_org_id].present?
+
+        validate_scheme
       end
 
       def validate_organisation_id
-        ApiValidations::ManageRegisteredOrganisation.new(params)
+        validate = ApiValidations::ManageRegisteredOrganisation.new(params)
+        render json: validate.errors, status: :bad_request unless validate.valid?
       end
 
       def validate_scheme
-        return Common::AdditionalIdentifier.new.schemes.include? params[:scheme]
-
-        false
+        validate = Common::AdditionalIdentifier.new.schemes.include? params[:scheme]
+        render json: '', status: :bad_request unless validate
       end
 
       private
