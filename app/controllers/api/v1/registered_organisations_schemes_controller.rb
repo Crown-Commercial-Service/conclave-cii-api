@@ -32,11 +32,14 @@ module Api
 
       def validate_params
         if params[:ccs_org_id].present?
-          validate = ApiValidations::ManageRegisteredOrganisation.new(params)
-          render json: validate.errors, status: :bad_request unless validate.valid?
+          render json: '', status: :bad_request unless validate_organisation_id.valid?
         else
           render json: '', status: :bad_request unless validate_scheme
         end
+      end
+
+      def validate_organisation_id
+        ApiValidations::ManageRegisteredOrganisation.new(params)
       end
 
       def validate_scheme
