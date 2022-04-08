@@ -32,9 +32,9 @@ module Api
 
       def validate_params
         if params[:ccs_org_id].present?
-          render json: '', status: :bad_request unless validate_organisation_id.valid?
+          return_error_code('bad_request') unless validate_organisation_id.valid?
         else
-          render json: '', status: :bad_request unless validate_scheme
+          return_error_code('bad_request') unless validate_scheme
         end
       end
 
