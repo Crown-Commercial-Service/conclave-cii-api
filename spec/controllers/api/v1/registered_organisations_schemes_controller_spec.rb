@@ -86,7 +86,7 @@ RSpec.describe Api::V1::RegisteredOrganisationsSchemesController, type: :control
       end
 
       it 'returns 401 for scheme' do
-        get :search_organisation, params: { cid: 123456, scheme: 'GB-COH', clientid: 'n8f23er9h349hh439h94' }
+        get :search_organisation, params: { id: 123456, scheme: 'GB-COH', clientid: 'n8f23er9h349hh439h94' }
         expect(response).to have_http_status(:unauthorized)
       end
     end
