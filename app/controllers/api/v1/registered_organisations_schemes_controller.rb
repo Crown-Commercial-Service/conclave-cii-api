@@ -32,7 +32,7 @@ module Api
       end
 
       def validate_params
-        return validate_scheme if params[:ccs_org_id].include? "-"
+        return validate_scheme if params[:ccs_org_id].include? '-'
 
         validate_organisation_id
       end
