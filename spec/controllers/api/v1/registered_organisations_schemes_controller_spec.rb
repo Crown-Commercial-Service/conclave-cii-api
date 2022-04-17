@@ -4,8 +4,6 @@ RSpec.describe Api::V1::RegisteredOrganisationsSchemesController, type: :control
   describe 'search_organisation' do
     let(:clientid) { ENV['CLIENT_ID'] }
     let(:ccs_org_id) { nil }
-    let(:id) { nil }
-    let(:scheme) { nil }
     let(:jwt_token) { JWT.encode({ roles: ENV['ACCESS_ORGANISATION_ADMIN'], ciiOrgId: ccs_org_id, aud: ENV['CLIENT_ID'] }, 'test') }
 
     context 'when authorized' do
@@ -52,14 +50,19 @@ RSpec.describe Api::V1::RegisteredOrganisationsSchemesController, type: :control
 
       context 'when id not found' do
         it 'returns 404' do
-          get :search_organisation_by_scheme, params: { id: 123456, scheme: 'GB-COH', clientid: clientid }
+          get :search_organisation_by_scheme, params: { ccs_org_id: 'GB-COH-12344', clientid: clientid }
           expect(response).to have_http_status(:not_found)
         end
       end
 
       context 'when invalid scheme' do
         it 'returns 400' do
-          get :search_organisation_by_scheme, params: { scheme: 'HB-CHH', id: 123456, clientid: clientid }
+          get :search_organisation, params: { ccs_org_id: 'HB-CBB-123456', clientid: clientid }
+          expect(response).to have_http_status(:bad_request)
+        end
+
+        it 'return bad request' do
+          get :search_organisation, params: { ccs_org_id: 'GBCOH-123456', clientid: clientid }
           expect(response).to have_http_status(:bad_request)
         end
       end
@@ -74,7 +77,7 @@ RSpec.describe Api::V1::RegisteredOrganisationsSchemesController, type: :control
 
       it 'returns 401 for scheme' do
         request.headers['x-api-key'] = 'invalid'
-        get :search_organisation_by_scheme, params: { id: 123456, scheme: 'GB-COH', clientid: 'n8f23er9h349hh439h94' }
+        get :search_organisation, params: { ccs_org_id: 'GB-COH-123456', clientid: 'n8f23er9h349hh439h94' }
         expect(response).to have_http_status(:unauthorized)
       end
     end
@@ -86,7 +89,7 @@ RSpec.describe Api::V1::RegisteredOrganisationsSchemesController, type: :control
       end
 
       it 'returns 401 for scheme' do
-        get :search_organisation_by_scheme, params: { id: 123456, scheme: 'GB-COH', clientid: 'n8f23er9h349hh439h94' }
+        get :search_organisation, params: { ccs_org_id: 'GB-COH-123456', clientid: 'n8f23er9h349hh439h94' }
         expect(response).to have_http_status(:unauthorized)
       end
     end
