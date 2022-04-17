@@ -50,7 +50,7 @@ RSpec.describe Api::V1::RegisteredOrganisationsSchemesController, type: :control
 
       context 'when id not found' do
         it 'returns 404' do
-          get :search_organisation_by_scheme, params: { ccs_org_id: 'GB-COH-12344', clientid: clientid }
+          get :search_organisation, params: { ccs_org_id: 'GB-COH-12344', clientid: clientid }
           expect(response).to have_http_status(:not_found)
         end
       end
