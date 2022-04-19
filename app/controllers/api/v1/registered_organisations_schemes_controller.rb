@@ -38,7 +38,7 @@ module Api
       end
 
       def validate_scheme
-        @scheme_id = params[:ccs_org_id].split('-')
+        @scheme_id = params[:ccs_org_id].strip.split('-')
         validate = Common::AdditionalIdentifier.new.schemes.include? "#{@scheme_id[0]}-#{@scheme_id[1]}"
         render json: '', status: :bad_request unless validate
       end
