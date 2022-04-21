@@ -20,10 +20,9 @@ module Api
       def search_organisation_by_scheme
         scheme = "#{@scheme_id[0]}-#{@scheme_id[1]}".freeze
         id = @scheme_id[2]
-        result = OrganisationSchemeIdentifier.find_by(scheme_org_reg_number: id, scheme_code: scheme)
-        result = '' if result['hidden']
 
-        return result[:ccs_org_id] if result.present? && result[:ccs_org_id].present?
+        result = OrganisationSchemeIdentifier.find_by(scheme_org_reg_number: id, scheme_code: scheme)
+        return result[:ccs_org_id] if result.present? && result[:ccs_org_id].present? && !result['hidden']
       end
 
       def build_response(result)
