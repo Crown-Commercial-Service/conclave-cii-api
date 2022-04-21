@@ -49,10 +49,6 @@ module Api
         render json: validate.errors, status: :bad_request unless validate.valid?
       end
 
-      def check_for_hidden
-
-      end
-
       private
 
       def return_error_code(code)
