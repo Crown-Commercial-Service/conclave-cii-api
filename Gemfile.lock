@@ -313,8 +313,6 @@ GEM
     tzinfo (1.2.9)
       thread_safe (~> 0.1)
     unicode-display_width (2.1.0)
-    vault (0.16.0)
-      aws-sigv4
     webmock (3.13.0)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
@@ -360,7 +358,6 @@ DEPENDENCIES
   rubocop-rspec (>= 2.2.0)
   simplecov
   sqlite3 (~> 1.4)
-  vault
   webmock (>= 3.12.1)
 
 RUBY VERSION

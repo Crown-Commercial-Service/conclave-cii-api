@@ -39,7 +39,7 @@ gem 'rack-cors'
 gem 'olive_branch', '>= 4.0.1'
 # test code complexity
 gem 'flog'
-gem 'vault'
+# gem 'vault'
 # error logging
 gem 'rollbar'
 gem 'webmock', '>= 3.12.1'
