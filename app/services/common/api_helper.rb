@@ -96,8 +96,8 @@ module Common
 
     # Updates org and adds the dummy additional identifier, and returns the created ccs_ord_id.
     def self.update_dummy_org(organisation_id, scheme)
-      result = self.return_mock_organisation(scheme)
-      organisation = OrganisationSchemeIdentifier.new#find_by(ccs_org_id: organisation_id)
+      result = return_mock_organisation(scheme)
+      organisation = OrganisationSchemeIdentifier.new # find_by(ccs_org_id: organisation_id)
       organisation[:scheme_code] = result[:identifier][:scheme]
       organisation[:scheme_org_reg_number] = "11111#{Common::ApiHelper.generate_random_id_end}"
       organisation[:ccs_org_id] = organisation_id
