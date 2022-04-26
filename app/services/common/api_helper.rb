@@ -74,36 +74,48 @@ module Common
       rand(1000..9998).to_i
     end
 
-    # Returns true or false, depending on if the dummy org is found or not. (Part of work for Nick Fine).
-    def self.find_mock_duns_org(scheme, id)
-      if id.to_s == Common::AdditionalIdentifier::MOCK_DANDB_ID && scheme.to_s == Common::AdditionalIdentifier::SCHEME_DANDB
-        true
-      else
-        id.to_s == Common::AdditionalIdentifier::MOCK_SF_ID && scheme.to_s == Common::AdditionalIdentifier::SCHEME_CCS
-      end
+    # Returns true or false, depending on if the dummy org is found or not.
+    def self.find_mock_organisation(scheme, id)
+      true if id.to_s == Common::AdditionalIdentifier::MOCK_ID && Common::AdditionalIdentifier.new.schemes.include?(scheme)
     end
 
-    # Creates and adds the dummy org, and returns the created ccs_ord_id. (Part of work for Nick Fine).
-    def self.add_dummy_org(api_key_to_string)
+    # Creates and adds the dummy org, and returns the created ccs_ord_id.
+    def self.add_dummy_org(api_key_to_string, scheme, primary_scheme_bool)
       organisation = OrganisationSchemeIdentifier.new
-      organisation.scheme_code = Common::AdditionalIdentifier::SCHEME_DANDB
+      organisation.scheme_code = scheme
       organisation.scheme_org_reg_number = "11111#{Common::ApiHelper.generate_random_id_end}"
       organisation.uri = 'test.com'
       organisation.legal_name = 'Nicks Testing Organisation'
       organisation.ccs_org_id = Common::GenerateId.ccs_org_id
-      organisation.primary_scheme = true
+      organisation.primary_scheme = primary_scheme_bool # true|false
       organisation.hidden = false
       organisation.client_id = Common::ApiHelper.find_client(api_key_to_string)
       organisation.save
       organisation.ccs_org_id
     end
 
-    def self.return_mock_duns
+    # Updates org and adds the dummy additional identifier, and returns the created ccs_ord_id.
+    def self.update_dummy_org(organisation_id, scheme)
+      result = self.return_mock_organisation(scheme)
+      organisation = OrganisationSchemeIdentifier.new#find_by(ccs_org_id: organisation_id)
+      organisation[:scheme_code] = result[:identifier][:scheme]
+      organisation[:scheme_org_reg_number] = "11111#{Common::ApiHelper.generate_random_id_end}"
+      organisation[:ccs_org_id] = organisation_id
+      organisation[:uri] = result[:identifier][:uri]
+      organisation[:legal_name] = result[:identifier][:legalName]
+      organisation[:primary_scheme] = false
+      organisation[:hidden] = false
+      organisation.save
+      @ccs_org_id = organisation_id
+      @ccs_org_id
+    end
+
+    def self.return_mock_organisation(scheme)
       {
         name: 'Nicks Testing Organisation',
         identifier: {
-          scheme: Common::AdditionalIdentifier::SCHEME_DANDB,
-          id: Common::AdditionalIdentifier::MOCK_DANDB_ID,
+          scheme: scheme,
+          id: Common::AdditionalIdentifier::MOCK_ID,
           legalName: 'Nicks Testing Organisation',
           uri: ''
         },

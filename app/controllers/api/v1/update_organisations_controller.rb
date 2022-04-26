@@ -6,27 +6,37 @@ module Api
       rescue_from ApiValidations::ApiError, with: :return_error_code
       before_action :validate_api_key
       before_action :validate_user
+      # This is checking for the dummy org (id: 111111111) in params. must be done first, to stop external api call.
+      before_action :mock_id_check
       before_action :validate_params
 
       attr_accessor :ccs_org_id, :api_result
 
       def index
-        result = search_scheme_api
+        result = search_scheme_api unless @is_mock_id
 
         Common::SalesforceHelper.new(result, params[:ccs_org_id]).insert_salesforce_record if result.present?
 
         save_or_update_organisation_scheme if result.present?
 
+        result = Common::ApiHelper.update_dummy_org(params[:ccs_org_id], params[:scheme]) if @is_mock_id
+
         if result.blank?
           render json: '', status: :not_found
         else
-          render json: { organisationId: @ccs_org_id }, status: :ok
+          # If mock id is used, then @ccs_org_id will be empty, and id will contained in 'result' variable instead.
+          render json: { organisationId: @ccs_org_id || result }, status: :ok
         end
       end
 
       def validate_params
         validate = ApiValidations::UpdateOrganisation.new(params)
         render json: validate.errors, status: :bad_request unless validate.valid?
+      end
+
+      # This is checking for the dummy org (id: 111111111) in params. Sets global variable to true or false, for the rest of controller behavoir.
+      def mock_id_check
+        @is_mock_id = Common::ApiHelper.find_mock_organisation(params[:scheme], params[:id]) if params.present?
       end
 
       private
