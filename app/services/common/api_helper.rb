@@ -89,7 +89,7 @@ module Common
       organisation.ccs_org_id = Common::GenerateId.ccs_org_id
       organisation.primary_scheme = primary_scheme_bool # true|false
       organisation.hidden = false
-      organisation.client_id = Common::ApiHelper.find_client(api_key_to_string)
+      #organisation.client_id = Common::ApiHelper.find_client(api_key_to_string)
       organisation.save
       organisation.ccs_org_id
     end
