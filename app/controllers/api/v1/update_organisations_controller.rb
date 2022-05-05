@@ -13,20 +13,19 @@ module Api
       attr_accessor :ccs_org_id, :api_result
 
       def index
-        result = search_scheme_api unless @is_mock_id
-
-        Common::SalesforceHelper.new(result, params[:ccs_org_id]).insert_salesforce_record if result.present?
-
-        save_or_update_organisation_scheme if result.present?
-
-        result = Common::ApiHelper.update_dummy_org(params[:ccs_org_id], params[:scheme]) if @is_mock_id
-
-        if result.blank?
-          render json: '', status: :not_found
+        if @is_mock_id
+          result = Common::ApiHelper.update_dummy_org(params[:ccs_org_id], params[:scheme])
+          return render json: '', status: :not_found if result.blank?
         else
-          # If mock id is used, then @ccs_org_id will be empty, and id will contained in 'result' variable instead.
-          render json: { organisationId: @ccs_org_id || result }, status: :ok
+          result = search_scheme_api
+          return render json: '', status: :not_found if result.blank?
+
+          Common::SalesforceHelper.new(result, params[:ccs_org_id]).insert_salesforce_record
+          save_or_update_organisation_scheme
         end
+
+        # If mock id is used, then @ccs_org_id will be empty, and id will contained in 'result' variable instead.
+        render json: { organisationId: @ccs_org_id || result }, status: :ok
       end
 
       def validate_params
