@@ -100,24 +100,6 @@ RSpec.describe Api::V1::UpdateOrganisationsController, type: :controller do
         end
       end
 
-      context 'when success test identifier duns' do
-        let(:ccs_org_id) { '101123' }
-
-        it 'returns 201' do
-          put :index, params: { ccs_org_id: ccs_org_id, scheme: 'US-DUN', id: '111111111', clientid: clientid }
-          expect(response).to have_http_status(:ok)
-        end
-      end
-
-      context 'when success test identifier nhs' do
-        let(:ccs_org_id) { '101123' }
-
-        it 'returns 201' do
-          put :index, params: { ccs_org_id: ccs_org_id, scheme: 'GB-NHS', id: '111111111', clientid: clientid }
-          expect(response).to have_http_status(:ok)
-        end
-      end
-
       context 'when no ApiKey' do
         it 'returns 404' do
           request.headers['x-api-key'] = 'invalid'
