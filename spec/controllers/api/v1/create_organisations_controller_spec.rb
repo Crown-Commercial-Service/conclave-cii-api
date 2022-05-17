@@ -40,6 +40,23 @@ RSpec.describe Api::V1::CreateOrganisationsController, type: :controller do
         end
       end
 
+      context 'when POST test identifier NHS create an organisation record' do
+        it 'create primary record NHS' do
+          param_post_companies_house = { identifier: { scheme: 'GB-NHS', id: '111111111' } }
+          post :index, params: param_post_companies_house
+          expect(response.status).to eq(201)
+          expect(response.body).to include('organisationId')
+        end
+      end
+
+      context 'when POST invalid scheme does not save org' do
+        it 'returns 404' do
+          param_post_companies_house = { identifier: { scheme: 'US-DN', id: '111111111' } }
+          post :index, params: param_post_companies_house
+          expect(response.status).to eq(404)
+        end
+      end
+
       context 'when POST Charities create an organisation record' do
         it 'create primary record Charities' do
           param_find_that_charity = { identifier: { scheme: 'GB-CHC', id: '1012345' } }
