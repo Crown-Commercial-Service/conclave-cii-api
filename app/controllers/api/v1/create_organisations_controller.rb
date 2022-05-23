@@ -27,7 +27,7 @@ module Api
         if result.blank?
           render json: '', status: :not_found
         else
-          render json: { organisationId: @ccs_org_id}, status: :created
+          render json: { organisationId: @ccs_org_id }, status: :created
         end
       end
 
