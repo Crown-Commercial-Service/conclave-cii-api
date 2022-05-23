@@ -23,8 +23,7 @@ module Api
       private
 
       def api_result
-        # Check for dummy org (id: 111111111), to handle that seperately to ordinary processing.
-        return Common::ApiHelper.return_mock_organisation(params[:scheme]) if Common::ApiHelper.find_mock_organisation(params[:scheme], params[:id])
+        return Common::ApiHelper.return_mock_duns if Common::ApiHelper.find_mock_duns_org(params[:scheme], params[:id])
 
         search_api_with_params = SearchApi.new(params[:id], params[:scheme], return_organisation_id: true)
         search_api_with_params.call

@@ -25,16 +25,6 @@ RSpec.describe Api::V1::OrganisationsController, type: :controller do
           expect(response.status).to eq(200)
         end
 
-        it 'search Find the duns test identifier US-DUN-1111....' do
-          get :search_organisation, params: { scheme: 'GB-COH', id: '111111111' }
-          expect(response.status).to eq(200)
-        end
-
-        it 'search Find the companies house test identifier GB-COH-1111....' do
-          get :search_organisation, params: { scheme: 'US-DUN', id: '111111111' }
-          expect(response.status).to eq(200)
-        end
-
         it 'search nhs' do
           get :search_organisation, params: { scheme: 'GB-NHS', id: 'A23' }
           expect(response.status).to eq(200)
