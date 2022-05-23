@@ -4,17 +4,13 @@ module Api
       include Authorize::Token
       rescue_from ApiValidations::ApiError, with: :return_error_code
       before_action :validate_api_key
-      # This is checking for the dummy org (US-DUN-111111111) in params. must be done first, to stop external api call. (Part of work for Nick Fine).
-      before_action :mock_duns_check
       before_action :validate_params
 
       attr_accessor :ccs_org_id, :api_result
 
       def index
-        result = search_scheme_api unless @mock_duns
+        result = search_scheme_api
         generate_record(result)
-        # If the dummy org (US-DUN-111111111) has been found, this will add it to db, and return the ccs_org_id to be rendered. (Part of work for Nick Fine).
-        result = Common::ApiHelper.add_dummy_org(api_key_to_string) if @mock_duns
         render_results(result)
       end
 
@@ -31,14 +27,8 @@ module Api
         if result.blank?
           render json: '', status: :not_found
         else
-          # @ccs_org not generated if dummy org (US-DUN-111111111) was found, in this case 'result' holds ccs_org_id, from when it was added to db in helper. (Part of work for Nick Fine).
-          render json: { organisationId: @ccs_org_id || result }, status: :created
+          render json: { organisationId: @ccs_org_id }, status: :created
         end
-      end
-
-      # This is checking for the dummy org (US-DUN-111111111) in params. Sets global variable to true or false, for the rest of controller behavoir. (Part of work for Nick Fine).
-      def mock_duns_check
-        @mock_duns = Common::ApiHelper.find_mock_duns_org(params[:identifier][:scheme], params[:identifier][:id]) if params.present?
       end
 
       def primary_organisation
@@ -81,8 +71,6 @@ module Api
       end
 
       def validate_params
-        return if @mock_duns
-
         validate = ApiValidations::CreateOrganisation.new(params)
         render json: validate.errors, status: :bad_request unless validate.valid?
       end
