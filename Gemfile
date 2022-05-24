@@ -15,10 +15,8 @@ gem 'puma', '~> 4.3', '>= 4.3.12'
 # gem 'redis', '~> 4.0'
 # Use Active Model has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
-
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
-
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
 # for postgresql
@@ -43,10 +41,10 @@ gem 'flog'
 # error logging
 gem 'rollbar'
 gem 'webmock', '>= 3.12.1'
-
 # aws ssm
 gem 'aws-sdk-ssm'
-
+# azure
+gem 'azure-storage-blob'
 # cron job scheduling
 gem 'whenever'
 
