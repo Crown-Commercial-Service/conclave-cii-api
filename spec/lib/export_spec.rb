@@ -8,4 +8,8 @@ describe 'Export' do
   it 'failed export job' do
     expect(Export.failed).to eq(false)
   end
+
+  it 'returns string container name' do
+    expect(Export.azure_container_name).to be_a String
+  end
 end
