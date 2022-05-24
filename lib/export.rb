@@ -24,7 +24,7 @@ module Export
     Rails.logger.info "GENERATING #{file_path}"
 
     organisations = find_organisations
-    return false unless organisations.any?
+    return failed unless organisations.any?
 
     CSV.open(file_path, 'w') do |writer|
       writer << organisations.first.attributes.map { |a, _v| a }
@@ -33,7 +33,7 @@ module Export
       end
     end
 
-    true
+    success
   end
 
   def self.upload_to_azure(file_path)
@@ -59,7 +59,7 @@ module Export
   end
 
   def self.azure_container_name
-    ENV['AZURE_CONTAINER_NAME']
+    ENV['AZURE_CONTAINER_NAME'] || 'ContainerName'
   end
 
   def self.delete_file(file_path)
@@ -72,5 +72,9 @@ module Export
 
   def self.success
     true
+  end
+
+  def self.failed
+    false
   end
 end
