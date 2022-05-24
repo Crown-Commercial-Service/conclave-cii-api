@@ -18,6 +18,7 @@ module Export
     return upload_to_azure(file_path) if csv_generated
 
     Rails.logger.info 'NO DATA TO EXPORT - JOB COMPLETE'
+    nil
   end
 
   def self.generate_csv_export(file_path)

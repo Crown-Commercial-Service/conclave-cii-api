@@ -12,4 +12,8 @@ describe 'Export' do
   it 'returns string container name' do
     expect(Export.azure_container_name).to be_a String
   end
+
+  it 'attempts to export csv but no data to export' do
+    expect(Export.begin).to eq(nil)
+  end
 end
