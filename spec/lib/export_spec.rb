@@ -5,7 +5,7 @@ describe 'Export' do
     expect(Export.success).to eq(true)
   end
 
-  it 'successful export job' do
+  it 'failed export job' do
     expect(Export.failed).to eq(false)
   end
 end
