@@ -10,7 +10,7 @@ module Export
     Rails.logger.info 'BEGINNING DATA EXPORT JOB...'
 
     directory = Rails.root.join('public/export').to_s
-    file_path = Rails.root.join('public', 'export', "#{Date.yesterday}_Organisations.csv").to_s
+    file_path = Rails.root.join("public/export/#{Date.yesterday}_Organisations.csv").to_s
 
     FileUtils.mkdir_p directory unless File.directory?(directory)
 
@@ -40,7 +40,7 @@ module Export
   def self.upload_to_azure(file_path)
     Rails.logger.info "UPLOADING #{file_path} > #{azure_container_name}"
 
-    file_name = file_path.split('/')[3]
+    file_name = "#{Date.yesterday}_Organisations.csv"
     file_content = File.open(file_path, 'rb', &:read)
     azure_client.create_block_blob(azure_container_name, file_name, file_content)
 
@@ -68,7 +68,7 @@ module Export
   end
 
   def self.find_organisations
-    OrganisationSchemeIdentifier.where(updated_at: Date.yesterday.beginning_of_day..Date.yesterday.end_of_day)
+    OrganisationSchemeIdentifier.where(updated_at: (Date.yesterday - 8).beginning_of_day..(Date.yesterday - 8).end_of_day)
   end
 
   def self.success
