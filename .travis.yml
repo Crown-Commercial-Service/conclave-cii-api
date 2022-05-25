@@ -29,6 +29,9 @@ script:
   - bundle exec rake db:setup
   - bundle exec rake
   - bundle exec rubocop
+  - bundle exec wheneverize .
+  - bundle exec whenever --clear-crontab
+  - bundle exec whenever --update-crontab
 before_deploy:
   - echo "install cloudfoundry cli"
   - wget -q -O - https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key | sudo apt-key add -

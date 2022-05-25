@@ -161,3 +161,4 @@ cd .. || exit
 # CF Push
 cf push conclave-cii-"$CF_SPACE" -f CF/"$CF_SPACE".manifest.yml
 
+cf ssh conclave-cii-"$CF_SPACE" -t -c "/tmp/lifecycle/shell /home/vcap/app 'bundle exec wheneverize .;bundle exec whenever --update-crontab'"
