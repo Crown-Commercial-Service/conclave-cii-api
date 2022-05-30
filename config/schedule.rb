@@ -23,7 +23,7 @@
 set :output, "log/cron.log" 
 
 #Sets the environment to run during development mode (Set to production by default)
-set :environment, "development"
+# set :environment, "production"
 
 every :day, at: '3:00am' do
     runner "Export.begin"
