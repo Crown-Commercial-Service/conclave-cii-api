@@ -68,7 +68,7 @@ module Export
   end
 
   def self.find_organisations
-    OrganisationSchemeIdentifier.where(updated_at: Date.today.beginning_of_day..Date.today.end_of_day)
+    OrganisationSchemeIdentifier.where(updated_at: Date.yesterday.beginning_of_day..Date.yesterday.end_of_day)
   end
 
   def self.success
