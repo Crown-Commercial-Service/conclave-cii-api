@@ -46,6 +46,8 @@ gem 'webmock', '>= 3.12.1'
 
 # aws ssm
 gem 'aws-sdk-ssm'
+# cron job scheduling
+gem 'rufus-scheduler'
 
 group :development, :test do
   gem 'listen', '~> 3.2'
