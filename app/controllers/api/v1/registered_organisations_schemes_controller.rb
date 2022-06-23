@@ -6,13 +6,13 @@ module Api
       before_action :validate_access_users_or_api_key
       before_action :validate_params
 
-      def search_organisation 
+      def search_organisation
         params[:ccs_org_id] = search_organisation_by_scheme if @scheme_id
 
         if validate_service_eligibility_or_ccs_admin_user
           result = Common::RegisteredOrganisationResponse.new(params[:ccs_org_id], hidden: true).response_payload if params[:ccs_org_id]
-        else
-          result = Common::RegisteredOrganisationResponse.new(params[:ccs_org_id], hidden: false).response_payload if params[:ccs_org_id]
+        elsif params[:ccs_org_id]
+          result = Common::RegisteredOrganisationResponse.new(params[:ccs_org_id], hidden: false).response_payload
         end
 
         if result.present?
