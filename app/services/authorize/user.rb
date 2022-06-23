@@ -49,6 +49,7 @@ module Authorize
         false
       else
         ApiValidations::ApiErrorValidationResponse.new(:user_access_unauthorized)
+        false
       end
     end
 
