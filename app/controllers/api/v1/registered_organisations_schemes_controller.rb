@@ -9,11 +9,7 @@ module Api
       def search_organisation
         params[:ccs_org_id] = search_organisation_by_scheme if @scheme_id
 
-        if params[:ccs_org_id] && validate_service_eligibility_or_ccs_admin_user
-          result = Common::RegisteredOrganisationResponse.new(params[:ccs_org_id], hidden: true).response_payload
-        elsif params[:ccs_org_id]
-          result = Common::RegisteredOrganisationResponse.new(params[:ccs_org_id], hidden: false).response_payload
-        end
+        result = Common::RegisteredOrganisationResponse.new(params[:ccs_org_id], hidden: validate_service_eligibility_or_ccs_admin_user).response_payload if params[:ccs_org_id]
 
         if result.present?
           render json: build_response(result), status: :ok
