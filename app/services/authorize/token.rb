@@ -7,7 +7,11 @@ module Authorize
     end
 
     def api_key_to_string
-      request.headers['x-api-key'].to_s if request.headers['x-api-key'].present?
+      if request.headers['x-api-key-delete'].present?
+        request.headers['x-api-key-delete'].to_s
+      elsif request.headers['x-api-key'].present?
+        request.headers['x-api-key'].to_s
+      end
     end
 
     def client_auth
