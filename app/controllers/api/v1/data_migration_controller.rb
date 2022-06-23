@@ -1,7 +1,7 @@
 module Api
   module V1
     class DataMigrationController < ActionController::API
-      include Authorize::User
+      include Authorize::AuthorizationMethods
       rescue_from ApiValidations::ApiError, with: :return_error_code
       before_action :validate_integrating_service_user
       before_action :create_ccs_org_id
