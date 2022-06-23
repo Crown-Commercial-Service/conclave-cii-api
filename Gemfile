@@ -43,10 +43,6 @@ gem 'rollbar'
 gem 'webmock', '>= 3.12.1'
 # aws ssm
 gem 'aws-sdk-ssm'
-# azure
-gem 'azure-storage-blob'
-# cron job scheduling
-gem 'whenever'
 
 group :development, :test do
   gem 'listen', '~> 3.2'
