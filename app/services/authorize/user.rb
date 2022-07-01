@@ -45,14 +45,14 @@ module Authorize
 
     def validate_service_eligibility_or_ccs_admin_user
       decoded_token = validate_and_decode_token
-      if decoded_token[0]['roles'].include?(ENV['ACCESS_MANAGE_SUBSCRIPTIONS'])
-        true
-      elsif decoded_token[0]['roles'].include?(ENV['ACCESS_CCS_ADMIN'])
-        false
-      else
-        ApiValidations::ApiErrorValidationResponse.new(:user_access_unauthorized)
-        false
-      end
+      ApiValidations::ApiErrorValidationResponse.new(:user_access_unauthorized) unless decoded_token[0]['roles'].include?(ENV['ACCESS_MANAGE_SUBSCRIPTIONS']) || decoded_token[0]['roles'].include?(ENV['ACCESS_ORGANISATION_ADMIN'])
+    end
+
+    def registered_orgs_controller_role_check
+      decoded_token = Common::ApiHelper.decode_token(request.headers)
+      return true if decoded_token.present? && decoded_token[0]['roles'].include?(ENV['ACCESS_MANAGE_SUBSCRIPTIONS'])
+
+      false
     end
 
     def validate_access_token
