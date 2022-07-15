@@ -1,7 +1,7 @@
 module Api
   module V1
     class AllRegisteredOrganisationsSchemesController < ActionController::API
-      include Authorize::User
+      include Authorize::AuthorizationMethods
       rescue_from ApiValidations::ApiError, with: :return_error_code
       before_action :validate_ccs_admin_or_api_key
       before_action :validate_params
