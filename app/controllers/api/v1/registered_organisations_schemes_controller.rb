@@ -3,13 +3,13 @@ module Api
     class RegisteredOrganisationsSchemesController < ActionController::API
       include Authorize::AuthorizationMethods
       rescue_from ApiValidations::ApiError, with: :return_error_code
-      before_action :validate_ccs_org_user_or_api_key
+      before_action :validate_access_users_or_api_key
       before_action :validate_params
 
       def search_organisation
         params[:ccs_org_id] = search_organisation_by_scheme if @scheme_id
 
-        result = Common::RegisteredOrganisationResponse.new(params[:ccs_org_id], hidden: false).response_payload if params[:ccs_org_id]
+        result = Common::RegisteredOrganisationResponse.new(params[:ccs_org_id], hidden: registered_orgs_controller_role_check).response_payload if params[:ccs_org_id]
 
         if result.present?
           render json: build_response(result), status: :ok
