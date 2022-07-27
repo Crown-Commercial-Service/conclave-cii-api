@@ -9,8 +9,8 @@ module CompaniesHouse
     end
 
     def fetch_results
-      conn = Common::ApiHelper.faraday_new(url: ENV['COMPANIES_HOUSE_API_ENDPOINT'])
-      conn.basic_auth("#{ENV['COMPANIES_HOUSE_API_TOKEN']}:", '')
+      conn = Common::ApiHelper.faraday_new(url: ENV.fetch('COMPANIES_HOUSE_API_ENDPOINT', nil))
+      conn.basic_auth("#{ENV.fetch('COMPANIES_HOUSE_API_TOKEN', nil)}:", '')
       resp = conn.get("/company/#{@company_reg_number}")
       logging(resp)
       @result = ActiveSupport::JSON.decode(resp.body) if resp.status == 200

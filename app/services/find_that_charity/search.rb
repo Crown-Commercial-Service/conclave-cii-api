@@ -10,7 +10,7 @@ module FindThatCharity
     end
 
     def fetch_results
-      conn = Common::ApiHelper.faraday_new(url: ENV['FINDTHATCHARITY_API_ENDPOINT'])
+      conn = Common::ApiHelper.faraday_new(url: ENV.fetch('FINDTHATCHARITY_API_ENDPOINT', nil))
       resp = conn.get("/orgid/#{@scheme_id}-#{@charity_number}.json")
       logging(resp)
       @result = ActiveSupport::JSON.decode(resp.body) if resp.status == 200
