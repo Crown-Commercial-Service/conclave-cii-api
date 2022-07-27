@@ -7,7 +7,7 @@ module SecurityService
 
     def sec_api_validate_token
       url = "/security/tokens/validation?client-id=#{@client_id}"
-      conn = Faraday.new(url: ENV['SECURITY_SERVICE_URL'])
+      conn = Faraday.new(url: ENV.fetch('SECURITY_SERVICE_URL', nil))
       conn.authorization :Bearer, @access_token
       resp = conn.post(url, '', { 'Content-Type' => 'application/x-www-form-urlencoded' })
       ApiLogging::Logger.api_status_error('Security Token Validation | method:sec_api_validate_token', resp)
