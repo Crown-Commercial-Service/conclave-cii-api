@@ -42,10 +42,8 @@ module Authorize
     end
 
     def validate_service_eligibility_or_ccs_admin_user(decoded_token)
-      if decoded_token[0]['roles'].include?(ENV.fetch('ACCESS_MANAGE_SUBSCRIPTIONS', nil)) || decoded_token[0]['roles'].include?(ENV.fetch('ACCESS_ORGANISATION_ADMIN', nil))
-        return validate_ccs_org_id unless decoded_token[0]['roles'].include?(ENV.fetch('ACCESS_MANAGE_SUBSCRIPTIONS', nil))
+      return validate_ccs_org_id if (decoded_token[0]['roles'].include?(ENV.fetch('ACCESS_MANAGE_SUBSCRIPTIONS', nil)) || decoded_token[0]['roles'].include?(ENV.fetch('ACCESS_ORGANISATION_ADMIN', nil))) && decoded_token[0]['roles'].exclude?(ENV.fetch('ACCESS_MANAGE_SUBSCRIPTIONS', nil))
 
-      end
       ApiValidations::ApiErrorValidationResponse.new(:user_access_unauthorized)
     end
 
