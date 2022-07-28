@@ -42,7 +42,7 @@ module Authorize
     end
 
     def validate_service_eligibility_or_ccs_admin_user
-      decoded_token = validate_and_decode_token #validate_ccs_org_id
+      decoded_token = validate_and_decode_token
       if decoded_token[0]['roles'].include?(ENV.fetch('ACCESS_MANAGE_SUBSCRIPTIONS', nil)) || decoded_token[0]['roles'].include?(ENV.fetch('ACCESS_ORGANISATION_ADMIN', nil))
         validate_ccs_org_id unless decoded_token[0]['roles'].include?(ENV.fetch('ACCESS_MANAGE_SUBSCRIPTIONS', nil))
       else
