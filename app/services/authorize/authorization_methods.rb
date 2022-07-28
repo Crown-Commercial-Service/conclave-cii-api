@@ -60,7 +60,7 @@ module Authorize
       validate_client_id
       validate_user_access_token
       validate_access_token
-      validate_service_eligibility_or_ccs_admin_user
+      validate_service_eligibility_or_ccs_admin_user(validate_and_decode_token)
     end
   end
 end
