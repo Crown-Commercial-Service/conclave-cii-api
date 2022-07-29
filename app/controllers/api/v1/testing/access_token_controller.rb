@@ -38,7 +38,7 @@ module Api
         end
 
         def org_creation(org_id)
-          response = Faraday.post("#{ENV['ACCESS_TOKEN_SECURITY_URL']}/organisation-profiles") do |req|
+          response = Faraday.post("#{ENV.fetch('ACCESS_TOKEN_SECURITY_URL', nil)}/organisation-profiles") do |req|
             req.headers['x-api-key'] = request.headers['x-api-key']
             req.headers['Content-Type'] = 'application/json'
             req.body = org_creation_body(org_id)
@@ -49,7 +49,7 @@ module Api
           @error_reason = {
             StatusCode: response.status,
             ResponseBody: response.body,
-            RequestURL: "POST #{ENV['ACCESS_TOKEN_SECURITY_URL']}/organisation-profiles",
+            RequestURL: "POST #{ENV.fetch('ACCESS_TOKEN_SECURITY_URL', nil)}/organisation-profiles",
             Note: 'Org Creation Step'
           }
           false
@@ -79,7 +79,7 @@ module Api
         end
 
         def identity_provider(org_id)
-          response = Faraday.get("#{ENV['ACCESS_TOKEN_SECURITY_URL']}/organisations/#{org_id}/identity-providers",
+          response = Faraday.get("#{ENV.fetch('ACCESS_TOKEN_SECURITY_URL', nil)}/organisations/#{org_id}/identity-providers",
                                  nil,
                                  { 'x-api-key' => request.headers['x-api-key'] })
 
@@ -88,14 +88,14 @@ module Api
           @error_reason = {
             StatusCode: response.status,
             ResponseBody: response.body,
-            RequestURL: "GET #{ENV['ACCESS_TOKEN_SECURITY_URL']}/organisations/#{org_id}/identity-providers",
+            RequestURL: "GET #{ENV.fetch('ACCESS_TOKEN_SECURITY_URL', nil)}/organisations/#{org_id}/identity-providers",
             Note: 'Identity Provider Step'
           }
           false
         end
 
         def role_id(org_id)
-          response = Faraday.get("#{ENV['ACCESS_TOKEN_SECURITY_URL']}/organisations/#{org_id}/roles",
+          response = Faraday.get("#{ENV.fetch('ACCESS_TOKEN_SECURITY_URL', nil)}/organisations/#{org_id}/roles",
                                  nil,
                                  { 'x-api-key' => request.headers['x-api-key'] })
 
@@ -104,14 +104,14 @@ module Api
           @error_reason = {
             StatusCode: response.status,
             ResponseBody: response.body,
-            RequestURL: "GET #{ENV['ACCESS_TOKEN_SECURITY_URL']}/organisations/#{org_id}/roles",
+            RequestURL: "GET #{ENV.fetch('ACCESS_TOKEN_SECURITY_URL', nil)}/organisations/#{org_id}/roles",
             Note: 'Role ID Step'
           }
           false
         end
 
         def create_user(email, org_id, provider, role)
-          response = Faraday.post("#{ENV['ACCESS_TOKEN_SECURITY_URL']}/user-profiles") do |req|
+          response = Faraday.post("#{ENV.fetch('ACCESS_TOKEN_SECURITY_URL', nil)}/user-profiles") do |req|
             req.body = create_user_body(email, org_id, provider, role)
             req.headers['Content-Type'] = 'application/json'
             req.headers['x-api-key'] = request.headers['x-api-key']
@@ -122,7 +122,7 @@ module Api
           @error_reason = {
             StatusCode: response.status,
             ResponseBody: response.body,
-            RequestURL: "POST #{ENV['ACCESS_TOKEN_SECURITY_URL']}/user-profiles",
+            RequestURL: "POST #{ENV.fetch('ACCESS_TOKEN_SECURITY_URL', nil)}/user-profiles",
             Note: 'User Creation Step'
           }
           false
@@ -148,12 +148,12 @@ module Api
         end
 
         def post_token
-          response = Faraday.post("#{ENV['ACCESS_TOKEN_AUTH0_URL']}/oauth/token") do |req|
+          response = Faraday.post("#{ENV.fetch('ACCESS_TOKEN_AUTH0_URL', nil)}/oauth/token") do |req|
             req.headers['Content-Type'] = 'application/json'
             req.body = {
               client_id: ENV['ACCESS_TOKEN_GET_TOKEN_CLIENT_ID'].to_s,
               client_secret: ENV['ACCESS_TOKEN_GET_TOKEN_CLIENT_SECRET'].to_s,
-              audience: "#{ENV['ACCESS_TOKEN_AUTH0_URL']}/api/v2/",
+              audience: "#{ENV.fetch('ACCESS_TOKEN_AUTH0_URL', nil)}/api/v2/",
               grant_type: 'client_credentials'
             }.to_json
           end
@@ -163,14 +163,14 @@ module Api
           @error_reason = {
             StatusCode: response.status,
             ResponseBody: response.body,
-            RequestURL: "POST #{ENV['ACCESS_TOKEN_AUTH0_URL']}/oauth/token",
+            RequestURL: "POST #{ENV.fetch('ACCESS_TOKEN_AUTH0_URL', nil)}/oauth/token",
             Note: 'Get POST Token Step'
           }
           false
         end
 
         def auth_id(email, token)
-          response = Faraday.get("#{ENV['ACCESS_TOKEN_AUTH0_URL']}/api/v2/users-by-email?email=#{email}@yopmail.com",
+          response = Faraday.get("#{ENV.fetch('ACCESS_TOKEN_AUTH0_URL', nil)}/api/v2/users-by-email?email=#{email}@yopmail.com",
                                  nil,
                                  {
                                    'x-api-key' => request.headers['x-api-key'],
@@ -182,14 +182,14 @@ module Api
           @error_reason = {
             StatusCode: response.status,
             ResponseBody: response.body,
-            RequestURL: "POST #{ENV['ACCESS_TOKEN_AUTH0_URL']}/api/v2/users-by-email?email=#{email}@yopmail.com",
+            RequestURL: "POST #{ENV.fetch('ACCESS_TOKEN_AUTH0_URL', nil)}/api/v2/users-by-email?email=#{email}@yopmail.com",
             Note: 'Get Auth0 ID Step'
           }
           false
         end
 
         def generate_access_token(email)
-          response = Faraday.post("#{ENV['ACCESS_TOKEN_SECURITY_URL']}/security/test/oauth/token") do |req|
+          response = Faraday.post("#{ENV.fetch('ACCESS_TOKEN_SECURITY_URL', nil)}/security/test/oauth/token") do |req|
             req.headers['Content-Type'] = 'application/json'
             req.headers['X-API-KEY'] = request.headers['xapikey']
             req.body = gen_access_token_body(email)
@@ -200,7 +200,7 @@ module Api
           @error_reason = {
             StatusCode: response.status,
             ResponseBody: response.body,
-            RequestURL: "POST #{ENV['ACCESS_TOKEN_SECURITY_URL']}/security/test/oauth/token",
+            RequestURL: "POST #{ENV.fetch('ACCESS_TOKEN_SECURITY_URL', nil)}/security/test/oauth/token",
             Note: 'Generate Token Final Step'
           }
           false
@@ -216,7 +216,7 @@ module Api
         end
 
         def disable_mfa(auth_id, token)
-          response = Faraday.patch(URI::DEFAULT_PARSER.escape("#{ENV['ACCESS_TOKEN_AUTH0_URL']}/api/v2/users/#{auth_id}")) do |req|
+          response = Faraday.patch(URI::DEFAULT_PARSER.escape("#{ENV.fetch('ACCESS_TOKEN_AUTH0_URL', nil)}/api/v2/users/#{auth_id}")) do |req|
             req.headers['Content-Type'] = 'application/json'
             req.headers['Authorization'] = "Bearer #{token}"
             req.body = {
@@ -229,7 +229,7 @@ module Api
           @error_reason = {
             StatusCode: response.status,
             ResponseBody: response.body,
-            RequestURL: "PATCH #{ENV['ACCESS_TOKEN_AUTH0_URL']}/api/v2/users/#{auth_id}",
+            RequestURL: "PATCH #{ENV.fetch('ACCESS_TOKEN_AUTH0_URL', nil)}/api/v2/users/#{auth_id}",
             Note: 'Disable MFA Step'
           }
           false
