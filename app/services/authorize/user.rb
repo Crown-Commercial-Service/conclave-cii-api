@@ -41,10 +41,11 @@ module Authorize
       ApiValidations::ApiErrorValidationResponse.new(:user_access_unauthorized) unless decoded_token[0]['roles'].include?(ENV['ACCESS_MANAGE_SUBSCRIPTIONS'])
     end
 
-    def validate_service_eligibility_or_ccs_admin_user(decoded_token)
-      return validate_ccs_org_id if (decoded_token[0]['roles'].include?(ENV.fetch('ACCESS_MANAGE_SUBSCRIPTIONS', nil)) || decoded_token[0]['roles'].include?(ENV.fetch('ACCESS_ORGANISATION_ADMIN', nil))) && decoded_token[0]['roles'].exclude?(ENV.fetch('ACCESS_MANAGE_SUBSCRIPTIONS', nil))
+    def validate_service_eligibility_or_ccs_admin_user
+      decoded_token = validate_and_decode_token
+      return validate_ccs_org_id if decoded_token[0]['roles'].include?(ENV.fetch('ACCESS_ORGANISATION_ADMIN', nil))
 
-      ApiValidations::ApiErrorValidationResponse.new(:user_access_unauthorized)
+      ApiValidations::ApiErrorValidationResponse.new(:user_access_unauthorized) unless decoded_token[0]['roles'].include?(ENV.fetch('ACCESS_MANAGE_SUBSCRIPTIONS', nil))
     end
 
     def registered_orgs_controller_role_check
