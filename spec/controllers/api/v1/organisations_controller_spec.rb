@@ -30,6 +30,16 @@ RSpec.describe Api::V1::OrganisationsController, type: :controller do
           expect(response.status).to eq(200)
         end
 
+        it 'search Find the duns test identifier SF-ID-1111....' do
+          get :search_organisation, params: { scheme: 'SF-ID', id: '111111111' }
+          expect(response.status).to eq(200)
+        end
+
+        it 'search Find the duns test identifier SF-URN-1111....' do
+          get :search_organisation, params: { scheme: 'SF-URN', id: '111111111' }
+          expect(response.status).to eq(200)
+        end
+
         it 'search Find the companies house test identifier GB-COH-1111....' do
           get :search_organisation, params: { scheme: 'US-DUN', id: '111111111' }
           expect(response.status).to eq(200)
