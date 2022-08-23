@@ -2,9 +2,9 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::CreateOrganisationsController, type: :controller do
   describe 'index' do
-    let(:clientid) { ENV['CLIENT_ID'] }
+    let(:clientid) { ENV.fetch('CLIENT_ID', nil) }
     let(:organisation_id) { nil }
-    let(:jwt_token) { JWT.encode({ roles: ENV['ACCESS_ORGANISATION_ADMIN'], ciiOrgId: organisation_id, aud: ENV['CLIENT_ID'] }, 'test') }
+    let(:jwt_token) { JWT.encode({ roles: ENV.fetch('ACCESS_ORGANISATION_ADMIN', nil), ciiOrgId: organisation_id, aud: ENV.fetch('CLIENT_ID', nil) }, 'test') }
 
     context 'when success' do
       before do
@@ -43,6 +43,24 @@ RSpec.describe Api::V1::CreateOrganisationsController, type: :controller do
       context 'when POST test identifier NHS create an organisation record' do
         it 'create primary record NHS' do
           param_post_companies_house = { identifier: { scheme: 'GB-NHS', id: '111111111' } }
+          post :index, params: param_post_companies_house
+          expect(response.status).to eq(201)
+          expect(response.body).to include('organisationId')
+        end
+      end
+
+      context 'when POST test identifier Saleforce ID create an organisation record' do
+        it 'create primary record NHS' do
+          param_post_companies_house = { identifier: { scheme: 'SF-ID', id: '111111111' } }
+          post :index, params: param_post_companies_house
+          expect(response.status).to eq(201)
+          expect(response.body).to include('organisationId')
+        end
+      end
+
+      context 'when POST test identifier DUNs create an organisation record' do
+        it 'create primary record NHS' do
+          param_post_companies_house = { identifier: { scheme: 'US-DUN', id: '111111111' } }
           post :index, params: param_post_companies_house
           expect(response.status).to eq(201)
           expect(response.body).to include('organisationId')

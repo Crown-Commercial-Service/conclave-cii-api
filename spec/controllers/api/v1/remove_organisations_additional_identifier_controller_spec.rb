@@ -3,9 +3,9 @@ require 'rails_helper'
 RSpec.describe Api::V1::RemoveOrganisationsAdditionalIdentifierController, type: :controller do
   describe 'delete_additional_identifier' do
     context 'when authenticated' do
-      let(:clientid) { ENV['CLIENT_ID'] }
+      let(:clientid) { ENV.fetch('CLIENT_ID', nil) }
       let(:ccs_org_id) { nil }
-      let(:jwt_token) { JWT.encode({ roles: ENV['ACCESS_ORGANISATION_ADMIN'], ciiOrgId: ccs_org_id, aud: ENV['CLIENT_ID'] }, 'test') }
+      let(:jwt_token) { JWT.encode({ roles: ENV.fetch('ACCESS_ORGANISATION_ADMIN', nil), ciiOrgId: ccs_org_id, aud: ENV.fetch('CLIENT_ID', nil) }, 'test') }
       let(:scheme_register) { FactoryBot.create(:scheme_register) }
       let(:organisation_scheme_identifier) { FactoryBot.create(:organisation_scheme_identifier, scheme_org_reg_number: ccs_org_id, scheme_code: scheme_register.scheme_register_code, ccs_org_id: ccs_org_id, primary_scheme: false) }
 

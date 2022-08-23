@@ -2,9 +2,9 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::RegisteredOrganisationsSchemesController, type: :controller do
   describe 'search_organisation' do
-    let(:clientid) { ENV['CLIENT_ID'] }
+    let(:clientid) { ENV.fetch('CLIENT_ID', nil) }
     let(:ccs_org_id) { nil }
-    let(:jwt_token) { JWT.encode({ roles: ENV['ACCESS_ORGANISATION_ADMIN'], ciiOrgId: ccs_org_id, aud: ENV['CLIENT_ID'] }, 'test') }
+    let(:jwt_token) { JWT.encode({ roles: ENV.fetch('ACCESS_ORGANISATION_ADMIN', nil), ciiOrgId: ccs_org_id, aud: ENV.fetch('CLIENT_ID', nil) }, 'test') }
 
     context 'when authorized' do
       before do

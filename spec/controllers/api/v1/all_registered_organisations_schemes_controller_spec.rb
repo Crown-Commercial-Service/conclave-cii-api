@@ -2,9 +2,9 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::AllRegisteredOrganisationsSchemesController, type: :controller do
   describe 'search_organisation' do
-    let(:clientid) { ENV['CLIENT_ID'] }
+    let(:clientid) { ENV.fetch('CLIENT_ID', nil) }
     let(:ccs_org_id) { nil }
-    let(:jwt_token) { JWT.encode({ roles: ENV['ACCESS_CCS_ADMIN'], ciiOrgId: ccs_org_id, aud: ENV['CLIENT_ID'] }, 'test') }
+    let(:jwt_token) { JWT.encode({ roles: ENV.fetch('ACCESS_CCS_ADMIN', nil), ciiOrgId: ccs_org_id, aud: ENV.fetch('CLIENT_ID', nil) }, 'test') }
 
     before do
       stub_request(:post, "http://www.test.com/security/tokens/validation?client-id=#{clientid}")
