@@ -47,7 +47,7 @@ module Api
 
       def mock_id_dm_helper
         # If the dummy org (id: 111111111) has been found, this will add it to db, and return the ccs_org_id to be rendered.
-        ccs_org_id = Common::ApiHelper.add_dummy_org(api_key_to_string, params[:account_id_type], true)
+        ccs_org_id = Common::ApiHelper.add_dummy_org(nil, params[:account_id_type], true)
         response_body = Common::ApiHelper.return_mock_organisation(params[:scheme])
         response_body['organisationID'] = ccs_org_id.to_s
         render json: response_body, status: :created
