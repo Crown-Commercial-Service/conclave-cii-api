@@ -4,9 +4,9 @@ module Api
       include Authorize::AuthorizationMethods
       rescue_from ApiValidations::ApiError, with: :return_error_code
       before_action :validate_integrating_service_user
-      before_action :create_ccs_org_id
       # This is checking for the dummy org (id: 111111111) in params. must be done first, to stop external api calls.
       before_action :mock_id_check
+      before_action :create_ccs_org_id
 
       attr_accessor :ccs_org_id, :salesforce_result, :api_result, :sales_force_organisation_created
 
@@ -20,7 +20,7 @@ module Api
         @duns_scheme = Common::AdditionalIdentifier::SCHEME_DANDB
         @coh_scheme = Common::AdditionalIdentifier::SCHEME_COMPANIES_HOUSE
         @sf_scheme = Common::SalesforceSearchIds::SFID
-        params[:account_id_type] = params[:account_id_type].downcase.delete('-')
+        params[:account_id_type] = params[:account_id_type].downcase.delete('-') unless @is_mock_id
       end
 
       def create_org_profile
@@ -251,7 +251,7 @@ module Api
         end
       end
 
-      # This is checking for the dummy org (id: 111111111) in params. Sets global variable to true or false, for the rest of controller behavoir.
+      # This is checking for the dummy org (id: 111111111) in params. Sets global variable to true or false, for the rest of controller flow.
       def mock_id_check
         @is_mock_id = Common::ApiHelper.find_mock_organisation(params[:account_id_type], params[:account_id]) if params.present?
       end
