@@ -251,7 +251,7 @@ module Api
         end
       end
 
-      # This is checking for the dummy org (id: 111111111) in params. Sets global variable to true or false, for the rest of controller behavoir.
+      # This is checking for the dummy org (id: 111111111) in params. Sets global variable to true or false, for the rest of controller flow.
       def mock_id_check
         @is_mock_id = Common::ApiHelper.find_mock_organisation(params[:account_id_type], params[:account_id]) if params.present?
       end
