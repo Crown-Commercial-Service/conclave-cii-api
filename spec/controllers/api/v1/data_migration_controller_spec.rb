@@ -3,18 +3,18 @@ require 'rails_helper'
 RSpec.describe Api::V1::DataMigrationController, type: :controller do
   describe 'create_org_profile' do
     let(:ccs_org_id) { nil }
-    let(:jwt_token) { JWT.encode({ roles: '', ciiOrgId: ccs_org_id, aud: ENV['CLIENT_ID'] }, 'test') }
+    let(:jwt_token) { JWT.encode({ roles: '', ciiOrgId: ccs_org_id, aud: ENV.fetch('CLIENT_ID', nil) }, 'test') }
 
     context 'when authorized' do
       before do
         request.headers['x-api-key'] = '6348G438RT834GR4827GRO834G8G348RO8238'
         request.headers['Authorization'] = "Bearer #{jwt_token}"
         sf_params = {
-          'username' => ENV['SALESFORCE_USERNAME'],
-          'password' => ENV['SALESFORCE_PASSWORD'] + ENV['SALESFORCE_SECURITY_TOKEN'],
+          'username' => ENV.fetch('SALESFORCE_USERNAME', nil),
+          'password' => ENV.fetch('SALESFORCE_PASSWORD', nil) + ENV.fetch('SALESFORCE_SECURITY_TOKEN', nil),
           'grant_type' => 'password',
-          'client_id' => ENV['SALESFORCE_CLIENT_ID'],
-          'client_secret' => ENV['SALESFORCE_CLIENT_SECRET']
+          'client_id' => ENV.fetch('SALESFORCE_CLIENT_ID', nil),
+          'client_secret' => ENV.fetch('SALESFORCE_CLIENT_SECRET', nil)
         }
         token_response = File.read('spec/stub_response/tokens/salesforce_token.json')
         sf_response = File.read('spec/stub_response/salesforce/GB-CHC-101123.json')
@@ -62,7 +62,7 @@ RSpec.describe Api::V1::DataMigrationController, type: :controller do
               'User-Agent' => 'Faraday v1.3.0'
             }
           )
-        stub_request(:post, "#{ENV['SALESFORCE_AUTH_URL']}/services/oauth2/token")
+        stub_request(:post, "#{ENV.fetch('SALESFORCE_AUTH_URL', nil)}/services/oauth2/token")
           .with(
             body: sf_params,
             headers: {
@@ -74,7 +74,7 @@ RSpec.describe Api::V1::DataMigrationController, type: :controller do
             }
           )
           .to_return(status: 200, body: token_response, headers: {})
-        stub_request(:get, "#{ENV['SALESFORCE_AUTH_URL']}/services/data/v45.0/query?q=SELECT%20ID,name,Status__c,Supplier_DUNS_Number__c,Company_Registration_Number__c,Account_URN__c%20FROM%20account%20WHERE%20Id='#{valid_id}'")
+        stub_request(:get, "#{ENV.fetch('SALESFORCE_AUTH_URL', nil)}/services/data/v45.0/query?q=SELECT%20ID,name,Status__c,Supplier_DUNS_Number__c,Company_Registration_Number__c,Account_URN__c%20FROM%20account%20WHERE%20Id='#{valid_id}'")
           .with(
             headers: {
               'Accept' => '*/*',
@@ -84,7 +84,7 @@ RSpec.describe Api::V1::DataMigrationController, type: :controller do
             }
           )
           .to_return(status: 200, body: sf_response, headers: {})
-        stub_request(:get, "#{ENV['SALESFORCE_AUTH_URL']}/services/data/v45.0/query?q=SELECT%20ID,name,Status__c,Supplier_DUNS_Number__c,Company_Registration_Number__c,Account_URN__c%20FROM%20account%20WHERE%20Id='#{invalid_id}'")
+        stub_request(:get, "#{ENV.fetch('SALESFORCE_AUTH_URL', nil)}/services/data/v45.0/query?q=SELECT%20ID,name,Status__c,Supplier_DUNS_Number__c,Company_Registration_Number__c,Account_URN__c%20FROM%20account%20WHERE%20Id='#{invalid_id}'")
           .with(
             headers: {
               'Accept' => '*/*',

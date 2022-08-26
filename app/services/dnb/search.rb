@@ -10,8 +10,8 @@ module Dnb
     end
 
     def fetch_token
-      conn = Faraday.new(url: ENV['DNB_API_ENDPOINT'])
-      conn.basic_auth(ENV['DNB_USERNAME'], ENV['DNB_PASSWORD'])
+      conn = Faraday.new(url: ENV.fetch('DNB_API_ENDPOINT', nil))
+      conn.basic_auth(ENV.fetch('DNB_USERNAME', nil), ENV.fetch('DNB_PASSWORD', nil))
       params = { grant_type: 'client_credentials' }.to_json
       resp = conn.post('/v2/token', params, { 'Content-Type' => 'application/json' })
       ApiLogging::Logger.api_status_error('DNB API| method:fetch_token', resp)
@@ -20,7 +20,7 @@ module Dnb
 
     def fetch_results
       token = JSON.parse(fetch_token)
-      conn = Common::ApiHelper.faraday_new(url: ENV['DNB_API_ENDPOINT'])
+      conn = Common::ApiHelper.faraday_new(url: ENV.fetch('DNB_API_ENDPOINT', nil))
       params = { productId: 'cmptcs', versionId: 'v1' }
       conn.authorization :Bearer, token['access_token']
       resp = conn.get("/v1/data/duns/#{@duns_number}", params)

@@ -89,7 +89,7 @@ module Common
       organisation.ccs_org_id = Common::GenerateId.ccs_org_id
       organisation.primary_scheme = primary_scheme_bool # true|false
       organisation.hidden = false
-      organisation.client_id = Common::ApiHelper.find_client(api_key_to_string)
+      organisation.client_id = Common::ApiHelper.find_client(api_key_to_string) if api_key_to_string
       organisation.save
       organisation.ccs_org_id
     end
@@ -117,7 +117,7 @@ module Common
           scheme: scheme,
           id: Common::AdditionalIdentifier::MOCK_ID,
           legalName: 'Nicks Testing Organisation',
-          uri: ''
+          uri: 'https://www.example.com/'
         },
         additionalIdentifiers: [],
         address: {
@@ -128,11 +128,11 @@ module Common
           countryName: 'England'
         },
         contactPoint: {
-          name: '',
-          email: '',
+          name: 'Name',
+          email: 'email@test.com',
           telephone: '01234567890',
-          faxNumber: '',
-          uri: ''
+          faxNumber: '01234567890',
+          uri: 'https://www.example.com/'
         }
       }
     end
