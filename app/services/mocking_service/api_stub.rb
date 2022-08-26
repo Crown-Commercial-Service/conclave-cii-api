@@ -46,12 +46,12 @@ module MockingService
     def url
       case @params[:scheme]
       when Common::AdditionalIdentifier::SCHEME_COMPANIES_HOUSE
-        @api_url = "#{ENV['COMPANIES_HOUSE_API_ENDPOINT']}/company/#{@params[:id]}"
+        @api_url = "#{ENV.fetch('COMPANIES_HOUSE_API_ENDPOINT', nil)}/company/#{@params[:id]}"
       when Common::AdditionalIdentifier::SCHEME_ENG_WALES_CHARITY, Common::AdditionalIdentifier::SCHEME_NORTHEN_IRELAND_CHARITY, Common::AdditionalIdentifier::SCHEME_SCOTISH_CHARITY
-        @api_url = "#{ENV['FINDTHATCHARITY_API_ENDPOINT']}/orgid/#{@params[:scheme]}-#{@params[:id]}.json"
+        @api_url = "#{ENV.fetch('FINDTHATCHARITY_API_ENDPOINT', nil)}/orgid/#{@params[:scheme]}-#{@params[:id]}.json"
       when Common::AdditionalIdentifier::SCHEME_DANDB
         duns_token
-        @api_url = "#{ENV['DNB_API_ENDPOINT']}/v1/data/duns/#{@params[:id]}?productId=cmptcs&versionId=v1"
+        @api_url = "#{ENV.fetch('DNB_API_ENDPOINT', nil)}/v1/data/duns/#{@params[:id]}?productId=cmptcs&versionId=v1"
       when Common::AdditionalIdentifier::SCHEME_NHS
         @api_url = "https://directory.spineservices.nhs.uk/ORD/2-0-0/organisations/#{@params[:id]}"
       end
@@ -59,7 +59,7 @@ module MockingService
 
     def duns_token
       token_response = File.read('spec/stub_response/tokens/dnb_token.json')
-      WebMock.stub_request(:post, "#{ENV['DNB_API_ENDPOINT']}/v2/token")
+      WebMock.stub_request(:post, "#{ENV.fetch('DNB_API_ENDPOINT', nil)}/v2/token")
              .with(
                body: '{"grant_type":"client_credentials"}',
                headers: stub_headers

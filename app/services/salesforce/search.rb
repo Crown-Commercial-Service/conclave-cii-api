@@ -11,16 +11,16 @@ module Salesforce
 
     def post_params
       {
-        'username' => ENV['SALESFORCE_USERNAME'],
-        'password' => ENV['SALESFORCE_PASSWORD'] + ENV['SALESFORCE_SECURITY_TOKEN'],
+        'username' => ENV.fetch('SALESFORCE_USERNAME', nil),
+        'password' => ENV.fetch('SALESFORCE_PASSWORD', nil) + ENV.fetch('SALESFORCE_SECURITY_TOKEN', nil),
         'grant_type' => 'password',
-        'client_id' => ENV['SALESFORCE_CLIENT_ID'],
-        'client_secret' => ENV['SALESFORCE_CLIENT_SECRET']
+        'client_id' => ENV.fetch('SALESFORCE_CLIENT_ID', nil),
+        'client_secret' => ENV.fetch('SALESFORCE_CLIENT_SECRET', nil)
       }
     end
 
     def fetch_token
-      conn = Faraday.new(url: ENV['SALESFORCE_AUTH_URL'])
+      conn = Faraday.new(url: ENV.fetch('SALESFORCE_AUTH_URL', nil))
       params = post_params
       resp = conn.post('/services/oauth2/token', params, { 'Content-Type' => 'application/x-www-form-urlencoded' })
       ApiLogging::Logger.api_status_error('Salesforce method:fetch_token', resp)
@@ -32,7 +32,7 @@ module Salesforce
 
       token = JSON.parse(fetch_token)
       url = "/services/data/v45.0/query?q=SELECT+ID,name,Status__c,Supplier_DUNS_Number__c,Company_Registration_Number__c,Account_URN__c+FROM+account+WHERE+#{build_arguments}"
-      conn = Common::ApiHelper.faraday_new(url: ENV['SALESFORCE_AUTH_URL'], request: { params_encoder: Faraday::FlatParamsEncoder })
+      conn = Common::ApiHelper.faraday_new(url: ENV.fetch('SALESFORCE_AUTH_URL', nil), request: { params_encoder: Faraday::FlatParamsEncoder })
       conn.authorization :Bearer, token['access_token']
       resp = conn.get(url)
       ApiLogging::Logger.api_status_error('Salesforce method:fetch_results', resp)
