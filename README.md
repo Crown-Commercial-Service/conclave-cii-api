@@ -3,8 +3,8 @@ This is the Conclave Central Identity Index (CII) API service.
 
 ## Nomenclature
 
-- **OrganisationSchemeIdentifier**: An organisation is an entity which may include multiple identifiers. A identifier is data related for an organisation for a scheme e.g. Companies House
-- **Scheme**: A scheme is an external register or reference agency
+- **OrganisationSchemeIdentifier**: An organisation is an entity which may include multiple identifiers. A identifier is data related for an organisation for a scheme e.g. Companies House.
+- **Scheme**: A scheme is an external register or reference agency.
 - **SchemeRegister**: Scheme Registers represent an Operator/Legal entity which used to provide unique identifiers for organisations sourced existing public available register lists exposed by existing API’s, e.g. Companies House.
 
 ## Technical documentation
