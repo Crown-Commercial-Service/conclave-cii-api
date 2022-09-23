@@ -76,7 +76,6 @@ module Common
         organisation = OrganisationSchemeIdentifier.find_by(scheme_org_reg_number: id.to_i, scheme_code: scheme)
 
         return id if organisation.blank?
-
       end
     end
 
