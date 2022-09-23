@@ -69,9 +69,15 @@ module Common
       client.id
     end
 
-    # Returns a random 4 digit number, to concatonate onto a dummy id. (Part of work for Nick Fine).
-    def self.generate_random_id_end
-      rand(1000..9998).to_i
+    # Returns a random 4 digit number, to concatonate onto a dummy id.
+    def self.generate_random_id_end(scheme)
+      loop do
+        id = "111#{rand(100000..999999).to_i}"
+        organisation = OrganisationSchemeIdentifier.find_by(scheme_org_reg_number: id.to_i, scheme_code: scheme)
+
+        return id if organisation.blank?
+
+      end
     end
 
     # Returns true or false, depending on if the dummy org is found or not.
@@ -83,7 +89,7 @@ module Common
     def self.add_dummy_org(api_key_to_string, scheme, primary_scheme_bool)
       organisation = OrganisationSchemeIdentifier.new
       organisation.scheme_code = scheme
-      organisation.scheme_org_reg_number = "11111#{Common::ApiHelper.generate_random_id_end}"
+      organisation.scheme_org_reg_number = Common::ApiHelper.generate_random_id_end(scheme)
       organisation.uri = 'test.com'
       organisation.legal_name = 'Nicks Testing Organisation'
       organisation.ccs_org_id = Common::GenerateId.ccs_org_id
