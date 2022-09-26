@@ -104,7 +104,7 @@ module Common
       result = return_mock_organisation(scheme)
       organisation = OrganisationSchemeIdentifier.new # find_by(ccs_org_id: organisation_id)
       organisation[:scheme_code] = result[:identifier][:scheme]
-      organisation[:scheme_org_reg_number] = "11111#{Common::ApiHelper.generate_random_id_end}"
+      organisation[:scheme_org_reg_number] = Common::ApiHelper.generate_random_id_end(result[:identifier][:scheme])
       organisation[:ccs_org_id] = organisation_id
       organisation[:uri] = result[:identifier][:uri]
       organisation[:legal_name] = result[:identifier][:legalName]
