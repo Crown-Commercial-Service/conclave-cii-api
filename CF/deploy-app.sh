@@ -120,6 +120,16 @@ then
     fi
   fi
 
+  if [[ "$CF_SPACE" == "nft" ]]
+  then
+    if [[ ! "$BRANCH" == "nft" ]]
+    then
+      echo "We only deploy the 'nft' branch to the $CF_SPACE cf space"
+      echo "if you want to deploy $BRANCH to $CF_SPACE use -f"
+      exit 1
+    fi
+  fi
+
   if [[ "$CF_SPACE" == "uat" ]]
   then
     if [[ ! "$BRANCH" == "uat" ]]
