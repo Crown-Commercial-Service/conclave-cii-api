@@ -51,11 +51,11 @@ group :development, :test do
   # gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'dotenv-rails', '>= 2.7.6'
-  gem 'i18n-tasks', '>= 1.0.10'
+  gem 'i18n-tasks', '>= 1.0.11'
   gem 'rspec-rails', '>= 5.1.2'
   gem 'rubocop', '>= 1.12.0'
   gem 'rubocop-performance', '>= 1.10.2'
-  gem 'rubocop-rails', '>= 2.9.1'
+  gem 'rubocop-rails', '>= 2.14.2'
   gem 'rubocop-rspec', '>= 2.2.0' # or gem 'rubocop-minitest'
   gem 'brakeman'
   gem 'pry-rails'
