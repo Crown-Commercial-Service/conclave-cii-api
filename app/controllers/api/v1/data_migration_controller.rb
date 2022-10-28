@@ -12,7 +12,7 @@ module Api
 
       attr_accessor :ccs_org_id, :api_result
 
-      def index
+      def create_org_profile
         result = search_scheme_api unless @is_mock_id
         generate_record(result)
         # If the dummy org (id: 111111111) has been found, this will add it to db, and return the ccs_org_id to be rendered.
@@ -22,7 +22,7 @@ module Api
 
       def create_params
         if params.present?
-          schemes = { 'scheme' => params[:scheme], 'id' => params[:id] }
+          schemes = { 'scheme' => params[:account_id_type], 'id' => params[:account_id] }
           params[:identifier] = schemes
           puts 'params'
           puts params
