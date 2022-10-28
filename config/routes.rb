@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   get '/identities/organisations/:ccs_org_id/all', to: 'api/v1/all_registered_organisations_schemes#search_organisation'
   delete '/identities/organisations/:ccs_org_id/schemes/:scheme/identifiers/:id', to: 'api/v1/remove_organisations_additional_identifier#delete_additional_identifier'
   delete '/identities/organisations/:ccs_org_id', to: 'api/v1/remove_organisations#delete_organisation'
-  post '/identities/organisations/schemes/:account_id_type/identifiers/:account_id', to: 'api/v1/data_migration#create_org_profile'
+  post '/identities/organisations/schemes/:scheme/identifiers/:id', to: 'api/v1/data_migration#index'
   get '/identities/organisations/schemes/codes', to: 'api/v1/data_migration_schemes#dm_schemes_helper'
   post '/identities/organisations', to: 'api/v1/create_organisations#index'
 
