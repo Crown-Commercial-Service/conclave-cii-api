@@ -21,13 +21,10 @@ module Api
       end
 
       def create_params
-        if params.present?
-          schemes = { 'scheme' => params[:account_id_type], 'id' => params[:account_id] }
-          params[:identifier] = schemes
-          puts 'params'
-          puts params
-          puts 'params'
-        end
+        return if params.blank?
+
+        schemes = { 'scheme' => params[:account_id_type], 'id' => params[:account_id] }
+        params[:identifier] = schemes
       end
     end
   end

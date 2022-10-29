@@ -125,9 +125,9 @@ RSpec.describe Api::V1::DataMigrationController, type: :controller do
       end
 
       context 'when no params' do
-        it 'returns 404' do
+        it 'returns 400' do
           post :create_org_profile, params: { account_id_type: '', account_id: '' }
-          expect(response).to have_http_status(:not_found)
+          expect(response).to have_http_status(:bad_request)
         end
       end
     end
