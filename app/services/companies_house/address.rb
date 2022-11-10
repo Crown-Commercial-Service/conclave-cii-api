@@ -28,7 +28,10 @@ module CompaniesHouse
     end
 
     def postal_code
-      exists_or_null(@result['registered_office_address']['postal_code'])
+      # Temporary tactical fix, until PPG allows empty postcode string. This is scoped for a future sprint.
+      api_param = @result['registered_office_address']['postal_code']
+
+      api_param.present? ? api_param : 'NA'
     end
 
     def region
