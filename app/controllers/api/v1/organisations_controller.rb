@@ -3,7 +3,7 @@ module Api
     class OrganisationsController < ActionController::API
       include Authorize::Token
       rescue_from ApiValidations::ApiError, with: :return_error_code
-      #before_action :validate_api_key
+      before_action :validate_api_key
       before_action :validate_params
 
       def search_organisation
