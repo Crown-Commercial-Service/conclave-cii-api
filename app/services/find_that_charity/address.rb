@@ -28,7 +28,10 @@ module FindThatCharity
     end
 
     def postal_code
-      exists_or_null(@result['address']['postalCode'])
+      # Temporary tactical fix, until PPG allows empty postcode string. This is scoped for a future sprint.
+      api_param = @result['address']['postalCode']
+
+      api_param.present? ? api_param : 'NA'
     end
 
     def country_name
