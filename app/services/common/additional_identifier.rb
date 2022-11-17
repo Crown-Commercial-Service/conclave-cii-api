@@ -12,6 +12,8 @@ module Common
     SCHEME_DANDB = 'US-DUN'.freeze
     SCHEME_NHS = 'GB-NHS'.freeze
     SCHEME_CCS = 'GB-CCS'.freeze
+    SCHEME_SF_ID = 'SF-ID'.freeze
+    SCHEME_SF_URN = 'SF-URN'.freeze
 
     # The below three constants are required to match the correct uri provided in the identifiers uri property.
     # If you change any of these variable names, it must also be updated in identifier.rb, in the module 'FindThatCharity'
@@ -20,7 +22,7 @@ module Common
     GB_SC_SCHEME_URI_SITE = 'Office of Scottish Charity Regulator'.freeze
 
     def schemes
-      [SCHEME_ENG_WALES_CHARITY, SCHEME_NORTHEN_IRELAND_CHARITY, SCHEME_SCOTISH_CHARITY, SCHEME_COMPANIES_HOUSE, SCHEME_DANDB, SCHEME_NHS]
+      [SCHEME_ENG_WALES_CHARITY, SCHEME_NORTHEN_IRELAND_CHARITY, SCHEME_SCOTISH_CHARITY, SCHEME_COMPANIES_HOUSE, SCHEME_DANDB, SCHEME_NHS, SCHEME_SF_ID, SCHEME_SF_URN]
     end
 
     def dandb_codes
