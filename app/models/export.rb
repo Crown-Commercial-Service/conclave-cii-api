@@ -41,7 +41,7 @@ class Export
     Rails.logger.info "UPLOADING #{file_path} > #{azure_container_name}"
 
     file_name = "#{Date.yesterday}_Organisations.csv"
-    file_content = File.open(file_path, 'rb', &:read)
+    file_content = File.binread(file_path)
     azure_client.create_block_blob(azure_container_name, file_name, file_content)
 
     delete_file(file_path)
@@ -54,13 +54,13 @@ class Export
 
   def self.azure_client_config
     {
-      storage_account_name: ENV['AZURE_ACCOUNT_NAME'],
-      storage_access_key: ENV['AZURE_ACCOUNT_KEY']
+      storage_account_name: ENV.fetch('AZURE_ACCOUNT_NAME', nil),
+      storage_access_key: ENV.fetch('AZURE_ACCOUNT_KEY', nil)
     }
   end
 
   def self.azure_container_name
-    ENV['AZURE_CONTAINER_NAME'] || 'ContainerName'
+    ENV.fetch('AZURE_CONTAINER_NAME', 'ContainerName')
   end
 
   def self.delete_file(file_path)
@@ -68,7 +68,7 @@ class Export
   end
 
   def self.find_organisations
-    OrganisationSchemeIdentifier.where(updated_at: Date.yesterday.beginning_of_day..Date.yesterday.end_of_day)
+    OrganisationSchemeIdentifier.where(updated_at: Date.yesterday.all_day)
   end
 
   def self.success
