@@ -17,7 +17,7 @@ module Api
 
       def validate_params
         validate = ApiValidations::Scheme.new(params, return_organisation_id: true)
-        render json: validate.errors, status: :bad_request unless params[:id] == Common::AdditionalIdentifier::MOCK_ID || validate.valid?
+        render json: validate.errors, status: :bad_request unless validate.valid?
       end
 
       private
