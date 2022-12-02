@@ -109,6 +109,8 @@ module Api
         end
         api_search_result(@id, @scheme)
       end
+      
+      puts "hello"
 
       def coh_api_query
         return unless schemes_check(@coh_scheme)
