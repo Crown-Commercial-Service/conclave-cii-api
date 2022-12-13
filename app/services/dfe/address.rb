@@ -35,7 +35,7 @@ module Dfe
     end
 
     def country_name
-      return 'United Kingdom' unless @result['RscRegion']['Name'].present?
+      return 'United Kingdom' if @result['RscRegion']['Name'].blank?
 
       if @result['RscRegion']['Name'].include? 'England'
         'England'

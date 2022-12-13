@@ -14,9 +14,9 @@ module Dfe
 
     def fetch_results
       post_access_token unless access_token_check
-      resp = Faraday.get("#{ENV['DFE_URL']}/establishment/#{@organisation_code}?subscription-key=true") do |req|
-        req.headers['Authorization'] = "Bearer #{ENV['DFE_ACCESS_TOKEN']}"
-        req.headers['Ocp-Apim-Subscription-Key'] = ENV['DFE_SUBSCRIPTION_KEY']
+      resp = Faraday.get("#{ENV.fetch('DFE_URL', nil)}/establishment/#{@organisation_code}?subscription-key=true") do |req|
+        req.headers['Authorization'] = "Bearer #{ENV.fetch('DFE_ACCESS_TOKEN', nil)}"
+        req.headers['Ocp-Apim-Subscription-Key'] = ENV.fetch('DFE_SUBSCRIPTION_KEY', nil)
       end
       logging(resp)
       @result = ActiveSupport::JSON.decode(resp.body) if resp.status == 200
@@ -29,27 +29,27 @@ module Dfe
     end
 
     def post_access_token
-      response = Faraday.post("#{ENV['DFE_AUTH_URL']}/oauth2/v2.0/token") do |req|
+      response = Faraday.post("#{ENV.fetch('DFE_AUTH_URL', nil)}/oauth2/v2.0/token") do |req|
         req.headers['Content-Type'] = 'application/x-www-form-urlencoded'
         req.body = URI.encode_www_form(data)
       end
 
-      return ENV['DFE_ACCESS_TOKEN'] = JSON.parse(response.body)["access_token"]
+      ENV['DFE_ACCESS_TOKEN'] = JSON.parse(response.body)['access_token']
     end
 
     def data
       {
-        :grant_type => "client_credentials",
-        :client_id => ENV['DFE_AUTH_CLIENT_ID'],
-        :client_secret => ENV['DFE_AUTH_CLIENT_SECRET'],
-        :scope => ENV['DFE_AUTH_SCOPE']
+        grant_type: 'client_credentials',
+        client_id: ENV.fetch('DFE_AUTH_CLIENT_ID', nil),
+        client_secret: ENV.fetch('DFE_AUTH_CLIENT_SECRET', nil),
+        scope: ENV.fetch('DFE_AUTH_SCOPE', nil)
       }
     end
 
     def access_token_check
       return false if ENV['DFE_ACCESS_TOKEN'].blank?
-      
-      decoded_token = (JWT.decode ENV['DFE_ACCESS_TOKEN'], nil, false)[0]
+
+      decoded_token = (JWT.decode ENV.fetch('DFE_ACCESS_TOKEN', nil), nil, false)[0]
 
       return true if decoded_token['exp'] > Time.now.to_i
 
