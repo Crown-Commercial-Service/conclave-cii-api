@@ -12,6 +12,7 @@
   {scheme_name: 'Office of The Scottish Charity Regulator (OSCR)', scheme_register_code: 'GB-SC', scheme_uri: 'https://findthatcharity.uk', scheme_country_code: 'GB', scheme_identifier: 'Registered Charity Number'},
   {scheme_name: 'The Charity Commission for Northern Ireland', scheme_register_code: 'GB-NIC', scheme_uri: 'https://findthatcharity.uk', scheme_country_code: 'GB', scheme_identifier: 'Registered Charity Number'},
   {scheme_name: 'National Health Service Organisations Registry', scheme_register_code: 'GB-NHS', scheme_uri: 'https://www.crowncommercial.gov.uk', scheme_country_code: 'GB', scheme_identifier: 'NHS Registered Number'},
+  {scheme_name: 'Department for Education', scheme_register_code: 'GB-DFE', scheme_uri: 'https://www.crowncommercial.gov.uk', scheme_country_code: 'GB', scheme_identifier: 'Registered DfE URN'},
   {scheme_name: 'The Crown Commercial Service', scheme_register_code: 'GB-CCS', scheme_uri: 'https://www.crowncommercial.gov.uk', scheme_country_code: 'GB', scheme_identifier: 'Crown Commercial Service Internal Number'}
 
 ].each do |rec|

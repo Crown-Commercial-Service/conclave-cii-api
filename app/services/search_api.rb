@@ -21,6 +21,8 @@ class SearchApi
       @result =  get_duns(@organisation_id)
     when Common::AdditionalIdentifier::SCHEME_NHS
       @result =  get_nhs(@organisation_id)
+    when Common::AdditionalIdentifier::SCHEME_DFE
+      @result =  get_dfe(@organisation_id)
     end
 
     @result if @result.present?
@@ -50,6 +52,11 @@ class SearchApi
   def get_nhs(organisation_code)
     nhs = Nhs::Search.new(organisation_code)
     nhs.fetch_results
+  end
+
+  def get_dfe(organisation_code)
+    dfe = Dfe::Search.new(organisation_code)
+    dfe.fetch_results
   end
 
   def get_addtional_identfiers(identfiers)
