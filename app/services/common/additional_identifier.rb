@@ -12,7 +12,7 @@ module Common
     SCHEME_COMPANIES_HOUSE = 'GB-COH'.freeze
     SCHEME_DANDB = 'US-DUN'.freeze
     SCHEME_NHS = 'GB-NHS'.freeze
-    SCHEME_DFE = 'GB-DFE'.freeze
+    SCHEME_DFE = 'GB-EDU'.freeze
     SCHEME_CCS = 'GB-CCS'.freeze
     SCHEME_SF_ID = 'SF-ID'.freeze
     SCHEME_SF_URN = 'SF-URN'.freeze
