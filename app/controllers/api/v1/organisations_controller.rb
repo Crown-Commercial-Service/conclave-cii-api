@@ -3,7 +3,7 @@ module Api
     class OrganisationsController < ActionController::API
       include Authorize::Token
       rescue_from ApiValidations::ApiError, with: :return_error_code
-      before_action :validate_api_key
+      #before_action :validate_api_key
       before_action :validate_params
 
       def search_organisation
@@ -16,6 +16,7 @@ module Api
       end
 
       def validate_params
+        params[:id] = params[:id].upcase if params[:scheme] == Common::AdditionalIdentifier::SCHEME_DFE
         validate = ApiValidations::Scheme.new(params, return_organisation_id: true)
         render json: validate.errors, status: :bad_request unless params[:id] == Common::AdditionalIdentifier::MOCK_ID || validate.valid?
       end

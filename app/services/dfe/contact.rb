@@ -7,11 +7,11 @@ module Dfe
 
     def build_response
       {
-        name: '',
+        name: name,
         email: '',
         telephone: telephone,
         faxNumber: '',
-        uri: url
+        uri: ''
       }
     end
 
@@ -19,8 +19,10 @@ module Dfe
       exists_or_null(@result['TelephoneNum'])
     end
 
-    def url
-      exists_or_null(@result['SchoolWebsite'])
+    def name
+      return '' unless @result.key?('Head') && @result['Head'].key?('HeadFirstName')
+
+      @result['Head']['HeadLastName'] ? "#{@result['Head']['HeadFirstName']} #{@result['Head']['HeadLastName']}" : @result['Head']['HeadFirstName']
     end
 
     private

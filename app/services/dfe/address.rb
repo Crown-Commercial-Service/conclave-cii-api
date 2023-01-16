@@ -35,18 +35,12 @@ module Dfe
     end
 
     def country_name
-      return 'United Kingdom' if @result['RscRegion']['Name'].blank?
+      return 'United Kingdom' if @result['Country']['Name'].blank?
 
-      if @result['RscRegion']['Name'].include? 'England'
-        'England'
-      elsif @result['RscRegion']['Name'].include? 'Wales'
-        'Wales'
-      elsif @result['RscRegion']['Name'].include? 'Ireland'
-        'Northern Ireland'
-      elsif @result['RscRegion']['Name'].include? 'Scotland'
-        'Scotland'
-      else
+      if @result['Country']['Name'].include? 'N/A'
         'United Kingdom'
+      else
+        @result['Country']['Name']
       end
     end
 
