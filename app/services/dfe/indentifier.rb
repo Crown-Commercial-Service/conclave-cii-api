@@ -7,7 +7,7 @@ module Dfe
 
     def build_response
       {
-        scheme: 'GB-DFE',
+        scheme: 'GB-EDU',
         id: organisation_code,
         legalName: legal_name,
         uri: url
