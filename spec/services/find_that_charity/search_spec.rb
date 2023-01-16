@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe FindThatCharity::Search, type: :model do
   let(:ccs_org_id) { '101123' }
-  let(:scheme_register) { FactoryBot.create(:scheme_register) }
-  let(:organisation_scheme_identifier) { FactoryBot.create(:organisation_scheme_identifier, ccs_org_id: ccs_org_id, scheme_code: scheme_register.scheme_register_code) }
+  let(:scheme_register) { create(:scheme_register) }
+  let(:organisation_scheme_identifier) { create(:organisation_scheme_identifier, ccs_org_id: ccs_org_id, scheme_code: scheme_register.scheme_register_code) }
   let(:response_body) do
     {
       id: 'GB-CHC-101123',

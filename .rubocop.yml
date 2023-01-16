@@ -110,6 +110,12 @@ RSpec/MultipleExpectations:
     Max: 3
     Exclude:
         - 'spec/features/**/*'
+        - 'spec/stubs/*'
+
+RSpec:
+  Language:
+    Expectations:
+      - test_expectation
 
 RSpec/ExampleLength:
     Max: 10

@@ -90,7 +90,7 @@ module Common
       organisation.scheme_code = scheme
       organisation.scheme_org_reg_number = Common::ApiHelper.generate_random_id_end(scheme)
       organisation.uri = 'test.com'
-      organisation.legal_name = "Nicks Testing Organisation##{Time.now.strftime('%s%3N')}"
+      organisation.legal_name = "Nicks Testing Organisation##{Time.zone.now.strftime('%s%3N')}"
       organisation.ccs_org_id = Common::GenerateId.ccs_org_id
       organisation.primary_scheme = primary_scheme_bool # true|false
       organisation.hidden = false

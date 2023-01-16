@@ -1,16 +1,16 @@
 require 'rails_helper'
 
-RSpec.describe Api::V1::RemoveOrganisationsAdditionalIdentifierController, type: :controller do
+RSpec.describe Api::V1::RemoveOrganisationsAdditionalIdentifierController do
   describe 'delete_additional_identifier' do
     context 'when authenticated' do
       let(:clientid) { ENV.fetch('CLIENT_ID', nil) }
       let(:ccs_org_id) { nil }
       let(:jwt_token) { JWT.encode({ roles: ENV.fetch('ACCESS_ORGANISATION_ADMIN', nil), ciiOrgId: ccs_org_id, aud: ENV.fetch('CLIENT_ID', nil) }, 'test') }
-      let(:scheme_register) { FactoryBot.create(:scheme_register) }
-      let(:organisation_scheme_identifier) { FactoryBot.create(:organisation_scheme_identifier, scheme_org_reg_number: ccs_org_id, scheme_code: scheme_register.scheme_register_code, ccs_org_id: ccs_org_id, primary_scheme: false) }
+      let(:scheme_register) { create(:scheme_register) }
+      let(:organisation_scheme_identifier) { create(:organisation_scheme_identifier, scheme_org_reg_number: ccs_org_id, scheme_code: scheme_register.scheme_register_code, ccs_org_id: ccs_org_id, primary_scheme: false) }
 
       before do
-        client_registered = FactoryBot.create :client
+        client_registered = create(:client)
         request.headers['x-api-key'] = client_registered.api_key
         request.headers['Authorization'] = "Bearer #{jwt_token}"
         stub_request(:post, "http://www.test.com/security/tokens/validation?client-id=#{clientid}")

@@ -35,7 +35,7 @@ RSpec.describe 'Stub validations', type: :request do
   end
 
   def request_get_headers
-    client_registered = FactoryBot.create :client
+    client_registered = create(:client)
     {
       'x-api-key' => client_registered.api_key,
       'CONTENT_TYPE' => 'application/json',
@@ -44,7 +44,7 @@ RSpec.describe 'Stub validations', type: :request do
   end
 
   def request_post_headers
-    client_registered = FactoryBot.create :client
+    client_registered = create(:client)
     {
       'x-api-key' => client_registered.api_key,
     }
