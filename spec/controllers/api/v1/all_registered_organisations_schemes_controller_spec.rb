@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Api::V1::AllRegisteredOrganisationsSchemesController do
+RSpec.describe Api::V1::AllRegisteredOrganisationsSchemesController, type: :controller do
   describe 'search_organisation' do
     let(:clientid) { ENV.fetch('CLIENT_ID', nil) }
     let(:ccs_org_id) { nil }
@@ -22,13 +22,13 @@ RSpec.describe Api::V1::AllRegisteredOrganisationsSchemesController do
 
     context 'when authorized' do
       before do
-        client_registered = create(:client)
+        client_registered = FactoryBot.create :client
         request.headers['x-api-key'] = client_registered.api_key
         request.headers['Authorization'] = "Bearer #{jwt_token}"
       end
 
       context 'when success' do
-        let(:organisation_scheme_identifier) { create(:organisation_scheme_identifier) }
+        let(:organisation_scheme_identifier) { FactoryBot.create(:organisation_scheme_identifier) }
         let(:ccs_org_id) { organisation_scheme_identifier.ccs_org_id.to_s }
 
         it 'returns 200' do

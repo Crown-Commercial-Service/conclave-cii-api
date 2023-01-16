@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe Client do
-  let(:client_registered) { create(:client) }
+RSpec.describe Client, type: :model do
+  let(:client_registered) { FactoryBot.create :client }
   let(:client_result) { described_class.find(client_registered.id) }
 
   describe 'Registered Client' do

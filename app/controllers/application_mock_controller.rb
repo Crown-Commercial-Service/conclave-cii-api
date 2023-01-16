@@ -10,7 +10,7 @@ class ApplicationMockController < ActionController::API
   def run_mock
     @mock_controller.request = request
     @mock_controller.response = response
-    @mock_controller.validate_params if @mock_controller.respond_to?(:validate_params)
+    @mock_controller.validate_params if @mock_controller.respond_to?('validate_params')
   end
 
   def return_error_code_http

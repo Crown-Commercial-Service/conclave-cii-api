@@ -1,10 +1,10 @@
 require 'rails_helper'
 
-RSpec.describe Api::V1::RemoveOrganisationsController do
+RSpec.describe Api::V1::RemoveOrganisationsController, type: :controller do
   describe 'delete_organisation' do
     context 'when authorized' do
-      let(:scheme_register) { create(:scheme_register) }
-      let(:organisation_scheme_identifier) { create(:organisation_scheme_identifier, scheme_org_reg_number: ccs_org_id, scheme_code: scheme_register.scheme_register_code, ccs_org_id: ccs_org_id) }
+      let(:scheme_register) { FactoryBot.create(:scheme_register) }
+      let(:organisation_scheme_identifier) { FactoryBot.create(:organisation_scheme_identifier, scheme_org_reg_number: ccs_org_id, scheme_code: scheme_register.scheme_register_code, ccs_org_id: ccs_org_id) }
 
       before do
         request.headers['x-api-key'] = '6348G438RT834GR4827GRO834G8G348RO8238'

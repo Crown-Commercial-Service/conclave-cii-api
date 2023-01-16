@@ -1,17 +1,17 @@
 require 'rails_helper'
 
-RSpec.describe Api::V1::SchemesController do
+RSpec.describe Api::V1::SchemesController, type: :controller do
   describe 'get' do
     context 'when authorized' do
       before do
-        client_registered = create(:client)
+        client_registered = FactoryBot.create :client
         request.headers['x-api-key'] = client_registered.api_key
       end
 
       describe 'GET schemes' do
         it 'has a 200 status code' do
           get :schemes
-          expect(response).to have_http_status(:ok)
+          expect(response.status).to eq(200)
         end
 
         it 'Has scheme' do

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Api::V1::DataMigrationController do
+RSpec.describe Api::V1::DataMigrationController, type: :controller do
   describe 'create_org_profile' do
     let(:ccs_org_id) { nil }
     let(:jwt_token) { JWT.encode({ roles: '', ciiOrgId: ccs_org_id, aud: ENV.fetch('CLIENT_ID', nil) }, 'test') }
