@@ -35,10 +35,10 @@ module Dfe
     end
 
     def country_name
-      return 'United Kingdom' if @result['Country']['Name'].blank?
+      return '' if @result['Country']['Name'].blank?
 
       if @result['Country']['Name'].include? 'N/A'
-        'United Kingdom'
+        ''
       else
         @result['Country']['Name']
       end
