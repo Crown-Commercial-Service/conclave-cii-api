@@ -1,4 +1,4 @@
-module Dnb
+module Dfe
   class Address
     def initialize(result)
       super()
@@ -9,33 +9,39 @@ module Dnb
       {
         streetAddress: street_address,
         locality: locality,
-        region: '',
+        region: region,
         postalCode: postal_code,
         countryName: country_name
       }
     end
 
     def street_address
-      "#{exists_or_null(@result['organization']['primaryAddress']['streetAddress']['line1'])}#{street_address_two}"
-    end
-
-    def street_address_two
-      ", #{exists_or_null(@result['organization']['primaryAddress']['streetAddress']['line2'])}" if exists_or_null(@result['organization']['primaryAddress']['streetAddress']['line2']).present?
+      exists_or_null(@result['Address']['Street'])
     end
 
     def locality
-      exists_or_null(@result['organization']['primaryAddress']['addressLocality']['name'])
+      exists_or_null(@result['Address']['Locality'])
+    end
+
+    def region
+      exists_or_null(@result['Address']['Town'])
     end
 
     def postal_code
       # Temporary tactical fix, until PPG allows empty postcode string. This is scoped for a future sprint.
-      api_param = @result['organization']['primaryAddress']['postalCode']
+      api_param = @result['Address']['Postcode']
 
       api_param.present? ? api_param : 'NA'
     end
 
     def country_name
-      exists_or_null(@result['organization']['primaryAddress']['addressCountry']['name'])
+      return 'United Kingdom' if @result['Country']['Name'].blank?
+
+      if @result['Country']['Name'].include? 'N/A'
+        'United Kingdom'
+      else
+        @result['Country']['Name']
+      end
     end
 
     private
