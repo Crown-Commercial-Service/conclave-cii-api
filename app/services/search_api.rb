@@ -51,14 +51,14 @@ class SearchApi
     results
   end
 
-  def get_nhs(organisation_code)
-    nhs = Nhs::Search.new(organisation_code)
-    nhs.fetch_results
-  end
-
   def get_duns_coh(company_reg_number)
     dnb_chn = DnbChn::Search.new(company_reg_number)
     dnb_chn.fetch_results
+  end
+
+  def get_nhs(organisation_code)
+    nhs = Nhs::Search.new(organisation_code)
+    nhs.fetch_results
   end
 
   def get_dfe(organisation_code)
