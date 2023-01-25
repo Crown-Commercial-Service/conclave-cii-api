@@ -21,6 +21,8 @@ class SearchApi
       @result =  get_duns(@organisation_id)
     when Common::AdditionalIdentifier::SCHEME_NHS
       @result =  get_nhs(@organisation_id)
+    when Common::AdditionalIdentifier::SCHEME_DFE
+      @result =  get_dfe(@organisation_id)
     end
 
     @result if @result.present?
@@ -30,7 +32,9 @@ class SearchApi
 
   def get_companies_house(company_reg_number)
     company_api = CompaniesHouse::Search.new(company_reg_number)
-    company_api.fetch_results
+    results = company_api.fetch_results
+    results[:additionalIdentifiers] = get_addtional_identfiers(results[:additionalIdentifiers]) if results.present?
+    results
   end
 
   def get_charity(charity_number, scheme_id)
@@ -40,8 +44,8 @@ class SearchApi
     results
   end
 
-  def get_duns(dnd_number)
-    dnb = Dnb::Search.new(dnd_number)
+  def get_duns(duns_number)
+    dnb = Dnb::Search.new(duns_number)
     results = dnb.fetch_results
     results[:additionalIdentifiers] = get_addtional_identfiers(results[:additionalIdentifiers]) if results.present?
     results
@@ -50,6 +54,16 @@ class SearchApi
   def get_nhs(organisation_code)
     nhs = Nhs::Search.new(organisation_code)
     nhs.fetch_results
+  end
+
+  def get_duns_coh(company_reg_number)
+    dnb_chn = DnbChn::Search.new(company_reg_number)
+    dnb_chn.fetch_results
+  end
+
+  def get_dfe(organisation_code)
+    dfe = Dfe::Search.new(organisation_code)
+    dfe.fetch_results
   end
 
   def get_addtional_identfiers(identfiers)
