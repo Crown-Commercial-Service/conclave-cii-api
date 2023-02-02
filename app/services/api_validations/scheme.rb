@@ -49,7 +49,7 @@ module ApiValidations
       return unless @data[:id]
 
       data_id = Common::ApiHelper.filter_charity_number(@data[:id], @data[:scheme])
-      scheme_identifier = OrganisationSchemeIdentifier.find_by(scheme_org_reg_number: Common::ApiHelper.remove_white_space_from_id(data_id).to_s)
+      scheme_identifier = OrganisationSchemeIdentifier.find_by(scheme_org_reg_number: Common::ApiHelper.remove_white_space_from_id(data_id).to_s, scheme_code: @data[:scheme])
       check_duplicate(scheme_identifier)
     end
 
