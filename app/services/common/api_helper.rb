@@ -90,7 +90,7 @@ module Common
       organisation.scheme_code = scheme
       organisation.scheme_org_reg_number = Common::ApiHelper.generate_random_id_end(scheme)
       organisation.uri = 'test.com'
-      organisation.legal_name = 'Nicks Testing Organisation'
+      organisation.legal_name = "Nicks Testing Organisation##{Time.zone.now.strftime('%s%3N')}"
       organisation.ccs_org_id = Common::GenerateId.ccs_org_id
       organisation.primary_scheme = primary_scheme_bool # true|false
       organisation.hidden = false
@@ -135,8 +135,8 @@ module Common
         contactPoint: {
           name: 'Name',
           email: 'email@test.com',
-          telephone: '01234567890',
-          faxNumber: '01234567890',
+          telephone: '+4407112233445',
+          faxNumber: '+12129876543',
           uri: 'https://www.example.com/'
         }
       }
