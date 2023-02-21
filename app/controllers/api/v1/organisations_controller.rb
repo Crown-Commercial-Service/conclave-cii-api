@@ -16,6 +16,7 @@ module Api
       end
 
       def validate_params
+        params[:id] = params[:id].upcase if params[:scheme].upcase == Common::AdditionalIdentifier::SCHEME_NHS
         validate = ApiValidations::Scheme.new(params, return_organisation_id: true)
         render json: validate.errors, status: :bad_request unless params[:id] == Common::AdditionalIdentifier::MOCK_ID || validate.valid?
       end
