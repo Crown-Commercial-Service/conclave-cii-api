@@ -13,8 +13,6 @@ class SearchApiAdditionalIdentifiers
       @result = get_companies_house_additional(@organisation_id)
     when Common::AdditionalIdentifier::SCHEME_ENG_WALES_CHARITY, Common::AdditionalIdentifier::SCHEME_NORTHEN_IRELAND_CHARITY, Common::AdditionalIdentifier::SCHEME_SCOTISH_CHARITY
       @result = get_charity_additional(@organisation_id, @scheme_id)
-    when Common::AdditionalIdentifier::SCHEME_DANDB
-      @result = get_duns_additional(@organisation_id)
     end
 
     @result if @result.present?
@@ -28,9 +26,5 @@ class SearchApiAdditionalIdentifiers
 
   def get_charity_additional(chartity_number, scheme_id)
     FindThatCharity::AdditionalIdentifier.new(chartity_number, scheme_id).build_response
-  end
-
-  def get_duns_additional(duns_number)
-    Dnb::AdditionalIdentifier.new(duns_number).build_response
   end
 end

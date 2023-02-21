@@ -28,7 +28,7 @@ module CompaniesHouse
       {
         name: name,
         identifier: CompaniesHouse::Indentifier.new(@result).build_response,
-        additionalIdentifiers: additional_identifier_duns,
+        additionalIdentifiers: [],
         address: CompaniesHouse::Address.new(@result).build_response,
         contactPoint: CompaniesHouse::Contact.new(@result).build_response
       }
@@ -36,16 +36,6 @@ module CompaniesHouse
 
     def name
       @result['company_name']
-    end
-
-    def additional_identifier_duns
-      duns_search = DnbChn::AdditionalIdentifier.new(@company_reg_number).build_response
-
-      if duns_search.present?
-        [duns_search]
-      else
-        []
-      end
     end
 
     def logging(resp)
