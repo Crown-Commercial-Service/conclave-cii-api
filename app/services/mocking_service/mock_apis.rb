@@ -33,7 +33,6 @@ module MockingService
       setup_api_stubs
       setup_salesforce_stubs
       setup_salesforce_api
-      setup_duns_coh_api
     end
 
     def setup_api_stubs
@@ -59,16 +58,6 @@ module MockingService
     def setup_salesforce_api
       Dir.each_child('spec/stub_response/api_salesforce') do |filename|
         MockingService::MigrationSalesforceApi.new(get_params(filename))
-      rescue StandardError
-        {}
-      end
-    rescue StandardError
-      {}
-    end
-
-    def setup_duns_coh_api
-      Dir.each_child('spec/stub_response/api_duns_coh_stubs') do |filename|
-        MockingService::ApiDunsCohStub.new(get_params(filename))
       rescue StandardError
         {}
       end
