@@ -1,0 +1,11 @@
+version: "2" # required to adjust maintainability checks
+checks:
+  similar-code:
+    config:
+      threshold: 50
+  identical-code:
+    config:
+      threshold: 50
+  method-complexity:
+    config:
+      threshold: 6
