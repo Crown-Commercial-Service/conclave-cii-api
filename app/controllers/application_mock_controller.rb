@@ -24,11 +24,19 @@ class ApplicationMockController < ActionController::API
   end
 
   def enable_mock_service
+    
     @mock_service = MockingService::MockApis.new
+    if Rails.env.development? || Rails.env.production?
+      puts 'enable mock'
+    end
   end
 
   def disable_mock_service
+    
     @mock_service.disable_mock_service
+    if Rails.env.development? || Rails.env.production?
+      puts 'disable mock'
+    end
   end
 
   def response_result(result)
