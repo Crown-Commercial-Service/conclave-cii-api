@@ -47,7 +47,8 @@ module MockingService
       case @params[:scheme]
       when Common::AdditionalIdentifier::SCHEME_COMPANIES_HOUSE
         @api_url = "#{ENV.fetch('COMPANIES_HOUSE_API_ENDPOINT', nil)}/company/#{@params[:id]}"
-        Rails.logger.warn @api_url if Rails.env.development? || Rails.env.production?
+        Rails.logger.info @api_url if Rails.env.development? || Rails.env.production?
+        @api_url
       when Common::AdditionalIdentifier::SCHEME_ENG_WALES_CHARITY, Common::AdditionalIdentifier::SCHEME_NORTHEN_IRELAND_CHARITY, Common::AdditionalIdentifier::SCHEME_SCOTISH_CHARITY
         @api_url = "#{ENV.fetch('FINDTHATCHARITY_API_ENDPOINT', nil)}/orgid/#{@params[:scheme]}-#{@params[:id]}.json"
       when Common::AdditionalIdentifier::SCHEME_DANDB
