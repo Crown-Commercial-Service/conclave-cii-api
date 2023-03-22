@@ -24,6 +24,7 @@ module ApiLogging
       ApiLogging::Logger.fatal("#{msg} 403 ERROR #{resp.to_json}") if resp.status == 403
       ApiLogging::Logger.fatal("#{msg} 401 ERROR #{resp.to_json}") if resp.status == 401
       ApiLogging::Logger.fatal("#{msg} 429 ERROR Too Many Requests #{resp.to_json}") if resp.status == 429
+      ApiLogging::Logger.fatal("#{msg} 599 NETWORK ERROR #{resp.to_json}") if resp.status == 599
     end
 
     def faraday_events
