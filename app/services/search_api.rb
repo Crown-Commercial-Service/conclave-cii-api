@@ -23,6 +23,8 @@ class SearchApi
       @result =  get_nhs(@organisation_id)
     when Common::AdditionalIdentifier::SCHEME_DFE
       @result =  get_dfe(@organisation_id)
+    when Common::AdditionalIdentifier::SCHEME_PPON
+      @result =  get_ppon(@organisation_id, @ccs_org_id)
     end
 
     @result if @result.present?
@@ -64,6 +66,11 @@ class SearchApi
   def get_dfe(organisation_code)
     dfe = Dfe::Search.new(organisation_code)
     dfe.fetch_results
+  end
+
+  def get_ppon(organisation_code, ccs_org_id)
+    ppon = Ppon::Search.new(organisation_code, ccs_org_id)
+    ppon.fetch_results
   end
 
   def get_addtional_identfiers(identfiers)
