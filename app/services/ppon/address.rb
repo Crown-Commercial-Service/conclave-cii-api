@@ -1,9 +1,5 @@
 module Ppon
   class Address
-    def initialize
-      super()
-    end
-
     def build_response
       {
         streetAddress: '',

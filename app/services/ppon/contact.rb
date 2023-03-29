@@ -1,9 +1,5 @@
 module Ppon
   class Contact
-    def initialize
-      super()
-    end
-
     def build_response
       {
         name: '',

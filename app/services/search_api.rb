@@ -11,6 +11,7 @@ class SearchApi
     @address_lookup = address_lookup
   end
 
+  # rubocop:disable Metrics/CyclomaticComplexity
   def call
     case @scheme_id
     when Common::AdditionalIdentifier::SCHEME_COMPANIES_HOUSE
@@ -29,6 +30,7 @@ class SearchApi
 
     @result if @result.present?
   end
+  # rubocop:enable Metrics/CyclomaticComplexity
 
   private
 

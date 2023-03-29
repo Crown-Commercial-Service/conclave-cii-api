@@ -36,11 +36,11 @@ module Api
       def validate_params
         validate = ApiValidations::UpdateOrganisation.new(params)
         return render json: validate.errors, status: :bad_request unless validate.valid?
-        
+
         return unless params[:scheme].to_s.upcase == Common::AdditionalIdentifier::SCHEME_PPON
 
-        PPON_PATTERN = /^[A-Z]{2}\d{4}[A-Z]{2}\d$/.freeze
-        render json: '', status: :bad_request unless check_ppon_identifier(params[:ccs_org_id]) && PPON_PATTERN.match?(params[:id].to_s)
+        ppon_pattern = /^[A-Z]{2}\d{4}[A-Z]{2}\d$/.freeze
+        render json: '', status: :bad_request unless check_ppon_identifier(params[:ccs_org_id]) && ppon_pattern.match?(params[:id].to_s)
       end
 
       def check_ppon_identifier(ccs_org_id)
