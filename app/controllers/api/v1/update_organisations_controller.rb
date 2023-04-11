@@ -76,7 +76,6 @@ module Api
         @ccs_org_id = organisation.present? ? params[:ccs_org_id] : nil
       end
 
-      # rubocop:disable Metrics/AbcSize
       def create_organisation
         organisation = OrganisationSchemeIdentifier.new
         organisation[:scheme_code] = @api_result[:identifier][:scheme]
@@ -90,7 +89,6 @@ module Api
         organisation.save
         @ccs_org_id = organisation.present? ? params[:ccs_org_id] : nil
       end
-      # rubocop:enable Metrics/AbcSize
 
       def return_error_code(code)
         render json: '', status: code.to_s
