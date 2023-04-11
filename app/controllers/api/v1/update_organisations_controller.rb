@@ -86,7 +86,7 @@ module Api
         organisation[:legal_name] = @api_result[:identifier][:legalName]
         organisation[:primary_scheme] = false
         organisation[:hidden] = false
-        organisation[:client_id] = Common::ApiHelper.find_client(api_key_to_string)
+        # organisation[:client_id] = Common::ApiHelper.find_client(api_key_to_string)
         organisation.save
         @ccs_org_id = organisation.present? ? params[:ccs_org_id] : nil
       end
