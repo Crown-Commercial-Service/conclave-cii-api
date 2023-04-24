@@ -10,7 +10,7 @@ module Api
 
       def delete_additional_identifier
         # While PPON is being developed, we want any related CII functionality to be inaccessible temporarily.
-        return render json: '', status: :bad_request if params[:scheme].upcase == Common::AdditionalIdentifier::SCHEME_PPON
+        return render json: '', status: :method_not_allowed if params[:scheme].upcase == Common::AdditionalIdentifier::SCHEME_PPON
 
         delete_organisation
         render json: '', status: :ok
