@@ -16,23 +16,23 @@ module DnbChn
     end
 
     def street_address
-      "#{exists_or_null(@result&.dig('organization','primaryAddress','streetAddress','line1'))}#{street_address_two}"
+      "#{exists_or_null(@result&.dig('organization', 'primaryAddress', 'streetAddress', 'line1'))}#{street_address_two}"
     end
 
     def street_address_two
-      ", #{exists_or_null(@result&.dig('organization','primaryAddress','streetAddress','line2'))}" if @result&.dig('organization', 'primaryAddress', 'streetAddress', 'line2').present?
+      ", #{exists_or_null(@result&.dig('organization', 'primaryAddress', 'streetAddress', 'line2'))}" if @result&.dig('organization', 'primaryAddress', 'streetAddress', 'line2').present?
     end
 
     def locality
-      exists_or_null(@result&.dig('organization','primaryAddress','addressLocality','name'))
+      exists_or_null(@result&.dig('organization', 'primaryAddress', 'addressLocality', 'name'))
     end
 
     def postal_code
-      exists_or_null(@result&.dig('organization','primaryAddress','postalCode'))
+      exists_or_null(@result&.dig('organization', 'primaryAddress', 'postalCode'))
     end
 
     def country_name
-      exists_or_null(@result&.dig('organization','primaryAddress','addressCountry','name'))
+      exists_or_null(@result&.dig('organization', 'primaryAddress', 'addressCountry', 'name'))
     end
 
     private

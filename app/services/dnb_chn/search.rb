@@ -57,7 +57,7 @@ module DnbChn
     end
 
     def name
-      exists_or_null(@result&.dig('organization','primaryName'))
+      exists_or_null(@result&.dig('organization', 'primaryName'))
     end
 
     private

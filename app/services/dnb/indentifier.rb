@@ -15,11 +15,11 @@ module Dnb
     end
 
     def duns_number
-      exists_or_null(@result&.dig('organization','duns'))
+      exists_or_null(@result&.dig('organization', 'duns'))
     end
 
     def legal_name
-      exists_or_null(@result&.dig('organization','primaryName'))
+      exists_or_null(@result&.dig('organization', 'primaryName'))
     end
 
     private
