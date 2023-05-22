@@ -16,26 +16,26 @@ module Dnb
     end
 
     def street_address
-      "#{exists_or_null(@result['organization']['primaryAddress']['streetAddress']['line1'])}#{street_address_two}"
+      "#{exists_or_null(@result&.dig('organization','primaryAddress','streetAddress','line1'))}#{street_address_two}"
     end
 
     def street_address_two
-      ", #{exists_or_null(@result['organization']['primaryAddress']['streetAddress']['line2'])}" if exists_or_null(@result['organization']['primaryAddress']['streetAddress']['line2']).present?
+      ", #{exists_or_null(@result&.dig('organization','primaryAddress','streetAddress','line2'))}" if @result&.dig('organization', 'primaryAddress', 'streetAddress', 'line2').present?
     end
 
     def locality
-      exists_or_null(@result['organization']['primaryAddress']['addressLocality']['name'])
+      exists_or_null(@result&.dig('organization','primaryAddress','addressLocality','name'))
     end
 
     def postal_code
       # Temporary tactical fix, until PPG allows empty postcode string. This is scoped for a future sprint.
-      api_param = @result['organization']['primaryAddress']['postalCode']
+      api_param = @result&.dig('organization','primaryAddress','postalCode')
 
       api_param.present? ? api_param : 'NA'
     end
 
     def country_name
-      exists_or_null(@result['organization']['primaryAddress']['addressCountry']['name'])
+      exists_or_null(@result&.dig('organization','primaryAddress','addressCountry','name'))
     end
 
     private

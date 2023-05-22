@@ -16,15 +16,15 @@ module CompaniesHouse
     end
 
     def street_address
-      "#{exists_or_null(@result['registered_office_address']['address_line_1'])}#{street_address_two}"
+      "#{exists_or_null(@result&.dig('registered_office_address','address_line_1'))}#{street_address_two}"
     end
 
     def street_address_two
-      ", #{exists_or_null(@result['registered_office_address']['address_line_2'])}" if exists_or_null(@result['registered_office_address']['address_line_2']).present?
+      ", #{exists_or_null(@result&.dig('registered_office_address','address_line_2'))}" if exists_or_null(@result&.dig('registered_office_address','address_line_2')).present?
     end
 
     def locality
-      exists_or_null(@result['registered_office_address']['locality'])
+      exists_or_null(@result&.dig('registered_office_address','locality'))
     end
 
     def postal_code
@@ -35,11 +35,11 @@ module CompaniesHouse
     end
 
     def region
-      exists_or_null(@result['registered_office_address']['region'])
+      exists_or_null(@result&.dig('registered_office_address','region'))
     end
 
     def country_name
-      country = exists_or_null(@result['registered_office_address']['country'])
+      country = exists_or_null(@result&.dig('registered_office_address','country'))
       country.present? ? country : ''
     end
 
