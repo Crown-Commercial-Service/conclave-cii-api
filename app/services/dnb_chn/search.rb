@@ -22,11 +22,11 @@ module DnbChn
       token = JSON.parse(fetch_token)
       conn = Common::ApiHelper.faraday_new(url: ENV.fetch('DNB_API_ENDPOINT', nil))
       conn.authorization :Bearer, token['access_token']
-      params = { registrationNumbers: [@company_reg_number] }.to_json
-      resp = conn.post('/v1/search/criteria', params, { 'Content-Type' => 'application/json' })
+      params = { registrationNumber: @company_reg_number, countryISOAlpha2Code: 'GB' }
+      resp = conn.get('/v1/match/cleanseMatch', params)
       logging(resp)
       @result = res_init(resp)
-      if resp.status == 200 && @result.key?('organization') && @result['organization']['dunsControlStatus']['isOutOfBusiness'] == false
+      if resp.status == 200 && @result.key?('organization') && @result['organization']['dunsControlStatus']['operatingStatus']['description'] == "Active"
         build_response
       else
         false
@@ -75,7 +75,7 @@ module DnbChn
 
     def res_init(api_response)
       result_resp = ActiveSupport::JSON.decode(api_response.body) if api_response.status == 200
-      result_resp['searchCandidates'][0]
+      result_resp['matchCandidates'][0]
     end
   end
 end
