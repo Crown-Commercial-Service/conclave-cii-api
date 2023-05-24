@@ -26,7 +26,7 @@ module DnbChn
       resp = conn.get('/v1/match/cleanseMatch', params)
       logging(resp)
       @result = res_init(resp)
-      if resp.status == 200 && @result.key?('organization') && @result['organization']['dunsControlStatus']['operatingStatus']['description'] == "Active"
+      if resp.status == 200 && @result.key?('organization') && @result.dig('organization', 'dunsControlStatus', 'operatingStatus', 'description') == 'Active'
         build_response
       else
         false
