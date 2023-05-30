@@ -56,7 +56,7 @@ module Authorize
     end
     # rubocop:enable Style/GuardClause
 
-    def registered_orgs_controller_role_check
+    def access_to_hidden_identifiers
       decoded_token = Common::ApiHelper.decode_token(request.headers)
       return true if decoded_token.present? && decoded_token[0]['roles'].include?(ENV.fetch('ACCESS_MANAGE_SUBSCRIPTIONS', nil))
 

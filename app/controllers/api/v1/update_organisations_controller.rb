@@ -1,11 +1,9 @@
 module Api
   module V1
     class UpdateOrganisationsController < ActionController::API
-      include Authorize::Token
       include Authorize::AuthorizationMethods
       rescue_from ApiValidations::ApiError, with: :return_error_code
-      before_action :validate_api_key
-      before_action :validate_user
+      before_action :validate_ccs_org_user_or_api_key
       # This is checking for the dummy org (id: 111111111) in params. must be done first, to stop external api call.
       before_action :mock_id_check
       before_action :validate_params
@@ -37,7 +35,20 @@ module Api
 
       def validate_params
         validate = ApiValidations::UpdateOrganisation.new(params)
-        render json: validate.errors, status: :bad_request unless validate.valid?
+        return render json: validate.errors, status: :bad_request unless validate.valid?
+
+        return unless params[:scheme].to_s.upcase == Common::AdditionalIdentifier::SCHEME_PPON
+
+        ppon_pattern = /^[A-Z]{2}\d{4}[A-Z]{2}\d$/.freeze
+        render json: '', status: :bad_request unless check_ppon_identifier(params[:ccs_org_id]) && ppon_pattern.match?(params[:id].to_s)
+      end
+
+      def check_ppon_identifier(ccs_org_id)
+        result = Common::RegisteredOrganisationResponse.new(ccs_org_id, hidden: false).response_payload
+
+        result[0][:additionalIdentifiers]&.none? do |identifier|
+          identifier[:scheme].to_s.upcase == Common::AdditionalIdentifier::SCHEME_PPON
+        end
       end
 
       # This is checking for the dummy org (id: 111111111) in params. Sets global variable to true or false, for the rest of controller behavoir.
@@ -65,7 +76,6 @@ module Api
         @ccs_org_id = organisation.present? ? params[:ccs_org_id] : nil
       end
 
-      # rubocop:disable Metrics/AbcSize
       def create_organisation
         organisation = OrganisationSchemeIdentifier.new
         organisation[:scheme_code] = @api_result[:identifier][:scheme]
@@ -75,11 +85,10 @@ module Api
         organisation[:legal_name] = @api_result[:identifier][:legalName]
         organisation[:primary_scheme] = false
         organisation[:hidden] = false
-        organisation[:client_id] = Common::ApiHelper.find_client(api_key_to_string)
+        # organisation[:client_id] = Common::ApiHelper.find_client(api_key_to_string)
         organisation.save
         @ccs_org_id = organisation.present? ? params[:ccs_org_id] : nil
       end
-      # rubocop:enable Metrics/AbcSize
 
       def return_error_code(code)
         render json: '', status: code.to_s
