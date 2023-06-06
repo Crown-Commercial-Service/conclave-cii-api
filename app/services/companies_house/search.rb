@@ -12,6 +12,7 @@ module CompaniesHouse
       conn = Common::ApiHelper.faraday_new(url: ENV.fetch('COMPANIES_HOUSE_API_ENDPOINT', nil))
       conn.basic_auth("#{ENV.fetch('COMPANIES_HOUSE_API_TOKEN', nil)}:", '')
       resp = conn.get("/company/#{@company_reg_number}")
+      puts resp.inspect 
       logging(resp)
       @result = ActiveSupport::JSON.decode(resp.body) if resp.status == 200
 
@@ -50,7 +51,7 @@ module CompaniesHouse
 
     def logging(resp)
       ApiLogging::Logger.api_status_error('Companies House API | method:fetch_results', resp)
-      ApiLogging::Logger.info(resp.headers['X-RateLimit-Remain'])
+      ApiLogging::Logger.info("Companies House API | Rate Limit remaining: #{resp.headers['x-ratelimit-remain']}")
     end
   end
 end

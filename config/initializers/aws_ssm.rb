@@ -25,15 +25,15 @@ def set_env(ssm_client, params_list)
 	params_list.each do |param_name|
 		ENV[param_name] = ssm_client.get_parameter({ name: "/conclave-cii/#{param_name}", with_decryption: true })[:parameter][:value]
 	end
-	ENV['ROLLBAR_ACCESS_TOKEN'] = ssm_client.get_parameter({ name: "/conclave-cii/ROLLBAR_ACCESS_TOKEN", with_decryption: true })[:parameter][:value]
-	ENV['SERVER_ENV_NAME'] = ssm_client.get_parameter({ name: "/conclave-cii/SERVER_ENV_NAME", with_decryption: true })[:parameter][:value]
 	config_rollbar if ENV['ROLLBAR_ACCESS_TOKEN'].present?
 end
 
 def config_rollbar
 	Rollbar.configure do |config|
+	  
 		config.access_token = ENV['ROLLBAR_ACCESS_TOKEN']
 		config.environment = ENV['SERVER_ENV_NAME']
+	  
 	end
 	Rails.logger.info('App Deployed & Rollbar Successfully Configured')
 	Rollbar.info('App Deployed & Rollbar Successfully Configured')
