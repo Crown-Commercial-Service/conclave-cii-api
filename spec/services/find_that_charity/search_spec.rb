@@ -74,7 +74,7 @@ RSpec.describe FindThatCharity::Search, type: :model do
         headers: {
           'Accept' => '*/*',
           'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-          'User-Agent' => 'Faraday v1.3.0'
+          'User-Agent' => 'Faraday v1.10.3'
         }
       )
       .to_return(status: 200, body: response_body.to_json, headers: {})
