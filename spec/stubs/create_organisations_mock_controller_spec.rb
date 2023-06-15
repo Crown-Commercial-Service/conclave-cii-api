@@ -35,7 +35,7 @@ RSpec.describe 'Stub validations', type: :request do
   end
 
   def request_get_headers
-    client_registered = FactoryBot.create :client
+    client_registered = create(:client)
     {
       'x-api-key' => client_registered.api_key,
       'CONTENT_TYPE' => 'application/json',
@@ -44,12 +44,12 @@ RSpec.describe 'Stub validations', type: :request do
   end
 
   def request_post_headers
-    client_registered = FactoryBot.create :client
+    client_registered = create(:client)
     {
       'x-api-key' => client_registered.api_key,
     }
   end
-   # rubocop:disable RSpec/NoExpectationExample
+  # rubocop:disable RSpec/NoExpectationExample
   Dir.each_child('spec/stub_response/api_stubs') do |filename|
     describe 'Test mock services includes salesforce mock' do
       it filename do
@@ -64,5 +64,5 @@ RSpec.describe 'Stub validations', type: :request do
       end
     end
   end
-   # rubocop:enable RSpec/NoExpectationExample
+  # rubocop:enable RSpec/NoExpectationExample
 end
