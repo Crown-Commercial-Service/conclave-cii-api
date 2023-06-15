@@ -49,7 +49,7 @@ RSpec.describe 'Stub validations', type: :request do
       'x-api-key' => client_registered.api_key,
     }
   end
-
+   # rubocop:disable RSpec/NoExpectationExample
   Dir.each_child('spec/stub_response/api_stubs') do |filename|
     describe 'Test mock services includes salesforce mock' do
       it filename do
@@ -64,4 +64,5 @@ RSpec.describe 'Stub validations', type: :request do
       end
     end
   end
+   # rubocop:enable RSpec/NoExpectationExample
 end
