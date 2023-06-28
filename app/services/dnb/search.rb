@@ -58,7 +58,7 @@ module Dnb
     end
 
     def name
-      exists_or_null(@result['organization']['primaryName'])
+      exists_or_null(@result&.dig('organization', 'primaryName'))
     end
 
     private
@@ -71,7 +71,7 @@ module Dnb
 
     def logging(resp)
       ApiLogging::Logger.api_status_error('DNB API| method:fetch_results', resp)
-      ApiLogging::Logger.info(resp.headers['X-RateLimit-Remain'])
+      # ApiLogging::Logger.info(resp.headers['X-RateLimit-Remain'])
     end
   end
 end

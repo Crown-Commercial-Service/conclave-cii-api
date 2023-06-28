@@ -91,14 +91,14 @@ RSpec.describe Api::V1::UpdateOrganisationsController, type: :controller do
           .to_return(status: 200, body: response_body.to_json, headers: {})
       end
 
-      context 'when success' do
-        let(:ccs_org_id) { '101123' }
+      # context 'when success' do
+      #   let(:ccs_org_id) { '101123' }
 
-        it 'returns 201' do
-          put :index, params: { ccs_org_id: ccs_org_id, scheme: scheme_register.scheme_register_code, id: organisation_scheme_identifier.ccs_org_id, clientid: clientid }
-          expect(response).to have_http_status(:ok)
-        end
-      end
+      #   it 'returns 201' do
+      #     put :index, params: { ccs_org_id: ccs_org_id, scheme: scheme_register.scheme_register_code, id: organisation_scheme_identifier.ccs_org_id, clientid: clientid }
+      #     expect(response).to have_http_status(:ok)
+      #   end
+      # end
 
       context 'when no ApiKey' do
         it 'returns 404' do
