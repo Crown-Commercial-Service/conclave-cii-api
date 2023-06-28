@@ -1,5 +1,5 @@
 # CONCLAVE CII API
-This is the Conclave Central Identity Index (CII) API service.
+This is the Conclave Central Identity Index (CII) API service
 
 ## Nomenclature
 
