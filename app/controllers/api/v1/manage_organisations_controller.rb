@@ -9,8 +9,9 @@ module Api
       before_action :validate_params
 
       def search_organisation
-        scheme_result = api_result
-        if scheme_result.blank?
+        scheme_result = api_result.except(:address, :contactPoint)
+        # While PPON is being developed, we want any related CII functionality to be inaccessible temporarily.
+        if scheme_result.blank? || params[:scheme].upcase == Common::AdditionalIdentifier::SCHEME_PPON
           render json: '', status: :not_found
         else
           render json: scheme_result

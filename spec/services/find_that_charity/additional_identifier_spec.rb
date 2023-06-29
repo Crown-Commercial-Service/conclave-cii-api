@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe FindThatCharity::AdditionalIdentifier, type: :model do
   let(:ccs_org_id) { '101123' }
-  let(:scheme_register) { FactoryBot.create(:scheme_register) }
-  let(:organisation_scheme_identifier) { FactoryBot.create(:organisation_scheme_identifier, ccs_org_id: ccs_org_id, scheme_code: scheme_register.scheme_register_code) }
+  let(:scheme_register) { create(:scheme_register) }
+  let(:organisation_scheme_identifier) { create(:organisation_scheme_identifier, ccs_org_id: ccs_org_id, scheme_code: scheme_register.scheme_register_code) }
   let(:response_body) do
     {
       id: 'GB-CHC-101123',
@@ -68,7 +68,7 @@ RSpec.describe FindThatCharity::AdditionalIdentifier, type: :model do
         headers: {
           'Accept' => '*/*',
           'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-          'User-Agent' => 'Faraday v1.3.0'
+          'User-Agent' => 'Faraday v1.10.3'
         }
       )
       .to_return(status: 200, body: response_body.to_json, headers: {})

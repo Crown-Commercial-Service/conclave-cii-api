@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe SchemeRegister, type: :model do
-  let(:scheme_register) { FactoryBot.create :scheme_register }
+RSpec.describe SchemeRegister do
+  let(:scheme_register) { create(:scheme_register) }
 
   describe 'Scheme Register' do
     it 'Has scheme_register_code' do

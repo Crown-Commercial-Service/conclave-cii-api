@@ -9,10 +9,10 @@ module Api
       def search_organisation
         params[:ccs_org_id] = search_organisation_by_scheme if @scheme_id
 
-        result = Common::RegisteredOrganisationResponse.new(params[:ccs_org_id], hidden: registered_orgs_controller_role_check).response_payload if params[:ccs_org_id]
+        result = Common::RegisteredOrganisationResponse.new(params[:ccs_org_id], hidden: access_to_hidden_identifiers).response_payload if params[:ccs_org_id]
 
         if result.present?
-          render json: build_response(result), status: :ok
+          render json: result[0], status: :ok
         else
           render json: '', status: :not_found
         end
@@ -24,12 +24,6 @@ module Api
 
         result = OrganisationSchemeIdentifier.find_by(scheme_org_reg_number: id, scheme_code: scheme)
         return result[:ccs_org_id] if result.present? && result[:ccs_org_id].present? && !result['hidden']
-      end
-
-      def build_response(result)
-        api_result = SearchApi.new(result[0][:identifier][:id], result[0][:identifier][:scheme], address_lookup: true).call
-        result[0][:address] = Common::AddressHelper.new(api_result).build_response
-        result[0]
       end
 
       def validate_params

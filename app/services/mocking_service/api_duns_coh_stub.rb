@@ -15,8 +15,8 @@ module MockingService
     end
 
     def stub_request
-      WebMock.stub_request(:post, url)
-             .with(headers: stub_headers, body: "{\"registrationNumbers\":[\"#{@params[:id]}\"]}")
+      WebMock.stub_request(:get, url)
+             .with(headers: stub_headers)
              .to_return(status: http_status, body: @result, headers: {})
     end
 
@@ -24,7 +24,7 @@ module MockingService
       {
         'Accept' => '*/*',
         'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-        'User-Agent' => 'Faraday v1.3.0'
+        'User-Agent' => 'Faraday v1.10.3'
       }
     end
 
@@ -32,8 +32,8 @@ module MockingService
       {
         'Accept' => '*/*',
         'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-        'Content-Type' => 'application/x-www-form-urlencoded',
-        'User-Agent' => 'Faraday v1.3.0'
+        'Content-Type' => 'application/json',
+        'User-Agent' => 'Faraday v1.10.3'
       }
     end
 
@@ -44,7 +44,7 @@ module MockingService
 
     def url
       duns_token
-      @api_url = "#{ENV.fetch('DNB_API_ENDPOINT', nil)}/v1/search/criteria"
+      @api_url = "#{ENV.fetch('DNB_API_ENDPOINT', nil)}/v1/match/cleanseMatch?registrationNumber=#{@params[:id]}&countryISOAlpha2Code=GB"
     end
 
     def duns_token
