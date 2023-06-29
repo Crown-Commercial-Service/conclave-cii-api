@@ -25,7 +25,7 @@ module MockingService
       {
         'Accept' => '*/*',
         'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-        'User-Agent' => 'Faraday v1.3.0'
+        'User-Agent' => 'Faraday v1.10.3'
       }
     end
 
@@ -33,8 +33,9 @@ module MockingService
       {
         'Accept' => '*/*',
         'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+        'Authorization' => 'Basic bndmaWViZmlid2VpYmZ1ZXdiZmJ1ZXdiZnVld3U6d2RvaWVvaWVmZW93aWZvZXdvZmppb2Vyd2Y=',
         'Content-Type' => 'application/json',
-        'User-Agent' => 'Faraday v1.3.0'
+        'User-Agent' => 'Faraday v1.10.3'
       }
     end
 
@@ -47,6 +48,8 @@ module MockingService
       case @params[:scheme]
       when Common::AdditionalIdentifier::SCHEME_COMPANIES_HOUSE
         @api_url = "#{ENV.fetch('COMPANIES_HOUSE_API_ENDPOINT', nil)}/company/#{@params[:id]}"
+        Rails.logger.info @api_url if Rails.env.development? || Rails.env.production?
+        @api_url
       when Common::AdditionalIdentifier::SCHEME_ENG_WALES_CHARITY, Common::AdditionalIdentifier::SCHEME_NORTHEN_IRELAND_CHARITY, Common::AdditionalIdentifier::SCHEME_SCOTISH_CHARITY
         @api_url = "#{ENV.fetch('FINDTHATCHARITY_API_ENDPOINT', nil)}/orgid/#{@params[:scheme]}-#{@params[:id]}.json"
       when Common::AdditionalIdentifier::SCHEME_DANDB

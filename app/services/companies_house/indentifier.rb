@@ -15,11 +15,11 @@ module CompaniesHouse
     end
 
     def id
-      exists_or_null(@result['company_number'])
+      exists_or_null(@result&.dig('company_number'))
     end
 
     def legal_name
-      exists_or_null(@result['company_name'])
+      exists_or_null(@result&.dig('company_name'))
     end
 
     private
