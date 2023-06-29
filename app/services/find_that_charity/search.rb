@@ -64,14 +64,14 @@ module FindThatCharity
     end
 
     def filter_charity_number(charity_number, scheme_id)
-      charity_number = Common::ApiHelper.remove_nic(charity_number) if Common::AdditionalIdentifier::SCHEME_NORTHEN_IRELAND_CHARITY == scheme_id
-      charity_number = Common::ApiHelper.add_sc(charity_number) if Common::AdditionalIdentifier::SCHEME_SCOTISH_CHARITY == scheme_id
+      charity_number = Common::ApiHelper.remove_nic(charity_number) if scheme_id == Common::AdditionalIdentifier::SCHEME_NORTHEN_IRELAND_CHARITY
+      charity_number = Common::ApiHelper.add_sc(charity_number) if scheme_id == Common::AdditionalIdentifier::SCHEME_SCOTISH_CHARITY
       charity_number
     end
 
     def logging(resp)
       ApiLogging::Logger.api_status_error('Find that Charity | method:fetch_results', resp)
-      ApiLogging::Logger.info(resp.headers['X-RateLimit-Remain'])
+      # ApiLogging::Logger.info(resp.headers['X-RateLimit-Remain'])
     end
   end
 end
