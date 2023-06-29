@@ -28,18 +28,18 @@ module Common
     end
 
     def self.filter_charity_number(charity_number, scheme_id)
-      charity_number = Common::ApiHelper.add_nic(charity_number) if Common::AdditionalIdentifier::SCHEME_NORTHEN_IRELAND_CHARITY == scheme_id
-      charity_number = Common::ApiHelper.add_sc(charity_number) if Common::AdditionalIdentifier::SCHEME_SCOTISH_CHARITY == scheme_id
+      charity_number = Common::ApiHelper.add_nic(charity_number) if scheme_id == Common::AdditionalIdentifier::SCHEME_NORTHEN_IRELAND_CHARITY
+      charity_number = Common::ApiHelper.add_sc(charity_number) if scheme_id == Common::AdditionalIdentifier::SCHEME_SCOTISH_CHARITY
       charity_number
     end
 
     def self.filter_sc(charity_number, scheme_id)
-      charity_number = Common::ApiHelper.add_sc(charity_number) if Common::AdditionalIdentifier::SCHEME_SCOTISH_CHARITY == scheme_id
+      charity_number = Common::ApiHelper.add_sc(charity_number) if scheme_id == Common::AdditionalIdentifier::SCHEME_SCOTISH_CHARITY
       charity_number
     end
 
     def self.clean_charity_number(charity_number, scheme_id)
-      charity_number = Common::ApiHelper.remove_nic(charity_number) if Common::AdditionalIdentifier::SCHEME_NORTHEN_IRELAND_CHARITY == scheme_id
+      charity_number = Common::ApiHelper.remove_nic(charity_number) if scheme_id == Common::AdditionalIdentifier::SCHEME_NORTHEN_IRELAND_CHARITY
       Common::ApiHelper.filter_sc(charity_number, scheme_id)
     end
 
