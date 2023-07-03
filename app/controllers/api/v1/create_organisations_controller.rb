@@ -4,7 +4,7 @@ module Api
       include Authorize::Token
       rescue_from ApiValidations::ApiError, with: :return_error_code
       before_action :validate_api_key
-      # This is checking for the dummy org (id: 111111111) in params. must be done first, to stop external api call.
+      # This is checking for the dummy org (id: 111111111) in params. Must be done first, to prevent external api call.
       before_action :mock_id_check
       before_action :validate_params
 
@@ -19,7 +19,8 @@ module Api
       end
 
       def generate_record(result)
-        return if result.blank?
+        # While PPON is being developed, we want any related CII functionality to be inaccessible temporarily.
+        return if result.blank? || params[:identifier][:scheme].upcase == Common::AdditionalIdentifier::SCHEME_PPON
 
         result = salesforce_additional_identifier(@api_result)
         validate_salesforce if defined?(@api_result[:additionalIdentifiers])
@@ -28,10 +29,11 @@ module Api
       end
 
       def render_results(result)
-        if result.blank?
+        # While PPON is being developed, we want any related CII functionality to be inaccessible temporarily.
+        if result.blank? || params[:identifier][:scheme].upcase == Common::AdditionalIdentifier::SCHEME_PPON
           render json: '', status: :not_found
         else
-          # @ccs_org not generated if dummy org (id: 111111111) was found, in this case 'result' variable holds only the ccs_org_id, from when it was added to db in helper.
+          # @ccs_org_id is empty if dummy org (id: 111111111) was found. In this case the 'result' variable holds the ccs_org_id instead.
           render json: { organisationId: @ccs_org_id || result }, status: :created
         end
       end
@@ -82,7 +84,7 @@ module Api
         render json: validate.errors, status: :bad_request unless validate.valid?
       end
 
-      # This is checking for the dummy org (id: 111111111) in params. Sets global variable to true or false, for the rest of controller behavoir.
+      # This is checking for the dummy org (id: 111111111) in params. Sets global variable to true or false, for the rest of controller behavior.
       def mock_id_check
         @is_mock_id = Common::ApiHelper.find_mock_organisation(params[:identifier][:scheme], params[:identifier][:id]) if params.present?
       end

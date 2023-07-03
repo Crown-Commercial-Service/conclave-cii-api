@@ -15,8 +15,8 @@ module MockingService
     end
 
     def stub_request
-      WebMock.stub_request(:post, url)
-             .with(headers: stub_headers, body: "{\"registrationNumbers\":[\"#{@params[:id]}\"]}")
+      WebMock.stub_request(:get, url)
+             .with(headers: stub_headers)
              .to_return(status: http_status, body: @result, headers: {})
     end
 
@@ -44,7 +44,7 @@ module MockingService
 
     def url
       duns_token
-      @api_url = "#{ENV.fetch('DNB_API_ENDPOINT', nil)}/v1/search/criteria"
+      @api_url = "#{ENV.fetch('DNB_API_ENDPOINT', nil)}/v1/match/cleanseMatch?registrationNumber=#{@params[:id]}&countryISOAlpha2Code=GB"
     end
 
     def duns_token

@@ -2,22 +2,22 @@ module ApiLogging
   class Logger
     def self.warning(msg)
       Rails.logger.warn msg
-      Rollbar.warning msg
+      Rollbar.warning msg if msg.present?
     end
 
     def self.info(info)
       Rails.logger.info info
-      Rollbar.info info
+      Rollbar.info info if info.present?
     end
 
     def self.error(error)
       Rails.logger.error error
-      Rollbar.error error
+      Rollbar.error error if error.present?
     end
 
     def self.fatal(msg)
       Rails.logger.fatal msg
-      Rollbar.critical msg
+      Rollbar.critical msg if msg.present?
     end
 
     def self.api_status_error(msg, resp)

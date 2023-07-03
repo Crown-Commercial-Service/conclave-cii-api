@@ -50,7 +50,7 @@ module CompaniesHouse
 
     def logging(resp)
       ApiLogging::Logger.api_status_error('Companies House API | method:fetch_results', resp)
-      ApiLogging::Logger.info(resp.headers['X-RateLimit-Remain'])
+      # ApiLogging::Logger.info("Companies House API | Rate Limit remaining: #{resp.headers['x-ratelimit-remain']}")
     end
   end
 end

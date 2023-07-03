@@ -14,7 +14,8 @@ module Dfe
 
     def fetch_results
       post_access_token unless access_token_check
-      resp = Faraday.get("#{ENV.fetch('DFE_URL', nil)}/establishment/#{@organisation_code}?subscription-key=true") do |req|
+      conn = Common::ApiHelper.faraday_new(url: ENV.fetch('DFE_URL', nil))
+      resp = conn.get("#{ENV.fetch('DFE_URL', nil)}/establishment/#{@organisation_code}?subscription-key=true") do |req|
         req.headers['Authorization'] = "Bearer #{ENV.fetch('DFE_ACCESS_TOKEN', nil)}"
         req.headers['Ocp-Apim-Subscription-Key'] = ENV.fetch('DFE_SUBSCRIPTION_KEY', nil)
       end
