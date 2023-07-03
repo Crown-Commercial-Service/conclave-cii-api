@@ -4,17 +4,13 @@ module Api
       include Authorize::Token
       rescue_from ApiValidations::ApiError, with: :return_error_code
       before_action :validate_api_key
-      # This is checking for the dummy org (id: 111111111) in params. Must be done first, to prevent external api call.
-      before_action :mock_id_check
       before_action :validate_params
 
       attr_accessor :ccs_org_id, :api_result
 
       def index
-        result = search_scheme_api unless @is_mock_id
+        result = search_scheme_api
         generate_record(result)
-        # If the dummy org (id: 111111111) has been found, this will add it to db, and return the ccs_org_id to be rendered.
-        result = Common::ApiHelper.add_dummy_org(api_key_to_string, params[:identifier][:scheme], true) if @is_mock_id
         render_results(result)
       end
 
@@ -33,8 +29,7 @@ module Api
         if result.blank? || params[:identifier][:scheme].upcase == Common::AdditionalIdentifier::SCHEME_PPON
           render json: '', status: :not_found
         else
-          # @ccs_org_id is empty if dummy org (id: 111111111) was found. In this case the 'result' variable holds the ccs_org_id instead.
-          render json: { organisationId: @ccs_org_id || result }, status: :created
+          render json: { organisationId: @ccs_org_id }, status: :created
         end
       end
 
@@ -78,15 +73,8 @@ module Api
       end
 
       def validate_params
-        return if @is_mock_id
-
         validate = ApiValidations::CreateOrganisation.new(params)
         render json: validate.errors, status: :bad_request unless validate.valid?
-      end
-
-      # This is checking for the dummy org (id: 111111111) in params. Sets global variable to true or false, for the rest of controller behavior.
-      def mock_id_check
-        @is_mock_id = Common::ApiHelper.find_mock_organisation(params[:identifier][:scheme], params[:identifier][:id]) if params.present?
       end
 
       def return_error_code(code)
