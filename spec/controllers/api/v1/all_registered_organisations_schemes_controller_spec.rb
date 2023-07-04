@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Api::V1::AllRegisteredOrganisationsSchemesController, type: :controller do
+RSpec.describe Api::V1::AllRegisteredOrganisationsSchemesController do
   describe 'search_organisation' do
     let(:clientid) { ENV.fetch('CLIENT_ID', nil) }
     let(:ccs_org_id) { nil }
@@ -14,7 +14,7 @@ RSpec.describe Api::V1::AllRegisteredOrganisationsSchemesController, type: :cont
             'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
             'Authorization' => "Bearer #{jwt_token}",
             'Content-Type' => 'application/x-www-form-urlencoded',
-            'User-Agent' => 'Faraday v1.3.0'
+            'User-Agent' => 'Faraday v1.10.3'
           }
         )
         .to_return(status: 200, body: 'true', headers: {})
@@ -22,13 +22,13 @@ RSpec.describe Api::V1::AllRegisteredOrganisationsSchemesController, type: :cont
 
     context 'when authorized' do
       before do
-        client_registered = FactoryBot.create :client
+        client_registered = create(:client)
         request.headers['x-api-key'] = client_registered.api_key
         request.headers['Authorization'] = "Bearer #{jwt_token}"
       end
 
       context 'when success' do
-        let(:organisation_scheme_identifier) { FactoryBot.create(:organisation_scheme_identifier) }
+        let(:organisation_scheme_identifier) { create(:organisation_scheme_identifier) }
         let(:ccs_org_id) { organisation_scheme_identifier.ccs_org_id.to_s }
 
         it 'returns 200' do

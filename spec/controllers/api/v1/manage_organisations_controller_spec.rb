@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Api::V1::ManageOrganisationsController, type: :controller do
+RSpec.describe Api::V1::ManageOrganisationsController do
   describe 'search_organisation' do
     let(:clientid) { ENV.fetch('CLIENT_ID', nil) }
     let(:ccs_org_id) { nil }
@@ -8,8 +8,8 @@ RSpec.describe Api::V1::ManageOrganisationsController, type: :controller do
 
     context 'when authorized' do
       let(:ccs_org_id) { '101123' }
-      let(:scheme_register) { FactoryBot.create(:scheme_register, scheme_register_code: 'GB-CHC') }
-      let(:organisation_scheme_identifier) { FactoryBot.create(:organisation_scheme_identifier, ccs_org_id: ccs_org_id, scheme_code: scheme_register.scheme_register_code) }
+      let(:scheme_register) { create(:scheme_register, scheme_register_code: 'GB-CHC') }
+      let(:organisation_scheme_identifier) { create(:organisation_scheme_identifier, ccs_org_id: ccs_org_id, scheme_code: scheme_register.scheme_register_code) }
       let(:response_body) do
         {
           id: 'GB-CHC-101123',
@@ -68,7 +68,7 @@ RSpec.describe Api::V1::ManageOrganisationsController, type: :controller do
       end
 
       before do
-        client_registered = FactoryBot.create :client
+        client_registered = create(:client)
         request.headers['x-api-key'] = client_registered.api_key
         request.headers['Authorization'] = "Bearer #{jwt_token}"
         stub_request(:post, "http://www.test.com/security/tokens/validation?client-id=#{clientid}")
@@ -78,7 +78,7 @@ RSpec.describe Api::V1::ManageOrganisationsController, type: :controller do
               'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
               'Authorization' => "Bearer #{jwt_token}",
               'Content-Type' => 'application/x-www-form-urlencoded',
-              'User-Agent' => 'Faraday v1.3.0'
+              'User-Agent' => 'Faraday v1.10.3'
             }
           )
           .to_return(status: 200, body: 'true', headers: {})
@@ -87,7 +87,7 @@ RSpec.describe Api::V1::ManageOrganisationsController, type: :controller do
             headers: {
               'Accept' => '*/*',
               'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-              'User-Agent' => 'Faraday v1.3.0'
+              'User-Agent' => 'Faraday v1.10.3'
             }
           )
           .to_return(status: 200, body: response_body.to_json, headers: {})
