@@ -2,6 +2,7 @@ require:
   - rubocop-performance
   - rubocop-rails
   - rubocop-rspec # or rubocop-minitest
+  - rubocop-factory_bot
 AllCops:
   NewCops: enable
   Exclude:
@@ -76,7 +77,7 @@ Metrics/AbcSize:
 Layout/LineLength:
     Max: 120
     Enabled: false
-    IgnoredPatterns:
+    AllowedPatterns:
         - 'it .* do$'
         - 'context .* do$'
         - 'scenario .* do$'
