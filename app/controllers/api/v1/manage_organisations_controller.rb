@@ -26,8 +26,6 @@ module Api
       private
 
       def api_result
-        return Common::ApiHelper.return_mock_organisation(params[:scheme]) if Common::ApiHelper.find_mock_organisation(params[:scheme], params[:id])
-
         search_api_with_params = SearchApi.new(params[:id], params[:scheme], params[:ccs_org_id])
         search_api_with_params.call
       end
