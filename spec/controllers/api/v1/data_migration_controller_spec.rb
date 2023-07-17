@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Api::V1::DataMigrationController, type: :controller do
+RSpec.describe Api::V1::DataMigrationController do
   describe 'create_org_profile' do
     let(:ccs_org_id) { nil }
     let(:jwt_token) { JWT.encode({ roles: '', ciiOrgId: ccs_org_id, aud: ENV.fetch('CLIENT_ID', nil) }, 'test') }
@@ -29,7 +29,7 @@ RSpec.describe Api::V1::DataMigrationController, type: :controller do
               'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
               'Authorization' => 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6IiIsImNpaU9yZ0lkIjpudWxsLCJhdWQiOiJ3bmRpb3dkaW8ydWVoMzI5OGhyMyJ9.--zykzxTOhJD4WX2LijXdlgyOlEdCjfv3HprzWyzrhY',
               'Content-Type' => 'application/x-www-form-urlencoded',
-              'User-Agent' => 'Faraday v1.3.0'
+              'User-Agent' => 'Faraday v1.10.3'
             }
           )
           .to_return(status: 200, body: '', headers: {})
@@ -39,7 +39,7 @@ RSpec.describe Api::V1::DataMigrationController, type: :controller do
               'Accept' => '*/*',
               'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
               'Authorization' => 'Bearer t07891Fbasibd60NM9rW9basidj49w7ig7R2S9',
-              'User-Agent' => 'Faraday v1.3.0'
+              'User-Agent' => 'Faraday v1.10.3'
             }
           )
         stub_request(:get, "https://biwbdqwbdiwebiu.com/services/data/v45.0/query?q=SELECT%20ID,name,Status__c,Supplier_DUNS_Number__c,Company_Registration_Number__c,Account_URN__c%20FROM%20account%20WHERE%20Id='NSO7IUSHF98HFP9WEH9FFG'")
@@ -48,7 +48,7 @@ RSpec.describe Api::V1::DataMigrationController, type: :controller do
               'Accept' => '*/*',
               'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
               'Authorization' => 'Bearer t07891Fbasibd60NM9rW9basidj49w7ig7R2S9',
-              'User-Agent' => 'Faraday v1.3.0'
+              'User-Agent' => 'Faraday v1.10.3'
             }
           )
         stub_request(:post, 'https://biwbdqwbdiwebiu.com/services/oauth2/token')
@@ -59,7 +59,7 @@ RSpec.describe Api::V1::DataMigrationController, type: :controller do
               'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
               'Authorization' => 'Bearer t07891Fbasibd60NM9rW9basidj49w7ig7R2S9',
               'Content-Type' => 'application/x-www-form-urlencoded',
-              'User-Agent' => 'Faraday v1.3.0'
+              'User-Agent' => 'Faraday v1.10.3'
             }
           )
         stub_request(:post, "#{ENV.fetch('SALESFORCE_AUTH_URL', nil)}/services/oauth2/token")
@@ -70,7 +70,7 @@ RSpec.describe Api::V1::DataMigrationController, type: :controller do
               'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
               'Authorization' => 'Bearer t07891Fbasibd60NM9rW9basidj49w7ig7R2S9',
               'Content-Type' => 'application/x-www-form-urlencoded',
-              'User-Agent' => 'Faraday v1.3.0'
+              'User-Agent' => 'Faraday v1.10.3'
             }
           )
           .to_return(status: 200, body: token_response, headers: {})
@@ -80,7 +80,7 @@ RSpec.describe Api::V1::DataMigrationController, type: :controller do
               'Accept' => '*/*',
               'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
               'Authorization' => 'Bearer t07891Fbasibd60NM9rW9basidj49w7ig7R2S9',
-              'User-Agent' => 'Faraday v1.3.0'
+              'User-Agent' => 'Faraday v1.10.3'
             }
           )
           .to_return(status: 200, body: sf_response, headers: {})
@@ -90,7 +90,7 @@ RSpec.describe Api::V1::DataMigrationController, type: :controller do
               'Accept' => '*/*',
               'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
               'Authorization' => 'Bearer t07891Fbasibd60NM9rW9basidj49w7ig7R2S9',
-              'User-Agent' => 'Faraday v1.3.0'
+              'User-Agent' => 'Faraday v1.10.3'
             }
           )
           .to_return(status: 404, body: '', headers: {})
