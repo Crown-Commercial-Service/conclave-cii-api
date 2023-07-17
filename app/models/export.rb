@@ -9,7 +9,7 @@ class Export
   def self.begin
     Rails.logger.info 'BEGINNING DATA EXPORT JOB...'
 
-    directory = Rails.root.join('public/export').to_s
+    directory = Rails.public_path.join('export').to_s
     file_path = Rails.root.join("public/export/#{Date.yesterday}_Organisations.csv").to_s
 
     FileUtils.mkdir_p directory unless File.directory?(directory)
@@ -64,7 +64,7 @@ class Export
   end
 
   def self.delete_file(file_path)
-    File.delete(file_path) if File.exist?(file_path)
+    FileUtils.rm_f(file_path)
   end
 
   def self.find_organisations
