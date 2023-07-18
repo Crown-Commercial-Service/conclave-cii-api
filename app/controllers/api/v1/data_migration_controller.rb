@@ -62,6 +62,7 @@ module Api
       def required_identifiers_exist
         return false if @coh_api_results.blank? && @duns_api_results.blank?
         return false if @api_result.blank?
+
         true
       end
 
