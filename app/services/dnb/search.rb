@@ -1,12 +1,13 @@
 module Dnb
   class Search
-    def initialize(duns_number)
+    def initialize(duns_number, additional_identifier_search = false)
       super()
       @duns_number = duns_number
       @company_number = nil
       @error = nil
       @result = []
       @additional_indentifers_list = []
+      @additional_identifier_search = additional_identifier_search != false
     end
 
     def fetch_token
@@ -15,16 +16,23 @@ module Dnb
       params = { grant_type: 'client_credentials' }.to_json
       resp = conn.post('/v2/token', params, { 'Content-Type' => 'application/json' })
       ApiLogging::Logger.api_status_error('DNB API| method:fetch_token', resp)
+      ApiValidations::ApiErrorValidationResponse.new(resp.status) if @additional_identifier_search == false
       resp.body
     end
 
-    def fetch_results
+    def validate_token
       token = JSON.parse(fetch_token)
+      return false if token['access_token'].blank?
+    end
+
+    def fetch_results
+      validate_token
       conn = Common::ApiHelper.faraday_new(url: ENV.fetch('DNB_API_ENDPOINT', nil))
       params = { productId: 'cmptcs', versionId: 'v1' }
       conn.authorization :Bearer, token['access_token']
       resp = conn.get("/v1/data/duns/#{@duns_number}", params)
       logging(resp)
+      ApiValidations::ApiErrorValidationResponse.new(resp.status) if @additional_identifier_search == false
       @result = ActiveSupport::JSON.decode(resp.body) if resp.status == 200
 
       if resp.status == 200 && @result.key?('organization') && @result['organization']['dunsControlStatus']['operatingStatus']['dnbCode'] == 9074
