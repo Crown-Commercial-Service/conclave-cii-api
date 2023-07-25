@@ -18,6 +18,8 @@ module ApiValidations
         raise_exception(Common::StatusCodes::DUPLICATE_RESOURCE)
       when :missing_access_token, :ccs_org_id_not_matched, :user_access_unauthorized, :missing_client_id, :invalid_user_access_token
         raise_exception(Common::StatusCodes::UNAUTHORIZED)
+      when Common::StatusCodes::TOO_MANY_REQUESTS, Common::StatusCodes::UNAUTHORIZED, Common::StatusCodes::FORBIDDEN
+        raise_exception(Common::StatusCodes::SERVICE_UNAVAILABLE)
       end
     end
 
