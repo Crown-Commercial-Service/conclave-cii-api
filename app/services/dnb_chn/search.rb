@@ -23,6 +23,7 @@ module DnbChn
     def fetch_results
       token = JSON.parse(fetch_token)
       return false if token['access_token'].blank?
+
       conn = Common::ApiHelper.faraday_new(url: ENV.fetch('DNB_API_ENDPOINT', nil))
       conn.authorization :Bearer, token['access_token']
       params = { registrationNumber: @company_reg_number, countryISOAlpha2Code: 'GB' }

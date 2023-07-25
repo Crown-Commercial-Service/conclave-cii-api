@@ -23,10 +23,8 @@ module Dnb
     def fetch_results
       token = JSON.parse(fetch_token)
       return false if token['access_token'].blank?
-      conn = Common::ApiHelper.faraday_new(url: ENV.fetch('DNB_API_ENDPOINT', nil))
-      params = { productId: 'cmptcs', versionId: 'v1' }
-      conn.authorization :Bearer, token['access_token']
-      resp = conn.get("/v1/data/duns/#{@duns_number}", params)
+
+      resp = search_results(token)
       logging(resp)
       ApiValidations::ApiErrorValidationResponse.new(resp.status) if @additional_identifier_search == false
       @result = ActiveSupport::JSON.decode(resp.body) if resp.status == 200
@@ -36,6 +34,13 @@ module Dnb
       else
         false
       end
+    end
+
+    def search_results(token)
+      conn = Common::ApiHelper.faraday_new(url: ENV.fetch('DNB_API_ENDPOINT', nil))
+      params = { productId: 'cmptcs', versionId: 'v1' }
+      conn.authorization :Bearer, token['access_token']
+      conn.get("/v1/data/duns/#{@duns_number}", params)
     end
 
     def build_response
