@@ -35,7 +35,7 @@ module DnbChn
     private
 
     def search_duns_api
-      duns_api = DnbChn::Search.new(@company_number)
+      duns_api = DnbChn::Search.new(@company_number, true)
       duns_api.fetch_results
     end
   end
