@@ -40,9 +40,9 @@ module Api
       end
 
       def return_success
-        return render json: build_response, status: :created if required_identifiers_exist
+        return render json: build_response, status: :created if @api_result.present?
 
-        render json: '', status: :not_found
+        render json: '', status: :not_found if @api_result.blank?
       end
 
       def mock_id_dm_helper
@@ -56,14 +56,7 @@ module Api
       def create_from_salesforce
         salesforce_api_search
         @sales_force_organisation_created = create_organisation if create_org_check
-        additional_organisation(@api_result, true) if required_identifiers_exist && !@duplicate_ccs_org_id
-      end
-
-      def required_identifiers_exist
-        return false if @coh_api_results.blank? && @duns_api_results.blank?
-        return false if @api_result.blank?
-
-        true
+        additional_organisation(@api_result, true) if @api_result.present? && !@duplicate_ccs_org_id
       end
 
       def create_from_schemes
