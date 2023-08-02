@@ -3,7 +3,7 @@ module Api
     class DataMigrationController < ActionController::API
       include Authorize::AuthorizationMethods
       rescue_from ApiValidations::ApiError, with: :return_error_code
-      before_action :validate_integrating_service_user
+      before_action :validate_integrating_service_user_or_api_key_or_integration_key
       # This is checking for the dummy org (id: 111111111) in params. must be done first, to stop external api calls.
       before_action :mock_id_check
       before_action :create_ccs_org_id
