@@ -25,7 +25,7 @@ module Authorize
       validate_ccs_org_id
     end
 
-    def validate_integrating_service_user_or_api_key
+    def validate_integrating_service_user_or_api_key_or_integration_key
       return if validate_api_token
       return if validate_integration_token
 
