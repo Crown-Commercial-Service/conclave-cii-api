@@ -13,10 +13,7 @@ module Dfe
       @additional_identifier_search = additional_identifier_search != false
     end
 
-    # rubocop:disable Metrics/AbcSize
-    # had to add disable this rubocop as only can move one line into function to solve this metric.
-    def fetch_results
-      post_access_token unless access_token_check
+    def dfe_results
       conn = Common::ApiHelper.faraday_new(url: ENV.fetch('DFE_URL', nil))
       resp = conn.get("#{ENV.fetch('DFE_URL', nil)}/establishment/#{@organisation_code}?subscription-key=true") do |req|
         req.headers['Authorization'] = "Bearer #{ENV.fetch('DFE_ACCESS_TOKEN', nil)}"
@@ -25,7 +22,12 @@ module Dfe
       logging(resp)
 
       ApiValidations::ApiErrorValidationResponse.new(resp.status) if @additional_identifier_search == false
+      resp
+    end
 
+    def fetch_results
+      post_access_token unless access_token_check
+      resp = dfe_results
       @result = ActiveSupport::JSON.decode(resp.body) if resp.status == 200
 
       if resp.status == 200 && @result.key?('EstablishmentStatus') && @result['EstablishmentStatus']['Name'] == 'Open'
@@ -34,7 +36,6 @@ module Dfe
         false
       end
     end
-    # rubocop:enable Metrics/AbcSize
 
     def post_access_token
       response = Faraday.post("#{ENV.fetch('DFE_AUTH_URL', nil)}/oauth2/v2.0/token") do |req|
