@@ -1,12 +1,11 @@
 module CompaniesHouse
   class Search
-    def initialize(company_reg_number, additional_identifier_search = false)
+    def initialize(company_reg_number)
       super()
       @company_reg_number = company_reg_number
       @error = nil
       @result = []
       @additional_indentifers_list = []
-      @additional_identifier_search = additional_identifier_search != false
     end
 
     def fetch_results
@@ -14,7 +13,6 @@ module CompaniesHouse
       conn.basic_auth("#{ENV.fetch('COMPANIES_HOUSE_API_TOKEN', nil)}:", '')
       resp = conn.get("/company/#{@company_reg_number}")
       logging(resp)
-      ApiValidations::ApiErrorValidationResponse.new(resp.status) if @additional_identifier_search == false
       @result = ActiveSupport::JSON.decode(resp.body) if resp.status == 200
 
       if resp.status == 200 && @result.key?('company_status') && @result['company_status'] == 'active'
