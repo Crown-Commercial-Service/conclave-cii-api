@@ -18,7 +18,7 @@ module Dnb
     private
 
     def search_duns_api
-      duns_api = Dnb::Search.new(@duns_number, true)
+      duns_api = Dnb::Search.new(@duns_number)
       duns_api.fetch_results
     end
   end
