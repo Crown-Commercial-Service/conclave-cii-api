@@ -213,7 +213,7 @@ Style/HashTransformValues: # (new in 0.80)
 Style/KeywordParametersOrder: # (new in 0.90)
   Enabled: true
 Style/OptionalBooleanParameter: # (new in 0.89)
-  Enabled: false
+  Enabled: true
 Style/RedundantAssignment: # (new in 0.87)
   Enabled: true
 Style/RedundantFetchBlock: # (new in 0.86)

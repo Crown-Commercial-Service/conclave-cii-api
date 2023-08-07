@@ -1,20 +1,18 @@
 module FindThatCharity
   class Search
-    def initialize(charity_number, scheme_id, additional_identifier_search = false)
+    def initialize(charity_number, scheme_id)
       super()
       @charity_number = filter_charity_number(charity_number, scheme_id)
       @scheme_id = scheme_id
       @error = nil
       @result = []
       @additional_indentifers_list = []
-      @additional_identifier_search = additional_identifier_search != false
     end
 
     def fetch_results
       conn = Common::ApiHelper.faraday_new(url: ENV.fetch('FINDTHATCHARITY_API_ENDPOINT', nil))
       resp = conn.get("/orgid/#{@scheme_id}-#{@charity_number}.json")
       logging(resp)
-      ApiValidations::ApiErrorValidationResponse.new(resp.status) if @additional_identifier_search == false
       @result = ActiveSupport::JSON.decode(resp.body) if resp.status == 200
 
       if resp.status == 200 && @result.key?('active') && @result['active'] == true
