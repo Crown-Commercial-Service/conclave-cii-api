@@ -10,6 +10,13 @@ module CompaniesHouse
     end
 
     def fetch_results
+      fetch_results_from_api
+    rescue StandardError => e
+      ApiLogging::Logger.fatal("Companies House API | method:fetch_results, #{e.to_json}")
+      ApiValidations::ApiErrorValidationResponse.new(503) if @additional_identifier_search == false
+    end
+
+    def fetch_results_from_api
       conn = Common::ApiHelper.faraday_new(url: ENV.fetch('COMPANIES_HOUSE_API_ENDPOINT', nil))
       conn.basic_auth("#{ENV.fetch('COMPANIES_HOUSE_API_TOKEN', nil)}:", '')
       resp = conn.get("/company/#{@company_reg_number}")
