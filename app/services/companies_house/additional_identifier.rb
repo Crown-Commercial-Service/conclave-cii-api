@@ -39,7 +39,7 @@ module CompaniesHouse
     end
 
     def companies_house_api
-      company_api = CompaniesHouse::Search.new(@company_number)
+      company_api = CompaniesHouse::Search.new(@company_number, true)
       company_api.fetch_results
     end
   end

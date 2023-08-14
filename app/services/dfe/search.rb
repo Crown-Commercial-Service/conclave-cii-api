@@ -3,7 +3,7 @@ module Dfe
     require 'faraday'
     require 'uri'
 
-    def initialize(organisation_code, additional_identifier_search: false)
+    def initialize(organisation_code, additional_identifier_search = false)
       super()
       @organisation_code = organisation_code
       @company_number = nil
