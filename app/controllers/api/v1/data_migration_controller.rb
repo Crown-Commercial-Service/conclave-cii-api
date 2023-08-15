@@ -3,7 +3,7 @@ module Api
     class DataMigrationController < ActionController::API
       include Authorize::AuthorizationMethods
       rescue_from ApiValidations::ApiError, with: :return_error_code
-      before_action :validate_integrating_service_user
+      before_action :validate_integrating_service_user_or_api_key_or_integration_key
       # This is checking for the dummy org (id: 111111111) in params. must be done first, to stop external api calls.
       before_action :mock_id_check
       before_action :create_ccs_org_id
@@ -40,9 +40,9 @@ module Api
       end
 
       def return_success
-        return render json: build_response, status: :created if @api_result.present?
+        return render json: build_response, status: :created if required_identifiers_exist
 
-        render json: '', status: :not_found if @api_result.blank?
+        render json: '', status: :not_found
       end
 
       def mock_id_dm_helper
@@ -56,7 +56,14 @@ module Api
       def create_from_salesforce
         salesforce_api_search
         @sales_force_organisation_created = create_organisation if create_org_check
-        additional_organisation(@api_result, true) if @api_result.present? && !@duplicate_ccs_org_id
+        additional_organisation(@api_result, true) if required_identifiers_exist && !@duplicate_ccs_org_id
+      end
+
+      def required_identifiers_exist
+        return false if @coh_api_results.blank? && @duns_api_results.blank?
+        return false if @api_result.blank?
+
+        true
       end
 
       def create_from_schemes
