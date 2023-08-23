@@ -20,12 +20,10 @@ module Api
         @duns_scheme = Common::AdditionalIdentifier::SCHEME_DANDB
         @coh_scheme = Common::AdditionalIdentifier::SCHEME_COMPANIES_HOUSE
         @sf_scheme = Common::SalesforceSearchIds::SFID
-        params[:account_id_type] = params[:account_id_type].downcase.delete('-') unless @is_mock_id
+        params[:account_id_type] = params[:account_id_type].downcase.delete('-')
       end
 
       def create_org_profile
-        return mock_id_dm_helper if @is_mock_id
-
         schemes_list = Common::AdditionalIdentifier.new
         create_from_schemes if schemes_list.schemes.include? params[:account_id_type].to_s
         create_from_salesforce if Common::SalesforceSearchIds.account_id_types_salesforce.include? params[:account_id_type].to_s
@@ -43,14 +41,6 @@ module Api
         return render json: build_response, status: :created if required_identifiers_exist
 
         render json: '', status: :not_found
-      end
-
-      def mock_id_dm_helper
-        # If the dummy org (id: 111111111) has been found, this will add it to db, and return the ccs_org_id to be rendered.
-        ccs_org_id = Common::ApiHelper.add_dummy_org(nil, params[:account_id_type], true)
-        response_body = Common::ApiHelper.return_mock_organisation(params[:scheme])
-        response_body['organisationID'] = ccs_org_id.to_s
-        render json: response_body, status: :created
       end
 
       def create_from_salesforce
@@ -256,11 +246,6 @@ module Api
         @api_result[:additionalIdentifiers].each do |user_params|
           validate_additional_schemes(user_params) if user_params[:scheme] == Common::AdditionalIdentifier::SCHEME_CCS
         end
-      end
-
-      # This is checking for the dummy org (id: 111111111) in params. Sets global variable to true or false, for the rest of controller flow.
-      def mock_id_check
-        @is_mock_id = Common::ApiHelper.find_mock_organisation(params[:account_id_type], params[:account_id]) if params.present?
       end
     end
   end
