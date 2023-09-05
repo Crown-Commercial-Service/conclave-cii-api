@@ -18,7 +18,7 @@ module Nhs
     end
 
     def fetch_results_from_api
-      conn = Common::ApiHelper.faraday_new(url: 'https://directory.spineservices.nhs.uk')
+      conn = Common::ApiHelper.faraday_new(url: ENV.fetch('NHS_API_ENDPOINT', nil))
       resp = conn.get("/ORD/2-0-0/organisations/#{@organisation_code}")
       logging(resp)
       @result = ActiveSupport::JSON.decode(resp.body) if resp.status == 200
