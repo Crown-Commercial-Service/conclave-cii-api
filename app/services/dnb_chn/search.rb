@@ -21,6 +21,13 @@ module DnbChn
     end
 
     def fetch_results
+      fetch_results_from_api
+    rescue StandardError => e
+      ApiLogging::Logger.fatal("DNB API| method:fetch_results, #{e.to_json}")
+      ApiValidations::ApiErrorValidationResponse.new(503) if @additional_identifier_search == false
+    end
+
+    def fetch_results_from_api
       token = JSON.parse(fetch_token)
       return false if token['access_token'].blank?
 

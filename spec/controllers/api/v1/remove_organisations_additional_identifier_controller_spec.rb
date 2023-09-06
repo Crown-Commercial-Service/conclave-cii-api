@@ -13,7 +13,7 @@ RSpec.describe Api::V1::RemoveOrganisationsAdditionalIdentifierController do
         client_registered = create(:client)
         request.headers['x-api-key'] = client_registered.api_key
         request.headers['Authorization'] = "Bearer #{jwt_token}"
-        stub_request(:post, "http://www.test.com/security/tokens/validation?client-id=#{clientid}")
+        stub_request(:post, "http://www.test.com/aws/security/tokens/validation?client-id=#{clientid}")
           .with(
             headers: {
               'Accept' => '*/*',
