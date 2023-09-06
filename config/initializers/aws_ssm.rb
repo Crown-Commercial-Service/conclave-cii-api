@@ -63,3 +63,23 @@ def config_rollbar
   end
 
 config_aws if ENV['SERVER_ENV_NAME'].present?
+
+@ssm_client2 = Aws::SSM::Client.new(
+  region: ENV['AWS_REGION'],
+  access_key_id: ENV['TS_AWS_ACCESS_KEY'],
+  secret_access_key: ENV['TS_AWS_SECRET_ACCESS_KEY']
+)
+
+#puts "here-->1 #{@ssm_client2.get_parameter({ name: "/conclave-cii/SECURITY_SERVICE_URL", with_decryption: true })[:parameter][:value]}"
+#puts "here-->2 #{@ssm_client2.get_parameter({ name: "/conclave-cii/SALESFORCE_PASSWORD", with_decryption: true })[:parameter][:value]}"
+#puts "here-->3 #{@ssm_client2.get_parameter({ name: "/conclave-cii/SALESFORCE_CLIENT_ID", with_decryption: true })[:parameter][:value]}"
+#puts "here-->4 #{@ssm_client2.get_parameter({ name: "/conclave-cii/SALESFORCE_CLIENT_SECRET", with_decryption: true })[:parameter][:value]}"
+#puts "here-->5 #{@ssm_client2.get_parameter({ name: "/conclave-cii/SALESFORCE_SECURITY_TOKEN", with_decryption: true })[:parameter][:value]}"
+#puts "here-->6 #{@ssm_client2.get_parameter({ name: "/conclave-cii/SALESFORCE_AUTH_URL", with_decryption: true })[:parameter][:value]}"
+
+#puts "here-->X1  #{@ssm_client2.put_parameter({ name: '/conclave-cii/SECURITY_SERVICE_URL', value: 'https://dev.api.crowncommercial.gov.uk', overwrite: true})}"
+#puts "here-->X3  #{@ssm_client2.put_parameter({ name: '/conclave-cii/SALESFORCE_PASSWORD', value: 'tW2ZgR6#W*R*mGO5', overwrite: true})}"
+#puts "here-->X2  #{@ssm_client2.put_parameter({ name: '/conclave-cii/SALESFORCE_USERNAME', value: 'sf-conclave-api@crowncommercial.gov.uk.preprod', overwrite: true})}"
+#puts "here-->X4  #{@ssm_client2.put_parameter({ name: '/conclave-cii/SALESFORCE_SECURITY_TOKEN', value: 'lOxm7vIQ4rrqzYJSW8ozmm2h', overwrite: true})}"
+#puts "here-->X5  #{@ssm_client2.put_parameter({ name: '/conclave-cii/SALESFORCE_CLIENT_ID', value: '3MVG9rKhT8ocoxGkPdSEUBFzU_d7a0SHRZQuGCZiif7LyoutJzD6GodTv0lTi.Tw_riPZIcc0jeuBOufAS2zf', overwrite: true})}"
+#puts "here-->X6  #{@ssm_client2.put_parameter({ name: '/conclave-cii/SALESFORCE_CLIENT_SECRET', value: '3CDEB5BC90F9CF56F58DB5DD8F99DCF66E018C1297222594BBBE7C9409C7B6D4', overwrite: true})}"

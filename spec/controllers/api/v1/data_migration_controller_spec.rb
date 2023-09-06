@@ -22,7 +22,7 @@ RSpec.describe Api::V1::DataMigrationController do
         valid_id = 'NSO7IUSHF98HFP9WEH9FFG'
         invalid_id = 'NSO7IUSHF98HFP9WEH9FFH'
 
-        stub_request(:post, 'http://www.test.com/security/tokens/validation?client-id=wndiowdio2ueh3298hr3')
+        stub_request(:post, 'http://www.test.com/aws/security/tokens/validation?client-id=wndiowdio2ueh3298hr3')
           .with(
             headers: {
               'Accept' => '*/*',
