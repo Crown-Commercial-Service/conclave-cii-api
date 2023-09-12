@@ -79,7 +79,7 @@ module Api
       end
 
       def search_saleforce_identifiers
-        salesforce_id = @api_result[:additionalIdentifiers][0][:id].split(/~/, 2).first if @api_result[:additionalIdentifiers].any?
+        salesforce_id = @api_result[:additionalIdentifiers][0][:id].split('~', 2).first if @api_result[:additionalIdentifiers].any?
         return unless salesforce_id
 
         salesforce_api = Salesforce::SalesforceDataMigration.new(salesforce_id, @sf_scheme)
