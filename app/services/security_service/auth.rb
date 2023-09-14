@@ -6,7 +6,7 @@ module SecurityService
     end
 
     def sec_api_validate_token
-      url = "/aws/security/tokens/validation?client-id=#{@client_id}"
+      url = "#{ENV.fetch('SECURITY_SERVICE_ENDPOINT', nil)}?client-id=#{@client_id}"
       conn = Faraday.new(url: ENV.fetch('SECURITY_SERVICE_URL', nil))
       conn.authorization :Bearer, @access_token
       resp = conn.post(url, '', { 'Content-Type' => 'application/x-www-form-urlencoded' })
