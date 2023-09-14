@@ -43,7 +43,7 @@ module Authorize
 
     def validate_data_migration_or_org_admin_user
       decoded_token = validate_and_decode_token
-      ApiValidations::ApiErrorValidationResponse.new(:user_access_unauthorized) unless decoded_token[0]['roles'].include?(ENV['ACCESS_DATA_MIGRATION']) || decoded_token[0]['roles'].include?(ENV['ACCESS_ORGANISATION_ADMIN'])
+      ApiValidations::ApiErrorValidationResponse.new(:user_access_unauthorized) unless decoded_token[0]['roles'].include?(ENV.fetch('ACCESS_DATA_MIGRATION', nil)) || decoded_token[0]['roles'].include?(ENV.fetch('ACCESS_ORGANISATION_ADMIN', nil))
     end
 
     def validate_service_eligibility_or_ccs_admin_user
