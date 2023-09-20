@@ -5,6 +5,7 @@ module FindThatCharity
       @charity_number = charity_number
       @scheme = scheme
       @search_result = []
+      @additional_identifier_search = true
     end
 
     def build_response
@@ -44,7 +45,7 @@ module FindThatCharity
     end
 
     def find_that_charity
-      charity_api = FindThatCharity::Search.new(@charity_number, @scheme)
+      charity_api = FindThatCharity::Search.new(@charity_number, @scheme, @additional_identifier_search)
       charity_api.fetch_results
     end
   end
