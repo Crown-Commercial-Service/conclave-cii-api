@@ -18,6 +18,7 @@ addons:
   postgresql: '11'
 install: bundle install --jobs=3 --retry=3
 before_script:
+  - sudo apt-key adv --keyserver hkps://keyserver.ubuntu.com --refresh-keys
   - sudo apt-get -qq update
   - sudo apt-get install -y postgresql-11-postgis-2.5
   - psql -U postgres -c 'create database cii_test'
@@ -33,6 +34,7 @@ before_deploy:
   - echo "install cloudfoundry cli"
   - wget -q -O - https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key | sudo apt-key add -
   - echo "deb https://packages.cloudfoundry.org/debian stable main" | sudo tee /etc/apt/sources.list.d/cloudfoundry-cli.list
+  - sudo apt-key adv --keyserver hkps://keyserver.ubuntu.com --refresh-keys
   - sudo apt-get -qq update
   - sudo apt-get install cf7-cli
 deploy:

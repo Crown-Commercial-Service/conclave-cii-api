@@ -7,7 +7,7 @@ RSpec.describe Api::V1::AllRegisteredOrganisationsSchemesController do
     let(:jwt_token) { JWT.encode({ roles: ENV.fetch('ACCESS_CCS_ADMIN', nil), ciiOrgId: ccs_org_id, aud: ENV.fetch('CLIENT_ID', nil) }, 'test') }
 
     before do
-      stub_request(:post, "http://www.test.com/security/tokens/validation?client-id=#{clientid}")
+      stub_request(:post, "http://www.test.com/aws/security/tokens/validation?client-id=#{clientid}")
         .with(
           headers: {
             'Accept' => '*/*',
