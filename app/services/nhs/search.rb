@@ -1,15 +1,23 @@
 module Nhs
   class Search
-    def initialize(organisation_code)
+    def initialize(organisation_code, additional_identifier_search = false)
       super()
       @organisation_code = organisation_code
       @company_number = nil
       @error = nil
       @result = []
       @additional_indentifers_list = []
+      @additional_identifier_search = additional_identifier_search != false
     end
 
     def fetch_results
+      fetch_results_from_api
+    rescue StandardError => e
+      ApiLogging::Logger.fatal("NHS API| method:fetch_results, #{e.to_json}")
+      ApiValidations::ApiErrorValidationResponse.new(503) if @additional_identifier_search == false
+    end
+
+    def fetch_results_from_api
       conn = Common::ApiHelper.faraday_new(url: 'https://directory.spineservices.nhs.uk')
       resp = conn.get("/ORD/2-0-0/organisations/#{@organisation_code}")
       logging(resp)
