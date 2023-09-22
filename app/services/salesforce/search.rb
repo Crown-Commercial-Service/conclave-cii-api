@@ -1,12 +1,13 @@
 module Salesforce
   class Search
-    def initialize(id_number, scheme_id)
+    def initialize(id_number, scheme_id, additional_identifier_search = false)
       super()
       @id_number = id_number # support only for duns or companies house number
       @scheme_id = scheme_id
       @error = nil
       @result = []
       @sf_status = nil
+      @additional_identifier_search = additional_identifier_search != false
     end
 
     def post_params
@@ -28,6 +29,13 @@ module Salesforce
     end
 
     def fetch_results
+      fetch_results_from_api
+    rescue StandardError => e
+      ApiLogging::Logger.fatal("SALESFORCE API| method:fetch_results, #{e.to_json}")
+      ApiValidations::ApiErrorValidationResponse.new(503) if @additional_identifier_search == false
+    end
+
+    def fetch_results_from_api
       false if build_arguments.blank?
 
       token = JSON.parse(fetch_token)
