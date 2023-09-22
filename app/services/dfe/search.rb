@@ -3,7 +3,7 @@ module Dfe
     require 'faraday'
     require 'uri'
 
-    def initialize(organisation_code, additional_identifier_search: false)
+    def initialize(organisation_code, additional_identifier_search = false)
       super()
       @organisation_code = organisation_code
       @company_number = nil
@@ -26,6 +26,13 @@ module Dfe
     end
 
     def fetch_results
+      fetch_results_from_api
+    rescue StandardError => e
+      ApiLogging::Logger.fatal("DFE API| method:fetch_results, #{e.to_json}")
+      ApiValidations::ApiErrorValidationResponse.new(503) if @additional_identifier_search == false
+    end
+
+    def fetch_results_from_api
       post_access_token unless access_token_check
       resp = dfe_results
       @result = ActiveSupport::JSON.decode(resp.body) if resp.status == 200
