@@ -23,7 +23,7 @@ module Api
         id = @scheme_id[2]
 
         result = OrganisationSchemeIdentifier.find_by(scheme_org_reg_number: id, scheme_code: scheme)
-        return result[:ccs_org_id] if result.present? && result[:ccs_org_id].present? && !result['hidden']
+        result[:ccs_org_id] if result.present? && result[:ccs_org_id].present? && !result['hidden']
       end
 
       def validate_params
