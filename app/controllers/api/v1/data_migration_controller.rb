@@ -4,8 +4,6 @@ module Api
       include Authorize::AuthorizationMethods
       rescue_from ApiValidations::ApiError, with: :return_error_code
       before_action :validate_service_user_or_org_admin_or_api_keys
-      # This is checking for the dummy org (id: 111111111) in params. must be done first, to stop external api calls.
-      before_action :mock_id_check
       before_action :create_ccs_org_id
 
       attr_accessor :ccs_org_id, :salesforce_result, :api_result, :sales_force_organisation_created
