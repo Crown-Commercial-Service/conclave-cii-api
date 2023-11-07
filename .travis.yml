@@ -1,4 +1,4 @@
-dist: bionic
+dist: focal
 language: ruby
 rvm:
  — 3.2.2
