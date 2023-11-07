@@ -15,12 +15,11 @@ env:
 services:
   - postgresql
 addons:
-  postgresql: '11'
+  postgresql: '12'
 install: bundle install --jobs=3 --retry=3
 before_script:
   - sudo apt-get -qq update
-  - sudo apt-cache search postgresql
-  - sudo apt install postgresql-11-postgis-2.5
+  - sudo apt install postgresql-12-postgis-3-scripts
   - psql -U postgres -c 'create database cii_test'
   - psql -U postgres -d cii_test -c 'create extension postgis'
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
