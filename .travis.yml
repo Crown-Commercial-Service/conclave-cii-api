@@ -1,4 +1,4 @@
-dist: focal
+dist: jammy
 language: ruby
 rvm:
  — 3.2.2
