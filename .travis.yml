@@ -15,7 +15,7 @@ env:
 services:
   - postgresql
 addons:
-  postgresql: '11'
+  postgresql: '13'
 install: bundle install --jobs=3 --retry=3
 before_script:
   - sudo apt-get -qq update
