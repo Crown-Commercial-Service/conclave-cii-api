@@ -21,7 +21,7 @@ before_script:
   - sudo apt-get -qq update
   - sudo apt-get install -y postgresql-client
   - psql -U postgres -c 'create database cii_test'
-  - psql -U postgres -d cii_test -c 'create extension postgis'
+  # - psql -U postgres -d cii_test -c 'create extension postgis'
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build
