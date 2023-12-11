@@ -10,17 +10,17 @@ module Api
           update_registry_data
           render json: [], status: :ok
         end
-        
+
         private
 
         def update_registry_data
-          puts params[:identifier].inspect
           scheme_result = OrganisationSchemeIdentifier.find_by(scheme_org_reg_number: params[:id].to_s)
           scheme_result.legal_name = params[:identifier][:legal_name]
           scheme_result.uri = params[:identifier][:uri]
           scheme_result.save
           # OrganisationSchemeIdentifier.update(legal_name: params[:identifier][:legalName].to_s, uri: params[:identifier][:uri].to_s).where(cc_org_id: params[:cc_org_id])
         end
+
         def find_org_ccs_id
           OrganisationSchemeIdentifier.find_by(scheme_org_reg_number: params[:id].to_s)
         end

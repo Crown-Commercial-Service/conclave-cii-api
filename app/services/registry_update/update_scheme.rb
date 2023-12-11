@@ -15,7 +15,8 @@ module RegistryUpdate
     end
 
     def search_registry
-      return unless find_org_with_params.present?
+      return if find_org_with_params.blank?
+
       find_org_with_params.each do |scheme|
         results = api_search_result(scheme[:scheme_org_reg_number], scheme[:scheme_code], scheme[:ccs_org_id])
         update_record(results) if results.present?
@@ -37,8 +38,8 @@ module RegistryUpdate
     end
 
     def update_primary(identifier)
-      filter_date = Date.today - ENV['SUBTRACT_REGISTRY_UPDATE_DAYS'].to_i
-      organisation = OrganisationSchemeIdentifier.where(scheme_org_reg_number: identifier[:id], scheme_code: identifier[:scheme], admin_updated: false).where("? >= DATE(updated_at)", filter_date.to_s).first
+      filter_date = Time.zone.today - ENV['SUBTRACT_REGISTRY_UPDATE_DAYS'].to_i
+      organisation = OrganisationSchemeIdentifier.where(scheme_org_reg_number: identifier[:id], scheme_code: identifier[:scheme], admin_updated: false).where('? >= DATE(updated_at)', filter_date.to_s).first
       if_changed_update(organisation, identifier) if organisation.present?
     end
 
@@ -51,7 +52,7 @@ module RegistryUpdate
     end
 
     def find_scheme_from_params
-      return unless params[:identifier].present?
+      return if params[:identifier].blank?
 
       if params[:identifier][:scheme].present?
         params[:identifier][:scheme]
