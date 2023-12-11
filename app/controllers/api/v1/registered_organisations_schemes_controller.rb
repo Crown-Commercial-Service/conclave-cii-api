@@ -2,9 +2,11 @@ module Api
   module V1
     class RegisteredOrganisationsSchemesController < ActionController::API
       include Authorize::AuthorizationMethods
+      include RegistryUpdate::UpdateScheme
       rescue_from ApiValidations::ApiError, with: :return_error_code
       before_action :validate_access_users_or_api_key
       before_action :validate_params
+      before_action :registry_check
 
       def search_organisation
         params[:ccs_org_id] = search_organisation_by_scheme if @scheme_id
@@ -23,7 +25,7 @@ module Api
         id = @scheme_id[2]
 
         result = OrganisationSchemeIdentifier.find_by(scheme_org_reg_number: id, scheme_code: scheme)
-        return result[:ccs_org_id] if result.present? && result[:ccs_org_id].present? && !result['hidden']
+        result[:ccs_org_id] if result.present? && result[:ccs_org_id].present? && !result['hidden']
       end
 
       def validate_params

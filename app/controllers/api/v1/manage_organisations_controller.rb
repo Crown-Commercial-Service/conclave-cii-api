@@ -3,10 +3,12 @@ module Api
     class ManageOrganisationsController < ActionController::API
       include Authorize::Token
       include Authorize::AuthorizationMethods
+      include RegistryUpdate::UpdateScheme
       rescue_from ApiValidations::ApiError, with: :return_error_code
       before_action :validate_api_key
       before_action :validate_user
       before_action :validate_params
+      before_action :registry_check
 
       def search_organisation
         scheme_result = api_result
