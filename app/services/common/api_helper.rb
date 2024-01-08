@@ -136,7 +136,7 @@ module Common
           name: 'Name',
           email: 'email@test.com',
           telephone: '+4407112233445',
-          faxNumber: '29876543',
+          faxNumber: '+12129876543',
           uri: 'https://www.example.com/'
         }
       }
