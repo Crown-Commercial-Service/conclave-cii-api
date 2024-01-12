@@ -2,7 +2,7 @@ FROM ruby:3.2.2
 
 WORKDIR /app
 
-RUN apt-get update apt-get -y upgrade && apt-get install -y \
+RUN apt-get update && apt-get -y upgrade && apt-get install -y \
   build-essential \
   nodejs
 
