@@ -1,10 +1,8 @@
-FROM ruby:3.2.2
+FROM ruby:3.2.2-alpine
 
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y \
-  build-essential \
-  nodejs
+RUN apk upgrade && apk build-base nodejs
 
 COPY Gemfile Gemfile.lock ./
 RUN gem install bundler && bundle install --jobs 20 --retry 5
