@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM ubuntu:23.10
 
 # Set environment variables
 ENV LANG C.UTF-8
@@ -8,12 +8,11 @@ WORKDIR /app
 
 # Install necessary packages
 RUN apt-get update && apt-get -y full-upgrade && apt-get install -y \
+  bash \
   build-essential \
   curl \
-  bash \
-  libpq-dev \
-  nodejs \
-  gpg
+  gpg \
+  libpq-dev
 
 # Install Node.js
 # RUN curl -sL https://deb.nodesource.com/setup_20.x | bash - && \
