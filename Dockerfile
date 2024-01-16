@@ -1,4 +1,4 @@
-FROM ubuntu:23.10
+FROM ubuntu:22.04
 
 # Set environment variables
 ENV LANG C.UTF-8
@@ -22,11 +22,9 @@ RUN apt-get update && apt-get -y full-upgrade && apt-get install -y \
 RUN gpg --keyserver hkp://keyserver.ubuntu.com --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB && \
   curl -sSL https://get.rvm.io | bash -s stable --ruby=3.2.2
 
-# # Source RVM scripts and install Bundler
-RUN /bin/bash -l -c "source /etc/profile.d/rvm.sh && gem install bundler"
-
+# Source RVM scripts, install and run Bundler
 COPY Gemfile Gemfile.lock ./
-RUN /bin/bash -l -c "source /etc/profile.d/rvm.sh && bundle install --jobs 20 --retry 5"
+RUN /bin/bash -l -c "source /etc/profile.d/rvm.sh && gem install bundler && bundle install --jobs 20 --retry 5"
 
 COPY . .
 
