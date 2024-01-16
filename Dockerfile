@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
 # Set environment variables
 ENV LANG C.UTF-8
@@ -16,14 +16,14 @@ RUN apt-get update && apt-get -y full-upgrade && apt-get install -y \
   gpg
 
 # Install Node.js
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
-  apt-get install -y nodejs
+# RUN curl -sL https://deb.nodesource.com/setup_20.x | bash - && \
+#   apt-get install -y nodejs
 
 # Add RVM's public key and install Ruby
 RUN gpg --keyserver hkp://keyserver.ubuntu.com --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB && \
   curl -sSL https://get.rvm.io | bash -s stable --ruby=3.2.2
 
-# Source RVM scripts and install Bundler
+# # Source RVM scripts and install Bundler
 RUN /bin/bash -l -c "source /etc/profile.d/rvm.sh && gem install bundler"
 
 COPY Gemfile Gemfile.lock ./
@@ -33,4 +33,4 @@ COPY . .
 
 EXPOSE 3000
 
-CMD ["rails", "server", "-b", "0.0.0.0"]
+CMD [ "/bin/bash", "-l", "-c", "source /etc/profile.d/rvm.sh && rails server -b 0.0.0.0" ]
