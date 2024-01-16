@@ -23,9 +23,9 @@ RUN gpg --keyserver hkp://keyserver.ubuntu.com --recv-keys 409B6B1796C275462A170
   curl -sSL https://get.rvm.io | bash -s stable --ruby=3.2.2
 
 # Source RVM scripts, install and run Bundler
-COPY Gemfile Gemfile.lock ./
+COPY --chown=rails:rails Gemfile Gemfile.lock ./
 
-RUN useradd rails -g rvm && chown -R rails:rvm /app
+RUN groupadd rails && useradd rails -g rails -G rvm && chown -R rails:rails /app
 USER rails
 RUN /bin/bash -l -c "source /etc/profile.d/rvm.sh && gem install bundler && bundle install --jobs 20 --retry 5"
 
