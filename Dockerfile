@@ -19,7 +19,7 @@ RUN apt-get update && apt-get -y full-upgrade && apt-get install -y \
 # Install Ruby from source
 RUN curl -sSL https://cache.ruby-lang.org/pub/ruby/3.2/ruby-${RUBY_VERSION}.tar.gz | tar xz
 WORKDIR /ruby-${RUBY_VERSION}
-RUN ./configure --prefix=/usr/local && make && make -j 4 install
+RUN ./configure --prefix=/usr/local && make -j 4 && make install
 
 WORKDIR /app
 
