@@ -20,9 +20,9 @@ RUN curl -sSL https://cache.ruby-lang.org/pub/ruby/3.2/ruby-${RUBY_VERSION}.tar.
 
 WORKDIR /app
 
-# Install and run Bundler
 COPY --chown=rails:rails Gemfile Gemfile.lock ./
 
+# Run Bundler
 RUN bundle config set --global no_document true && \
   bundle config set --global no_ri true && \
   bundle config set --global no-cache true && \
@@ -41,6 +41,7 @@ RUN addgroup -S rails && adduser -S -H -G rails rails
 WORKDIR /app
 COPY --chown=rails:rails . .
 
+# Copy the necessary files from the builder stage
 COPY --from=builder /usr/local/bin /usr/local/bin
 COPY --from=builder /usr/local/lib/ruby /usr/local/lib/ruby
 COPY --from=builder /app /app
