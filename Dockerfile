@@ -37,7 +37,7 @@ RUN apt-get update && apt-get -y full-upgrade && apt-get install -y \
   curl \
   libpq5 \
   libyaml-0-2 \
-  zlib1g && rm -rf /var/cache/apt/*
+  && rm -rf /var/cache/apt/*
 
 RUN groupadd rails && useradd rails -g rails
 
