@@ -1,32 +1,55 @@
-FROM ubuntu:22.04
+# Stage 1: Build
+FROM ubuntu:22.04 AS builder
+
+ARG RUBY_VERSION=3.2.2
 
 # Set environment variables
 ENV LANG C.UTF-8
 ENV DEBIAN_FRONTEND=noninteractive
 
-WORKDIR /app
 
 # Install necessary packages
 RUN apt-get update && apt-get -y full-upgrade && apt-get install -y \
-  bash \
   build-essential \
   curl \
-  gpg \
-  libpq-dev
+  libpq-dev \
+  libyaml-dev \
+  zlib1g-dev
 
-# Add RVM's public key and install Ruby
-RUN gpg --keyserver hkp://keyserver.ubuntu.com --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB && \
-  curl -sSL https://get.rvm.io | bash -s stable --ruby=3.2.2
+# Install Ruby from source
+RUN curl -sSL https://cache.ruby-lang.org/pub/ruby/3.2/ruby-${RUBY_VERSION}.tar.gz | tar xz
+WORKDIR /ruby-${RUBY_VERSION}
+RUN ./configure --prefix=/usr/local && make && make -j 4 install
 
-# Source RVM scripts, install and run Bundler
+WORKDIR /app
+
+# Install and run Bundler
 COPY --chown=rails:rails Gemfile Gemfile.lock ./
 
-RUN groupadd rails && useradd rails -g rails -G rvm && chown -R rails:rails /app
-USER rails
-RUN /bin/bash -l -c "source /etc/profile.d/rvm.sh && gem install bundler && bundle install --jobs 20 --retry 5"
+RUN bundle config set --global no_document true && \
+  bundle config set --global no_ri true && \
+  bundle config set --global no-cache true && \
+  bundle install --jobs 4 --retry 5
 
+# Stage 2: Run
+FROM ubuntu:22.04
+RUN apt-get update && apt-get -y full-upgrade && apt-get install -y \
+  curl \
+  libpq5 \
+  libyaml-0-2 \
+  zlib1g && rm -rf /var/cache/apt/*
+
+RUN groupadd rails && useradd rails -g rails
+
+WORKDIR /app
 COPY --chown=rails:rails . .
+
+COPY --from=builder /usr/local/bin /usr/local/bin
+COPY --from=builder /usr/local/lib/ruby /usr/local/lib/ruby
+COPY --from=builder /app /app
 
 EXPOSE 3000
 
-CMD [ "/bin/bash", "-l", "-c", "source /etc/profile.d/rvm.sh && rails server -b 0.0.0.0" ]
+USER rails
+
+CMD [ "rails", "server", "-b", "0.0.0.0" ]
