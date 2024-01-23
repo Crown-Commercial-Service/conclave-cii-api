@@ -1,10 +1,5 @@
 # Stage 1: Build
-FROM alpine:latest AS builder
-
-ARG RUBY_VERSION=3.2.2
-
-# Set environment variables
-ENV LANG C.UTF-8
+FROM ruby:3.2.2-alpine AS builder
 
 # Install necessary packages
 RUN apk add build-base \
@@ -13,10 +8,6 @@ RUN apk add build-base \
   libpq-dev \
   yaml-dev \
   zlib-dev
-
-# Install Ruby from source
-RUN curl -sSL https://cache.ruby-lang.org/pub/ruby/3.2/ruby-${RUBY_VERSION}.tar.gz | tar xz \
-  && cd ruby-${RUBY_VERSION} && ./configure --prefix=/usr/local && make -j 4 && make install
 
 WORKDIR /app
 
@@ -29,7 +20,7 @@ RUN bundle config set --global no_document true && \
   bundle install --jobs 4 --retry 5
 
 # Stage 2: Run
-FROM alpine:latest
+FROM ruby:3.2.2-alpine
 RUN apk update && apk upgrade && apk add \
   curl \
   libpq \
@@ -41,9 +32,7 @@ RUN addgroup -S rails && adduser -S -H -G rails rails
 WORKDIR /app
 COPY --chown=rails:rails . .
 
-# Copy the necessary files from the builder stage
-COPY --from=builder /usr/local/bin /usr/local/bin
-COPY --from=builder /usr/local/lib/ruby /usr/local/lib/ruby
+COPY --from=builder /usr/local/bundle /usr/local/bundle
 COPY --from=builder /app /app
 
 EXPOSE 3000
