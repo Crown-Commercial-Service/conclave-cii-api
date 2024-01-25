@@ -37,6 +37,7 @@ COPY --from=builder /app /app
 
 EXPOSE 3000
 
+
 USER rails
 
 CMD [ "rails", "server", "-b", "0.0.0.0" ]
