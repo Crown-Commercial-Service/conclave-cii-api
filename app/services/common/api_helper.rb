@@ -135,8 +135,8 @@ module Common
         contactPoint: {
           name: 'Name',
           email: 'email@test.com',
-          telephone: '+4407112233445',
-          faxNumber: '+12129876543',
+          telephone: '07112233445',
+          faxNumber: '01129876543',
           uri: 'https://www.example.com/'
         }
       }
