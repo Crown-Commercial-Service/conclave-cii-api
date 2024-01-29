@@ -18,7 +18,6 @@ module Api
           scheme_result.legal_name = params[:identifier][:legal_name]
           scheme_result.uri = params[:identifier][:uri]
           scheme_result.save
-          # OrganisationSchemeIdentifier.update(legal_name: params[:identifier][:legalName].to_s, uri: params[:identifier][:uri].to_s).where(cc_org_id: params[:cc_org_id])
         end
 
         def find_org_ccs_id

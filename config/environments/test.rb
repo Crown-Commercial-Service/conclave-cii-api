@@ -26,6 +26,7 @@ Rails.application.configure do
   config.cache_store = :null_store
 
   # Raise exceptions instead of rendering exception templates.
+  # Use :none to disable deprecation warnings
   config.action_dispatch.show_exceptions = false
 
   # Disable request forgery protection in test environment.
