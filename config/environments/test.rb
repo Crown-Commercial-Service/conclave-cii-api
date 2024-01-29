@@ -45,7 +45,11 @@ Rails.application.configure do
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
   # added so we can see logs in aws cloudwatch
-  config.logger = Logger.new(STDOUT)
+  # config.logger = Logger.new(STDOUT)
+
+  logger           = ActiveSupport::Logger.new(STDOUT)
+  logger.formatter = config.log_formatter
+  config.logger    = ActiveSupport::TaggedLogging.new(logger)
 
   # Raises error for missing translations.
   # config.action_view.raise_on_missing_translations = true

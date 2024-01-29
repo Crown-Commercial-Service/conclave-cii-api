@@ -43,9 +43,12 @@ Rails.application.configure do
   config.active_record.verbose_query_logs = true
 
   # added so we can see logs in aws cloudwatch
-  config.logger = Logger.new(STDOUT)
+  # config.logger = Logger.new(STDOUT)
 
-  
+  logger           = ActiveSupport::Logger.new(STDOUT)
+  logger.formatter = config.log_formatter
+  config.logger    = ActiveSupport::TaggedLogging.new(logger)
+
   # Raises error for missing translations.
   # config.action_view.raise_on_missing_translations = true
 
