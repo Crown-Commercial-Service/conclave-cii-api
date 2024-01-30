@@ -5,8 +5,8 @@ ruby '3.2.2'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 7.0.8'
-# Use sqlite3 as the database for Active Record
-gem 'sqlite3', '~> 1.4'
+# Use sqlite3 as the database for Active Record. When using Alpine, needs to be compiled from source using the musl C compiler.
+gem 'sqlite3', '~> 1.6', git: 'https://github.com/sparklemotion/sqlite3-ruby.git', tag: 'v1.6.5'
 # Use Puma as the app server
 gem 'puma', '~> 5.6', '>= 5.6.7'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -67,5 +67,4 @@ group :development, :test do
   gem 'simplecov', require: false
 end
 
-# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-# gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
+gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby ruby]
