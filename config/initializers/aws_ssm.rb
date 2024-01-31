@@ -60,6 +60,7 @@ def config_rollbar
 	end
 	Rails.logger.info('App Deployed & Rollbar Successfully Configured')
 	Rollbar.info('App Deployed & Rollbar Successfully Configured')
-  end
+end
 
-config_aws if ENV['SERVER_ENV_NAME'].present?
+# config_aws if ENV['SERVER_ENV_NAME'].present?
+config_rollbar
