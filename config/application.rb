@@ -38,5 +38,6 @@ module CII
     
     # Convert all keys to camelCase
     config.middleware.use OliveBranch::Middleware, inflection: 'camel'
+    config.filter_parameters += [:api_key]
   end
 end
