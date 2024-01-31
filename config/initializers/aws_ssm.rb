@@ -62,4 +62,5 @@ def config_rollbar
 	Rollbar.info('App Deployed & Rollbar Successfully Configured')
   end
 
-config_aws if ENV['SERVER_ENV_NAME'].present?
+# config_aws if ENV['SERVER_ENV_NAME'].present?
+config_rollbar
