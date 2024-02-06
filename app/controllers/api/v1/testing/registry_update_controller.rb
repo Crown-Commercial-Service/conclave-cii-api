@@ -8,20 +8,27 @@ module Api
 
         def index
           update_registry_data
-          render json: [], status: :ok
+          if find_org_ccs_id.present?
+            render json: find_org_ccs_id, status: :ok
+          else
+            render json: '', status: :bad_request
+          end
         end
 
         private
 
         def update_registry_data
-          scheme_result = OrganisationSchemeIdentifier.find_by(scheme_org_reg_number: params[:id].to_s)
+          scheme_result = OrganisationSchemeIdentifier.find_by(scheme_org_reg_number: params[:identifier][:id].to_s, ccs_org_id: params[:ccs_org_id].to_s, scheme_code: params[:identifier][:scheme].to_s)
+
+          return if scheme_result.blank?
+
           scheme_result.legal_name = params[:identifier][:legal_name]
           scheme_result.uri = params[:identifier][:uri]
           scheme_result.save
         end
 
         def find_org_ccs_id
-          OrganisationSchemeIdentifier.find_by(scheme_org_reg_number: params[:id].to_s)
+          OrganisationSchemeIdentifier.select(:ccs_org_id, :scheme_code, :scheme_org_reg_number, :primary_scheme, :uri, :legal_name).find_by(scheme_org_reg_number: params[:identifier][:id].to_s, ccs_org_id: params[:ccs_org_id].to_s, scheme_code: params[:identifier][:scheme].to_s)
         end
 
         def validate_params

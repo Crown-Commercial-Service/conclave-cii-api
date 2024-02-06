@@ -2,8 +2,6 @@ module RegistryUpdate
   module UpdateScheme
     def registry_check
       search_registry
-      # contact_srevice = RegistryUpdate::ContactService.new
-      # contact_srevice.connect_contat_api
     end
 
     def find_org_with_id(ccs_org_id)
@@ -19,7 +17,7 @@ module RegistryUpdate
 
       find_org_with_params.each do |scheme|
         results = api_search_result(scheme[:scheme_org_reg_number], scheme[:scheme_code], scheme[:ccs_org_id])
-        update_record(results) if results.present?
+        update_record(results, scheme.primary_scheme) if results.present?
       end
     end
 
@@ -28,8 +26,14 @@ module RegistryUpdate
       search_api_with_params.call
     end
 
-    def update_record(api_result)
+    def update_record(api_result, primary_scheme)
       update_primary(api_result[:identifier]) if !api_result.nil? && api_result[:identifier].present?
+      update_contact_api(api_result) if !api_result.nil? && api_result[:address].present? && primary_scheme == true
+    end
+
+    def update_contact_api(registry_result)
+      contact_service = RegistryUpdate::ContactService.new(params[:ccs_org_id], registry_result)
+      contact_service.update_contact
     end
 
     def search_organisation_scheme(scheme_org_reg_number, scheme_code)
