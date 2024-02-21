@@ -7,11 +7,11 @@ module RegistryUpdate
     def address_payload
       {
         address: {
-          streetAddress: street_address.blank? ? '38 CII, LONDON' : street_address,
-          locality: locality.blank? ? 'cii-locality' : locality,
-          region: region.blank? ? 'london' : region,
-          postalCode: postal_code.blank? ? 'N15 5ER' : postal_code,
-          countryName: country_name.blank? ? 'United Kingdom' : country_name
+          streetAddress: street_address,
+          locality: locality,
+          region: region,
+          postalCode: postal_code,
+          countryName: country_name
         }
       }
     end

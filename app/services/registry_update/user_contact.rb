@@ -6,23 +6,23 @@ module RegistryUpdate
 
     def contact_payload
       {
-        contactPointName: name.blank? ? 'CII Name' : name,
+        contactPointName: name,
         contacts: [
           {
             contactType: 'EMAIL',
-            contactValue: email.blank? ? 'mijh@dummy.org.jk' : email
+            contactValue: email
           },
           {
             contactType: 'PHONE',
-            contactValue: phone.blank? ? '+4874848857' : phone
+            contactValue: phone
           },
           {
             contactType: 'FAX',
-            contactValue: fax.blank? ? '+5511455257809' : fax
+            contactValue: fax
           },
           {
             contactType: 'WEB_ADDRESS',
-            contactValue: web_address.blank? ? 'cii-test.com' : web_address
+            contactValue: web_address
           }
         ]
       }
