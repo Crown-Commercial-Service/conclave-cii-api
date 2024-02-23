@@ -13,7 +13,7 @@ module RegistryUpdate
       resp = update_org_contact_details(@conn)
       # ApiLogging::Logger.error("CONTACT SERVICE API| method:connect_contact_api, #{resp.to_json}") if resp.status != 200
     rescue StandardError => e
-      ApiLogging::Logger.fatal("CONTACT SERVICE API| method:connect_contact_api, #{e.to_json}")
+      # ApiLogging::Logger.fatal("CONTACT SERVICE API| method:connect_contact_api, #{e.to_json}")
     end
 
     def get_org_contact_details(contact_conn)
