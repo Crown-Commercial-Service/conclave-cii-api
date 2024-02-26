@@ -2,8 +2,6 @@ module RegistryUpdate
   module UpdateScheme
     def registry_check
       search_registry
-      # contact_srevice = RegistryUpdate::ContactService.new
-      # contact_srevice.connect_contat_api
     end
 
     def find_org_with_id(ccs_org_id)
@@ -19,17 +17,22 @@ module RegistryUpdate
 
       find_org_with_params.each do |scheme|
         results = api_search_result(scheme[:scheme_org_reg_number], scheme[:scheme_code], scheme[:ccs_org_id])
-        update_record(results) if results.present?
+        update_record(results, scheme.primary_scheme) if results.present?
       end
     end
 
     def api_search_result(scheme_id, scheme, ccs_org_id)
-      search_api_with_params = SearchApi.new(scheme_id, scheme, ccs_org_id)
-      search_api_with_params.call
+      scheme == Common::AdditionalIdentifier::SCHEME_CCS ? saleforce_api(scheme_id, scheme, ccs_org_id) : search_external_api(scheme_id, scheme, ccs_org_id)
     end
 
-    def update_record(api_result)
-      update_primary(api_result[:identifier]) if !api_result.nil? && api_result[:identifier].present?
+    def update_record(api_result, primary_scheme)
+      update_scheme(api_result[:identifier]) if !api_result.nil? && api_result[:identifier].present?
+      update_contact_api(api_result) if !api_result.nil? && api_result[:address].present? && primary_scheme == true
+    end
+
+    def update_contact_api(registry_result)
+      contact_service = RegistryUpdate::ContactService.new(params[:ccs_org_id], registry_result)
+      contact_service.update_contact
     end
 
     def search_organisation_scheme(scheme_org_reg_number, scheme_code)
@@ -37,7 +40,7 @@ module RegistryUpdate
       find_org_with_id(organisation[:ccs_org_id]) if organisation.present?
     end
 
-    def update_primary(identifier)
+    def update_scheme(identifier)
       filter_date = Time.zone.today - ENV['SUBTRACT_REGISTRY_UPDATE_DAYS'].to_i
       organisation = OrganisationSchemeIdentifier.where(scheme_org_reg_number: identifier[:id], scheme_code: identifier[:scheme], admin_updated: false).where('? >= DATE(updated_at)', filter_date.to_s).first
       if_changed_update(organisation, identifier) if organisation.present?
@@ -51,14 +54,15 @@ module RegistryUpdate
       organisation.save
     end
 
-    def find_scheme_from_params
-      return if params[:identifier].blank?
+    def search_external_api(scheme_id, scheme, ccs_org_id)
+      search_api_with_params = SearchApi.new(scheme_id, scheme, ccs_org_id)
+      search_api_with_params.call
+    end
 
-      if params[:identifier][:scheme].present?
-        params[:identifier][:scheme]
-      elsif params[:scheme].present?
-        params[:scheme]
-      end
+    def saleforce_api(scheme_id, scheme, ccs_org_id)
+      scheme_ccs_urn_num = Common::ApiHelper.saleforce_urn_num(scheme_id)
+      salesforce = Salesforce::Search.new(scheme_ccs_urn_num, scheme, ccs_org_id)
+      { identifier: salesforce.fetch_results }
     end
   end
 end

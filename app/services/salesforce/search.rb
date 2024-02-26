@@ -69,6 +69,8 @@ module Salesforce
         companies_house_number
       when Common::AdditionalIdentifier::SCHEME_DANDB
         duns_number
+      when Common::AdditionalIdentifier::SCHEME_CCS
+        salesforce_account_number
       end
     end
 
@@ -78,6 +80,10 @@ module Salesforce
 
     def companies_house_number
       "Company_Registration_Number__c='#{@id_number}'"
+    end
+
+    def salesforce_account_number
+      "Account_URN__c='#{@id_number}'"
     end
 
     def salesforce_scheme_id
