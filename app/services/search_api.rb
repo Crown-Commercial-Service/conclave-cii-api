@@ -18,8 +18,8 @@ class SearchApi
       @result = get_companies_house(@organisation_id)
     when Common::AdditionalIdentifier::SCHEME_ENG_WALES_CHARITY, Common::AdditionalIdentifier::SCHEME_NORTHEN_IRELAND_CHARITY, Common::AdditionalIdentifier::SCHEME_SCOTISH_CHARITY
       @result =  get_charity(@organisation_id, @scheme_id)
-    when Common::AdditionalIdentifier::SCHEME_DANDB
-      @result =  get_duns(@organisation_id)
+    # when Common::AdditionalIdentifier::SCHEME_DANDB
+    #   @result =  get_duns(@organisation_id)
     when Common::AdditionalIdentifier::SCHEME_NHS
       @result =  get_nhs(@organisation_id)
     when Common::AdditionalIdentifier::SCHEME_DFE
