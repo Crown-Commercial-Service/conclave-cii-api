@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/sparklemotion/sqlite3-ruby.git
+  revision: 77e902d5d717cdcb092247accd53388f09cdea9d
+  tag: v1.6.5
+  specs:
+    sqlite3 (1.6.5)
+      mini_portile2 (~> 2.8.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -207,6 +215,7 @@ GEM
     marcel (1.0.2)
     method_source (1.0.0)
     mini_mime (1.1.5)
+    mini_portile2 (2.8.5)
     minitest (5.20.0)
     msgpack (1.7.2)
     multi_json (1.15.0)
@@ -221,9 +230,7 @@ GEM
       timeout
     net-smtp (0.4.0)
       net-protocol
-    nio4r (2.6.1)
-    nokogiri (1.15.5-x86_64-darwin)
-      racc (~> 1.4)
+    nio4r (2.7.0)
     nokogiri (1.15.5-x86_64-linux)
       racc (~> 1.4)
     olive_branch (4.0.1)
@@ -243,7 +250,7 @@ GEM
     psych (5.1.1.1)
       stringio
     public_suffix (5.0.3)
-    puma (5.6.7)
+    puma (5.6.8)
       nio4r (~> 2.0)
     racc (1.7.3)
     rack (2.2.8)
@@ -384,8 +391,6 @@ GEM
     simplecov-html (0.12.3)
     simplecov_json_formatter (0.1.4)
     smart_properties (1.17.0)
-    sqlite3 (1.6.5-x86_64-darwin)
-    sqlite3 (1.6.5-x86_64-linux)
     stringio (3.0.9)
     terminal-table (3.0.2)
       unicode-display_width (>= 1.1.1, < 3)
@@ -393,6 +398,8 @@ GEM
     timeout (0.4.1)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
+    tzinfo-data (1.2023.4)
+      tzinfo (>= 1.0.0)
     unicode-display_width (2.5.0)
     webmock (3.19.1)
       addressable (>= 2.8.0)
@@ -405,7 +412,6 @@ GEM
     zeitwerk (2.6.12)
 
 PLATFORMS
-  x86_64-darwin-21
   x86_64-linux
 
 DEPENDENCIES
@@ -427,7 +433,7 @@ DEPENDENCIES
   olive_branch (>= 4.0.1)
   pg
   pry-rails
-  puma (~> 5.6, >= 5.6.7)
+  puma (~> 5.6)
   rack-cors
   rails (~> 7.1.1)
   redis
@@ -440,7 +446,8 @@ DEPENDENCIES
   rubocop-rails (>= 2.21.1)
   rubocop-rspec (>= 2.2.0)
   simplecov
-  sqlite3 (~> 1.4)
+  sqlite3 (~> 1.6)!
+  tzinfo-data
   webmock (>= 3.12.1)
 
 RUBY VERSION
