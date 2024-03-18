@@ -59,7 +59,7 @@ group :development, :test do
   gem 'rubocop-rspec', '>= 2.2.0' # or gem 'rubocop-minitest'
   gem 'brakeman'
   gem 'pry-rails'
-  gem 'factory_bot_rails', '>= 6.3.0'
+  gem 'factory_bot_rails', '>= 6.4.3'
   gem 'simplecov', require: false
 end
 
