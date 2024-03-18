@@ -4,7 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '3.2.2'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 7.1.1'
+gem 'rails', '~> 7.1.3', '>= 7.1.3.1'
 # Use sqlite3 as the database for Active Record. When using Alpine, needs to be compiled from source using the musl C compiler.
 gem 'sqlite3', '~> 1.6', git: 'https://github.com/sparklemotion/sqlite3-ruby.git', tag: 'v1.6.5'
 # Use Puma as the app server
@@ -32,7 +32,7 @@ gem 'redis'
 gem 'redis-namespace'
 gem 'redis-rails', '>= 5.0.2'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
-gem 'rack-cors'
+gem 'rack-cors', '>= 2.0.2'
 # For converting between cases for API request & response
 gem 'olive_branch', '>= 4.0.1'
 # test code complexity
@@ -50,12 +50,12 @@ group :development, :test do
   # gem 'spring'
   # gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
-  gem 'dotenv-rails', '>= 2.7.6'
+  gem 'dotenv-rails', '>= 3.0.0'
   gem 'i18n-tasks', '>= 1.0.13'
-  gem 'rspec-rails', '>= 6.0.4'
+  gem 'rspec-rails', '>= 6.1.1'
   gem 'rubocop', '>= 1.12.0'
   gem 'rubocop-performance', '>= 1.10.2'
-  gem 'rubocop-rails', '>= 2.21.1'
+  gem 'rubocop-rails', '>= 2.21.2'
   gem 'rubocop-rspec', '>= 2.2.0' # or gem 'rubocop-minitest'
   gem 'brakeman'
   gem 'pry-rails'
