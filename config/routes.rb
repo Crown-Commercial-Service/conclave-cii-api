@@ -21,6 +21,7 @@ Rails.application.routes.draw do
         get '/search/identities/schemes/organisation', to: 'crud_testing#search_org'
         put '/identities/organisation/:ccs_org_id/scheme/:scheme/identifier/:id', to: 'registry_update#index'
         post '/access/token/:ccs_org_id/:user_email', to: 'access_token#create_new_access_token'
+        post '/spotlight/callback', to: 'crud_testing#spotlight_call_back'
       end
     end
   end

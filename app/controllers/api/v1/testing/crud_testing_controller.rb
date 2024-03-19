@@ -3,7 +3,11 @@ module Api
     module Testing
       class CrudTestingController < ActionController::API
         include Authorize::Token
-        before_action :validate_api_key
+        # before_action :validate_api_key
+
+        def spotlight_call_back
+          puts "Post callback request"
+        end
 
         def remove_orginisation
           delete_org if params[:org_ccs_id].present?
@@ -25,6 +29,15 @@ module Api
           end
         end
 
+
+
+        def spotlight_callback
+          puts "params.inspect"
+          puts params.inspect
+          puts "params.inspect"
+        end
+        
+        
         private
 
         def find_org_ccs_id
