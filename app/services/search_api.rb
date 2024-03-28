@@ -19,7 +19,7 @@ class SearchApi
     when Common::AdditionalIdentifier::SCHEME_ENG_WALES_CHARITY, Common::AdditionalIdentifier::SCHEME_NORTHEN_IRELAND_CHARITY, Common::AdditionalIdentifier::SCHEME_SCOTISH_CHARITY
       @result =  get_charity(@organisation_id, @scheme_id)
     when Common::AdditionalIdentifier::SCHEME_DANDB
-      @result =  get_duns(@organisation_id)
+      @result =  get_duns(@organisation_id, @scheme_id)
     when Common::AdditionalIdentifier::SCHEME_NHS
       @result =  get_nhs(@organisation_id)
     when Common::AdditionalIdentifier::SCHEME_DFE
@@ -48,16 +48,17 @@ class SearchApi
     results
   end
 
-  def get_duns(duns_number)
-    dnb = Dnb::Search.new(duns_number)
-    results = dnb.fetch_results
+  def get_duns(duns_number, scheme_id)
+    # after testinf the new spotlight api please remove this  the commented out code.
+    # dnb = Dnb::Search.new(duns_number)
+    # results = dnb.fetch_results
+    # results[:additionalIdentifiers] = get_addtional_identfiers(results[:additionalIdentifiers]) if results.present?
+    # results
+
+    spotlight = Spotlight::Search.new(duns_number, scheme_id)
+    results = spotlight.fetch_results
     results[:additionalIdentifiers] = get_addtional_identfiers(results[:additionalIdentifiers]) if results.present?
     results
-  end
-
-  def get_duns_coh(company_reg_number)
-    dnb_chn = DnbChn::Search.new(company_reg_number)
-    dnb_chn.fetch_results
   end
 
   def get_nhs(organisation_code)

@@ -42,3 +42,4 @@ vendor/bundle/
 CF/*.manifest.yml
 
 public/export
+spec/stub_response/spotlight/.vscode/settings.json

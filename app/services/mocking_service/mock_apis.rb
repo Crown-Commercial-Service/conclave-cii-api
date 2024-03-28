@@ -34,6 +34,7 @@ module MockingService
       setup_salesforce_stubs
       setup_salesforce_api
       setup_duns_coh_api
+      setup_spotlight_stubs
     end
 
     def setup_api_stubs
@@ -49,6 +50,16 @@ module MockingService
     def setup_salesforce_stubs
       Dir.each_child('spec/stub_response/salesforce') do |filename|
         MockingService::ApiSalesforceStub.new(get_params(filename))
+      rescue StandardError
+        {}
+      end
+    rescue StandardError
+      {}
+    end
+
+    def setup_spotlight_stubs
+      Dir.each_child('spec/stub_response/spotlight') do |filename|
+        MockingService::ApiSpotlightStub.new(get_params(filename))
       rescue StandardError
         {}
       end
