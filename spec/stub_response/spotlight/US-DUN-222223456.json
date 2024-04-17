@@ -1,6 +1,7 @@
 {
     "searchOrganisation": [
         {
+            "Status": "Active",
             "Name": "Company Example 222223456",
             "GlobalUltimate": "No",
             "DunsNumber": "222223456",
