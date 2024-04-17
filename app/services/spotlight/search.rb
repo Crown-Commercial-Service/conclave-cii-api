@@ -46,9 +46,8 @@ module Spotlight
       ApiValidations::ApiErrorValidationResponse.new(resp.status) if @additional_identifier_search == false
       decoded_result = ActiveSupport::JSON.decode(resp.body) if resp.status == 200
       @result = decoded_result['searchOrganisation'][0]
-      # uncomment this and fix the relevant dnbCode field as currently spotlight does not contain this field.
-      # if resp.status == 200 && @result.key?('organization') && @result['organization']['dunsControlStatus']['operatingStatus']['dnbCode'] == 9074
-      if resp.status == 200 && @result.key?('Name')
+
+      if resp.status == 200 && @result.key?('Status') && @result['Status'] == 'Active'
         build_response
       else
         false
