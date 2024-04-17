@@ -48,7 +48,7 @@ module CompaniesHouse
     end
 
     def additional_identifier_duns
-      duns_search = DnbChn::AdditionalIdentifier.new(@company_reg_number).build_response
+      duns_search = Spotlight::AdditionalIdentifier.new(@company_reg_number, Common::AdditionalIdentifier::SCHEME_COMPANIES_HOUSE).build_response
 
       if duns_search.present?
         [duns_search]
