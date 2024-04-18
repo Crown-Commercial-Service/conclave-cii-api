@@ -32,7 +32,7 @@ module Spotlight
     def fetch_results
       fetch_results_from_api
     rescue StandardError => e
-      ApiLogging::Logger.fatal("SPOTLIGHT API| method:fetch_results, #{e.to_json}")
+      ApiLogging::Logger.fatal("SPOTLIGHT APIx| method:fetch_results, #{e.to_json}")
       ApiValidations::ApiErrorValidationResponse.new(503) if @additional_identifier_search == false
     end
 
