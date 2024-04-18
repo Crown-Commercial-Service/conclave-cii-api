@@ -15,6 +15,13 @@ class SearchApiAdditionalIdentifiers
       @result = get_charity_additional(@organisation_id, @scheme_id)
     when Common::AdditionalIdentifier::SCHEME_DANDB
       # @result = get_duns_additional(@organisation_id)
+      puts 'testing 1 START'
+      puts "here->1A #{ENV.fetch('SPOTLIGHT_USERNAME', nil)}"
+      puts "here->1B #{ENV.fetch('SPOTLIGHT_PASSWORD', nil)}"
+      puts "here->1C #{ENV.fetch('SPOTLIGHT_CLIENT_ID', nil)}"
+      puts "here->1D #{ENV.fetch('SPOTLIGHT_CLIENT_SECRET', nil)}"
+      puts "here->1E #{ENV.fetch('SPOTLIGHT_AUTH_URL', nil)}"
+      puts 'testing 1 END'
       @result = get_spotlight_additional(@organisation_id, @scheme_id)
     end
 
