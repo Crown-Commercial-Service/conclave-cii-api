@@ -13,16 +13,16 @@ module Spotlight
 
     def post_params
       {
-        'username' => ENV.fetch('SPOTLIGHT_USERNAME', nil),
-        'password' => ENV.fetch('SPOTLIGHT_PASSWORD', nil),
+        'username' => ENV.fetch('CONFIG_SPOTLIGHT_USERNAME', nil),
+        'password' => ENV.fetch('CONFIG_SPOTLIGHT_PASSWORD', nil),
         'grant_type' => 'password',
-        'client_id' => ENV.fetch('SPOTLIGHT_CLIENT_ID', nil),
-        'client_secret' => ENV.fetch('SPOTLIGHT_CLIENT_SECRET', nil)
+        'client_id' => ENV.fetch('CONFIG_SPOTLIGHT_CLIENT_ID', nil),
+        'client_secret' => ENV.fetch('CONFIG_SPOTLIGHT_CLIENT_SECRET', nil)
       }
     end
 
     def fetch_token
-      conn = Faraday.new(url: ENV.fetch('SPOTLIGHT_AUTH_URL', nil))
+      conn = Faraday.new(url: ENV.fetch('CONFIG_SPOTLIGHT_AUTH_URL', nil))
       params = post_params
       resp = conn.post('/services/oauth2/token', params, { 'Content-Type' => 'application/x-www-form-urlencoded' })
       ApiLogging::Logger.api_status_error('Salesforce method:fetch_token', resp)
