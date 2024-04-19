@@ -15,7 +15,6 @@ class SearchApiAdditionalIdentifiers
       @result = get_charity_additional(@organisation_id, @scheme_id)
     when Common::AdditionalIdentifier::SCHEME_DANDB
       # @result = get_duns_additional(@organisation_id)
-      ApiLogging::Logger.fatal("Testing 1A START |  #{ENV.fetch('SPOTLIGHT_USERNAME', nil)}, #{ENV.fetch('SPOTLIGHT_PASSWORD', nil)}, #{ENV.fetch('SPOTLIGHT_CLIENT_ID', nil)}, #{ENV.fetch('SPOTLIGHT_CLIENT_SECRET', nil)}, #{ENV.fetch('SPOTLIGHT_AUTH_URL', nil)}")
       @result = get_spotlight_additional(@organisation_id, @scheme_id)
     end
 
