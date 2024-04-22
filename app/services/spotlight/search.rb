@@ -24,7 +24,6 @@ module Spotlight
     def fetch_token
       conn = Faraday.new(url: ENV.fetch('CONFIG_SPOTLIGHT_AUTH_URL', nil))
       params = post_params
-      Rails.logger.info "here-->0  #{params}"
       resp = conn.post('/services/oauth2/token', params, { 'Content-Type' => 'application/x-www-form-urlencoded' })
       ApiLogging::Logger.api_status_error('Salesforce method:fetch_token', resp)
       resp.body
@@ -37,18 +36,15 @@ module Spotlight
       ApiValidations::ApiErrorValidationResponse.new(503) if @additional_identifier_search == false
     end
 
-    def fetch_results_from_api # rubocop:disable Metrics/AbcSize
+    def fetch_results_from_api # rubocop:disable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
       token = JSON.parse(fetch_token)
-
-      Rails.logger.info "here-->1  #{token}"
 
       return false if token['access_token'].blank?
 
       resp = search_results(token)
-      Rails.logger.info "here-->5  #{resp}"
-      Rails.logger.info "here-->6  #{resp.status}"
-      Rails.logger.info "here-->7  #{resp.body}"
       logging(resp)
+      return false if resp.body.include?('Non 200/206 code received from D and B: 400')
+
       ApiValidations::ApiErrorValidationResponse.new(resp.status) if @additional_identifier_search == false
       decoded_result = ActiveSupport::JSON.decode(resp.body) if resp.status == 200
       @result = decoded_result['searchOrganisation'][0]
@@ -64,14 +60,9 @@ module Spotlight
       conn = Common::ApiHelper.faraday_new(url: ENV.fetch('CONFIG_SPOTLIGHT_AUTH_URL', nil))
       conn.authorization :Bearer, token['access_token']
 
-      Rails.logger.info "here-->2  #{token['access_token']}"
-      Rails.logger.info "here-->3  #{ENV.fetch('CONFIG_SPOTLIGHT_AUTH_URL', nil)}"
-
       conn.get('/services/apexrest/searchorganisation') do |req|
-        Rails.logger.info "here-->4.i  #{req}"
         req.headers['Accept'] = 'application/json'
         req.headers['Content-Type'] = 'application/json'
-        Rails.logger.info 'here-->4.ii'
         req.headers['payload'] = build_arguments.to_json
       end
     end
@@ -113,7 +104,6 @@ module Spotlight
     end
 
     def duns_number
-      Rails.logger.info "here-->4.iii #{@id_number}"
       {
         requestType: 'SearchOrganisation',
         parameters: {
@@ -123,7 +113,6 @@ module Spotlight
     end
 
     def companies_house_number
-      Rails.logger.info 'here--> X'
       {
         requestType: 'SearchOrganisation',
         parameters: {
