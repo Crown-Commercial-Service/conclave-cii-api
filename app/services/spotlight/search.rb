@@ -32,7 +32,7 @@ module Spotlight
     def fetch_results
       fetch_results_from_api
     rescue StandardError => e
-      ApiLogging::Logger.fatal("Testing 1A START | #{ENV.fetch('SPOTLIGHT_USERNAME', nil)}, #{ENV.fetch('SPOTLIGHT_PASSWORD', nil)}, #{ENV.fetch('SPOTLIGHT_CLIENT_ID', nil)}, #{ENV.fetch('SPOTLIGHT_CLIENT_SECRET', nil)}, #{ENV.fetch('SPOTLIGHT_AUTH_URL', nil)}, #{ENV.fetch('CONFIG_SPOTLIGHT_USERNAME', nil)}, #{ENV.fetch('CONFIG_SPOTLIGHT_PASSWORD', nil)}, #{ENV.fetch('CONFIG_SPOTLIGHT_CLIENT_ID', nil)}, #{ENV.fetch('CONFIG_SPOTLIGHT_CLIENT_SECRET', nil)}, #{ENV.fetch('CONFIG_SPOTLIGHT_AUTH_URL', nil)} | method:fetch_results, #{e.to_json}")
+      ApiLogging::Logger.fatal("Testing 1A START | #{ENV.fetch('CONFIG_SPOTLIGHT_USERNAME', nil)}, #{ENV.fetch('CONFIG_SPOTLIGHT_PASSWORD', nil)}, #{ENV.fetch('CONFIG_SPOTLIGHT_CLIENT_ID', nil)}, #{ENV.fetch('CONFIG_SPOTLIGHT_CLIENT_SECRET', nil)}, #{ENV.fetch('CONFIG_SPOTLIGHT_AUTH_URL', nil)} | method:fetch_results, #{e.to_json}")
       ApiValidations::ApiErrorValidationResponse.new(503) if @additional_identifier_search == false
     end
 
