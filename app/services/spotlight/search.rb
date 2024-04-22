@@ -23,8 +23,13 @@ module Spotlight
 
     def fetch_token
       conn = Faraday.new(url: ENV.fetch('CONFIG_SPOTLIGHT_AUTH_URL', nil))
+      Rails.logger.info "here->00 #{conn}"
       params = post_params
+      Rails.logger.info "here->1A #{params}"
       resp = conn.post('/services/oauth2/token', params, { 'Content-Type' => 'application/x-www-form-urlencoded' })
+      Rails.logger.info "here->2B.i #{resp}"
+      Rails.logger.info "here->2B.ii #{resp.status}"
+      Rails.logger.info "here->3C #{resp.body}"
       ApiLogging::Logger.api_status_error('Salesforce method:fetch_token', resp)
       resp.body
     end
@@ -36,12 +41,18 @@ module Spotlight
       ApiValidations::ApiErrorValidationResponse.new(503) if @additional_identifier_search == false
     end
 
-    def fetch_results_from_api
-      token = JSON.parse(fetch_token)
+    def fetch_results_from_api # rubocop:disable Metrics/AbcSize
+      token_pre_parse = fetch_token
+      Rails.logger.info "here->4D #{token_pre_parse}"
+      token = JSON.parse(token_pre_parse)
+      Rails.logger.info "here->5E #{token}"
 
       return false if token['access_token'].blank?
 
       resp = search_results(token)
+      Rails.logger.info "here->8H #{resp}"
+      Rails.logger.info "here->9I #{resp.status}"
+      Rails.logger.info "here->10J #{resp.body}"
       logging(resp)
       ApiValidations::ApiErrorValidationResponse.new(resp.status) if @additional_identifier_search == false
       decoded_result = ActiveSupport::JSON.decode(resp.body) if resp.status == 200
@@ -56,6 +67,8 @@ module Spotlight
 
     def search_results(token)
       conn = Common::ApiHelper.faraday_new(url: ENV.fetch('SPOTLIGHT_AUTH_URL', nil))
+      Rails.logger.info "here->6F #{conn}"
+      Rails.logger.info "here->7G #{token['access_token']}"
       conn.authorization :Bearer, token['access_token']
 
       conn.get('/services/apexrest/searchorganisation') do |req|
