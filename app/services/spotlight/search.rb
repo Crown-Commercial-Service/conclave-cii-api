@@ -43,7 +43,7 @@ module Spotlight
 
       resp = search_results(token)
       logging(resp)
-      return false if resp.body.include?('Non 200/206 code received from D and B: 400')
+      return false if resp.body.include?('Non 200/206 code received from D and B')
 
       ApiValidations::ApiErrorValidationResponse.new(resp.status) if @additional_identifier_search == false
       decoded_result = ActiveSupport::JSON.decode(resp.body) if resp.status == 200
