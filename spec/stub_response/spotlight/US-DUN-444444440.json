@@ -1,0 +1,15 @@
+{
+    "searchOrganisation": [
+        {
+            "Status": "Active",
+            "Name": "Company Example 444444440",
+            "GlobalUltimate": "No",
+            "DunsNumber": "444444440",
+            "CompaniesHouseNumber": "09512345",
+            "BillingStreet": "67 gom st",
+            "BillingPostalCode": "AB1C 2DE",
+            "BillingCountry": "GB",
+            "BillingCity": null
+        }
+    ]
+}
