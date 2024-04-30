@@ -4,7 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '3.2.2'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 7.0.8'
+gem 'rails', '~> 7.1.3'
 # Use sqlite3 as the database for Active Record. When using Alpine, needs to be compiled from source using the musl C compiler.
 gem 'sqlite3', '~> 1.6', git: 'https://github.com/sparklemotion/sqlite3-ruby.git', tag: 'v1.6.5'
 # Use Puma as the app server
@@ -51,15 +51,15 @@ group :development, :test do
   # gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'dotenv-rails', '>= 2.7.6'
-  gem 'i18n-tasks', '>= 1.0.11'
-  gem 'rspec-rails', '>= 5.1.2'
+  gem 'i18n-tasks', '>= 1.0.13'
+  gem 'rspec-rails', '>= 6.0.4'
   gem 'rubocop', '>= 1.12.0'
   gem 'rubocop-performance', '>= 1.10.2'
-  gem 'rubocop-rails', '>= 2.21.0'
+  gem 'rubocop-rails', '>= 2.21.1'
   gem 'rubocop-rspec', '>= 2.2.0' # or gem 'rubocop-minitest'
   gem 'brakeman'
   gem 'pry-rails'
-  gem 'factory_bot_rails', '>= 6.2.0'
+  gem 'factory_bot_rails', '>= 6.4.3'
   gem 'simplecov', require: false
 end
 
