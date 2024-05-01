@@ -1,4 +1,4 @@
-dist: bionic
+dist: jammy
 language: ruby
 rvm:
  — 3.2.2
@@ -15,17 +15,18 @@ env:
 services:
   - postgresql
 addons:
-  postgresql: '11'
+  postgresql: '14'
 install: bundle install --jobs=3 --retry=3
 before_script:
   - sudo apt-key adv --keyserver hkps://keyserver.ubuntu.com --refresh-keys
   - sudo apt-get -qq update
-  - sudo apt-get install -y postgresql-11-postgis-2.5
+  - sudo apt-get install -y postgresql-client
   - psql -U postgres -c 'create database cii_test'
-  - psql -U postgres -d cii_test -c 'create extension postgis'
+  # - psql -U postgres -d cii_test -c 'create extension postgis'
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build
+  - bundle exec bin/rails db:migrate RAILS_ENV=test
 script:
   - bundle exec rake db:setup
   - bundle exec rake
