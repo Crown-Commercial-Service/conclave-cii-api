@@ -2,9 +2,13 @@ module Api
   module V1
     class RegisteredOrganisationsSchemesController < ActionController::API
       include Authorize::AuthorizationMethods
+      # Uncomment this to activate Registry update
+      # include RegistryUpdate::UpdateScheme
       rescue_from ApiValidations::ApiError, with: :return_error_code
       before_action :validate_access_users_or_api_key
       before_action :validate_params
+      # Uncomment this to activate Registry update
+      # before_action :registry_check
 
       def search_organisation
         params[:ccs_org_id] = search_organisation_by_scheme if @scheme_id
