@@ -58,17 +58,30 @@ module Common
       end
       result
     end
+    # use once spotlight gives us Registries type code so we can cater for
+    # Charities too.
+    # def filter_dandb_ids(registration_numbers, duns_number)
+    #   result = []
+    #   registration_numbers.each do |registration_number|
+    #     next unless duns_number != registration_number['registrationNumber'] && dandb_codes.include?(registration_number['typeDnBCode'])
 
-    def filter_dandb_ids(registration_numbers, duns_number)
+    #     identifier = {}
+    #     identifier[:scheme] = dandb_scheme(registration_number['typeDnBCode'])
+    #     identifier[:id] = registration_number['registrationNumber']
+    #     result.push(identifier)
+    #   end
+    #   result
+    # end
+
+    def filter_dandb_ids(registration_numbers, _duns_number)
+      return if registration_numbers['CompaniesHouseNumber'].blank?
+
       result = []
-      registration_numbers.each do |registration_number|
-        next unless duns_number != registration_number['registrationNumber'] && dandb_codes.include?(registration_number['typeDnBCode'])
 
-        identifier = {}
-        identifier[:scheme] = dandb_scheme(registration_number['typeDnBCode'])
-        identifier[:id] = registration_number['registrationNumber']
-        result.push(identifier)
-      end
+      identifier = {}
+      identifier[:scheme] = dandb_scheme(DANDB_COMPANY_NUMBER_CODE)
+      identifier[:id] = registration_numbers['CompaniesHouseNumber']
+      result.push(identifier)
       result
     end
 
