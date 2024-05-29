@@ -153,5 +153,9 @@ module Common
         builder.adapter Faraday.default_adapter
       end
     end
+
+    def self.saleforce_urn_num(scheme_ccs_id)
+      scheme_ccs_id.split('~', 2)[1]
+    end
   end
 end

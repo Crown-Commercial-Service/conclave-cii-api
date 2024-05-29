@@ -2,11 +2,13 @@ module Api
   module V1
     class AllRegisteredOrganisationsSchemesController < ActionController::API
       include Authorize::AuthorizationMethods
-      include RegistryUpdate::UpdateScheme
+      # Uncomment this to activate Registry update
+      # include RegistryUpdate::UpdateScheme
       rescue_from ApiValidations::ApiError, with: :return_error_code
       before_action :validate_ccs_admin_or_api_key
       before_action :validate_params
-      before_action :registry_check
+      # Uncomment this to activate Registry update
+      # before_action :registry_check
 
       def search_organisation
         result = Common::RegisteredOrganisationResponse.new(params[:ccs_org_id], hidden: true).response_payload
