@@ -71,23 +71,18 @@ module Spotlight
       {
         name: name,
         identifier: Spotlight::Indentifier.new(@result).build_response,
-        additionalIdentifiers: filter_additional_indentifiers,
+        additionalIdentifiers: additional_identifiers,
         address: Spotlight::Address.new(@result).build_response,
         contactPoint: Spotlight::Contact.new(@result).build_response
       }
     end
 
     def additional_identifiers
-      additional_identifiers_links if Common::ApiHelper.exists_or_null(@result['CompaniesHouseNumber']).present?
-    end
-
-    def additional_identifiers_links
-      @additional_indentifers_list.concat(Common::AdditionalIdentifier.new.filter_dandb_ids(@result, @id_number))
-    end
-
-    def filter_additional_indentifiers
-      additional_identifiers
-      @additional_indentifers_list.uniq { |identifier| identifier[:id] }
+      additional_identifiers_list = []
+      additional_identifiers_list << SearchApiAdditionalIdentifiers.new(@result['CompaniesHouseNumber'], Common::AdditionalIdentifier::SCHEME_COMPANIES_HOUSE).call if Common::ApiHelper.exists_or_null(@result['CompaniesHouseNumber']).present?
+      additional_identifiers_list << SearchApiAdditionalIdentifiers.new(@result['CharityCommissionforEnglandandWales'], Common::AdditionalIdentifier::SCHEME_ENG_WALES_CHARITY).call if Common::ApiHelper.exists_or_null(@result['CharityCommissionforEnglandandWales']).present?
+      additional_identifiers_list << SearchApiAdditionalIdentifiers.new(@result['CharityCommissionforNorthernIreland'], Common::AdditionalIdentifier::SCHEME_NORTHEN_IRELAND_CHARITY).call if Common::ApiHelper.exists_or_null(@result['CharityCommissionforNorthernIreland']).present?
+      additional_identifiers_list
     end
 
     def name

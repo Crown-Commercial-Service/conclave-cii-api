@@ -8,7 +8,7 @@ gem 'rails', '~> 7.1.3'
 # Use sqlite3 as the database for Active Record. When using Alpine, needs to be compiled from source using the musl C compiler.
 gem 'sqlite3', '~> 1.6', git: 'https://github.com/sparklemotion/sqlite3-ruby.git', tag: 'v1.6.5'
 # Use Puma as the app server
-gem 'puma', '~> 5.6', '>= 5.6.7'
+gem 'puma', '~> 6.0', '>= 6.0.0'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.7'
 # Use Redis adapter to run Action Cable in production
