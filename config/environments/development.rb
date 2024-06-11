@@ -47,7 +47,7 @@ Rails.application.configure do
     logger.formatter = config.log_formatter
     config.logger    = ActiveSupport::TaggedLogging.new(logger)
   end
-
+  
   # Raises error for missing translations.
   # config.action_view.raise_on_missing_translations = true
 
