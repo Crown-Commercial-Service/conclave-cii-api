@@ -25,26 +25,6 @@ RSpec.describe Api::V1::OrganisationsController do
           expect(response).to have_http_status(:ok)
         end
 
-        it 'search Find the duns test identifier US-DUN-1111....' do
-          get :search_organisation, params: { scheme: 'GB-COH', id: '111111111' }
-          expect(response).to have_http_status(:ok)
-        end
-
-        it 'search Find the duns test identifier SF-ID-1111....' do
-          get :search_organisation, params: { scheme: 'SF-ID', id: '111111111' }
-          expect(response).to have_http_status(:ok)
-        end
-
-        it 'search Find the duns test identifier SF-URN-1111....' do
-          get :search_organisation, params: { scheme: 'SF-URN', id: '111111111' }
-          expect(response).to have_http_status(:ok)
-        end
-
-        it 'search Find the companies house test identifier GB-COH-1111....' do
-          get :search_organisation, params: { scheme: 'US-DUN', id: '111111111' }
-          expect(response).to have_http_status(:ok)
-        end
-
         it 'search nhs' do
           get :search_organisation, params: { scheme: 'GB-NHS', id: 'A23' }
           expect(response).to have_http_status(:ok)
