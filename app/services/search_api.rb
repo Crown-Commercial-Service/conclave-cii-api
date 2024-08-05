@@ -49,15 +49,11 @@ class SearchApi
   end
 
   def get_duns(duns_number, scheme_id)
-    # after testinf the new spotlight api please remove this  the commented out code.
-    # dnb = Dnb::Search.new(duns_number)
-    # results = dnb.fetch_results
-    # results[:additionalIdentifiers] = get_addtional_identfiers(results[:additionalIdentifiers]) if results.present?
-    # results
-
     spotlight = Spotlight::Search.new(duns_number, scheme_id)
     results = spotlight.fetch_results
-    results[:additionalIdentifiers] = get_addtional_identfiers(results[:additionalIdentifiers]) if results.present?
+    additional_identifiers = results[:additionalIdentifiers]
+    results[:additionalIdentifiers] = []
+    results[:additionalIdentifiers] = get_addtional_identfiers(additional_identifiers) if results.present? && additional_identifiers.any?
     results
   end
 
