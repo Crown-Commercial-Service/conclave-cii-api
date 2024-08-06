@@ -51,9 +51,13 @@ class SearchApi
   def get_duns(duns_number, scheme_id)
     spotlight = Spotlight::Search.new(duns_number, scheme_id)
     results = spotlight.fetch_results
-    additional_identifiers = results[:additionalIdentifiers]
-    results[:additionalIdentifiers] = []
-    results[:additionalIdentifiers] = get_addtional_identfiers(additional_identifiers) if results.present? && additional_identifiers.any?
+
+    if results
+      additional_identifiers = results[:additionalIdentifiers]
+      results[:additionalIdentifiers] = []
+      results[:additionalIdentifiers] = get_addtional_identfiers(additional_identifiers) if results.present? && additional_identifiers.any?
+    end
+
     results
   end
 
