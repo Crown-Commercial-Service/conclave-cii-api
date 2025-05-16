@@ -32,7 +32,7 @@ gem 'redis'
 gem 'redis-namespace'
 gem 'redis-rails', '>= 5.0.2'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
-gem 'rack-cors'
+gem 'rack-cors', '>= 3.0.0'
 # For converting between cases for API request & response
 gem 'olive_branch', '>= 4.0.1'
 # test code complexity
