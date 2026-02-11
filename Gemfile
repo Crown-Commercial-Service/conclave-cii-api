@@ -23,10 +23,10 @@ gem 'bootsnap', '>= 1.4.2', require: false
 gem 'activerecord-postgis-adapter', '>= 6.0.1'
 gem 'pg'
 gem 'jwt'
-gem 'faraday'
+gem 'faraday', '>= 2.14.1'
 gem 'faraday_middleware'
-gem 'faraday-http-cache'
-gem 'graphlient'
+gem 'faraday-http-cache', '>= 2.6.0'
+gem 'graphlient', '>= 0.7.0'
 # Redis gems
 gem 'redis'
 gem 'redis-namespace'
