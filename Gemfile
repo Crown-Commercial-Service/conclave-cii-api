@@ -40,7 +40,7 @@ gem 'flog'
 # gem 'vault'
 # error logging
 gem 'rollbar'
-gem 'webmock', '>= 3.24.0'
+gem 'webmock', '>= 3.25.2'
 # aws ssm
 gem 'aws-sdk-ssm'
 
