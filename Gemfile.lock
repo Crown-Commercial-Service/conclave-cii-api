@@ -173,7 +173,7 @@ GEM
       faraday (>= 1.0)
       faraday_middleware
       graphql-client
-    graphql (2.3.21)
+    graphql (2.3.23)
       base64
       fiber-storage
     graphql-client (0.22.0)
