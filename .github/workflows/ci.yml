@@ -18,8 +18,8 @@ jobs:
       POSTGRES_PORT: 5432
     services:
       postgres:
-        # This image is ARM64 ONLY - act cannot get the architecture wrong
-        image: imresoft/postgis:14-3.2-arm64
+        # Use official PostGIS image
+        image: postgis/postgis:14-3.2
         ports:
           - 5432:5432
         env:
