@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  push:
+    branches: [ develop ]
+  pull_request:
+    branches: [ develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      RAILS_ENV: test
+      # Use 127.0.0.1 to bridge 'act' and GitHub networking perfectly
+      POSTGRES_HOST: 127.0.0.1
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_PORT: 5432
+    services:
+      postgres:
+        # This image is ARM64 ONLY - act cannot get the architecture wrong
+        image: imresoft/postgis:14-3.2-arm64
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: cii_test
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s 
+          --health-timeout 5s 
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.2.2
+          bundler-cache: true
+
+      - name: Install dependencies
+        run: bundle install --jobs 4 --retry 3
+
+      - name: Set up database
+        run: |
+          cp config/database.yml.github-actions config/database.yml || true
+          bundle exec rails db:create db:schema:load --trace
+        env:
+          # Force the connection string to use the loopback IP
+          DATABASE_URL: "postgres://postgres:postgres@127.0.0.1:5432/cii_test"
+
+      - name: Load .env.test if present
+        run: |
+          if [ -f .env.test ]; then
+            export $(grep -v '^#' .env.test | xargs -I {} echo "{}")
+          fi
+
+      - name: Run RSpec
+        run: bundle exec rspec
+
+      - name: Run RuboCop
+        run: bundle exec rubocop
+
+      - name: Run Brakeman
+        run: bundle exec brakeman --no-exit-on-warn
