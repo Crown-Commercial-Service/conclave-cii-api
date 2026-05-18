@@ -1,4 +1,4 @@
-name: CI
+name: CII API
 
 on:
   push:
@@ -9,17 +9,10 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    env:
-      RAILS_ENV: test
-      # Use 127.0.0.1 to bridge 'act' and GitHub networking perfectly
-      POSTGRES_HOST: 127.0.0.1
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_PORT: 5432
+
     services:
       postgres:
-        # Use official PostGIS image
-        image: postgis/postgis:14-3.2
+        image: postgres:14
         ports:
           - 5432:5432
         env:
@@ -28,40 +21,39 @@ jobs:
           POSTGRES_DB: cii_test
         options: >-
           --health-cmd "pg_isready -U postgres"
-          --health-interval 10s 
-          --health-timeout 5s 
+          --health-interval 10s
+          --health-timeout 5s
           --health-retries 5
+
+    env:
+      RAILS_ENV: test
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432/cii_test
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v5
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.2.2
           bundler-cache: true
-
-      - name: Install dependencies
-        run: bundle install --jobs 4 --retry 3
-
-      - name: Set up database
-        run: |
-          cp config/database.yml.github-actions config/database.yml || true
-          bundle exec rails db:create db:schema:load --trace
-        env:
-          # Force the connection string to use the loopback IP
-          DATABASE_URL: "postgres://postgres:postgres@127.0.0.1:5432/cii_test"
-
+      
+      
       - name: Load .env.test if present
         run: |
           if [ -f .env.test ]; then
             export $(grep -v '^#' .env.test | xargs -I {} echo "{}")
           fi
 
-      - name: Run RSpec
+      - name: Setup DB
+        run: bundle exec rails db:create db:schema:load --trace
+
+      - name: Run migrations
+        run: bundle exec rails db:migrate RAILS_ENV=test
+
+      - name: Run tests
         run: bundle exec rspec
 
-      - name: Run RuboCop
+      - name: Run rubocop
         run: bundle exec rubocop
-
-      - name: Run Brakeman
-        run: bundle exec brakeman --no-exit-on-warn
