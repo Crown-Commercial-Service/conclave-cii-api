@@ -5,6 +5,12 @@ RSpec.describe Api::V1::CreateOrganisationsController do
     let(:clientid) { ENV.fetch('CLIENT_ID', nil) }
     let(:organisation_id) { nil }
     let(:jwt_token) { JWT.encode({ roles: ENV.fetch('ACCESS_ORGANISATION_ADMIN', nil), ciiOrgId: organisation_id, aud: ENV.fetch('CLIENT_ID', nil) }, 'test') }
+    
+    after do
+      WebMock::RequestRegistry.instance.requested_signatures.hash.each do |request_signature, _|
+        puts "WebMock request made: #{request_signature}"
+      end
+    end
 
     context 'when success' do
       before do
@@ -20,6 +26,7 @@ RSpec.describe Api::V1::CreateOrganisationsController do
           post :index, params: param_post_dand_b
           expect(response).to have_http_status(:created)
           expect(response.body).to include('organisationId')
+          WebMock.assert_requested(:get, /searchorganisation/, at_least_times: 1)
         end
 
         it 'create primary record with additional identifiers' do
@@ -28,6 +35,7 @@ RSpec.describe Api::V1::CreateOrganisationsController do
           post :index, params: param_post_dand_b
           expect(response).to have_http_status(:created)
           expect(response.body).to include('organisationId')
+          WebMock.assert_requested(:get, /searchorganisation/, at_least_times: 1)
         end
       end
 
