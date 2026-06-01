@@ -43,7 +43,18 @@ jobs:
       - name: Load .env.test if present
         run: |
           if [ -f .env.test ]; then
-            export $(grep -v '^#' .env.test | xargs -I {} echo "{}")
+            set -a
+            source .env.test
+            set +a
+
+            while IFS='=' read -r key _; do
+              if [[ "$key" =~ ^[[:space:]]*# ]] || [[ "$key" =~ ^[[:space:]]*$ ]]; then
+                continue
+              fi
+
+              key="$(echo "$key" | tr -d '[:space:]')"
+              printf '%s=%s\n' "$key" "${!key}" >> "$GITHUB_ENV"
+            done < .env.test
           fi
 
       - name: Setup DB
