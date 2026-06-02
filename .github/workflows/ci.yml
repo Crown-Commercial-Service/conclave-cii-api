@@ -86,13 +86,14 @@ jobs:
       #     fi
 
       - name: Setup DB
-        run: bundle exec rails db:create db:schema:load --trace
-
-      - name: Run migrations
-        run: bundle exec rails db:migrate RAILS_ENV=test
+        run: bundle exec rails db:drop db:create db:schema:load db:migrate --trace
 
       - name: Seed test data
         run: bundle exec rails db:seed RAILS_ENV=test
+
+      - name: Verify seed data
+        run: |
+          bundle exec rails runner "count = SchemeRegister.count; puts \"SchemeRegister count=#{count}\"; abort('scheme_registers is empty after seed') if count.zero?"
 
       - name: Run tests
         run: bundle exec rspec
