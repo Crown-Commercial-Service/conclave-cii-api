@@ -80,3 +80,12 @@ jobs:
 
       - name: Run tests
         run: bundle exec rspec
+
+      - name: Upload Test Screenshots & Logs on Failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cii-api-test-failures
+          path: |
+            tmp/screenshots/
+            log/test.log
