@@ -14,10 +14,6 @@ RSpec.describe Api::V1::CreateOrganisationsController do
 
     context 'when success' do
       before do
-        create(:scheme_register, scheme_register_code: 'US-DUN')
-        create(:scheme_register, scheme_register_code: 'GB-COH')
-        create(:scheme_register, scheme_register_code: 'GB-CHC')
-        create(:scheme_register, scheme_register_code: 'GB-NHS')
         MockingService::MockApis.new
         client_registered = create(:client)
         request.headers['x-api-key'] = client_registered.api_key
