@@ -4,6 +4,10 @@ RSpec.describe Api::V1::OrganisationsController do
   describe 'search_organisation' do
     context 'when authorized' do
       before do
+        create(:scheme_register, scheme_register_code: 'GB-COH')
+        create(:scheme_register, scheme_register_code: 'US-DUN')
+        create(:scheme_register, scheme_register_code: 'GB-FTC')
+        create(:scheme_register, scheme_register_code: 'GB-NHS')
         MockingService::MockApis.new
         client_registered = create(:client)
         request.headers['x-api-key'] = client_registered.api_key

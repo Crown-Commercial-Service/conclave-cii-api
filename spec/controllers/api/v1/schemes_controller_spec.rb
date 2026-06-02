@@ -4,6 +4,10 @@ RSpec.describe Api::V1::SchemesController do
   describe 'get' do
     context 'when authorized' do
       before do
+        create(:scheme_register, scheme_register_code: 'US-DUN')
+        create(:scheme_register, scheme_register_code: 'GB-COH')
+        create(:scheme_register, scheme_register_code: 'GB-CHC')
+        create(:scheme_register, scheme_register_code: 'GB-NHS')
         client_registered = create(:client)
         request.headers['x-api-key'] = client_registered.api_key
       end
