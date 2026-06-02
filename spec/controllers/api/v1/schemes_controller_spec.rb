@@ -4,13 +4,6 @@ RSpec.describe Api::V1::SchemesController do
   describe 'get' do
     context 'when authorized' do
       before do
-        SchemeRegister.find_or_create_by!(scheme_register_code: 'GB-COH') do |record|
-          record.scheme_name = 'Companies House'
-          record.scheme_uri = 'https://api.company-information.service.gov.uk'
-          record.scheme_country_code = 'GB'
-          record.scheme_identifier = 'Company Registration Number'
-        end
-
         client_registered = create(:client)
         request.headers['x-api-key'] = client_registered.api_key
       end

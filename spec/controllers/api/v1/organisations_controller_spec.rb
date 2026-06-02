@@ -4,20 +4,6 @@ RSpec.describe Api::V1::OrganisationsController do
   describe 'search_organisation' do
     context 'when authorized' do
       before do
-        [
-          { scheme_register_code: 'US-DUN', scheme_name: 'Dun & Bradstreet', scheme_uri: 'https://plus.dnb.com', scheme_country_code: 'US', scheme_identifier: 'DUNS Number' },
-          { scheme_register_code: 'GB-COH', scheme_name: 'Companies House', scheme_uri: 'https://api.company-information.service.gov.uk', scheme_country_code: 'GB', scheme_identifier: 'Company Registration Number' },
-          { scheme_register_code: 'GB-CHC', scheme_name: 'Charity Commission for England and Wales', scheme_uri: 'https://findthatcharity.uk', scheme_country_code: 'GB', scheme_identifier: 'Registered Charity Number' },
-          { scheme_register_code: 'GB-NHS', scheme_name: 'National Health Service Organisations Registry', scheme_uri: 'https://www.crowncommercial.gov.uk', scheme_country_code: 'GB', scheme_identifier: 'NHS Registered Number' }
-        ].each do |scheme|
-          SchemeRegister.find_or_create_by!(scheme_register_code: scheme[:scheme_register_code]) do |record|
-            record.scheme_name = scheme[:scheme_name]
-            record.scheme_uri = scheme[:scheme_uri]
-            record.scheme_country_code = scheme[:scheme_country_code]
-            record.scheme_identifier = scheme[:scheme_identifier]
-          end
-        end
-
         MockingService::MockApis.new
         client_registered = create(:client)
         request.headers['x-api-key'] = client_registered.api_key
