@@ -27,6 +27,7 @@ jobs:
 
     env:
       RAILS_ENV: test
+      DISABLE_SPRING: 1
       DATABASE_URL: postgres://postgres:postgres@localhost:5432/cii_test
       SPOTLIGHT_CLIENT_ID: "jdoifiowehfwibewiufwer3hiu349y4o83gh8o4g8ob34o4gg39o23g48o23o8go88g34o8"
       SPOTLIGHT_CLIENT_SECRET: "bsiuf98328hro3h8or3go8rg8p238o23hiu3r8o23ho832griuiuhdoweh98ho2hh32"
@@ -60,8 +61,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
-          with:
-            ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -73,7 +72,7 @@ jobs:
         run: bundle exec rails db:drop db:create db:schema:load db:migrate --trace
 
       - name: Seed test data
-        run: bundle exec rails db:seed RAILS_ENV=test
+        run: bundle exec rails db:seed
 
       - name: Verify seed data
         run: |
