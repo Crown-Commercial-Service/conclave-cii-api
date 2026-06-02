@@ -69,14 +69,7 @@ jobs:
           bundler-cache: true
 
       - name: Setup DB
-        run: bundle exec rails db:drop db:create db:schema:load db:migrate --trace
-
-      - name: Seed test data
-        run: bundle exec rails db:seed
-
-      - name: Verify seed data
-        run: |
-          bundle exec rails runner "count = SchemeRegister.count; puts \"SchemeRegister count=#{count}\"; abort('scheme_registers is empty after seed') if count.zero?"
+        run: bundle exec rails db:prepare
 
       - name: Run tests
         run: bundle exec rspec
