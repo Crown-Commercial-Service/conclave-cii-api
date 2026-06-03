@@ -40,9 +40,9 @@ module MockingService
     end
 
     def http_status
-      return 200 if @result.present?
+      return '200' if @result.present?
 
-      404
+      '404'
     end
 
     def url
