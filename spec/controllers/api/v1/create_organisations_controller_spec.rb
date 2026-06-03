@@ -6,11 +6,11 @@ RSpec.describe Api::V1::CreateOrganisationsController do
     let(:organisation_id) { nil }
     let(:jwt_token) { JWT.encode({ roles: ENV.fetch('ACCESS_ORGANISATION_ADMIN', nil), ciiOrgId: organisation_id, aud: ENV.fetch('CLIENT_ID', nil) }, 'test') }
 
-    after do
-      WebMock::RequestRegistry.instance.requested_signatures.hash.each_key do |request_signature|
-        puts "WebMock request made: #{request_signature}"
-      end
-    end
+    # after do
+    #   WebMock::RequestRegistry.instance.requested_signatures.hash.each_key do |request_signature|
+    #     puts "WebMock request made: #{request_signature}"
+    #   end
+    # end
 
     context 'when success' do
       before do

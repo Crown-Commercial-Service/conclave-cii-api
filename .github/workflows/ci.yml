@@ -70,6 +70,57 @@ jobs:
 
       - name: Setup DB
         run: bundle exec rails db:prepare
+      
+      - name: Verify required environment variables
+        shell: bash
+        run: |
+          required_vars=(
+            RAILS_ENV
+            DATABASE_URL
+            SPOTLIGHT_CLIENT_ID
+            SPOTLIGHT_CLIENT_SECRET
+            COMPANIES_HOUSE_API_TOKEN
+            COMPANIES_HOUSE_API_ENDPOINT
+            DNB_API_ENDPOINT
+            DNB_USERNAME
+            DNB_PASSWORD
+            FINDTHATCHARITY_API_ENDPOINT
+            CLIENT_TOKEN
+            SECURITY_SERVICE_URL
+            ACCESS_CCS_ADMIN
+            ACCESS_ORGANISATION_ADMIN
+            ACCESS_MANAGE_SUBSCRIPTIONS
+            INTEGRATION_TOKEN
+            DELETE_TOKEN
+            SALESFORCE_AUTH_URL
+            SALESFORCE_USERNAME
+            SALESFORCE_PASSWORD
+            SALESFORCE_SECURITY_TOKEN
+            SALESFORCE_CLIENT_ID
+            SALESFORCE_CLIENT_SECRET
+            CLIENT_ID
+            CONFIG_SPOTLIGHT_AUTH_URL
+            CONFIG_SPOTLIGHT_USERNAME
+            CONFIG_SPOTLIGHT_PASSWORD
+            CONFIG_SPOTLIGHT_SECURITY_TOKEN
+            CONFIG_SPOTLIGHT_CLIENT_ID
+            CONFIG_SPOTLIGHT_CLIENT_SECRET
+          )
+
+          missing=0
+          for var_name in "${required_vars[@]}"; do
+            if [[ -z "${!var_name:-}" ]]; then
+              echo "::error::${var_name} is not set"
+              missing=1
+            else
+              echo "${var_name}=set"
+            fi
+          done
+
+          if [[ "$missing" -ne 0 ]]; then
+            echo "One or more required environment variables are missing"
+            exit 1
+          fi
 
       - name: Run tests
         run: bundle exec rspec
