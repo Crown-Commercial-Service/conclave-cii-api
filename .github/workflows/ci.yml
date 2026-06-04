@@ -149,7 +149,7 @@ jobs:
           bundle exec rails runner "MockingService::MockApis.new; result = SearchApi.new('404123456', 'US-DUN').call; puts({result_present: result.present?, result_class: result.class.name, identifier: result.is_a?(Hash) ? result.dig(:identifier) : nil, additional_identifiers_count: result.is_a?(Hash) ? result[:additionalIdentifiers]&.size : nil}.to_json)"
 
       - name: Run tests
-        run: bundle exec rspec ./spec/controllers/api/v1/create_organisations_controller_spec.rb:18 --backtrace
+        run: bundle exec rspec --backtrace
 
       - name: Dump test log on failure
         if: failure()
