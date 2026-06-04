@@ -40,50 +40,57 @@ module MockingService
     def setup_api_stubs
       Dir.each_child('spec/stub_response/api_stubs') do |filename|
         MockingService::ApiStub.new(get_params(filename))
-      rescue StandardError
-        {}
+      rescue StandardError => e
+        log_stub_error('api_stubs', filename, e)
       end
-    rescue StandardError
-      {}
+    rescue StandardError => e
+      log_stub_error('api_stubs', 'directory', e)
     end
 
     def setup_salesforce_stubs
       Dir.each_child('spec/stub_response/salesforce') do |filename|
         MockingService::ApiSalesforceStub.new(get_params(filename))
-      rescue StandardError
-        {}
+      rescue StandardError => e
+        log_stub_error('salesforce', filename, e)
       end
-    rescue StandardError
-      {}
+    rescue StandardError => e
+      log_stub_error('salesforce', 'directory', e)
     end
 
     def setup_spotlight_stubs
       Dir.each_child('spec/stub_response/spotlight') do |filename|
         MockingService::ApiSpotlightStub.new(get_params(filename))
-      rescue StandardError
-        {}
+      rescue StandardError => e
+        log_stub_error('spotlight', filename, e)
       end
-    rescue StandardError
-      {}
+    rescue StandardError => e
+      log_stub_error('spotlight', 'directory', e)
     end
 
     def setup_salesforce_api
       Dir.each_child('spec/stub_response/api_salesforce') do |filename|
         MockingService::MigrationSalesforceApi.new(get_params(filename))
-      rescue StandardError
-        {}
+      rescue StandardError => e
+        log_stub_error('api_salesforce', filename, e)
       end
-    rescue StandardError
-      {}
+    rescue StandardError => e
+      log_stub_error('api_salesforce', 'directory', e)
     end
 
     def setup_duns_coh_api
       Dir.each_child('spec/stub_response/api_duns_coh_stubs') do |filename|
         MockingService::ApiDunsCohStub.new(get_params(filename))
-      rescue StandardError
-        {}
+      rescue StandardError => e
+        log_stub_error('api_duns_coh_stubs', filename, e)
       end
-    rescue StandardError
+    rescue StandardError => e
+      log_stub_error('api_duns_coh_stubs', 'directory', e)
+    end
+
+    def log_stub_error(group, filename, error)
+      message = "MockApis failed to load #{group}/#{filename}: #{error.class} #{error.message}"
+      Rails.logger.error(message)
+      warn("[RSpec debug] #{message}") if Rails.env.test?
       {}
     end
 

@@ -38,8 +38,9 @@ module MockingService
     end
 
     def http_status
-      '404' unless @result.nil?
-      '200' if @result.blank?
+      return 200 if @result.present?
+
+      404
     end
 
     def url

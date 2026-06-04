@@ -64,7 +64,7 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.2.2
+          ruby-version: 3.2.9
           bundler-cache: true
 
       - name: Setup DB
@@ -120,6 +120,10 @@ jobs:
             echo "One or more required environment variables are missing"
             exit 1
           fi
+
+      - name: Verify Spotlight ENV in Rails runtime
+        run: |
+          bundle exec rails runner "keys = %w[CONFIG_SPOTLIGHT_AUTH_URL CONFIG_SPOTLIGHT_USERNAME CONFIG_SPOTLIGHT_PASSWORD CONFIG_SPOTLIGHT_CLIENT_ID CONFIG_SPOTLIGHT_CLIENT_SECRET]; missing = keys.select { |k| ENV[k].to_s.strip.empty? }; abort(\"Missing in Rails runtime: #{missing.join(', ')}\") if missing.any?; puts({ auth_url: ENV['CONFIG_SPOTLIGHT_AUTH_URL'], username_present: ENV['CONFIG_SPOTLIGHT_USERNAME'].to_s.length > 0, client_id_present: ENV['CONFIG_SPOTLIGHT_CLIENT_ID'].to_s.length > 0 }.to_json)"
 
       - name: Run Seed
         run: bundle exec rails db:seed
