@@ -18,7 +18,7 @@ RSpec.describe Api::V1::CreateOrganisationsController do
         it 'create primary record' do
           param_post_dand_b = { identifier: { scheme: 'US-DUN', id: '404123456' } }
           post :index, params: param_post_dand_b
-          expect(response).to have_http_status(:created)
+          expect(response).to have_http_status(:created), "expected 201 but got #{response.status} with body: #{response.body}"
           expect(response.body).to include('organisationId')
         end
 

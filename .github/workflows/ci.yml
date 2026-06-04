@@ -139,8 +139,22 @@ jobs:
           echo "migration_salesforce_api.rb"
           sed -n '34,52p' app/services/mocking_service/migration_salesforce_api.rb
 
+      - name: Verify spotlight fixture file for failing spec
+        run: |
+          ls -l spec/stub_response/spotlight/US-DUN-404123456.json
+          ruby -e "path='spec/stub_response/spotlight/US-DUN-404123456.json'; data=File.read(path); puts({path:path, bytes:data.bytesize, has_active:data.include?('\\\"Status\\\": \\\"Active\\\"')}.to_json)"
+
+      - name: Debug SearchApi for failing identifier
+        run: |
+          bundle exec rails runner "MockingService::MockApis.new; result = SearchApi.new('404123456', 'US-DUN').call; puts({result_present: result.present?, result_class: result.class.name, identifier: result.is_a?(Hash) ? result.dig(:identifier) : nil, additional_identifiers_count: result.is_a?(Hash) ? result[:additionalIdentifiers]&.size : nil}.to_json)"
+
       - name: Run tests
         run: bundle exec rspec ./spec/controllers/api/v1/create_organisations_controller_spec.rb:18 --backtrace
+
+      - name: Dump test log on failure
+        if: failure()
+        run: |
+          tail -n 300 log/test.log || true
 
       # - name: Upload Test Screenshots & Logs on Failure
       #   if: failure()

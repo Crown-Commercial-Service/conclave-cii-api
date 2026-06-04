@@ -51,7 +51,7 @@ module MockingService
     end
 
     def salesforce_token
-      token_response = File.read('spec/stub_response/tokens/salesforce_token.json')
+      token_response = File.read(Rails.root.join('spec/stub_response/tokens/salesforce_token.json'))
       salesforce = Salesforce::Search.new(@params[:id], @params[:scheme])
       salesforce.post_params.inspect
       WebMock.stub_request(:post, "#{ENV.fetch('SALESFORCE_AUTH_URL', nil)}/services/oauth2/token")
@@ -63,7 +63,7 @@ module MockingService
     end
 
     def load_stub
-      @result = File.read("spec/stub_response/salesforce/#{@params[:scheme]}-#{@params[:id]}.json")
+      @result = File.read(Rails.root.join("spec/stub_response/salesforce/#{@params[:scheme]}-#{@params[:id]}.json"))
     rescue StandardError
       {}
     end

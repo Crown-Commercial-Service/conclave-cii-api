@@ -89,12 +89,31 @@ module Api
         @is_mock_id = Common::ApiHelper.find_mock_organisation(params[:identifier][:scheme], params[:identifier][:id]) if params.present?
       end
 
-      def return_error_code(code)
-        if code.to_s.length > 3
-          render json: { organisationId: code }, status: '409'.freeze
+      def return_error_code(error)
+        log_api_error(error)
+
+        if error.to_s.length > 3
+          render json: { organisationId: error }, status: '409'.freeze
         else
-          render json: '', status: code.to_s
+          render json: '', status: error.to_s
         end
+      end
+
+      def log_api_error(error)
+        details = {
+          controller: self.class.name,
+          action: action_name,
+          status_or_code: error.to_s,
+          identifier_scheme: params.dig(:identifier, :scheme),
+          identifier_id: params.dig(:identifier, :id),
+          additional_identifiers_count: params[:additional_identifiers]&.size,
+          api_result_present: @api_result.present?
+        }
+
+        Rails.logger.error("CreateOrganisationsController API error: #{details}")
+        return unless Rails.env.test?
+
+        warn("[RSpec debug] CreateOrganisationsController API error: #{details}")
       end
 
       def search_addional_identifiers
@@ -112,6 +131,19 @@ module Api
       def api_search_result
         search_api_with_params = SearchApi.new(params[:identifier][:id], params[:identifier][:scheme])
         search_api_with_params.call
+      rescue StandardError => e
+        details = {
+          controller: self.class.name,
+          action: action_name,
+          identifier_scheme: params.dig(:identifier, :scheme),
+          identifier_id: params.dig(:identifier, :id),
+          error_class: e.class.name,
+          error_message: e.message,
+          backtrace_top: e.backtrace&.first
+        }
+        Rails.logger.error("CreateOrganisationsController api_search_result failure: #{details}")
+        warn("[RSpec debug] CreateOrganisationsController api_search_result failure: #{details}") if Rails.env.test?
+        raise
       end
 
       def salesforce_additional_identifier(result)

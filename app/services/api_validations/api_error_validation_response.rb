@@ -24,6 +24,12 @@ module ApiValidations
     end
 
     def raise_exception(code)
+      source = caller_locations(1, 10).find { |location| !location.path.include?('api_error_validation_response.rb') }
+      source_info = source ? "#{source.path}:#{source.lineno} in #{source.label}" : 'unknown source'
+      debug_message = "ApiErrorValidationResponse raising code=#{code} errors_key=#{@errors_key.inspect} from #{source_info}"
+      Rails.logger.error(debug_message)
+      warn("[RSpec debug] #{debug_message}") if Rails.env.test?
+
       return raise ApiValidations::ApiError, @ccs_org_id if code == Common::StatusCodes::DUPLICATE_RESOURCE && @ccs_org_id
 
       raise ApiValidations::ApiError, code

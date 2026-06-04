@@ -32,6 +32,14 @@ module Spotlight
     def fetch_results
       fetch_results_from_api
     rescue StandardError => e
+      details = {
+        id_number: @id_number,
+        scheme_id: @scheme_id,
+        error_class: e.class.name,
+        error_message: e.message,
+        backtrace_top: e.backtrace&.first
+      }
+      warn("[RSpec debug] Spotlight::Search failure: #{details}") if Rails.env.test?
       ApiLogging::Logger.fatal("SPOTLIGHT API| method:fetch_results, #{e.to_json}")
       ApiValidations::ApiErrorValidationResponse.new(503) if @additional_identifier_search == false
     end

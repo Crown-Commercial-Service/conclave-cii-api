@@ -38,7 +38,7 @@ module MockingService
     end
 
     def setup_api_stubs
-      Dir.each_child('spec/stub_response/api_stubs') do |filename|
+      Dir.each_child(Rails.root.join('spec/stub_response/api_stubs')) do |filename|
         MockingService::ApiStub.new(get_params(filename))
       rescue StandardError => e
         log_stub_error('api_stubs', filename, e)
@@ -48,7 +48,7 @@ module MockingService
     end
 
     def setup_salesforce_stubs
-      Dir.each_child('spec/stub_response/salesforce') do |filename|
+      Dir.each_child(Rails.root.join('spec/stub_response/salesforce')) do |filename|
         MockingService::ApiSalesforceStub.new(get_params(filename))
       rescue StandardError => e
         log_stub_error('salesforce', filename, e)
@@ -58,7 +58,7 @@ module MockingService
     end
 
     def setup_spotlight_stubs
-      Dir.each_child('spec/stub_response/spotlight') do |filename|
+      Dir.each_child(Rails.root.join('spec/stub_response/spotlight')) do |filename|
         MockingService::ApiSpotlightStub.new(get_params(filename))
       rescue StandardError => e
         log_stub_error('spotlight', filename, e)
@@ -68,7 +68,7 @@ module MockingService
     end
 
     def setup_salesforce_api
-      Dir.each_child('spec/stub_response/api_salesforce') do |filename|
+      Dir.each_child(Rails.root.join('spec/stub_response/api_salesforce')) do |filename|
         MockingService::MigrationSalesforceApi.new(get_params(filename))
       rescue StandardError => e
         log_stub_error('api_salesforce', filename, e)
@@ -78,7 +78,7 @@ module MockingService
     end
 
     def setup_duns_coh_api
-      Dir.each_child('spec/stub_response/api_duns_coh_stubs') do |filename|
+      Dir.each_child(Rails.root.join('spec/stub_response/api_duns_coh_stubs')) do |filename|
         MockingService::ApiDunsCohStub.new(get_params(filename))
       rescue StandardError => e
         log_stub_error('api_duns_coh_stubs', filename, e)

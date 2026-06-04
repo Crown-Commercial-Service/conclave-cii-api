@@ -51,7 +51,7 @@ module MockingService
     end
 
     def salesforce_token
-      token_response = File.read('spec/stub_response/tokens/salesforce_token.json')
+      token_response = File.read(Rails.root.join('spec/stub_response/tokens/salesforce_token.json'))
 
       salesforce = Salesforce::SalesforceDataMigration.new(@params[:id], @params[:scheme].tr('-', ''))
       salesforce.post_params.inspect
@@ -64,7 +64,7 @@ module MockingService
     end
 
     def load_stub
-      @result = File.read("spec/stub_response/api_salesforce/#{@params[:scheme]}-#{@params[:id]}.json")
+      @result = File.read(Rails.root.join("spec/stub_response/api_salesforce/#{@params[:scheme]}-#{@params[:id]}.json"))
     rescue StandardError
       {}
     end

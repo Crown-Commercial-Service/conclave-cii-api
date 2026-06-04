@@ -52,7 +52,7 @@ module MockingService
     end
 
     def spotlight_token
-      token_response = File.read('spec/stub_response/tokens/spotlight_token.json')
+      token_response = File.read(Rails.root.join('spec/stub_response/tokens/spotlight_token.json'))
       spotlight = Spotlight::Search.new(@params[:id], @params[:scheme])
       spotlight.post_params.inspect
       WebMock.stub_request(:post, "#{ENV.fetch('CONFIG_SPOTLIGHT_AUTH_URL', nil)}/services/oauth2/token")
@@ -64,8 +64,9 @@ module MockingService
     end
 
     def load_stub
-      @result = File.read("spec/stub_response/spotlight/#{@params[:scheme]}-#{@params[:id]}.json")
-    rescue StandardError
+      @result = File.read(Rails.root.join("spec/stub_response/spotlight/#{@params[:scheme]}-#{@params[:id]}.json"))
+    rescue StandardError => e
+      warn("[RSpec debug] ApiSpotlightStub load_stub failed for #{@params[:scheme]}-#{@params[:id]}: #{e.class} #{e.message}") if Rails.env.test?
       {}
     end
   end
