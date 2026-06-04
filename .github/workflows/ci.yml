@@ -142,7 +142,7 @@ jobs:
       - name: Verify spotlight fixture file for failing spec
         run: |
           ls -l spec/stub_response/spotlight/US-DUN-404123456.json
-          ruby -e "path='spec/stub_response/spotlight/US-DUN-404123456.json'; data=File.read(path); puts({path:path, bytes:data.bytesize, has_active:data.include?('\\\"Status\\\": \\\"Active\\\"')}.to_json)"
+          ruby -rjson -e "path='spec/stub_response/spotlight/US-DUN-404123456.json'; raw=File.read(path); parsed=JSON.parse(raw); status=parsed.dig('searchOrganisation', 0, 'Status'); puts JSON.generate({path:path, bytes:raw.bytesize, status:status, has_active:(status == 'Active')})"
 
       - name: Debug SearchApi for failing identifier
         run: |
