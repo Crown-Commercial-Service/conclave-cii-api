@@ -2,7 +2,6 @@ name: CII API
 
 on:
   push:
-    branches: [ develop ]
   pull_request:
     branches: [ develop ]
 
@@ -128,11 +127,11 @@ jobs:
       - name: Run tests
         run: bundle exec rspec ./spec/controllers/api/v1/create_organisations_controller_spec.rb:18 --backtrace
 
-      - name: Upload Test Screenshots & Logs on Failure
-        if: failure() && env.ACT != 'true'
-        uses: actions/upload-artifact@v4
-        with:
-          name: cii-api-test-failures
-          path: |
-            tmp/screenshots/
-            log/test.log
+      # - name: Upload Test Screenshots & Logs on Failure
+      #   if: failure()
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: cii-api-test-failures
+      #     path: |
+      #       tmp/screenshots/
+      #       log/test.log
