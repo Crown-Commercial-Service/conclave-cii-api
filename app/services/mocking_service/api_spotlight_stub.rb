@@ -21,10 +21,12 @@ module MockingService
     end
 
     def stub_headers
+      spotlight = Spotlight::Search.new(@params[:id], @params[:scheme])
       {
         'Accept' => 'application/json',
         'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
         'Content-Type' => 'application/json',
+        'payload' => spotlight.build_arguments.to_json,
         'User-Agent' => 'Faraday v1.10.3'
       }
     end
