@@ -35,6 +35,13 @@ COPY --chown=rails:rails . .
 COPY --from=builder /usr/local/bundle /usr/local/bundle
 COPY --from=builder /app /app
 
+# ---- Entrypoint Integration Configuration ----
+RUN chmod +x /app/entrypoint.sh
+
+# Registers the script so it triggers on container boot before the main CMD handles traffic only temp for lower env will remove.
+ENTRYPOINT ["/app/entrypoint.sh"]
+# -----------------------------------------------
+
 EXPOSE 3000
 
 USER rails
