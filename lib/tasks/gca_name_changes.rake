@@ -14,6 +14,10 @@ namespace :ccs_to_gca do
       if(scheme.scheme_register_code == 'GB-EDU')
         scheme.update!(scheme_uri: 'https://www.gca.gov.uk')
       end
+
+      if(scheme.scheme_register_code == 'GB-NHS')
+        scheme.update!(scheme_uri: 'https://www.gca.gov.uk')
+      end
     end
     # Uncomment if you want to check if your changes have taken effect
     # puts "Updated Scheme Registers: #{SchemeRegister.all.as_json(except: :id)}"
