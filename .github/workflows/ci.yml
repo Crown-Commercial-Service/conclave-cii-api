@@ -1,9 +1,9 @@
 name: CII API
 
 on:
-  push:
   pull_request:
     branches: [ develop ]
+    types: [ opened, synchronize, reopened ]
 
 jobs:
   test:
