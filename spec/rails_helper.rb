@@ -61,4 +61,8 @@ RSpec.configure do |config|
   # Filter lines from Rails gems in backtraces.
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
+
+  config.before(:suite) do
+    Rails.application.load_seed
+  end
 end
