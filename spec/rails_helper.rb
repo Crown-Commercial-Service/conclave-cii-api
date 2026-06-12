@@ -1,6 +1,11 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'spec_helper'
 require './spec/support/factory_bot'
+# =========================================================================
+# FIXED: Explicitly force Ruby to load your mock service file right now!
+# (Adjust 'app/services/mock_apis' if your folder path is slightly different)
+# =========================================================================
+require './app/services/mocking_service/mock_apis'
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../config/environment', __dir__)
 # Prevent database truncation if the environment is production
