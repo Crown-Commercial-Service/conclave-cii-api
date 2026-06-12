@@ -2,8 +2,7 @@
 require 'spec_helper'
 require './spec/support/factory_bot'
 # =========================================================================
-# FIXED: Explicitly force Ruby to load your mock service file right now!
-# (Adjust 'app/services/mock_apis' if your folder path is slightly different)
+# FIXED: Explicitly force Ruby to load the mock service file right now!
 # =========================================================================
 require './app/services/mocking_service/mock_apis'
 ENV['RAILS_ENV'] ||= 'test'
