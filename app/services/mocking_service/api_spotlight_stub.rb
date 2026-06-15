@@ -45,14 +45,14 @@ module MockingService
 
     def url
       spotlight_token
-      @api_url = "#{ENV.fetch('SPOTLIGHT_AUTH_URL', nil)}/services/apexrest/searchorganisation"
+      @api_url = "#{ENV.fetch('CONFIG_SPOTLIGHT_AUTH_URL', nil)}/services/apexrest/searchorganisation"
     end
 
     def spotlight_token
       token_response = File.read('spec/stub_response/tokens/spotlight_token.json')
       spotlight = Spotlight::Search.new(@params[:id], @params[:scheme])
       spotlight.post_params.inspect
-      WebMock.stub_request(:post, "#{ENV.fetch('SPOTLIGHT_AUTH_URL', nil)}/services/oauth2/token")
+      WebMock.stub_request(:post, "#{ENV.fetch('CONFIG_SPOTLIGHT_AUTH_URL', nil)}/services/oauth2/token")
              .with(
                body: spotlight.post_params,
                headers: stub_token_headers
