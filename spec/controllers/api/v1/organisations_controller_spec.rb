@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::OrganisationsController do
-  # Place this here so it runs before ANY test in this file, blocking the OAuth crash
-
   before do
     MockingService::MockApis.new
   end
@@ -10,7 +8,6 @@ RSpec.describe Api::V1::OrganisationsController do
   describe 'search_organisation' do
     context 'when authorized' do
       before do
-        # MockingService::MockApis.new
         client_registered = create(:client)
         request.headers['x-api-key'] = client_registered.api_key
       end
