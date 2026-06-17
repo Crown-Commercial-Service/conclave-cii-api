@@ -64,9 +64,6 @@ GEM
       activemodel (= 7.2.3.1)
       activesupport (= 7.2.3.1)
       timeout (>= 0.4.0)
-    activerecord-postgis-adapter (10.0.3)
-      activerecord (~> 7.2)
-      rgeo-activerecord (~> 8.0.0)
     activestorage (7.2.3.1)
       actionpack (= 7.2.3.1)
       activejob (= 7.2.3.1)
@@ -348,10 +345,6 @@ GEM
     reline (0.6.3)
       io-console (~> 0.5)
     rexml (3.4.4)
-    rgeo (3.0.1)
-    rgeo-activerecord (8.0.0)
-      activerecord (>= 7.0)
-      rgeo (>= 3.0)
     rollbar (3.5.2)
     rspec-core (3.13.6)
       rspec-support (~> 3.13.0)
@@ -439,7 +432,6 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  activerecord-postgis-adapter (>= 6.0.1)
   aws-sdk-ssm
   bootsnap (>= 1.4.2)
   brakeman

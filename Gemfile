@@ -20,7 +20,7 @@ gem 'puma', '~> 6.4'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
 # for postgresql
-gem 'activerecord-postgis-adapter', '>= 6.0.1'
+# gem 'activerecord-postgis-adapter', '>= 6.0.1'
 gem 'pg'
 gem 'jwt'
 gem 'faraday'
