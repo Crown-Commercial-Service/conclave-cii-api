@@ -75,5 +75,5 @@ jobs:
           bundle exec rails db:migrate
 
       - name: Run tests
-        run: bundle exec rake --backtrace
+        run: bundle exec rspec --backtrace
 
