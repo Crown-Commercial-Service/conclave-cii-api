@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.2.2'
+ruby '3.2.11'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 8.1.2', '>= 8.1.2.1'
@@ -32,7 +32,7 @@ gem 'redis'
 gem 'redis-namespace'
 gem 'redis-rails', '>= 5.0.2'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
-gem 'rack-cors'
+gem 'rack-cors', '>= 3.0.0'
 # For converting between cases for API request & response
 gem 'olive_branch', '>= 4.0.1'
 # test code complexity
@@ -40,7 +40,7 @@ gem 'flog'
 # gem 'vault'
 # error logging
 gem 'rollbar'
-gem 'webmock', '>= 3.24.0'
+gem 'webmock', '>= 3.25.2'
 # aws ssm
 gem 'aws-sdk-ssm'
 
