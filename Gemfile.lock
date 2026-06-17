@@ -234,6 +234,8 @@ GEM
     net-smtp (0.5.0)
       net-protocol
     nio4r (2.7.4)
+    nokogiri (1.18.10-arm64-darwin)
+      racc (~> 1.4)
     nokogiri (1.18.10-x86_64-darwin)
       racc (~> 1.4)
     nokogiri (1.18.10-x86_64-linux-gnu)
@@ -418,6 +420,8 @@ GEM
     zeitwerk (2.6.15)
 
 PLATFORMS
+  arm64-darwin-23
+  arm64-darwin-25
   x86_64-darwin-21
   x86_64-linux
 
@@ -458,7 +462,7 @@ DEPENDENCIES
   webmock (>= 3.24.0)
 
 RUBY VERSION
-   ruby 3.2.2p53
+   ruby 3.2.11p268
 
 BUNDLED WITH
    2.4.19
