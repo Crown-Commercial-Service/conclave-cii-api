@@ -1,6 +1,10 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'spec_helper'
 require './spec/support/factory_bot'
+# =========================================================================
+# FIXED: Explicitly force Ruby to load the mock service file right now!
+# =========================================================================
+require './app/services/mocking_service/mock_apis'
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../config/environment', __dir__)
 # Prevent database truncation if the environment is production
@@ -61,4 +65,12 @@ RSpec.configure do |config|
   # Filter lines from Rails gems in backtraces.
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
+
+  config.before(:suite) do
+    Rails.application.load_seed
+  end
+
+  config.before do
+    MockingService::MockApis.new
+  end
 end
