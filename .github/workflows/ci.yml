@@ -11,7 +11,7 @@ jobs:
 
     services:
       postgres:
-        image: postgis/postgis:15-3.3
+        image: postgis/postgis:14-3.2
         ports:
           - 5432:5432
         env:
@@ -68,7 +68,10 @@ jobs:
           bundler-cache: true
 
       - name: Setup DB
-        run: bundle exec rails db:prepare
+        run: |
+          bundle exec rails db:drop db:create
+          psql -U postgres -h localhost -d cii_test -c "DROP EXTENSION IF EXISTS postgis_topology CASCADE;"
+          bundle exec rails db:migrate
 
       - name: Run tests
         run: bundle exec rake --backtrace
