@@ -71,6 +71,7 @@ jobs:
         run: |
           bundle exec rails db:drop db:create
           PGPASSWORD=postgres psql -U postgres -h localhost -d cii_test -c "DROP EXTENSION IF EXISTS postgis_topology CASCADE;"
+          PGPASSWORD=postgres psql -U postgres -h localhost -d cii_test -c "DROP EXTENSION IF EXISTS postgis CASCADE;"
           bundle exec rails db:migrate
 
       - name: Run tests
