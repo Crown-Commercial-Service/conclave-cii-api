@@ -23,14 +23,13 @@ gem 'bootsnap', '>= 1.4.2', require: false
 gem 'activerecord-postgis-adapter', '>= 10.0.0'
 gem 'pg'
 gem 'jwt'
-gem 'faraday'
+gem 'faraday', '~> 1.10'
 gem 'faraday_middleware'
 gem 'faraday-http-cache'
-gem 'graphlient', '>= 0.7.0'
+gem 'graphlient', '~> 0.6.0'
 # Redis gems
 gem 'redis'
 gem 'redis-namespace'
-gem 'redis-rails', '>= 5.0.2'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem 'rack-cors', '>= 3.0.0'
 # For converting between cases for API request & response
