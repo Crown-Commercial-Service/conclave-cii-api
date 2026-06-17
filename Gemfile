@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.2.2'
+ruby '3.2.11'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 7.1.6'
@@ -40,7 +40,7 @@ gem 'flog'
 # gem 'vault'
 # error logging
 gem 'rollbar'
-gem 'webmock', '>= 3.24.0'
+gem 'webmock', '>= 3.25.2'
 # aws ssm
 gem 'aws-sdk-ssm'
 
