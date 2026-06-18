@@ -1,10 +1,10 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.2.11'
+ruby '3.4.9'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 7.2.3', '>= 7.2.3.1'
+gem 'rails', '~> 8.1.2', '>= 8.1.2.1'
 # Use sqlite3 as the database for Active Record. When using Alpine, needs to be compiled from source using the musl C compiler.
 gem 'sqlite3', '~> 1.6', git: 'https://github.com/sparklemotion/sqlite3-ruby.git', tag: 'v1.6.5'
 # Use Puma as the app server
@@ -20,17 +20,16 @@ gem 'puma', '~> 6.4'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
 # for postgresql
-gem 'activerecord-postgis-adapter', '>= 6.0.1'
+gem 'activerecord-postgis-adapter', '>= 10.0.0'
 gem 'pg'
 gem 'jwt'
-gem 'faraday'
+gem 'faraday', '~> 1.10'
 gem 'faraday_middleware'
 gem 'faraday-http-cache'
-gem 'graphlient'
+gem 'graphlient', '~> 0.6.0'
 # Redis gems
 gem 'redis'
 gem 'redis-namespace'
-gem 'redis-rails', '>= 5.0.2'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem 'rack-cors', '>= 3.0.0'
 # For converting between cases for API request & response
