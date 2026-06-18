@@ -1,5 +1,5 @@
 # Stage 1: Build
-FROM ruby:3.4.9-alpine AS builder
+FROM ruby:3.4.9-slim AS builder
 
 # Install necessary packages
 RUN apk add build-base \
@@ -20,7 +20,7 @@ RUN bundle config set --global no_document true && \
   bundle install --jobs 4 --retry 5
 
 # Stage 2: Run
-FROM ruby:3.4.9-alpine
+FROM ruby:3.4.9-slim
 RUN apk update && apk upgrade && apk add \
   curl \
   libpq \
