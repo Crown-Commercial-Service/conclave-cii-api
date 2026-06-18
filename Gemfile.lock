@@ -201,7 +201,7 @@ GEM
       reline (>= 0.4.2)
     jmespath (1.6.2)
     json (2.19.9)
-    jwt (2.8.1)
+    jwt (2.10.3)
       base64
     language_server-protocol (3.17.0.5)
     lint_roller (1.1.0)
@@ -235,10 +235,10 @@ GEM
       timeout
     net-smtp (0.5.1)
       net-protocol
-    nio4r (2.7.4)
-    nokogiri (1.18.10-arm64-darwin)
+    nio4r (2.7.5)
+    nokogiri (1.19.3-arm64-darwin)
       racc (~> 1.4)
-    nokogiri (1.18.10-x86_64-darwin)
+    nokogiri (1.19.3-x86_64-darwin)
       racc (~> 1.4)
     nokogiri (1.19.3-x86_64-linux-gnu)
       racc (~> 1.4)
@@ -264,7 +264,7 @@ GEM
       date
       stringio
     public_suffix (7.0.5)
-    puma (6.4.3)
+    puma (7.2.1)
       nio4r (~> 2.0)
     racc (1.8.1)
     rack (3.2.1)
@@ -440,7 +440,7 @@ DEPENDENCIES
   olive_branch (>= 4.0.1)
   pg
   pry-rails
-  puma (~> 6.4)
+  puma (~> 7.2)
   rack-cors (>= 3.0.0)
   rails (~> 8.1.2, >= 8.1.2.1)
   redis
