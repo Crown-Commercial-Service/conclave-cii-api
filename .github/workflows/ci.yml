@@ -67,12 +67,13 @@ jobs:
           ruby-version: 3.4.9
           bundler-cache: true
 
-      - name: Setup DB
+      - name: Set up test database
+        env:
+          RAILS_ENV: test
         run: |
-          bundle exec rails db:drop db:create
-          PGPASSWORD=postgres psql -U postgres -h localhost -d cii_test -c "DROP EXTENSION IF EXISTS postgis_topology CASCADE;"
-          PGPASSWORD=postgres psql -U postgres -h localhost -d cii_test -c "DROP EXTENSION IF EXISTS postgis CASCADE;"
-          bundle exec rails db:migrate
+          bin/rails db:drop || true
+          bin/rails db:create
+          bin/rails db:schema:load
 
       - name: Run tests
         run: bundle exec rspec --backtrace
