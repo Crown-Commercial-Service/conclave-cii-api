@@ -1,0 +1,80 @@
+name: CII API
+
+on:
+  pull_request:
+    branches: [ develop ]
+    types: [ opened, synchronize, reopened ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgis/postgis:14-3.2
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: cii_test
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      RAILS_ENV: test
+      DISABLE_SPRING: 1
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432/cii_test
+      SPOTLIGHT_CLIENT_ID: jdoifiowehfwibewiufwer3hiu349y4o83gh8o4g8ob34o4gg39o23g48o23o8go88g34o8
+      SPOTLIGHT_CLIENT_SECRET: bsiuf98328hro3h8or3go8rg8p238o23hiu3r8o23ho832griuiuhdoweh98ho2hh32
+      COMPANIES_HOUSE_API_TOKEN: KzHV720QsCl6FnJiezFB4LqLoosbfiubwwhoiehowiuqwiu
+      COMPANIES_HOUSE_API_ENDPOINT: https://api.company-information.service.gov.uk
+      DNB_API_ENDPOINT: https://plus.dnb.com
+      DNB_USERNAME: nwfiebfibweibfuewbfbuewbfuewu
+      DNB_PASSWORD: wdoieoiefeowifoewofjioerwf
+      FINDTHATCHARITY_API_ENDPOINT: https://findthatcharity.uk
+      CLIENT_TOKEN: 1B4B9BBC9ADA4EA65E98A9A32F8D4 F3CAE7C17E276974E88351712957D
+      SECURITY_SERVICE_URL: http://www.test.com
+      ACCESS_CCS_ADMIN: test_admin
+      ACCESS_ORGANISATION_ADMIN: test_org_admin
+      ACCESS_MANAGE_SUBSCRIPTIONS: test_manage_subscriptions
+      INTEGRATION_TOKEN: 6348G438RT834GR4827GRO834G8G348RO8238
+      DELETE_TOKEN: 6348G438RT834GR4827GRO834G8G348RO8238
+      SALESFORCE_AUTH_URL: https://biwbdqwbdiwebiu.com
+      SALESFORCE_USERNAME: test@testcommercial.gov.uk
+      SALESFORCE_PASSWORD: 6238g3b28323gg3g
+      SALESFORCE_SECURITY_TOKEN: nsdn34982328or34go83goy23g723v
+      SALESFORCE_CLIENT_ID: jdoifiowehfwibewiufwer3hiu349y4o83gh8o4g8ob34o4gg39o23g48o23o8go88g34o8
+      SALESFORCE_CLIENT_SECRET: bsiuf98328hro3h8or3go8rg8p238o23hiu3r8o23ho832griuiuhdoweh98ho2hh32
+      CLIENT_ID: wndiowdio2ueh3298hr3
+      CONFIG_SPOTLIGHT_AUTH_URL: https://biwbdqwbdiwebiu.com
+      CONFIG_SPOTLIGHT_USERNAME: test@testcommercial.gov.uk
+      CONFIG_SPOTLIGHT_PASSWORD: 6238g3b28323gg3g
+      CONFIG_SPOTLIGHT_SECURITY_TOKEN: nsdn34982328or34go83goy23g723v
+      CONFIG_SPOTLIGHT_CLIENT_ID: jdoifiowehfwibewiufwer3hiu349y4o83gh8o4g8ob34o4gg39o23g48o23o8go88g34o8
+      CONFIG_SPOTLIGHT_CLIENT_SECRET: bsiuf98328hro3h8or3go8rg8p238o23hiu3r8o23ho832griuiuhdoweh98ho2hh32
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.4.9
+          bundler-cache: true
+
+      - name: Set up test database
+        env:
+          RAILS_ENV: test
+        run: |
+          bin/rails db:drop || true
+          bin/rails db:create
+          bin/rails db:schema:load
+
+      - name: Run tests
+        run: bundle exec rspec --backtrace
+
