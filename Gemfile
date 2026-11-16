@@ -6,7 +6,7 @@ ruby '3.4.9'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 8.1.3', '>= 8.1.3.1'
 # Use sqlite3 as the database for Active Record. When using Alpine, needs to be compiled from source using the musl C compiler.
-gem 'sqlite3', '~> 1.6', git: 'https://github.com/sparklemotion/sqlite3-ruby.git', tag: 'v1.6.5'
+gem 'sqlite3', '>= 2.1'
 # Use Puma as the app server
 gem 'puma', '~> 7.2'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -23,8 +23,7 @@ gem 'bootsnap', '>= 1.18.4', require: false
 gem 'activerecord-postgis-adapter', '>= 10.0.0'
 gem 'pg'
 gem 'jwt', '>= 3.2.0'
-gem 'faraday', '~> 1.10', '>= 1.10.6'
-gem 'faraday_middleware', '>= 1.2.1'
+gem 'faraday', '~> 2.0'
 gem 'faraday-http-cache', '>= 2.6.0'
 gem 'graphlient', '~> 0.7.0'
 # Redis gems
