@@ -4,7 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '3.4.9'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 8.1.2', '>= 8.1.2.1'
+gem 'rails', '~> 8.1.3', '>= 8.1.3.1'
 # Use sqlite3 as the database for Active Record. When using Alpine, needs to be compiled from source using the musl C compiler.
 gem 'sqlite3', '~> 1.6', git: 'https://github.com/sparklemotion/sqlite3-ruby.git', tag: 'v1.6.5'
 # Use Puma as the app server
@@ -18,15 +18,15 @@ gem 'puma', '~> 7.2'
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 # Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', '>= 1.4.2', require: false
+gem 'bootsnap', '>= 1.18.4', require: false
 # for postgresql
 gem 'activerecord-postgis-adapter', '>= 10.0.0'
 gem 'pg'
-gem 'jwt'
-gem 'faraday', '~> 1.10'
-gem 'faraday_middleware'
-gem 'faraday-http-cache'
-gem 'graphlient', '~> 0.6.0'
+gem 'jwt', '>= 3.2.0'
+gem 'faraday', '~> 1.10', '>= 1.10.6'
+gem 'faraday_middleware', '>= 1.2.1'
+gem 'faraday-http-cache', '>= 2.6.0'
+gem 'graphlient', '~> 0.7.0'
 # Redis gems
 gem 'redis'
 gem 'redis-namespace'
@@ -50,11 +50,11 @@ group :development, :test do
   # gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'dotenv-rails', '>= 3.1.3'
-  gem 'i18n-tasks', '>= 1.0.15'
-  gem 'rspec-rails', '>= 6.1.3'
+  gem 'i18n-tasks', '>= 1.2.0'
+  gem 'rspec-rails', '>= 8.0.0'
   gem 'rubocop', '>= 1.81.6'
   gem 'rubocop-performance', '>= 1.26.1'
-  gem 'rubocop-rails', '>= 2.34.0'
+  gem 'rubocop-rails', '>= 2.35.5'
   gem 'rubocop-rspec', '>= 3.8.0' # or gem 'rubocop-minitest'
   gem 'brakeman'
   gem 'pry-rails'
@@ -62,4 +62,4 @@ group :development, :test do
   gem 'simplecov', require: false
 end
 
-gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby ruby]
+gem 'tzinfo-data', '>= 1.2024.2', platforms: %i[mingw mswin x64_mingw jruby ruby]
