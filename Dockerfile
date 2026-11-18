@@ -1,5 +1,5 @@
 # Stage 1: Build
-FROM ruby:3.4.9-alpine AS builder
+FROM ruby:3.4.12-alpine AS builder
 
 # Added linux-headers to satisfy the ffi gem compiler requirements
 RUN apk add --no-cache \
@@ -25,7 +25,7 @@ RUN bundle config set --global no_document true && \
   rm -rf /usr/local/bundle/cache/*.gem
 
 # Stage 2: Run
-FROM ruby:3.4.9-alpine
+FROM ruby:3.4.12-alpine
 
 # Install production runtime packages
 RUN apk update && apk upgrade && apk add --no-cache \
